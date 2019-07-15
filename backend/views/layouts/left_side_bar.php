@@ -33,7 +33,7 @@ use yii\helpers\Url;
                     </li>                    
                    
                     <li>
-                        <a href="/user/index"><span class="fa fa-user"></span> <span class="xn-text">Пользаватели</span></a>                        
+                        <a href="/user/index"><span class="fa fa-user"></span> <span class="xn-text">Пользователи</span></a>                        
                     </li>  
 
                     <li class="xn-openable">
