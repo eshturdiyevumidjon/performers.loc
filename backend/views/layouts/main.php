@@ -8,14 +8,15 @@ use yii\bootstrap\NavBar;*/
 use yii\widgets\Breadcrumbs;
 use backend\assets\AppAsset;
 use backend\assets\JoliAsset;
+use common\models\User;
 
 if (class_exists('AppAsset')) {
         AppAsset::register($this);
     } else {
         JoliAsset::register($this);
 }
-if (Yii::$app->controller->action->id === 'login' || Yii::$app->controller->action->id === 'register' /*|| Yii::$app->controller->id === 'default'*/ || Yii::$app->controller->id === 'setting') { 
-    echo $this->render( 'main-login', ['content' => $content] );
+if (Yii::$app->controller->action->id === 'login' || Yii::$app->controller->action->id === 'register' /*|| Yii::$app->controller->id === 'default'*/ || Yii::$app->controller->id === 'setting'||Yii::$app->user->isGuest) {
+        echo $this->render( 'main-login', ['content' => $content] );
 } else{
         $session = Yii::$app->session;
         if( isset($session['theme']) ) $theme = $session['theme'];

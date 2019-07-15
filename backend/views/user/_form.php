@@ -1,9 +1,7 @@
 <?php
 use yii\helpers\Html;
-//use yii\widgets\ActiveForm;
-use kartik\form\ActiveForm;
+use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
-//use dosamigos\datepicker\DatePicker;
 
 
 /* @var $this yii\web\View */
@@ -52,7 +50,6 @@ use kartik\date\DatePicker;
                 </div>
                 <div class="col-md-6">
     				<?= $form->field($model, 'birthday')->widget(DatePicker::classname(), [
-                      'options' => ['placeholder' => 'Enter birth date ...'],
                         'pluginOptions' => [
                              'autoclose'=>true
                          ]

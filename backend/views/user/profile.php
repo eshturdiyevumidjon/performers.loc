@@ -33,7 +33,7 @@ if (!file_exists('avatars/'.$model->image) || $model->image == '') {
                         <div class="profile-data-title"><?=$model->getTypeDescription()?></div>
                     </div>
                     <div class="profile-controls">
-                        <?= Html::a('<span class="fa fa-pencil"></span>', ['/users/change', 'id' => $model->id], [ 'role' => 'modal-remote', 'title'=> 'Профиль','class'=>'profile-control-left']); ?>
+                        <?= Html::a('<span class="fa fa-pencil"></span>', ['/user/change', 'id' => $model->id], [ 'role' => 'modal-remote', 'title'=> 'Профиль','class'=>'profile-control-left']); ?>
                         <?= Html::a('<span class="fa fa-envelope"></span>', ['/inbox/index'], [ 'data-pjax'=>0, 'title'=> 'Профиль','class'=>'profile-control-right']); ?>
                     </div>
                 </div>                                

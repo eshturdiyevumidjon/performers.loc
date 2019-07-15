@@ -8,7 +8,6 @@ use yii\widgets\Breadcrumbs;
     <div class="page-content-wrap">             
         <div class="row">
             <div class="col-md-12">
-                <?= Alert::widget() ?>
                 <?= $content ?>
             </div> 
         </div>

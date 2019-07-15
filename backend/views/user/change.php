@@ -1,9 +1,7 @@
 <?php
 use yii\helpers\Html;
-//use yii\widgets\ActiveForm;
-use kartik\form\ActiveForm;
+use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
-//use dosamigos\datepicker\DatePicker;
 
 
 /* @var $this yii\web\View */
@@ -58,7 +56,7 @@ use kartik\date\DatePicker;
     				 <?= $form->field($model, 'new_password')->textInput(['maxlength' => true]) ?>
                 </div>
                 <div class="col-md-6">
-                     <?= $form->field($model, 'new_password2')->textInput(['maxlength' => true]) ?>
+                     
                 </div>
             </div>
         </div>

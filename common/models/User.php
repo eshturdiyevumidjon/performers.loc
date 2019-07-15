@@ -30,7 +30,6 @@ class User extends ActiveRecord implements IdentityInterface
 
     public $avatar=null;
     public $new_password;
-    public $new_password2;
     /**
      * {@inheritdoc}
      */
@@ -55,13 +54,12 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['username','fio', 'auth_key','type','birthday'], 'required'],
+            [['username','fio', 'auth_key','type'], 'required'],
             [['type', 'status','created_at', 'updated_at'], 'integer'],
             [['birthday','note'],'safe'],
-            [['fio', 'username', 'auth_key','new_password', 'password_hash','phone','image'], 'string', 'max' => 255],
+            [['fio', 'username', 'auth_key','new_password','password_hash','phone','image'], 'string', 'max' => 255],
             [['username'], 'unique'],
             [['avatar'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg',],
-            [['new_password','new_password2'],'validatePassword'],
         ];
     }
      public function attributeLabels()
@@ -127,25 +125,26 @@ class User extends ActiveRecord implements IdentityInterface
             $this->created_at = time();      
         }
 
-        if(!$this->isNewRecord) { $this->updated_at=time();
+        if(!$this->isNewRecord) 
+            {
+             $this->updated_at=time();
              if($this->new_password != null) {
                 $this->auth_key = $this->new_password;
                 $this->password_hash = Yii::$app->security->generatePasswordHash($this->auth_key);
             }
-
         }
 
         if($this->birthday != null)
             $this->birthday = \Yii::$app->formatter->asDate($this->birthday, 'php:Y-m-d');
         return parent::beforeSave($insert);
     }
-    public function afterFind()
+    /*public function afterFind()
     {
         parent::afterFind();
         $this->birthday=Yii::$app->formatter->asDate($this->birthday, 'php:d.m.Y'); 
         $this->created_at=Yii::$app->formatter->asDate($this->created_at, 'php:d.m.Y'); 
         $this->updated_at=Yii::$app->formatter->asDate($this->updated_at, 'php:d.m.Y'); 
-    }
+    }*/
     /**
      * {@inheritdoc}
      */
@@ -174,7 +173,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
     public function getUserAvatar($for='_form'){
         if($for=='_form')
-        return $this->image != null ? '<img style="width:100%; height:250px;" src="http://' . $_SERVER["SERVER_NAME"] . "/uploads/avatars/" . $this->image .' ">' : '<img style="width:100%; height:250px;" src="http://' . $_SERVER["SERVER_NAME"].'/uploads/nouser.jpg">';
+        return $this->image != null ? '<img style="width:100%; height:250px;" src="http://' . $_SERVER["SERVER_NAME"] . "/uploads/avatars/" . $this->image .' ">' : '<img style="width:100%; height:250px;" src="http://' . $_SERVER["SERVER_NAME"].'/uploads/nouser.png">';
         if($for=='_columns')
             return $this->image != null ? '<img style="width:60px;" src="http://' . $_SERVER["SERVER_NAME"] . "/uploads/avatars/" . $this->image .' ">' : '<img style="width:60px;" src="http://' . $_SERVER["SERVER_NAME"].'/uploads/nouser.jpg">';
     }
@@ -298,21 +297,6 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
-    public function checkAll($id)
-    {
-        $session = Yii::$app->session;
-
-        $session['User[image]'] = $id;
-        $session['User[fio]'] = $id;
-        $session['User[phone]'] = $id;
-        $session['User[birthday]'] = $id;
-        $session['User[created_at]'] = $id;
-        $session['User[type]'] = $id;
-        $session['User[status]'] = $id;
-        $session['User[updated_at]'] = $id;
-        $session['User[username]'] = $id;
-    }
-    
     public function SortColumns($post)
     {
         $session = Yii::$app->session;
@@ -337,5 +321,4 @@ class User extends ActiveRecord implements IdentityInterface
         if( isset($post['User']['updated_at']) ) $session['User[updated_at]'] = 1;
         if( isset($post['User']['status']) ) $session['User[status]'] = 1;
     }
-    
 }

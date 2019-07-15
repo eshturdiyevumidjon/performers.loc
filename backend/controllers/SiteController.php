@@ -22,11 +22,11 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index','set-theme','dashboard','set-theme-values'],
+                        'actions' => ['logout', 'index','set-theme','dashboard','set-theme-values','error'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -40,6 +40,7 @@ class SiteController extends Controller
             ],
         ];
     }
+
 
     /**
      * {@inheritdoc}
@@ -77,7 +78,7 @@ class SiteController extends Controller
         $model = new LoginForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->redirect(['index']);
         } else {
            
             $model->password = '';

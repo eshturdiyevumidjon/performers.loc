@@ -22,7 +22,7 @@ use yii\helpers\Url;
                                 <div class="profile-data-title">Web Developer/Designer</div>
                             </div>
                             <div class="profile-controls">
-                                <a href="user/profile" class="profile-control-left"><span class="fa fa-info"></span></a>
+                                <a href="/user/profile" class="profile-control-left"><span class="fa fa-info"></span></a>
                                 <a href="pages-messages.html" class="profile-control-right"><span class="fa fa-envelope"></span></a>
                             </div>
                         </div>                                                                        

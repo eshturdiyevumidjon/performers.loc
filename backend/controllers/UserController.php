@@ -155,13 +155,16 @@ class UserController extends Controller
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($model->load($request->post()) && $model->save()){
-                if(file_exists('uploads/avatars/'.$model->image))
-                {
-                    unlink(('uploads/avatars/'.$model->image));
-                }
+                
+
+                
                 $model->avatar = UploadedFile::getInstance($model,'avatar');
                 if(!empty($model->avatar))
-                {
+                {   
+                     if($model->image!=null&&file_exists('uploads/avatars/'.$model->image))
+                    {
+                        unlink(('uploads/avatars/'.$model->image));
+                    }
                     $model->avatar->saveAs('uploads/avatars/' . $model->id.'.'.$model->avatar->extension);
                     Yii::$app->db->createCommand()->update('user', ['image' => $model->id.'.'.$model->avatar->extension], [ 'id' => $model->id ])->execute();
                 }
@@ -204,25 +207,27 @@ class UserController extends Controller
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($model->load($request->post()) && $model->save()){
-                if(file_exists('uploads/avatars/'.$model->image))
-                {
-                    unlink(('uploads/avatars/'.$model->image));
-                }
+                
                 $model->avatar = UploadedFile::getInstance($model,'avatar');
                 if(!empty($model->avatar))
                 {
+                    if($model->image!=null&&file_exists('uploads/avatars/'.$model->image))
+                    {
+                        unlink(('uploads/avatars/'.$model->image));
+                    }
                     $model->avatar->saveAs('uploads/avatars/' . $model->id.'.'.$model->avatar->extension);
                     Yii::$app->db->createCommand()->update('user', ['image' => $model->id.'.'.$model->avatar->extension], [ 'id' => $model->id ])->execute();
                 }
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'size'=>'large',
-                    'title'=> "User #".$id,
-                    'content'=>$this->renderAjax('view', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    'forceClose'=>true,
+                    // 'size'=>'large',
+                    // 'title'=> "User #".$id,
+                    // 'content'=>$this->renderAjax('view', [
+                    //     'model' => $model,
+                    // ]),
+                    // 'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                    //         Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
             }else{
                  return [
@@ -292,7 +297,8 @@ class UserController extends Controller
             if($model->image!=null)
             {
                 unlink('uploads/avatars/'.$model->image);
-            }            
+            }
+            $model->delete();            
         }
         if($request->isAjax){
             /*
@@ -322,7 +328,13 @@ class UserController extends Controller
         $request = Yii::$app->request;
         $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
         foreach ( $pks as $pk ) {
+            if($pk==1)continue;
+
             $model = $this->findModel($pk);
+            if($model->image!=null)
+            {
+                unlink('uploads/avatars/'.$model->image);
+            }
             $model->delete();
         }
 
