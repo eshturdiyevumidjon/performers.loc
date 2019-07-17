@@ -46,9 +46,21 @@ $fieldOptions2 = [
                         </div>
                      </div>
 
+                      <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                 <a href="/site/request-password-reset" class="btn btn-link btn-block">Забыли пароль?</a>
+                            </div>
+                        </div>
+                     </div>
+        <div class="login-subtitle">
+                У вас еще нет аккаунта? <a href="/site/register"> Создать аккаунт</a>
+        </div>
         <?php ActiveForm::end(); ?>
         </div>
+
     </div>
 </div>
+
 
 

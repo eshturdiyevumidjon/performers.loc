@@ -54,11 +54,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['username','fio', 'auth_key','type'], 'required'],
+            [['email','username', 'auth_key','type'], 'required'],
             [['type', 'status','created_at', 'updated_at'], 'integer'],
             [['birthday','note'],'safe'],
-            [['fio', 'username', 'auth_key','new_password','password_hash','phone','image'], 'string', 'max' => 255],
-            [['username'], 'unique'],
+            [['username', 'email', 'auth_key','new_password','password_reset_token','password_hash','phone','image'], 'string', 'max' => 255],
+            [['email'], 'unique'],
             [['avatar'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg',],
         ];
     }
@@ -66,19 +66,19 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             'id' => 'ID',
-            'fio' => 'ФИО',
-            'username' => 'Логин',
-            'auth_key' => 'Пароль',
-            'password_hash' => 'Password Hash',
-            'type' => 'Тип',
-            'new_password'=>'Новый пароль',
-            'birthday'=>'День рождения',
-            'phone'=>'Телефон',
-            'image'=>'Фото',
-            'avatar'=>'Фото',
-            'status' => 'Статус',
-            'created_at' => 'Дата создания',
-            'updated_at' => 'Дата изменения',
+            'username' => Yii::t('yii','Username'),
+            'email' => Yii::t('yii','Email'),
+            'auth_key' => Yii::t('yii','Password'),
+            'password_hash' => Yii::t('yii',''),
+            'type' => Yii::t('yii','Type'),
+            'new_password'=>Yii::t('yii','New password'),
+            'birthday'=>Yii::t('yii','Birthday'),
+            'phone'=>Yii::t('yii','Phone number'),
+            'image'=>Yii::t('yii','Image'),
+            'avatar'=>Yii::t('yii','Image'),
+            'status' => Yii::t('yii','Status'),
+            'created_at' => Yii::t('yii','Created_at'),
+            'updated_at' => Yii::t('yii','Updated_at'),
         ];
     }
     //Получить описание типов пользователя.
@@ -88,6 +88,8 @@ class User extends ActiveRecord implements IdentityInterface
             case 0: return "Администратор";
             case 1: return "Модератор";
             case 2: return "Редактор";
+            case 3: return "Исполнитель";
+            case 4: return "Заказчика";
         }
     }
     public function getType()
@@ -96,6 +98,9 @@ class User extends ActiveRecord implements IdentityInterface
             0 => 'Администратор',
             1 => 'Модератор',
             2 => 'Редактор',
+            3 => 'Исполнитель',
+            4 => 'Заказчика',
+
         ];
     }
 
@@ -138,13 +143,13 @@ class User extends ActiveRecord implements IdentityInterface
             $this->birthday = \Yii::$app->formatter->asDate($this->birthday, 'php:Y-m-d');
         return parent::beforeSave($insert);
     }
-    /*public function afterFind()
+    public function afterFind()
     {
         parent::afterFind();
-        $this->birthday=Yii::$app->formatter->asDate($this->birthday, 'php:d.m.Y'); 
+        $this->birthday=($this->birthday)?Yii::$app->formatter->asDate($this->birthday, 'php:d.m.Y'):""; 
         $this->created_at=Yii::$app->formatter->asDate($this->created_at, 'php:d.m.Y'); 
         $this->updated_at=Yii::$app->formatter->asDate($this->updated_at, 'php:d.m.Y'); 
-    }*/
+    }
     /**
      * {@inheritdoc}
      */
@@ -162,14 +167,14 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Finds user by username
+     * Finds user by email
      *
-     * @param string $username
+     * @param string $email
      * @return static|null
      */
-    public static function findByUsername($username)
+    public static function findByUsername($email)
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
     }
     public function getUserAvatar($for='_form'){
         if($for=='_form')
@@ -302,22 +307,22 @@ class User extends ActiveRecord implements IdentityInterface
         $session = Yii::$app->session;
 
         $session['User[image]'] = 0;
-        $session['User[fio]'] = 0;
+        $session['User[username]'] = 0;
         $session['User[phone]'] = 0;
         $session['User[birthday]'] = 0;
         $session['User[created_at]'] = 0;
         $session['User[type]'] = 0;
         $session['User[status]'] = 0;
         $session['User[updated_at]'] = 0;
-        $session['User[username]'] = 0;
+        $session['User[email]'] = 0;
             
         if( isset($post['User']['phone']) ) $session['User[phone]'] = 1;
-        if( isset($post['User']['fio']) ) $session['User[fio]'] = 1;
+        if( isset($post['User']['username']) ) $session['User[username]'] = 1;
         if( isset($post['User']['image']) ) $session['User[image]'] = 1;
         if( isset($post['User']['created_at']) ) $session['User[created_at]'] = 1;
         if( isset($post['User']['birthday']) ) $session['User[birthday]'] = 1;
         if( isset($post['User']['type']) ) $session['User[type]'] = 1;
-        if( isset($post['User']['username']) ) $session['User[username]'] = 1;
+        if( isset($post['User']['email']) ) $session['User[email]'] = 1;
         if( isset($post['User']['updated_at']) ) $session['User[updated_at]'] = 1;
         if( isset($post['User']['status']) ) $session['User[status]'] = 1;
     }

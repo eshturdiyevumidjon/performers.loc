@@ -26,10 +26,10 @@ if (!file_exists('avatars/'.$model->image) || $model->image == '') {
             <div class="panel panel-default">
                 <div class="panel-body profile">
                     <div class="profile-image">
-                        <img src="<?=$path?>" alt="<?=$model->fio?>">
+                        <img src="<?=$path?>" alt="<?=$model->username?>">
                     </div>
                     <div class="profile-data">
-                        <div class="profile-data-name"><?=$model->fio?></div>
+                        <div class="profile-data-name"><?=$model->username?></div>
                         <div class="profile-data-title"><?=$model->getTypeDescription()?></div>
                     </div>
                     <div class="profile-controls">
@@ -40,7 +40,7 @@ if (!file_exists('avatars/'.$model->image) || $model->image == '') {
                 <div class="panel-body">                                    
                     <div class="contact-info">
                         <div class="col-md-6">
-                            <p><small><?= $model->getAttributeLabel('username')?></small><br><?=$model->username?></p>
+                            <p><small><?= $model->getAttributeLabel('email')?></small><br><?=$model->email?></p>
                           
                         </div>
                         <div class="col-md-6">

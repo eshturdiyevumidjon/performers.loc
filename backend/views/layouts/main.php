@@ -15,9 +15,7 @@ if (class_exists('AppAsset')) {
     } else {
         JoliAsset::register($this);
 }
-if (Yii::$app->controller->action->id === 'login' || Yii::$app->controller->action->id === 'register' /*|| Yii::$app->controller->id === 'default'*/ || Yii::$app->controller->id === 'setting'||Yii::$app->user->isGuest) {
-        echo $this->render( 'main-login', ['content' => $content] );
-} else{
+{
         $session = Yii::$app->session;
         if( isset($session['theme']) ) $theme = $session['theme'];
         else $theme = '/css/theme-default.css';

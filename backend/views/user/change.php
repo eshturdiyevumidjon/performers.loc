@@ -30,10 +30,10 @@ use kartik\date\DatePicker;
         <div class="col-md-8">
             <div class="row">
                 <div class="col-md-6">
-                    <?= $form->field($model, 'fio')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
                 </div>
                 <div class="col-md-6">
-    				<?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+    				<?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
                 </div>
             </div>
             <div class="row">

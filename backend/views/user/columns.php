@@ -18,8 +18,8 @@ $model=new User();
 
 	    <div class="col-md-4">
 	        <label>
-	            <input type="checkbox" name="User[fio]" value="1" <?= ($session['User[fio]']===null || $session['User[fio]'] == 1) ? 'checked=""' : '' ?> > 
-	            <?=$model->getAttributeLabel('fio')?>
+	            <input type="checkbox" name="User[username]" value="1" <?= ($session['User[username]']===null || $session['User[username]'] == 1) ? 'checked=""' : '' ?> > 
+	            <?=$model->getAttributeLabel('username')?>
 	        </label>
 	    </div>
 
@@ -72,8 +72,8 @@ $model=new User();
 	    </div>
 	    <div class="col-md-4">
 	        <label>
-	            <input type="checkbox" name="User[username]" value="1" <?=$session['User[username]'] == 1 ? 'checked=""' : '' ?> > 
-	            <?=$model->getAttributeLabel('username')?>
+	            <input type="checkbox" name="User[email]" value="1" <?=$session['User[email]'] == 1 ? 'checked=""' : '' ?> > 
+	            <?=$model->getAttributeLabel('email')?>
 	        </label>
 	    </div>
 	</div>

@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
+use yii\filters\AccessControl;
 use yii\helpers\Html;
 use yii\web\UploadedFile;
 
@@ -23,6 +24,21 @@ class UserController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['login','register'],
+                        'allow' => true,
+                        'roles'=>['?'],
+                    ],
+                    [
+                        'actions' => ['create','update', 'index','view','delete','error'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -60,11 +76,11 @@ class UserController extends Controller
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'title'=> "Пользователь",
+                    'title'=> Yii::t('yii','User'),
                     'content'=>$this->renderAjax('view', [
                         'model' => $this->findModel($id),
                     ]),
-                    'footer'=> Html::button('Закрыть',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                    'footer'=> Html::button(Yii::t('yii','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a('Изменить',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
         }else{
@@ -104,21 +120,21 @@ class UserController extends Controller
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'size'=>'large',
-                    'title'=> "Пользователи",
+                    'title'=> Yii::t('yii','Users'),
                     'content'=>'<span class="text-success">Успешно выполнено</span>',
-                    'footer'=> Html::button('Закрыть',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                    'footer'=> Html::button(Yii::t('yii','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a('Создать ещё',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
         
                 ];         
             }else{           
                 return [
-                    'title'=> "Создать нового пользователя",
+                    'title'=> Yii::t('yii','Create new user'),
                     'size'=>'large',
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Закрыть',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Сохранить',['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer'=> Html::button(Yii::t('yii','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('yii','Save'),['class'=>'btn btn-primary','type'=>"submit"])
         
                 ];         
             }
@@ -174,13 +190,13 @@ class UserController extends Controller
                 ];    
             }else{
                  return [
-                    'title'=> "Изменить пользователя",
+                    'title'=> Yii::t('yii','Update User'),
                     'size'=>'large',
                     'content'=>$this->renderAjax('change', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Закрыть',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Сохранить',['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer'=> Html::button(Yii::t('yii','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('yii','Save'),['class'=>'btn btn-primary','type'=>"submit"])
                 ];        
             }
         }else{
@@ -222,22 +238,22 @@ class UserController extends Controller
                     'forceReload'=>'#crud-datatable-pjax',
                     'forceClose'=>true,
                     // 'size'=>'large',
-                    // 'title'=> "Пользователь",
+                    // 'title'=> Yii::t('yii','User'),
                     // 'content'=>$this->renderAjax('view', [
                     //     'model' => $model,
                     // ]),
-                    // 'footer'=> Html::button('Закрыть',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                    // 'footer'=> Html::button(Yii::t('yii','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                     //         Html::a('Изменить',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
             }else{
                  return [
-                    'title'=> "Изменить пользователя",
+                    'title'=> Yii::t('yii','Update User'),
                     'size'=>'large',
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Закрыть',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Сохранить',['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer'=> Html::button(Yii::t('yii','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('yii','Save'),['class'=>'btn btn-primary','type'=>"submit"])
                 ];        
             }
         }else{
@@ -276,8 +292,8 @@ class UserController extends Controller
                     'session' => $session,
                     'id'=>$id,
                 ]),
-                'footer'=> Html::button('Закрыть',['class'=>'btn btn-primary pull-left','data-dismiss'=>"modal"]).
-                            Html::button('Сохранить',['class'=>'btn btn-info','type'=>"submit"])
+                'footer'=> Html::button(Yii::t('yii','Close'),['class'=>'btn btn-primary pull-left','data-dismiss'=>"modal"]).
+                            Html::button(Yii::t('yii','Save'),['class'=>'btn btn-info','type'=>"submit"])
             ];         
         }       
     } 

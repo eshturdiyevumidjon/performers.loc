@@ -16,10 +16,11 @@ class m130524_201442_init extends Migration
 
         $this->createTable('{{%user}}', [
             'id' => $this->primaryKey(),
-            'fio' => $this->string(255),
-            'username' => $this->string(255)->notNull()->unique(),
+            'username' => $this->string()->notNull(),
+            'email' => $this->string(255)->notNull()->unique(),
             'auth_key' => $this->string(255)->notNull(),
             'password_hash' => $this->string(255),
+            'password_reset_token' => $this->string()->unique(),
             'type' => $this->integer(),
             'birthday'=>$this->date(),
             'phone'=>$this->string(255)->comment('Телефон'),
@@ -31,8 +32,8 @@ class m130524_201442_init extends Migration
         ], $tableOptions);
 
         $this->insert('user',array(
-            'fio' => 'Иванов Иван Иванович',          
-            'username' => 'admin',
+            'username' => 'Иванов Иван Иванович',          
+            'email' => 'admin@mail.ru',
             'auth_key' => 'admin',
             'password_hash' => Yii::$app->security->generatePasswordHash('admin'),
             'type' => 0,

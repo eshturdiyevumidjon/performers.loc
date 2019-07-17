@@ -6,6 +6,9 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use backend\models\Lang;
+use backend\models\RegiterForm;
+use backend\models\PasswordResetRequestForm;
 
 /**
  * Site controller
@@ -22,11 +25,12 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login'],
+                        'actions' => ['login','register','request-password-reset','reset-password'],
                         'allow' => true,
+                        'roles'=>['?'],
                     ],
                     [
-                        'actions' => ['logout', 'index','set-theme','dashboard','set-theme-values','error'],
+                        'actions' => ['logout','register', 'index','set-theme','dashboard','set-theme-values','error','set-language'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -41,7 +45,16 @@ class SiteController extends Controller
         ];
     }
 
-
+    public function actionSetLanguage($url,$pathinfo,$local)
+    {
+        Lang::setCurrent($url);
+        $cookie=new yii\web\Cookie([
+            'name'=>'_lang',
+            'value'=>$local
+        ]);
+        Yii::$app->getResponse()->getCookies()->add($cookie);
+       return $this->redirect([$pathinfo]);
+    }
     /**
      * {@inheritdoc}
      */
@@ -74,16 +87,32 @@ class SiteController extends Controller
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
+        $this->layout = 'main-login';
 
         $model = new LoginForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->redirect(['index']);
+            return $this->redirect(['dashboard']);
         } else {
            
             $model->password = '';
-
             return $this->render('login', [
+                'model' => $model,
+            ]);
+        }
+    }
+    public function actionRegister()
+    {
+        $model = new RegiterForm();
+        $this->layout = 'main-login';
+
+        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
+            return $this->redirect(['index']);
+        } else {
+           
+            $model->password = "";
+
+            return $this->render('register', [
                 'model' => $model,
             ]);
         }
@@ -170,4 +199,47 @@ class SiteController extends Controller
         else return 0;
     }
 
+    public function actionRequestPasswordReset()
+    {
+        $model = new PasswordResetRequestForm();
+        $this->layout = 'main-login';
+        
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->sendEmail()) {
+
+                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
+                return $this->goHome();
+            } else {
+                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
+            }
+        }
+ 
+        return $this->render('passwordResetRequestForm', [
+            'model' => $model,
+        ]);
+    }
+ 
+    /**
+     * Resets password.
+     *
+     * @param string $token
+     * @return mixed
+     * @throws BadRequestHttpException
+     */
+    public function actionResetPassword($token)
+    {
+        try {
+            $model = new ResetPasswordForm($token);
+        } catch (InvalidParamException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+ 
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+            Yii::$app->session->setFlash('success', 'New password was saved.');
+            return $this->goHome();
+        }
+ 
+        return $this->render('passwordResetRequestForm', [
+            'model' => $model]);
+    }
 }

@@ -11,7 +11,7 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'language' =>'ru-RU',
+    'name'=>'Itake',
     'timeZone' => 'Asia/Tashkent',
     'defaultRoute' =>'/site/dashboard',
     'modules' => [
@@ -19,7 +19,26 @@ return [
         'class' => '\kartik\grid\Module'
         ]       
     ],
+    'language'=>'ru-RU',
+    
     'components' => [
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'viewPath' => '@backend/views/mail',
+            'useFileTransport' => true,
+        ],
+        'i18n' => [
+        'translations' => [
+            '*' => [
+                'class' => 'yii\i18n\PhpMessageSource',
+                'basePath' => '@backend/messages',
+                'sourceLanguage' => 'en',
+                'fileMap' => [
+                    //'main' => 'main.php',
+                ],
+            ],
+        ],
+    ],
         'assetManager'=>[
             'bundles'=>[
                 // 'yii\web\JqueryAsset'=>[
@@ -34,6 +53,7 @@ return [
             ],
         ],
         'request' => [
+            'class' => 'backend\components\LangRequest',
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
@@ -62,10 +82,15 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-            ],
+            'class'=>'backend\components\LangUrlManager',
+               'rules'=>[
+                    '/' => 'site/index',
+                    '<controller:\w+>/<action:\w+>/*'=>'<controller>/<action>',
+                ],
         ],
-    
+        'as BeforeRequest'=>[
+            'class'=>'backend\components\LanguageHandler',
+        ],
     ],
     'params' => $params,
 ];

@@ -18,8 +18,8 @@ use yii\widgets\DetailView;
                     return $data->getUserAvatar('_columns');
                 },
             ],
-            'fio',
             'username',
+            'email',
             'auth_key',
             [
                 'attribute'=>'type',
