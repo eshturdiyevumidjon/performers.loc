@@ -41,7 +41,6 @@ return [
             ],
         ],
         'request' => [
-            'class' => 'backend\components\LangRequest',
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
@@ -69,15 +68,8 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'class'=>'backend\components\LangUrlManager',
-               'rules'=>[
-                    '/' => 'site/index',
-                    '<controller:\w+>/<action:\w+>/*'=>'<controller>/<action>',
-                ],
         ],
-        'as BeforeRequest'=>[
-            'class'=>'backend\components\LanguageHandler',
-        ],
+
     ],
     'params' => $params,
 ];

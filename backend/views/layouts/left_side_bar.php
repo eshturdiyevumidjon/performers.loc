@@ -35,7 +35,7 @@ echo $pathinfo;
         </li>                    
         
         <li <?= ($pathInfo == 'user/index' ? 'class="active"' : '')?>>
-            <a href="/<?=$url?>/user/index"><span class="fa fa-user"></span> <span class="xn-text"><?=Yii::t('app','Users')?></span></a>                        
+            <a href="/user/index"><span class="fa fa-user"></span> <span class="xn-text"><?=Yii::t('app','Users')?></span></a>                        
         </li>  
         <li class="xn-openable">
             <a href="#"><span class="fa fa-users"></span> <span class="xn-text"><?=Yii::t('app','Clients')?></span></a>                        
@@ -52,10 +52,10 @@ echo $pathinfo;
                     <a href="#"><span class="xn-text"><?=Yii::t('app','Languages')?></span></a>
                     <ul>
                         <li  <?= ($pathInfo == 'lang/index' ? 'class="active"' : '')?>>
-                            <a href="/<?=$url?>/lang/index"><?=Yii::t('app','Language')?></a>
+                            <a href="/lang/index"><?=Yii::t('app','Language')?></a>
                         </li>
                         <li <?= ($pathInfo == 'translation/index' ? 'class="active"' : '')?>>
-                            <a href="/<?=$url?>/translation/index"><?=Yii::t('app','Translations')?></a>
+                            <a href="/translation/index"><?=Yii::t('app','Translations')?></a>
                         </li>
                     </ul>
                 </li>                            

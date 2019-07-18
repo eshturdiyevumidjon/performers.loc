@@ -22,7 +22,7 @@ $langs=Lang::find()->all();
         <ul class="dropdown-menu" role="menu">
           <?php foreach($langs as $lang):?>
             <li>
-                 <?= Html::a($lang->name,['/site/set-language','url'=>$lang->url,'pathinfo'=>Yii::$app->request->pathInfo,'local'=>$lang->local], ['class' => 'btn-block']) ?>
+                 <?php echo Html::a($lang->name,['#'], ['class' => 'btn-block']) ?>
             </li>
         <?php endforeach;?>
         </ul>

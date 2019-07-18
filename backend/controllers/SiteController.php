@@ -32,7 +32,7 @@ class SiteController extends Controller
                         'roles'=>['?'],
                     ],
                     [
-                        'actions' => ['logout','register', 'index','set-theme','dashboard','set-theme-values','error','set-language'],
+                        'actions' => ['logout','register', 'index','set-theme','dashboard','set-theme-values','error'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -47,16 +47,7 @@ class SiteController extends Controller
         ];
     }
 
-    public function actionSetLanguage($url,$pathinfo,$local)
-    {
-        Lang::setCurrent($url);
-        $cookie=new yii\web\Cookie([
-            'name'=>'_lang',
-            'value'=>$local
-        ]);
-        Yii::$app->getResponse()->getCookies()->add($cookie);
-       return $this->redirect([$pathinfo]);
-    }
+   
     /**
      * {@inheritdoc}
      */
