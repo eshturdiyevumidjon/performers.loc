@@ -1,7 +1,6 @@
 <?php
 use yii\helpers\Url;
 use backend\models\Lang;
-$url=Lang::getCurrent()->url;
 $pathInfo = Yii::$app->request->pathInfo;
 echo $pathinfo;
 ?>

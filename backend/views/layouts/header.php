@@ -17,16 +17,7 @@ $langs=Lang::find()->all();
             <input type="text" name="search" placeholder="Search..."/>
         </form>
     </li>
-    <li>
-        <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="true"><?=Lang::getCurrent()->name?> <span class="caret"></span></a>
-        <ul class="dropdown-menu" role="menu">
-          <?php foreach($langs as $lang):?>
-            <li>
-                 <?php echo Html::a($lang->name,['#'], ['class' => 'btn-block']) ?>
-            </li>
-        <?php endforeach;?>
-        </ul>
-    </li>   
+   
     <li>
         
     </li>
