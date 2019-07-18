@@ -58,6 +58,16 @@ class SiteController extends Controller
                 'class' => 'yii\web\ErrorAction',
             ],
         ];
+    }   
+    public function actionSetLanguage()
+    {
+        Lang::setCurrent($url);
+        $cookie=new yii\web\Cookie([
+            'name'=>'_lang',
+            'value'=>$local
+        ]);
+        Yii::$app->getResponse()->getCookies()->add($cookie);
+       return $this->redirect([$pathinfo]);
     }
 
     /**

@@ -19,7 +19,14 @@ $langs=Lang::find()->all();
     </li>
    
     <li>
-        
+        <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="true"><?=Yii::$app->language?> <span class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+          <?php foreach($langs as $lang):?>
+            <li>
+                 <a href="<?=Url::to([$pathinfo, 'language' => $lang->url])?>"><?=$lang->name?></a>
+            </li>
+        <?php endforeach;?>
+        </ul>
     </li>
     <!-- END SEARCH -->
     <!-- SIGN OUT -->

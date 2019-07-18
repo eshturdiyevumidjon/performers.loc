@@ -40,6 +40,7 @@ return [
                 ],
             ],
         ],
+        
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
