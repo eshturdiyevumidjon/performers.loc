@@ -68,6 +68,9 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'class' => 'codemix\localeurls\UrlManager',
+            'languages' => ['en', 'ru', 'uz'],
+            'on languageChanged' => '\common\models\PreferenceBooks::onLanguageChanged',
         ],
 
     ],
