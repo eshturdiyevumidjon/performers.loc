@@ -21,10 +21,12 @@ use backend\widgets\Alert;
 <body>
 
 <?php $this->beginBody() ?>
-
-	<?= Alert::widget() ?>
-    <?= $content ?>
-
+    <div  class="login-container lightmode">
+        <div class="login-box animated fadeInDown">
+        	<?= Alert::widget() ?>
+            <?= $content ?>
+        </div>
+    </div>
 <?php $this->endBody() ?>
 </body>
 </html>

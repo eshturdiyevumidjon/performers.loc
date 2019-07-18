@@ -3,6 +3,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use backend\models\Lang;
 $langs=Lang::find()->all();
+
 ?>
 <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
     <!-- TOGGLE NAVIGATION -->
@@ -130,38 +131,21 @@ $langs=Lang::find()->all();
 <div class="message-box animated fadeIn" data-sound="alert" id="mb-signout">
     <div class="mb-container">
         <div class="mb-middle">
-            <div class="mb-title"><span class="fa fa-sign-out"></span> Выйти из  сайта?</div>
+            <div class="mb-title"><span class="fa fa-sign-out"></span> <?=Yii::t('app','Leave the site?')?></div>
             <div class="mb-content">
-                <p>Вы хотите покинуть сайт?</p>                    
-                <p>Нажмите Нет, если вы хотите продолжить работу. Нажмите «Да», чтобы выйти из текущего пользователя.</p>
+                <p><?=Yii::t('app','Do you want to leave the site?')?></p>                    
+                <p><?=Yii::t('app','Click No if you want to continue. Click Yes to log out of the current user.')?></p>
             </div>
             <div class="mb-footer">
                 <div class="pull-right">
                     <!-- <a href="" class="btn btn-success btn-lg">Yes</a> -->
                     <?= Html::a(
-                            'Да',
+                            Yii::t('app','Yes'),
                             ['/site/logout'], 
                             ['data-method' => 'post', 'class' => 'btn btn-success btn-lg']   
                         ) ?>
                     
-                    <button class="btn btn-default btn-lg mb-control-close">Нет</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="message-box animated fadeIn" data-sound="alert" id="mb-remove-row">
-    <div class="mb-container">
-        <div class="mb-middle">
-            <div class="mb-title"><span class="fa fa-times"></span> Удалить <strong>данные</strong>?</div>
-            <div class="mb-content">
-                <p>Вы действительно хотите удалить этот элемент?</p>                    
-                <p>Нажмите «Да», если вы уверены.</p>
-            </div>
-            <div class="mb-footer">
-                <div class="pull-right">
-                    <button class="btn btn-success btn-lg mb-control-yes">Да</button>
-                    <button class="btn btn-default btn-lg mb-control-close">Нет</button>
+                    <button class="btn btn-default btn-lg mb-control-close"><?=Yii::t('app','No')?></button>
                 </div>
             </div>
         </div>

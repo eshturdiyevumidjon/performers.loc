@@ -10,7 +10,7 @@ use johnitvn\ajaxcrud\BulkButtonWidget;
 /* @var $searchModel backend\models\User */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('yii','Users');
+$this->title = Yii::t('app','Users');
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);
@@ -28,9 +28,9 @@ CrudAsset::register($this);
                     'toolbar'=> [
                         ['content'=>
                             '<div style="margin-top:10px;">' .
-                            Html::a(Yii::t('yii','Add').' <i class="glyphicon glyphicon-plus"></i>', ['create'],
-                            ['role'=>'modal-remote','title'=> Yii::t('yii','Add'), 'class'=>'btn btn-info']).
-                            Html::a(Yii::t('yii','Sort Columns'), ['columns','id'=>10],['role'=>'modal-remote','title'=> Yii::t('yii','Sort Columns'), 'class'=>'btn btn-warning']) .
+                            Html::a(Yii::t('app','Add').' <i class="glyphicon glyphicon-plus"></i>', ['create'],
+                            ['role'=>'modal-remote','title'=> Yii::t('app','Add'), 'class'=>'btn btn-info']).
+                            Html::a(Yii::t('app','Sort Columns'), ['columns','id'=>10],['role'=>'modal-remote','title'=> Yii::t('app','Sort Columns'), 'class'=>'btn btn-warning']) .
                             '<ul class="panel-controls">
                                 <li>{export}</li>
                             </ul>'.
@@ -42,18 +42,18 @@ CrudAsset::register($this);
                     'responsive' => true,          
                     'panel' => [
                         'type' => 'warning', 
-                        'heading' => '<i class="glyphicon glyphicon-list"></i>'.Yii::t('yii','Users listing'),
+                        'heading' => '<i class="glyphicon glyphicon-list"></i>'.Yii::t('app','Users listing'),
                         'before'=>'',
                         'after'=>BulkButtonWidget::widget([
-                                    'buttons'=>Html::a('<i class="glyphicon glyphicon-trash"></i>'.Yii::t('yii','Delete All'),
+                                    'buttons'=>Html::a('<i class="glyphicon glyphicon-trash"></i>'.Yii::t('app','Delete All'),
                                         ["bulk-delete"] ,
                                         [
                                             "class"=>"btn btn-danger btn-xs",
                                             'role'=>'modal-remote-bulk',
                                             'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
                                             'data-request-method'=>'post',
-                                            'data-confirm-title'=>Yii::t('yii','Are you sure?'),
-                                            'data-confirm-message'=>Yii::t('yii','Really do you want delete this item')
+                                            'data-confirm-title'=>Yii::t('app','Are you sure?'),
+                                            'data-confirm-message'=>Yii::t('app','Really do you want delete this item')
                                         ]),
                                 ]).                        
                                 '<div class="clearfix"></div>',

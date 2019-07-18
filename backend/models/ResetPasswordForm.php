@@ -12,7 +12,9 @@ class ResetPasswordForm extends Model
 {
  
     public $password;
+    public $repassword;
  
+    public $token;
     /**
      * @var \app\models\User
      */
@@ -48,10 +50,25 @@ class ResetPasswordForm extends Model
     {
         return [
             ['password', 'required'],
+            ['repassword', 'required'],
+            ['token','safe'],
             ['password', 'string', 'min' => 6],
+            ['repassword', 'string', 'min' => 6],
+            [['password', 'repassword'],'validatePassword'],
         ];
     }
- 
+    public function validatePassword($attribute)
+    { 
+        if($this->password != $this->repassword) $this->addError($attribute, '«Пароль» и «Повторный ввод пароля» не совпадают');        
+    }
+    public function attributeLabels()
+    {
+        return [
+            'password' => 'Пароль',
+            'token'=>'Код для подтверждения',
+            'repassword' => 'Повторный ввод пароля',
+        ];
+    }
     /**
      * Resets password.
      *

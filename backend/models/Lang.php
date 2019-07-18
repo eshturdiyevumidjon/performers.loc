@@ -90,14 +90,14 @@ class Lang extends \yii\db\ActiveRecord
         }
         return self::$current;
     }
-    /* //Получение текущего объекта языка
-    static function getCurrentLang()
-    {
-        if( self::$current === null ){
-            self::$current = self::getDefaultLang();
-        }
-        return self::$current;
-    }*/
+    //  //Получение текущего объекта языка
+    // static function getCurrentLang()
+    // {
+    //     if( self::$current === null ){
+    //         self::$current = self::getDefaultLang();
+    //     }
+    //     return self::$current;
+    // }
 
     //Установка текущего объекта языка и локаль пользователя
     static function setCurrent($url = null)

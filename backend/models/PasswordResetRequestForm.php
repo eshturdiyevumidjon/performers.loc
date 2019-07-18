@@ -20,16 +20,60 @@ class PasswordResetRequestForm extends Model
     {
         return [
             ['email', 'trim'],
+            ['email','string'],
             ['email', 'required'],
-            ['email', 'email'],
-            ['email', 'exist',
-                'targetClass' => '\common\models\User',
-                'filter' => ['status' => User::STATUS_ACTIVE],
-                'message' => 'There is no user with such email.'
-            ],
+            ['email','validateFor'],
         ];
     }
- 
+    public function attributeLabels()
+    {
+        return [
+            'email' => 'Адрес электронной почты или номер телефона',
+        ];
+    }
+    public function validateFor($attribute)
+    { 
+        $q=1;
+        if(strpos($this->email,'@')===FALSE)
+        {
+            $pattern = '/\+[0-9]{2}+[0-9]{10}/s';
+            if(!preg_match($pattern, $this->email)){
+                $err='Неправильный номер телефона';
+            }
+            else{
+                  $user = User::findOne([
+                    'status' => User::STATUS_ACTIVE,
+                    'phone' => $this->email,
+                    ]);
+                  if(!$user)
+                  {
+                    $q=0;
+                    $err="Там нет пользователя с таким номером телефона.";
+                  }
+            }
+        }
+      
+            if ($q&&!filter_var($this->email, FILTER_VALIDATE_EMAIL)){
+                $err.=' или электронной почты';
+            }
+            else{
+                if($q)
+                {
+                  $user = User::findOne([
+                    'status' => User::STATUS_ACTIVE,
+                    'email' => $this->email,
+                    ]);
+                  if(!$user)
+                  {
+                    $err="Там нет пользователя с таким адресом электронной почты.";
+                  }
+              }
+            }
+        if(isset($err))
+         {
+             $this->addError($attribute,$err);
+         }
+    }
     /**
      * Sends an email with a link, for resetting the password.
      *
@@ -37,36 +81,59 @@ class PasswordResetRequestForm extends Model
      */
     public function sendEmail()
     {
-        /* @var $user User */
-        $user = User::findOne([
-            'status' => User::STATUS_ACTIVE,
-            'email' => $this->email,
-        ]);
+            /* @var $user User */
+            $user = User::findOne([
+                'status' => User::STATUS_ACTIVE,
+                'email' => $this->email,
+            ]);
         
-        if (!$user) {
-            return false;
+        if ($user)
+        {
+            if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
+                $user->generatePasswordResetToken();
+                if (!$user->save(false)) {
+                    return false;
+                }
+            }
+            return Yii::$app
+                ->mailer
+                ->compose(
+                    [
+                        'html' => 'passwordResetToken-html', 
+                        'text' => 'passwordResetToken-text'
+                    ],
+                    ['user' => $user]
+                )
+                ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+                ->setTo($this->email)
+                ->setSubject('Password reset for ' . Yii::$app->name)
+                ->send();
         }
- 
-        if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
-            $user->generatePasswordResetToken();
-            if (!$user->save(false)) {
+        else
+        {
+            $user = User::findOne([
+            'status' => User::STATUS_ACTIVE,
+            'phone' => $this->email,
+            ]);
+            if(!$user){
                 return false;
             }
+            else
+            {
+                // if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
+                // $user->password_reset_token=rand(0,9999);
+                //     if (!$user->save(false)) {
+                //         return false;
+                //     }
+                // }
+                //  $sms = new Sms;
+                //  $sms->transmit($this->info,Yii::t('frontend',
+                //  'Please return to the site and type in {code}',['code'=>sprintf("%04d",$this->verify_code)]));
+            }
         }
-        
-        return Yii::$app
-            ->mailer
-            ->compose(
-                [
-                    'html' => 'passwordResetToken-html', 
-                    'text' => 'passwordResetToken-text'
-                ],
-                ['user' => $user]
-            )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
-            ->setTo($this->email)
-            ->setSubject('Password reset for ' . Yii::$app->name)
-            ->send();
     }
- 
+    public function requestCode() {
+        
+        
+    }
 }

@@ -33,7 +33,7 @@ class UserController extends Controller
                         'roles'=>['?'],
                     ],
                     [
-                        'actions' => ['create','update', 'index','view','delete','error'],
+                        'actions' => ['create','update','columns','bulk-delete', 'index','view','delete','error','profile','change'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -76,11 +76,11 @@ class UserController extends Controller
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'title'=> Yii::t('yii','User'),
+                    'title'=> Yii::t('app','User'),
                     'content'=>$this->renderAjax('view', [
                         'model' => $this->findModel($id),
                     ]),
-                    'footer'=> Html::button(Yii::t('yii','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a('Изменить',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
         }else{
@@ -120,21 +120,21 @@ class UserController extends Controller
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'size'=>'large',
-                    'title'=> Yii::t('yii','Users'),
+                    'title'=> Yii::t('app','Users'),
                     'content'=>'<span class="text-success">Успешно выполнено</span>',
-                    'footer'=> Html::button(Yii::t('yii','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a('Создать ещё',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
         
                 ];         
             }else{           
                 return [
-                    'title'=> Yii::t('yii','Create new user'),
+                    'title'=> Yii::t('app','Create new user'),
                     'size'=>'large',
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button(Yii::t('yii','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button(Yii::t('yii','Save'),['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
         
                 ];         
             }
@@ -190,13 +190,13 @@ class UserController extends Controller
                 ];    
             }else{
                  return [
-                    'title'=> Yii::t('yii','Update User'),
+                    'title'=> Yii::t('app','Update User'),
                     'size'=>'large',
                     'content'=>$this->renderAjax('change', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button(Yii::t('yii','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button(Yii::t('yii','Save'),['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
                 ];        
             }
         }else{
@@ -238,22 +238,22 @@ class UserController extends Controller
                     'forceReload'=>'#crud-datatable-pjax',
                     'forceClose'=>true,
                     // 'size'=>'large',
-                    // 'title'=> Yii::t('yii','User'),
+                    // 'title'=> Yii::t('app','User'),
                     // 'content'=>$this->renderAjax('view', [
                     //     'model' => $model,
                     // ]),
-                    // 'footer'=> Html::button(Yii::t('yii','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                    // 'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                     //         Html::a('Изменить',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
             }else{
                  return [
-                    'title'=> Yii::t('yii','Update User'),
+                    'title'=> Yii::t('app','Update User'),
                     'size'=>'large',
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button(Yii::t('yii','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button(Yii::t('yii','Save'),['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
                 ];        
             }
         }else{
@@ -292,8 +292,8 @@ class UserController extends Controller
                     'session' => $session,
                     'id'=>$id,
                 ]),
-                'footer'=> Html::button(Yii::t('yii','Close'),['class'=>'btn btn-primary pull-left','data-dismiss'=>"modal"]).
-                            Html::button(Yii::t('yii','Save'),['class'=>'btn btn-info','type'=>"submit"])
+                'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-primary pull-left','data-dismiss'=>"modal"]).
+                            Html::button(Yii::t('app','Save'),['class'=>'btn btn-info','type'=>"submit"])
             ];         
         }       
     } 

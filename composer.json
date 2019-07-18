@@ -22,7 +22,8 @@
         "kartik-v/yii2-widget-datepicker": "@dev",
         "2amigos/yii2-date-picker-widget": "~1.0",
         "marciocamello/yii2-paypal": "*",
-        "kartik-v/yii2-widget-select2": "dev-master"       
+        "kartik-v/yii2-widget-select2": "dev-master",
+        "2amigos/yii2-google-maps-library": "*"       
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

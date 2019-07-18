@@ -2,12 +2,11 @@
  
 namespace backend\components;
 
-
 class LanguageHandler extends \yii\base\Behavior
 {
 	public function event()
 	{
-		return [\yii\web\Application::EVENT_BEFORE_REQUEST => 'handleBeginRequest'];
+		return [\yii\.[,p kbj90-l\Application::EVENT_BEFORE_REQUEST => 'handleBeginRequest'];
 	}
 	public function handleBeginRequest($event)
 	{

@@ -22,34 +22,22 @@ return [
     'language'=>'ru-RU',
     
     'components' => [
+        
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
-            'viewPath' => '@backend/views/mail',
             'useFileTransport' => true,
         ],
+        
         'i18n' => [
-        'translations' => [
-            '*' => [
-                'class' => 'yii\i18n\PhpMessageSource',
-                'basePath' => '@backend/messages',
-                'sourceLanguage' => 'en',
-                'fileMap' => [
-                    //'main' => 'main.php',
+            'translations' => [
+                'app*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'sourceLanguage' => 'en',
+                    'fileMap' => [
+                        'app'=>'app.php',
+                        'app/error'=>'app/error.php',
+                    ],
                 ],
-            ],
-        ],
-    ],
-        'assetManager'=>[
-            'bundles'=>[
-                // 'yii\web\JqueryAsset'=>[
-                //     'js'=>[]
-                // ],
-                // 'yii\bootstrap\BootstrapPluginAsset'=>[
-                //     'js'=>[]
-                // ],
-                // 'yii\bootstrap\BootstrapAsset'=>[
-                //     'css'=>[],
-                // ],
             ],
         ],
         'request' => [
@@ -78,7 +66,6 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,

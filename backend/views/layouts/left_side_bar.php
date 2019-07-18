@@ -1,19 +1,23 @@
 <?php
 use yii\helpers\Url;
+use backend\models\Lang;
+$url=Lang::getCurrent()->url;
 $pathInfo = Yii::$app->request->pathInfo;
+echo $pathinfo;
 ?>
 <div class="page-sidebar">
     <ul class="x-navigation">
         <li class="xn-logo">
+            <a href="<?= Yii::$app->homeUrl ?>"> <?=Yii::$app->name?> </a>
             <a href="#" class="x-navigation-control"></a>
         </li>
         <li class="xn-profile">
             <a href="#" class="profile-mini">
-                <img src="../extra/images/users/avatar.jpg" alt="John Doe"/>
+                <img src="/extra/images/users/avatar.jpg" alt="John Doe"/>
             </a>
             <div class="profile">
                 <div class="profile-image">
-                    <img src="../extra/images/users/avatar.jpg" alt="John Doe"/>
+                    <img src="/extra/images/users/avatar.jpg" alt="John Doe"/>
                 </div>
                 <div class="profile-data">
                     <div class="profile-data-name"><?=Yii::$app->user->identity->username?></div>
@@ -26,33 +30,32 @@ $pathInfo = Yii::$app->request->pathInfo;
             </div>                                                                        
         </li>
         <li class="xn-title">Navigation</li>
-        <li class="active">
-            <a href="/site/dashboard"><span class="fa fa-desktop"></span> <span class="xn-text"><?=Yii::t('yii','Dashboard')?></span></a>                        
+        <li <?= ($pathInfo == 'site/dashboard' ? 'class="active"' : '')?>>
+            <a href="/site/dashboard"><span class="fa fa-desktop"></span> <span class="xn-text"><?=Yii::t('app','Dashboard')?></span></a>                        
         </li>                    
-       
-        <li>
-            <a href="/user/index"><span class="fa fa-user"></span> <span class="xn-text"><?=Yii::t('yii','Users')?></span></a>                        
+        
+        <li <?= ($pathInfo == 'user/index' ? 'class="active"' : '')?>>
+            <a href="/<?=$url?>/user/index"><span class="fa fa-user"></span> <span class="xn-text"><?=Yii::t('app','Users')?></span></a>                        
         </li>  
-
         <li class="xn-openable">
-            <a href="#"><span class="fa fa-users"></span> <span class="xn-text"><?=Yii::t('yii','Clients')?></span></a>                        
+            <a href="#"><span class="fa fa-users"></span> <span class="xn-text"><?=Yii::t('app','Clients')?></span></a>                        
             <ul>
                 <li class=""><a href=""><span class="fa fa-tasks"></span> Заказчики</a></li>                            
                 <li><a href=""><span class="fa fa-truck"></span> Исполнители</a></li>
             </ul>
         </li>                   
-                            
-        <li class="xn-openable">
-            <a href="#"><span class="fa fa-sitemap"></span> <span class="xn-text"><?=Yii::t('yii','Settings')?></span></a>
+        <li <?= (($pathInfo == 'lang/index'||$pathInfo=='translation/index') ? 'class="xn-openable active"' : 'xn-openable ')?>>
+            <a href="#"><span class="fa fa-sitemap"></span> <span class="xn-text"><?=Yii::t('app','Settings')?></span></a>
             <ul>                            
-                <li class="xn-openable">
-                    <a href="#"><span class="xn-text"><?=Yii::t('yii','Languages')?></span></a>
+                <li <?= (($pathInfo == 'lang/index'||$pathInfo=='translation/index') ? 'class="xn-openable active"' : 'xn-openable ')?>> 
+                
+                    <a href="#"><span class="xn-text"><?=Yii::t('app','Languages')?></span></a>
                     <ul>
-                        <li>
-                            <a href="/lang/index"><?=Yii::t('yii','Language')?></a>
+                        <li  <?= ($pathInfo == 'lang/index' ? 'class="active"' : '')?>>
+                            <a href="/<?=$url?>/lang/index"><?=Yii::t('app','Language')?></a>
                         </li>
-                        <li>
-                            <a href="/translation/index"><?=Yii::t('yii','Translations')?></a>
+                        <li <?= ($pathInfo == 'translation/index' ? 'class="active"' : '')?>>
+                            <a href="/<?=$url?>/translation/index"><?=Yii::t('app','Translations')?></a>
                         </li>
                     </ul>
                 </li>                            

@@ -10,11 +10,11 @@ CrudAsset::register($this);
 $this->title = 'Профиль';
 
 $model = Yii::$app->user->identity;
-
+echo $_SERVER['SERVER_NAME'];
 if (!file_exists('avatars/'.$model->image) || $model->image == '') {
-    $path = 'http://' . $_SERVER['SERVER_NAME'].'/uploads/nouser.jpg';
+    $path = '/uploads/nouser.jpg';
 } else {
-    $path = 'http://' . $_SERVER['SERVER_NAME'].'/uploads/avatar/'.$model->image;
+    $path = '/uploads/avatars/'.$model->image;
 }
 ?>
 

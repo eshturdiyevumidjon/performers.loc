@@ -66,19 +66,19 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             'id' => 'ID',
-            'username' => Yii::t('yii','Username'),
-            'email' => Yii::t('yii','Email'),
-            'auth_key' => Yii::t('yii','Password'),
-            'password_hash' => Yii::t('yii',''),
-            'type' => Yii::t('yii','Type'),
-            'new_password'=>Yii::t('yii','New password'),
-            'birthday'=>Yii::t('yii','Birthday'),
-            'phone'=>Yii::t('yii','Phone number'),
-            'image'=>Yii::t('yii','Image'),
-            'avatar'=>Yii::t('yii','Image'),
-            'status' => Yii::t('yii','Status'),
-            'created_at' => Yii::t('yii','Created_at'),
-            'updated_at' => Yii::t('yii','Updated_at'),
+            'username' => Yii::t('app','Username'),
+            'email' => Yii::t('app','Email'),
+            'auth_key' => Yii::t('app','Password'),
+            'password_hash' => Yii::t('app',''),
+            'type' => Yii::t('app','Type'),
+            'new_password'=>Yii::t('app','New password'),
+            'birthday'=>Yii::t('app','Birthday'),
+            'phone'=>Yii::t('app','Phone number'),
+            'image'=>Yii::t('app','Image'),
+            'avatar'=>Yii::t('app','Image'),
+            'status' => Yii::t('app','Status'),
+            'created_at' => Yii::t('app','Created_at'),
+            'updated_at' => Yii::t('app','Updated_at'),
         ];
     }
     //Получить описание типов пользователя.
@@ -129,7 +129,6 @@ class User extends ActiveRecord implements IdentityInterface
             $this->updated_at = time();
             $this->created_at = time();      
         }
-
         if(!$this->isNewRecord) 
             {
              $this->updated_at=time();
@@ -178,9 +177,9 @@ class User extends ActiveRecord implements IdentityInterface
     }
     public function getUserAvatar($for='_form'){
         if($for=='_form')
-        return $this->image != null ? '<img style="width:100%; height:250px;" src="http://' . $_SERVER["SERVER_NAME"] . "/uploads/avatars/" . $this->image .' ">' : '<img style="width:100%; height:250px;" src="http://' . $_SERVER["SERVER_NAME"].'/uploads/nouser.png">';
+        return $this->image != null ? '<img style="width:100%; height:250px;" src="/uploads/avatars/"' . $this->image .'">' : '<img style="width:100%; height:250px;" src="/uploads/nouser.png">';
         if($for=='_columns')
-            return $this->image != null ? '<img style="width:60px;" src="http://' . $_SERVER["SERVER_NAME"] . "/uploads/avatars/" . $this->image .' ">' : '<img style="width:60px;" src="http://' . $_SERVER["SERVER_NAME"].'/uploads/nouser.jpg">';
+           return $this->image != null ? '<img style="width:60px;" src="/uploads/avatars/"' . $this->image .' ">' : '<img style="width:60px;" src="/uploads/nouser.png">';
     }
     /**
      * Finds user by password reset token

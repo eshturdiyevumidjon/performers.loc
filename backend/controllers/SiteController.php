@@ -8,6 +8,8 @@ use yii\filters\AccessControl;
 use common\models\LoginForm;
 use backend\models\Lang;
 use backend\models\RegiterForm;
+use backend\models\VerifyEmailForm;
+use backend\models\ResetPasswordForm;
 use backend\models\PasswordResetRequestForm;
 
 /**
@@ -25,7 +27,7 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login','register','request-password-reset','reset-password'],
+                        'actions' => ['login','register','request-password-reset','reset-password2','reset-password'],
                         'allow' => true,
                         'roles'=>['?'],
                     ],
@@ -206,9 +208,8 @@ class SiteController extends Controller
         
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
-
                 Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
-                return $this->goHome();
+                return $this->redirect(['reset-password2']);
             } else {
                 Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
             }
@@ -218,7 +219,18 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
- 
+    public function actionResetPassword2()
+    {
+        $this->layout = 'main-login';
+
+        $model=new VerifyEmailForm();
+        
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+                return $this->redirect(['reset-password','token'=>$model->token]);
+            }
+        else return $this->render('passwordResetRequestFormToken', [
+            'model' => $model]);
+    }
     /**
      * Resets password.
      *
