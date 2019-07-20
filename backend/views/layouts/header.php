@@ -2,7 +2,7 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use backend\models\Lang;
-$langs=Lang::find()->all();
+$langs=Lang::find()->where(['default'=>1,'status'=>1])->all();
 
 ?>
 <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
@@ -48,25 +48,25 @@ $langs=Lang::find()->all();
             <div class="panel-body list-group list-group-contacts scroll" style="height: 200px;">
                 <a href="#" class="list-group-item">
                     <div class="list-group-status status-online"></div>
-                    <img src="../extra/images/users/user2.jpg" class="pull-left" alt="John Doe"/>
+                    <img src="/extra/images/users/user2.jpg" class="pull-left" alt="John Doe"/>
                     <span class="contacts-title">John Doe</span>
                     <p>Praesent placerat tellus id augue condimentum</p>
                 </a>
                 <a href="#" class="list-group-item">
                     <div class="list-group-status status-away"></div>
-                    <img src="../extra/images/users/user.jpg" class="pull-left" alt="Dmitry Ivaniuk"/>
+                    <img src="/extra/images/users/user.jpg" class="pull-left" alt="Dmitry Ivaniuk"/>
                     <span class="contacts-title">Dmitry Ivaniuk</span>
                     <p>Donec risus sapien, sagittis et magna quis</p>
                 </a>
                 <a href="#" class="list-group-item">
                     <div class="list-group-status status-away"></div>
-                    <img src="../extra/images/users/user3.jpg" class="pull-left" alt="Nadia Ali"/>
+                    <img src="/extra/images/users/user3.jpg" class="pull-left" alt="Nadia Ali"/>
                     <span class="contacts-title">Nadia Ali</span>
                     <p>Mauris vel eros ut nunc rhoncus cursus sed</p>
                 </a>
                 <a href="#" class="list-group-item">
                     <div class="list-group-status status-offline"></div>
-                    <img src="../extra/images/users/user6.jpg" class="pull-left" alt="Darth Vader"/>
+                    <img src="/extra/images/users/user6.jpg" class="pull-left" alt="Darth Vader"/>
                     <span class="contacts-title">Darth Vader</span>
                     <p>I want my money back!</p>
                 </a>

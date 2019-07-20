@@ -35,6 +35,7 @@ return [
     'Нажмите Нет, если вы хотите продолжить работу. Нажмите «Да», чтобы выйти из текущего пользователя.'=>'Click No if you want to continue. Click Yes to log out of the current user.',
     'Выйти из  сайта?'=>'Leave the site?',
     'Да'=>'Yes',
-    'Нет'=>'Np',
+    'Нет'=>'No',
+    
 ];
 ?>

@@ -4,7 +4,7 @@ namespace backend\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
-
+use yii\helpers\Arrayhelper;
 /**
  * This is the model class for table "lang".
  *
@@ -38,7 +38,7 @@ class Lang extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['url', 'local', 'name'], 'required'],
+            [['url', 'name'], 'required'],
             [['default', 'status', 'date_update', 'date_create'], 'integer'],
             [['url', 'local', 'name', 'image'], 'string', 'max' => 255],
         ];
@@ -63,14 +63,14 @@ class Lang extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'url' => 'Url',
-            'local' => 'Local',
-            'name' => 'Name',
-            'image' => 'Image',
-            'default' => 'Default',
-            'status' => 'Status',
-            'date_update' => 'Date Update',
-            'date_create' => 'Date Create',
+            'url' => Yii::t('app','Language Code'),
+            'local' => Yii::t('app','Local'),
+            'name' => Yii::t('app','Name'),
+            'image' => Yii::t('app','Image'),
+            'default' => Yii::t('app','Default'),
+            'status' => Yii::t('app','Status'),
+            'date_update' => Yii::t('app','Date Update'),
+            'date_create' => Yii::t('app','Date Create'),
         ];
     }
 
@@ -80,7 +80,9 @@ class Lang extends \yii\db\ActiveRecord
     public function getTranslations()
     {
         return $this->hasMany(Translation::className(), ['url_id' => 'id']);
+    }   
+    public static function getLanguages()
+    {
+        return Arrayhelper::map(Lang::find()->where(['default'=>0])->all(),'id','name');
     }
-
-   
 }

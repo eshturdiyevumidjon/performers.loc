@@ -177,9 +177,9 @@ class User extends ActiveRecord implements IdentityInterface
     }
     public function getUserAvatar($for='_form'){
         if($for=='_form')
-        return $this->image != null ? '<img style="width:100%; height:250px;" src="/uploads/avatars/"' . $this->image .'">' : '<img style="width:100%; height:250px;" src="/uploads/nouser.png">';
+        return $this->image != null ? '<img style="width:100%; height:250px;" src="/uploads/avatars/' . $this->image .'">' : '<img style="width:100%; height:250px;" src="/uploads/nouser.png">';
         if($for=='_columns')
-           return $this->image != null ? '<img style="width:60px;" src="/uploads/avatars/"' . $this->image .' ">' : '<img style="width:60px;" src="/uploads/nouser.png">';
+           return $this->image != null ? '<img style="width:60px;" src="/uploads/avatars/' . $this->image .' ">' : '<img style="width:60px;" src="/uploads/nouser.png">';
     }
     /**
      * Finds user by password reset token

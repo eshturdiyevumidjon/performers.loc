@@ -12,11 +12,11 @@ use \yii\web\Response;
 use yii\helpers\Html;
 
 /**
- * LangController implements the CRUD actions for Lang model.
+ * LanguageController implements the CRUD actions for Lang model.
  */
-class LangController extends Controller
+class LanguageController extends Controller
 {
-    /**
+/**
      * @inheritdoc
      */
     public function behaviors()
@@ -47,7 +47,16 @@ class LangController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    public function actionChange($id)
+    {
+        $model=$this->findModel($id);
+        if($model->status==1)$status=0;
+        if($model->status==0)$status=1;
 
+        Yii::$app->db->createCommand()->update('lang', ['status' => $status], [ 'id' => $model->id ])->execute();
+        return $this->redirect(['index']);
+              
+    }
 
     /**
      * Displays a single Lang model.
@@ -60,12 +69,12 @@ class LangController extends Controller
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'title'=> "Lang #".$id,
+                    'title'=> Yii::t('app','Language'),
                     'content'=>$this->renderAjax('view', [
                         'model' => $this->findModel($id),
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                            Html::a(Yii::t('app','Edit'),['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
         }else{
             return $this->render('view', [
@@ -83,40 +92,43 @@ class LangController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
-        $model = new Lang();  
+        $post=$request->post();
+        $model=new Lang();
 
         if($request->isAjax){
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            if($request->isGet){
-                return [
-                    'title'=> "Create new Lang",
-                    'content'=>$this->renderAjax('create', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-        
-                ];         
-            }else if($model->load($request->post()) && $model->save()){
+            if($post){
+
+                 if(Yii::$app->db->createCommand()->update('lang', ['default' => '1'], [ 'id' => $post['Lang']['id'] ])->execute())
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Create new Lang",
-                    'content'=>'<span class="text-success">Create Lang success</span>',
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Create More',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    'title'=> Yii::t('app','Create'),
+                    'content'=>'<span class="text-success">'.Yii::t('app','Complete successfully').'</span>',
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                            Html::a(Yii::t('app','Create More'),['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
         
-                ];         
+                ];   
+                else
+                    return [
+                    'title'=>Yii::t('app','Create') ,
+                    'content'=>$this->renderAjax('create', [
+                        'model'=>$model,
+                    ]),
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
+        
+                ];             
             }else{           
                 return [
-                    'title'=> "Create new Lang",
+                    'title'=> Yii::t('app','Create'),
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
         
                 ];         
             }
@@ -124,8 +136,8 @@ class LangController extends Controller
             /*
             *   Process for non-ajax request
             */
-            if ($model->load($request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($request->post())) {
+                return $this->redirect(['index']);
             } else {
                 return $this->render('create', [
                     'model' => $model,
@@ -154,31 +166,31 @@ class LangController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Update Lang #".$id,
+                    'title'=> Yii::t('app','Update'),
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
                 ];         
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Lang #".$id,
+                    'title'=> "Language",
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                            Html::a(Yii::t('app','Edit'),['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
             }else{
                  return [
-                    'title'=> "Update Lang #".$id,
+                    'title'=> Yii::t('app','Update'),
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
                 ];        
             }
         }else{
@@ -205,7 +217,7 @@ class LangController extends Controller
     public function actionDelete($id)
     {
         $request = Yii::$app->request;
-        $this->findModel($id)->delete();
+        Yii::$app->db->createCommand()->update('lang', ['default' => '0'], [ 'id' => $this->findModel($id)->id ])->execute();
 
         if($request->isAjax){
             /*
@@ -268,5 +280,4 @@ class LangController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
-}
+    }}

@@ -57,7 +57,7 @@ class LangSearch extends Lang
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'default' => $this->default,
+            'default' => 1,
             'status' => $this->status,
             'date_update' => $this->date_update,
             'date_create' => $this->date_create,

@@ -43,20 +43,13 @@ echo $pathinfo;
                 <li><a href=""><span class="fa fa-truck"></span> Исполнители</a></li>
             </ul>
         </li>                   
-        <li <?= (($pathInfo == 'lang/index'||$pathInfo=='translation/index') ? 'class="xn-openable active"' : 'xn-openable ')?>>
+        <li <?= (($pathInfo == 'language/index'||$pathInfo=='translation/index') ? 'class="xn-openable active"' : 'xn-openable ')?>>
             <a href="#"><span class="fa fa-sitemap"></span> <span class="xn-text"><?=Yii::t('app','Settings')?></span></a>
             <ul>                            
-                <li <?= (($pathInfo == 'lang/index'||$pathInfo=='translation/index') ? 'class="xn-openable active"' : 'xn-openable ')?>> 
+                <li  <?= ($pathInfo == 'language/index' ? 'class="active"' : '')?>>
+                            <a href="/language/index"><?=Yii::t('app','Language')?></a>
+                </li>
                 
-                    <a href="#"><span class="xn-text"><?=Yii::t('app','Languages')?></span></a>
-                    <ul>
-                        <li  <?= ($pathInfo == 'lang/index' ? 'class="active"' : '')?>>
-                            <a href="/lang/index"><?=Yii::t('app','Language')?></a>
-                        </li>
-                        <li <?= ($pathInfo == 'translation/index' ? 'class="active"' : '')?>>
-                            <a href="/translation/index"><?=Yii::t('app','Translations')?></a>
-                        </li>
-                    </ul>
                 </li>                            
             </ul>
         </li>

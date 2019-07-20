@@ -16,6 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
 CrudAsset::register($this);
 
 ?>
+<script type="text/javascript">
+    
+</script>
 <div class="lang-index">
     <div id="ajaxCrudDatatable">
         <?=GridView::widget([
@@ -25,33 +28,33 @@ CrudAsset::register($this);
             'pjax'=>true,
             'columns' => require(__DIR__.'/_columns.php'),
             'toolbar'=> [
-                ['content'=>
+                        ['content'=>
                             '<div style="margin-top:10px;">' .
-                            Html::a('Добавить <i class="glyphicon glyphicon-plus"></i>', ['create'],
-                            ['role'=>'modal-remote','title'=> 'Добавить', 'class'=>'btn btn-info']).
+                            Html::a(Yii::t('app','Add').' <i class="glyphicon glyphicon-plus"></i>', ['create'],
+                            ['role'=>'modal-remote','title'=> Yii::t('app','Add'), 'class'=>'btn btn-info']).
                             '<ul class="panel-controls">
                                 <li>{export}</li>
                             </ul>'.
                         '</div>'
                         ],
-            ],          
+                    ],           
             'striped' => true,
             'condensed' => true,
             'responsive' => true,          
             'panel' => [
                 'type' => 'primary', 
-                'heading' => '<i class="glyphicon glyphicon-list"></i> Langs listing',
+                'heading' => '<i class="glyphicon glyphicon-list"></i>'.Yii::t('app','Languages listing'),
                 'after'=>BulkButtonWidget::widget([
-                            'buttons'=>Html::a('<i class="glyphicon glyphicon-trash"></i>&nbsp; Delete All',
-                                ["bulk-delete"] ,
-                                [
-                                    "class"=>"btn btn-danger btn-xs",
-                                    'role'=>'modal-remote-bulk',
-                                    'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
-                                    'data-request-method'=>'post',
-                                    'data-confirm-title'=>'Are you sure?',
-                                    'data-confirm-message'=>'Are you sure want to delete this item'
-                                ]),
+                            'buttons'=>Html::a('<i class="glyphicon glyphicon-trash"></i>'.Yii::t('app','Delete All'),
+                                        ["bulk-delete"] ,
+                                        [
+                                            "class"=>"btn btn-danger btn-xs",
+                                            'role'=>'modal-remote-bulk',
+                                            'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
+                                            'data-request-method'=>'post',
+                                            'data-confirm-title'=>Yii::t('app','Are you sure?'),
+                                            'data-confirm-message'=>Yii::t('app','Really do you want delete this item')
+                                        ]),
                         ]).                        
                         '<div class="clearfix"></div>',
             ]

@@ -59,15 +59,10 @@ class SiteController extends Controller
             ],
         ];
     }   
-    public function actionSetLanguage()
+    public function actionSetLanguage($pathinfo,$language)
     {
-        Lang::setCurrent($url);
-        $cookie=new yii\web\Cookie([
-            'name'=>'_lang',
-            'value'=>$local
-        ]);
-        Yii::$app->getResponse()->getCookies()->add($cookie);
-       return $this->redirect([$pathinfo]);
+      
+       return $this->redirect([Url::to([$pathinfo, 'language' => 'fr'])]);
     }
 
     /**
