@@ -7,10 +7,9 @@ use yii\bootstrap\Modal;
 use common\models\User;
 
 CrudAsset::register($this);
-$this->title = 'Профиль';
+$this->title = Yii::t('app','Profile');
 
 $model = Yii::$app->user->identity;
-echo $_SERVER['SERVER_NAME'];
 if (!file_exists('avatars/'.$model->image) || $model->image == '') {
     $path = '/uploads/nouser.jpg';
 } else {

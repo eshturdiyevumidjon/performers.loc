@@ -37,12 +37,13 @@ return [
     'No'=>'Yoq',
     //lang
     'Language Code'=>'Til kodi',
+    'Languages'=>'Tillar',
     'Create'=>'Yaratish',
     'Local'=>'',
     'Name'=>'Nomi',
-    'Image'=>'',
+    'Image'=>'Foto',
     'Default'=>'',
-    'Status'=>'',
+    'Status'=>'Status',
     'Date Update'=>'Qo\'shilgan sana',
     'Date Create'=>'O\'zgartirilgan sana',
     'Languages listing'=>'Tillar ro\'yhati',
@@ -60,5 +61,12 @@ return [
     'Don\'t have an account yet?'=>'Hali ro\'yhatdan otmaganmisiz?',
     'Create an account'=>'Account ochish',
     'Authorization'=>'Ro\'yhatdan o\'tish',
+    'Profile'=>'Profil',
+    'Select'=>'Tanlang',
+    'Navigation'=>'Navigatsiya',
+    'More'=>'Batafsil',
+
+    //themes
+
 ];
 ?>

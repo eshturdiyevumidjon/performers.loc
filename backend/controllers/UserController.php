@@ -81,7 +81,7 @@ class UserController extends Controller
                         'model' => $this->findModel($id),
                     ]),
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Изменить',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                            Html::a(Yii::t('app','Edit'),['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
         }else{
             return $this->render('view', [
@@ -118,12 +118,13 @@ class UserController extends Controller
                     Yii::$app->db->createCommand()->update('user', ['image' => $model->id.'.'.$model->avatar->extension], [ 'id' => $model->id ])->execute();
                 }
                 return [
+                    'title'=>Yii::t('app','Create new user'),
                     'forceReload'=>'#crud-datatable-pjax',
                     'size'=>'large',
                     'title'=> Yii::t('app','Users'),
-                    'content'=>'<span class="text-success">Успешно выполнено</span>',
+                    'content'=>'<span class="text-success">'.Yii::t('app','Complete successfully').'</span>',
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Создать ещё',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                            Html::a(Yii::t('app','Create more'),['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
         
                 ];         
             }else{           
@@ -190,7 +191,7 @@ class UserController extends Controller
                 ];    
             }else{
                  return [
-                    'title'=> Yii::t('app','Update User'),
+                    'title'=> Yii::t('app','Profile'),
                     'size'=>'large',
                     'content'=>$this->renderAjax('change', [
                         'model' => $model,
@@ -243,7 +244,7 @@ class UserController extends Controller
                     //     'model' => $model,
                     // ]),
                     // 'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                    //         Html::a('Изменить',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    //         Html::a(Yii::t('app','Edit'),['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
             }else{
                  return [
@@ -287,7 +288,7 @@ class UserController extends Controller
         else
         {           
             return [
-                 'title'=> "Сортировка с колонок",
+                 'title'=> Yii::t('app','Sort Columns'),
                 'content'=>$this->renderAjax('columns', [
                     'session' => $session,
                     'id'=>$id,

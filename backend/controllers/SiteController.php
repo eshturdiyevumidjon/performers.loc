@@ -11,7 +11,7 @@ use backend\models\RegiterForm;
 use backend\models\VerifyEmailForm;
 use backend\models\ResetPasswordForm;
 use backend\models\PasswordResetRequestForm;
-
+use yii\helpers\Url;
 /**
  * Site controller
  */
@@ -32,7 +32,7 @@ class SiteController extends Controller
                         'roles'=>['?'],
                     ],
                     [
-                        'actions' => ['logout','register', 'index','set-theme','dashboard','set-theme-values','error'],
+                        'actions' => ['logout','register', 'index','set-theme','dashboard','set-theme-values','error','set-language'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -59,9 +59,11 @@ class SiteController extends Controller
             ],
         ];
     }   
-    public function actionSetLanguage($pathinfo,$language)
+    public function actionSetLanguage($ii)
     {
-       return $this->redirect([Url::to([$pathinfo, 'language' => 'fr'])]);
+        $a=explode(',',$ii);
+        Yii::$app->language=$a[1];
+        return $this->redirect([$a[0]]);
     }
 
     /**

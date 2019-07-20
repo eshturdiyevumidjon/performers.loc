@@ -42,7 +42,6 @@ use kartik\date\DatePicker;
                 </div>
                 <div class="col-md-6">
                     <?= $form->field($model, 'birthday')->widget(DatePicker::classname(), [
-                      'options' => ['placeholder' => 'Enter birth date ...'],
                         'pluginOptions' => [
                              'autoclose'=>true
                          ]
@@ -64,7 +63,7 @@ use kartik\date\DatePicker;
 
 	<?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">
-	        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+	        <?= Html::submitButton($model->isNewRecord ? Yii::t('app','Create') : Yii::t('app','Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 	    </div>
 	<?php } ?>
 

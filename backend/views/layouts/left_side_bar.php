@@ -28,7 +28,7 @@ echo $pathinfo;
                 </div>
             </div>                                                                        
         </li>
-        <li class="xn-title">Navigation</li>
+        <li class="xn-title"><?=Yii::t('app','Navigation')?></li>
         <li <?= ($pathInfo == 'site/dashboard' ? 'class="active"' : '')?>>
             <a href="/site/dashboard"><span class="fa fa-desktop"></span> <span class="xn-text"><?=Yii::t('app','Dashboard')?></span></a>                        
         </li>                    

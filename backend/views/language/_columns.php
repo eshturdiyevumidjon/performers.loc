@@ -3,18 +3,10 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 
 return [
-    // [
-    //     'class' => 'kartik\grid\CheckboxColumn',
-    //     'width' => '20px',
-    // ],
     [
         'class' => 'kartik\grid\SerialColumn',
         'width' => '30px',
     ],
-        // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'id',
-    // ],
     [
         'contentOptions'=>['class'=>'text-center','style'=>'background-color:gray;'],
         'headerOptions'=>['class'=>'text-center'],
@@ -24,7 +16,7 @@ return [
         'attribute'=>'image',
         'format'=>'raw',
         'content'=>function($data){
-            return '<img src="'.$data->image.'">';
+            return '<img src="'.$data->image.'" style="width:40%;height:70%;">';
         },
     ],
     [

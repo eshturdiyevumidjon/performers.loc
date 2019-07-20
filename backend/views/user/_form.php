@@ -46,7 +46,7 @@ use kartik\date\DatePicker;
             </div>
             <div class="row">
                 <div class="col-md-6">
-    				<?= $form->field($model, 'type')->dropDownList($model->getType(), ['prompt' => 'Выберите'])?>
+    				<?= $form->field($model, 'type')->dropDownList($model->getType(), ['prompt' => Yii::t('app','Select')])?>
                 </div>
                 <div class="col-md-6">
     				<?= $form->field($model, 'birthday')->widget(DatePicker::classname(), [

@@ -72,7 +72,7 @@ class m190715_194709_create_lang_table extends Migration
         $this->insert('{{%lang}}',array(
             'url'=>'en',
             'local'=>'en-En',
-            'name'=>'English',
+            'name'=>'English - English',
             'default'=>1,
             'status'=>1,
             'image'=>'/uploads/flags/en.png',

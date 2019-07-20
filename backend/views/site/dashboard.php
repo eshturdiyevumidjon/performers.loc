@@ -19,7 +19,7 @@ $userId = Yii::$app->user->identity->id;
                 <div class="widget-data">
                     <div class="widget-int num-count"></div>
                     <div class="widget-title"></div>
-                    <div class="widget-subtitle"><?= Html::a('<b style="color:#25547c;font-size:14px;">Подробнее... <i class="fa fa-arrow-circle-right"></i></b>', ['/contracts/index'], []); ?></div>
+                    <div class="widget-subtitle"><?= Html::a('<b style="color:#25547c;font-size:14px;">'.Yii::t('app','More').'... <i class="fa fa-arrow-circle-right"></i></b>', ['/contracts/index'], []); ?></div>
                 </div>
                 <div class="widget-controls">
                     <a href="#" class="widget-control-right"><span class="fa fa-times"></span></a>
@@ -34,7 +34,7 @@ $userId = Yii::$app->user->identity->id;
                 <div class="widget-data">
                     <div class="widget-int num-count"></div>
                     <div class="widget-title"></div>
-                    <div class="widget-subtitle"><?= Html::a('<b style="color:#25547c;font-size:14px;">Подробнее... <i class="fa fa-arrow-circle-right"></i></b>', ['/filials/index'], []); ?></div>
+                    <div class="widget-subtitle"><?= Html::a('<b style="color:#25547c;font-size:14px;">'.Yii::t('app','More').'... <i class="fa fa-arrow-circle-right"></i></b>', ['/filials/index'], []); ?></div>
                 </div>
                 <div class="widget-controls">
                     <a href="#" class="widget-control-right"><span class="fa fa-times"></span></a>
@@ -49,7 +49,7 @@ $userId = Yii::$app->user->identity->id;
                 <div class="widget-data">
                     <div class="widget-int num-count"></div>
                     <div class="widget-title"></div>
-                    <div class="widget-subtitle"><?= Html::a('<b style="color:#25547c;font-size:14px;">Подробнее... <i class="fa fa-arrow-circle-right"></i></b>', ['/users/index'], []); ?></div>
+                    <div class="widget-subtitle"><?= Html::a('<b style="color:#25547c;font-size:14px;">'.Yii::t('app','More').'... <i class="fa fa-arrow-circle-right"></i></b>', ['/users/index'], []); ?></div>
                 </div>
                 <div class="widget-controls">
                     <a href="#" class="widget-control-right"><span class="fa fa-times"></span></a>
@@ -64,7 +64,7 @@ $userId = Yii::$app->user->identity->id;
                 <div class="widget-data">
                     <div class="widget-int num-count"></div>
                     <div class="widget-title"></div>
-                    <div class="widget-subtitle"><?= Html::a('<b style="color:#25547c;font-size:14px;">Подробнее... <i class="fa fa-arrow-circle-right"></i></b>', ['/inbox/index'], []); ?></div>
+                    <div class="widget-subtitle"><?= Html::a('<b style="color:#25547c;font-size:14px;">'.Yii::t('app','More').'... <i class="fa fa-arrow-circle-right"></i></b>', ['/inbox/index'], []); ?></div>
                 </div>
                 <div class="widget-controls">
                     <a href="#" class="widget-control-right"><span class="fa fa-times"></span></a>

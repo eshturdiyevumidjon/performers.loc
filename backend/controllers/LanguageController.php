@@ -52,7 +52,8 @@ class LanguageController extends Controller
         $model=$this->findModel($id);
         if($model->status==1)$status=0;
         if($model->status==0)$status=1;
-
+        if(Yii::$app->language==$model->url)
+            Yii::$app->language='ru';
         Yii::$app->db->createCommand()->update('lang', ['status' => $status], [ 'id' => $model->id ])->execute();
         return $this->redirect(['index']);
               
