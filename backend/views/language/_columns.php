@@ -3,10 +3,10 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 
 return [
-    [
-        'class' => 'kartik\grid\CheckboxColumn',
-        'width' => '20px',
-    ],
+    // [
+    //     'class' => 'kartik\grid\CheckboxColumn',
+    //     'width' => '20px',
+    // ],
     [
         'class' => 'kartik\grid\SerialColumn',
         'width' => '30px',
@@ -15,20 +15,27 @@ return [
         // 'class'=>'\kartik\grid\DataColumn',
         // 'attribute'=>'id',
     // ],
-    // [
-    //     'class'=>'\kartik\grid\DataColumn',
-    //     'attribute'=>'image',
-    // ],
+    [
+        'contentOptions'=>['class'=>'text-center','style'=>'background-color:gray;'],
+        'headerOptions'=>['class'=>'text-center'],
+        'class'=>'\kartik\grid\DataColumn',
+        'width' => '100px',
+
+        'attribute'=>'image',
+        'format'=>'raw',
+        'content'=>function($data){
+            return '<img src="'.$data->image.'">';
+        },
+    ],
     [
         'contentOptions'=>['class'=>'text-center'],
         'headerOptions'=>['class'=>'text-center'],
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'url',
+        'content'=>function($data){
+            return $data->url." (".$data->local.")";
+        }
     ],
-    // [
-    //     'class'=>'\kartik\grid\DataColumn',
-    //     'attribute'=>'local',
-    // ],
     [
         'contentOptions'=>['class'=>'text-center'],
         'headerOptions'=>['class'=>'text-center'],
@@ -39,6 +46,7 @@ return [
         'contentOptions'=>['class'=>'text-center'],
         'headerOptions'=>['class'=>'text-center'],
         'attribute'=>'status',
+        'width'=>'150px',
         'format'=>'raw',
         'value'=>function($data){
                return '<label class="switch switch-small">
@@ -48,8 +56,6 @@ return [
                 </label>';
             },
     ],
-    
-
     // [
         // 'class'=>'\kartik\grid\DataColumn',
         // 'attribute'=>'status',
@@ -62,48 +68,5 @@ return [
         // 'class'=>'\kartik\grid\DataColumn',
         // 'attribute'=>'date_create',
     // ],
-    [
-        'class' => 'kartik\grid\ActionColumn',
-        'dropdown' => false,
-        'vAlign'=>'middle',
-        'template' => '{order} &nbsp;{view} {update} {leadDelete}',
-        'vAlign'=>'middle',
-        'buttons'  => [ 
-            'leadDelete' => function ($url, $model) {
-                if($model->id !=1 &&$model->id!=2 ){
-                    $url = Url::to(['/lang/delete', 'id' => $model->id]);
-                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
-                        'role'=>'modal-remote','title'=>Yii::t('app','Delete'), 
-                        'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
-                        'data-request-method'=>'post',
-                        'data-toggle'=>'tooltip',
-                        'data-confirm-title'=>Yii::t('app','Are you sure?'),
-                          'data-confirm-message'=>Yii::t('app','Are you sure want to delete this item'), 
-                    ]);
-                }
-            },
-        ],
-        'urlCreator' => function($action, $model, $key, $index) { 
-                return Url::to([$action,'id'=>$key]);
-        },
-        'viewOptions'=>['role'=>'modal-remote','title'=>Yii::t('app','View'),'data-toggle'=>'tooltip'],
-        'updateOptions'=>['role'=>'modal-remote','title'=>Yii::t('app','Update'), 'data-toggle'=>'tooltip'],
-        'deleteOptions'=>['role'=>'modal-remote','title'=>Yii::t('app','Delete'), 
-                          'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
-                          'data-request-method'=>'post',
-                          'data-toggle'=>'tooltip',
-                          'data-confirm-title'=>Yii::t('app','Are you sure?'),
-                          'data-confirm-message'=>Yii::t('app','Are you sure want to delete this item')], 
-    ],
-
+    
 ];   
-
-$this->regiterJs(<<<JS
-    $(document).ready(function(){
-
-    $('.switch:checkbox').change(function() {
-        alert();
-        });
-});          
-JS
-);

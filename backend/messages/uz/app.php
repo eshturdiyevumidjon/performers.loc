@@ -49,5 +49,16 @@ return [
     'View'=>'Ko\'rish',
     'Delete'=>'O\'chirish',
     'Update'=>'Tahrirlash',
+    'The above error occurred while the Web server was processing your request. Please contact us if you think this is a server error. Thank you.'=>' Hatolik yuz berdi. Agar siz buni server hatoligi deb hisoblasangiz iltimos biz bilan bog\'laning. Rahmat',
+    'Back to dashboard'=>'Asosiy oynaga qaytish',
+    'Previous page'=>'Oldingi sahifaga qaytish',
+    'Enter your login information'=>'Kirish uchun ma\'lumotlarni kiriting',
+    'Phone number or email address'=>'Telefon raqamingiz yoki email adresingizni kiriting',
+    'Remember me'=>'Eslab qol',
+    'Login'=>'Kirish',
+    'Forgot your password?'=>'Parolni unutdingizmi?',
+    'Don\'t have an account yet?'=>'Hali ro\'yhatdan otmaganmisiz?',
+    'Create an account'=>'Account ochish',
+    'Authorization'=>'Ro\'yhatdan o\'tish',
 ];
 ?>

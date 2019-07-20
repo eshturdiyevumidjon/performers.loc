@@ -70,7 +70,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'class' => 'codemix\localeurls\UrlManager',
-            'languages' => ['en', 'ru', 'uz'],
+            'languages' => ['af','en', 'ar', 'az', 'be', 'bg', 'bs', 'cs', 'da', 'de', 'el', 'es', 'et', 'fa', 'fi', 'fr', 'he', 'hr', 'hu', 'hy', 'id', 'it', 'ja', 'ka', 'kk', 'ko', 'kz',  'lv', 'ms', 'nb-NO', 'nl', 'pl', 'pt', 'pt-BR', 'ro', 'ru', 'sk', 'sl', 'sr', 'sr-Latn', 'sv', 'tg', 'th', 'tr', 'uk', 'uz', 'vi', 'zh-CN', 'zh-TW'],
             'on languageChanged' => '\common\models\PreferenceBooks::onLanguageChanged',
         ],
 

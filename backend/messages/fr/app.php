@@ -1,6 +1,6 @@
 <?php
 return [
-	'User'=>'Пользователь',
+    'User'=>'Пользователь',
     'Close'=>'Закрыть',
     'Edit'=>'Изменить',
     'Users'=>'Пользователи',
@@ -26,7 +26,7 @@ return [
     'Delete All' =>'Удалить все',
     'Users listing'=>'Список пользователей',
     'Dashboard'=>'Рабочий стол',
-    'Settings'=>'Настройки',
+    'Settings'=>'Réglages',
     'Clients'=>'Клиенты',
     'Language'=>'Язык',
     'Translations'=>'Переводы',
@@ -49,16 +49,5 @@ return [
     'View'=>'Пpосмотр',
     'Delete'=>'Удалить',
     'Update'=>'Изменить',
-    'The above error occurred while the Web server was processing your request. Please contact us if you think this is a server error. Thank you.'=>' Вышеуказанная ошибка произошла, когда веб-сервер обрабатывал ваш запрос. Пожалуйста, свяжитесь с нами, если считаете, что это ошибка сервера. Спасибо.',
-    'Back to dashboard'=>'Вернуться к рабочий стол',
-    'Previous page'=>'Предыдущая страница',
-    'Enter your login information'=>'Введите данные для входа',
-    'Phone number or email address'=>'Номер телефона или адрес электронной почты',
-    'Remember me'=>'Запомни меня',
-    'Login'=>'Вход',
-    'Forgot your password?'=>'Забыли пароль?',
-    'Don\'t have an account yet?'=>'У вас еще нет аккаунта?',
-    'Create an account'=>'Создать аккаунт',
-    'Authorization'=>'Авторизация',
 ];
 ?>

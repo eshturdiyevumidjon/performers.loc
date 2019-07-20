@@ -2,7 +2,6 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use backend\models\Lang;
-$langs=Lang::find()->where(['default'=>1,'status'=>1])->all();
 
 ?>
 <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
@@ -19,11 +18,15 @@ $langs=Lang::find()->where(['default'=>1,'status'=>1])->all();
     </li>
    
     <li>
-        <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="true"><?=Yii::$app->language?> <span class="caret"></span></a>
-        <ul class="dropdown-menu" role="menu">
+        <?php 
+            $langs=Lang::find()->where(['status'=>1])->all();
+            $current=Lang::getCurrent();
+        ?>
+        <a href="#" data-toggle="dropdown" class="btn dropdown-toggle" ><img src="<?=$current->image?>" style="width:14px;"><span class="caret"></span></a>
+        <ul style="margin-top:-10px;">
           <?php foreach($langs as $lang):?>
             <li>
-                 <a href="<?=Url::to([$pathinfo, 'language' => $lang->url])?>"><?=$lang->name?></a>
+                 <a href="<?=Url::to([$pathinfo, 'language' => $lang->url])?>"><img src="<?=$lang->image?>" style="width:20px;margin:3px;"><?=$lang->name?></a>
             </li>
         <?php endforeach;?>
         </ul>
@@ -155,3 +158,12 @@ $langs=Lang::find()->where(['default'=>1,'status'=>1])->all();
 
 <audio id="audio-alert" src="/audio/alert.mp3" preload="auto"></audio>
 <audio id="audio-fail" src="/audio/fail.mp3" preload="auto"></audio>
+<?php
+    $this->registerJs(
+        '$("document").ready(function(){
+            $("#new_note").on("pjax:end", function() {
+            $.pjax.reload({container:"#notes"});  //Reload GridView
+        });
+    });'
+    );
+?>

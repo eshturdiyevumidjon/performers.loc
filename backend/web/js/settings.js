@@ -1,6 +1,7 @@
 function changeChecked(val2)
 {
-   $.post("/language/change?id="+val2,function( data ){  });
+   $.post("/language/change?id="+val2,function( data ){});
+
 }
 var site_settings = '<div class="ts-button">'
         +'<span class="fa fa-cogs fa-spin"></span>'
@@ -8,11 +9,11 @@ var site_settings = '<div class="ts-button">'
     +'<div class="ts-body">'
         +'<div class="ts-title">Themes</div>'
         +'<div class="ts-themes">'
-            +'<a href="#" onclick="$.post(\'/site/set-theme\', { theme : \'/css/theme-default.css\' }, function(data){});" data-theme="/css/theme-default.css"><img src="/img/themes/default.jpg"/></a>'            
-            +'<a href="#" onclick="$.post(\'/site/set-theme\', { theme : \'/css/theme-brown.css\' }, function(data){});" data-theme="/css/theme-brown.css"><img src="/img/themes/brown.jpg"/></a>'
-            +'<a href="#" onclick="$.post(\'/site/set-theme\', { theme : \'/css/theme-blue.css\' }, function(data){});" data-theme="/css/theme-blue.css"><img src="/img/themes/blue.jpg"/></a>'                        
-            +'<a href="#" onclick="$.post(\'/site/set-theme\', { theme : \'/css/theme-white.css\' }, function(data){});" data-theme="/css/theme-white.css"><img src="/img/themes/light.jpg"/></a>'            
-            +'<a href="#" onclick="$.post(\'/site/set-theme\', { theme : \'/css/theme-black.css\' }, function(data){});" data-theme="/css/theme-black.css"><img src="/img/themes/black.jpg"/></a>'
+           +'<a href="#" onclick="$.post(\'/ru/site/set-theme\', { theme : \'/css/theme-default.css\' }, function(data){});" data-theme="/css/theme-default.css"><img src="/img/themes/default.jpg"/></a>'          
+            +'<a href="#" onclick="$.post(\'/ru/site/set-theme\', { theme : \'/css/theme-brown.css\' }, function(data){});" data-theme="/css/theme-brown.css"><img src="/img/themes/brown.jpg"/></a>'
+            +'<a href="#" onclick="$.post(\'/ru/site/set-theme\', { theme : \'/css/theme-blue.css\' }, function(data){});" data-theme="/css/theme-blue.css"><img src="/img/themes/blue.jpg"/></a>'                        
+            +'<a href="#" onclick="$.post(\'/ru/site/set-theme\', { theme : \'/css/theme-white.css\' }, function(data){});" data-theme="/css/theme-white.css"><img src="/img/themes/light.jpg"/></a>'            
+            +'<a href="#" onclick="$.post(\'/ru/site/set-theme\', { theme : \'/css/theme-black.css\' }, function(data){});" data-theme="/css/theme-black.css"><img src="/img/themes/black.jpg"/></a>'
         +'</div>'
         +'<div class="ts-title">Layout</div>'
         +'<div class="ts-row">'
@@ -113,26 +114,26 @@ $(document).ready(function(){
                 theme_settings[input.attr("name")] = input.val();
 
                 if( input.attr("name") == 'st_head_fixed'){
-                    $.post('/site/set-theme-values', { 'st_head_fixed' : input.val() }, function(data){ $('#st_head_fixed').val(input.val()); });
+                    $.post('/ru/site/set-theme-values', { 'st_head_fixed' : input.val() }, function(data){ $('#st_head_fixed').val(input.val()); });
                 }
                 if( input.attr("name") == 'st_sb_right'){
-                    $.post('/site/set-theme-values', { 'st_sb_right' : input.val() }, function(data){ $('#st_sb_right').val(input.val()); });
+                    $.post('/ru/site/set-theme-values', { 'st_sb_right' : input.val() }, function(data){ $('#st_sb_right').val(input.val()); });
                 }
                 if( input.attr("name") == 'st_sb_custom'){
-                    $.post('/site/set-theme-values', { 'st_sb_custom' : input.val() }, function(data){ $('#st_sb_custom').val(input.val());  });
+                    $.post('/ru/site/set-theme-values', { 'st_sb_custom' : input.val() }, function(data){ $('#st_sb_custom').val(input.val());  });
                 }
                 if( input.attr("name") == 'st_sb_toggled'){
-                    $.post('/site/set-theme-values', { 'st_sb_toggled' : input.val() }, function(data){ $('#st_sb_toggled').val(input.val()); });
+                    $.post('/ru/site/set-theme-values', { 'st_sb_toggled' : input.val() }, function(data){ $('#st_sb_toggled').val(input.val()); });
                 }
                 if( input.attr("name") == 'st_sb_fixed'){
-                    $.post('/site/set-theme-values', { 'st_sb_fixed' : input.val() }, 
+                    $.post('/ru/site/set-theme-values', { 'st_sb_fixed' : input.val() }, 
                         function(data){ 
                             $('#st_sb_fixed').val(input.val());
                             $('#st_sb_scroll').val(input.val());
                         });
                 }
                 if( input.attr("name") == 'st_sb_scroll'){
-                    $.post('/site/set-theme-values', { 'st_sb_scroll' : input.val() }, 
+                    $.post('/ru/site/set-theme-values', { 'st_sb_scroll' : input.val() }, 
                         function(data){ 
                             $('#st_sb_scroll').val(input.val());
                             $('#st_sb_fixed').val(input.val());   
@@ -141,27 +142,27 @@ $(document).ready(function(){
             }else{            
                 theme_settings[input.attr("name")] = 0;
                 if( input.attr("name") == 'st_head_fixed'){
-                    $.post('/site/set-theme-values', { 'st_head_fixed' : 0 }, function(data){ $('#st_head_fixed').val(0);  });
+                    $.post('/ru/site/set-theme-values', { 'st_head_fixed' : 0 }, function(data){ $('#st_head_fixed').val(0);  });
                 }
 
                 if( input.attr("name") == 'st_sb_right'){
-                    $.post('/site/set-theme-values', { 'st_sb_right' : 0 }, function(data){ $('#st_sb_right').val(0); /*alert($('#st_sb_right').val());*/ });
+                    $.post('/ru/site/set-theme-values', { 'st_sb_right' : 0 }, function(data){ $('#st_sb_right').val(0); /*alert($('#st_sb_right').val());*/ });
                 }
 
                 if( input.attr("name") == 'st_sb_custom'){
-                    $.post('/site/set-theme-values', { 'st_sb_custom' : 0 }, function(data){ $('#st_sb_custom').val(0); });
+                    $.post('/ru/site/set-theme-values', { 'st_sb_custom' : 0 }, function(data){ $('#st_sb_custom').val(0); });
                 }
 
                 if( input.attr("name") == 'st_sb_toggled'){
-                    $.post('/site/set-theme-values', { 'st_sb_toggled' : 0 }, function(data){ $('#st_sb_toggled').val(0); });
+                    $.post('/ru/site/set-theme-values', { 'st_sb_toggled' : 0 }, function(data){ $('#st_sb_toggled').val(0); });
                 }
 
                 if( input.attr("name") == 'st_sb_fixed'){
-                    $.post('/site/set-theme-values', { 'st_sb_fixed' : 0 }, function(data){ $('#st_sb_fixed').val(0); $('#st_sb_scroll').val(0); });
+                    $.post('/ru/site/set-theme-values', { 'st_sb_fixed' : 0 }, function(data){ $('#st_sb_fixed').val(0); $('#st_sb_scroll').val(0); });
                 }
 
                 if( input.attr("name") == 'st_sb_scroll'){
-                    $.post('/site/set-theme-values', { 'st_sb_scroll' : 0 }, function(data){ $('#st_sb_scroll').val(0); $('#st_sb_fixed').val(0); });
+                    $.post('/ru/site/set-theme-values', { 'st_sb_scroll' : 0 }, function(data){ $('#st_sb_scroll').val(0); $('#st_sb_fixed').val(0); });
                 }
             }
             
@@ -169,7 +170,7 @@ $(document).ready(function(){
             theme_settings[input.attr("name")] = input.val();
 
                 if( input.attr("name") == 'st_layout_boxed'){
-                    $.post('/site/set-theme-values', { 'st_layout_boxed' : input.val() }, function(data){ $('#st_layout_boxed').val(input.val()); });
+                    $.post('/ru/site/set-theme-values', { 'st_layout_boxed' : input.val() }, function(data){ $('#st_layout_boxed').val(input.val()); });
                 }
         }
 
@@ -206,16 +207,16 @@ $(document).ready(function(){
                 theme_settings.st_sb_fixed      = -1;
                 theme_settings.st_sb_scroll     = 1;
 
-                $.post('/site/set-theme-values', { st_head_fixed : -1 }, function(data){ });
-                $.post('/site/set-theme-values', { st_sb_fixed : -1 }, function(data){ });
-                $.post('/site/set-theme-values', { st_sb_scroll : 1 }, function(data){ });
+                $.post('/ru/site/set-theme-values', { st_head_fixed : -1 }, function(data){ });
+                $.post('/ru/site/set-theme-values', { st_sb_fixed : -1 }, function(data){ });
+                $.post('/ru/site/set-theme-values', { st_sb_scroll : 1 }, function(data){ });
             }else{
                 theme_settings.st_head_fixed    = 0;
                 theme_settings.st_sb_fixed      = 1;
                 theme_settings.st_sb_scroll     = 1;
-                $.post('/site/set-theme-values', { st_head_fixed : 0 }, function(data){ });
-                $.post('/site/set-theme-values', { st_sb_fixed : 1 }, function(data){ });
-                $.post('/site/set-theme-values', { st_sb_scroll : 1 }, function(data){ });
+                $.post('/ru/site/set-theme-values', { st_head_fixed : 0 }, function(data){ });
+                $.post('/ru/site/set-theme-values', { st_sb_fixed : 1 }, function(data){ });
+                $.post('/ru/site/set-theme-values', { st_sb_scroll : 1 }, function(data){ });
             }
         }
         /* End Rules */

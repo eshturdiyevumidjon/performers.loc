@@ -61,7 +61,6 @@ class SiteController extends Controller
     }   
     public function actionSetLanguage($pathinfo,$language)
     {
-      
        return $this->redirect([Url::to([$pathinfo, 'language' => 'fr'])]);
     }
 

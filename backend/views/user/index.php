@@ -12,9 +12,7 @@ use johnitvn\ajaxcrud\BulkButtonWidget;
 
 $this->title = Yii::t('app','Users');
 $this->params['breadcrumbs'][] = $this->title;
-
 CrudAsset::register($this);
-
 ?>
         <div class="faq-index">
             <div id="ajaxCrudDatatable">
@@ -42,7 +40,7 @@ CrudAsset::register($this);
                     'responsive' => true,          
                     'panel' => [
                         'type' => 'warning', 
-                        'heading' => '<i class="glyphicon glyphicon-list"></i>'.Yii::t('app','Users listing'),
+                        'heading' => '<i class="glyphicon glyphicon-list"></i>&nbsp;&nbsp;'.Yii::t('app','Users listing'),
                         'before'=>'',
                         'after'=>BulkButtonWidget::widget([
                                     'buttons'=>Html::a('<i class="glyphicon glyphicon-trash"></i>'.Yii::t('app','Delete All'),

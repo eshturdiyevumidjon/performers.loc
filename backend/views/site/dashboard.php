@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use dosamigos\chartjs\ChartJs;
 use app\models\Inbox;
-$this->title = 'Рабочий стол';
+$this->title = Yii::t('app','Dashboard');
 $userId = Yii::$app->user->identity->id;
 ?>   
 

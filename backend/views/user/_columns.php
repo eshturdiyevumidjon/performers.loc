@@ -1,4 +1,4 @@
-Yii::t('app',<?php
+<?php
 use yii\helpers\Url;
 $session = Yii::$app->session;
 return [

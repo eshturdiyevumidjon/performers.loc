@@ -45,6 +45,9 @@ class LangSearch extends Lang
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination'=>[
+                'pageSize'=>1000,
+            ]
         ]);
 
         $this->load($params);
@@ -57,7 +60,7 @@ class LangSearch extends Lang
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'default' => 1,
+            'default' => $this->default,
             'status' => $this->status,
             'date_update' => $this->date_update,
             'date_create' => $this->date_create,
