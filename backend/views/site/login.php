@@ -22,7 +22,7 @@ $this->title = Yii::t('app','Authorization');
     <?= $form
         ->field($model, 'password'/*, $fieldOptions2*/)
         ->label(false)
-        ->passwordInput(['placeholder' => Yii::t('app','password')]) ?>
+        ->passwordInput(['placeholder' => Yii::t('app','Password')]) ?>
 
             <div class="form-group">
                 <div class="row">

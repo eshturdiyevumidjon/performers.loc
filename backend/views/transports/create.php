@@ -4,10 +4,10 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Translation */
+/* @var $model backend\models\Transports */
 
 ?>
-<div class="translation-create">
+<div class="transports-create">
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>

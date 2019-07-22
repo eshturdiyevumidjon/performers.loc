@@ -19,18 +19,18 @@ use backend\models\Lang;
    
     <li>
         <?php 
-            $langs=Lang::find()->where(['status'=>1])->all();
+            $langs=Lang::getLanguages();
             $current=Lang::getCurrent();
             $pathinfo = Yii::$app->request->pathInfo;
         ?>
         <?=$pathInfo?>
-        <a href="#" data-toggle="dropdown" class="btn dropdown-toggle" ><img src="<?=$current->image?>" style="width:16px;"><span class="caret"></span></a>
+        <a href="#" data-toggle="dropdown" class="btn dropdown-toggle" ><img src="<?=$current->image?>" style="width:16px;">&nbsp;<span class="caret"></span></a>
         <ul style="margin-top:-10px;">
           <?php foreach($langs as $lang):?>
             <li>
                 <?php
                 $ii=$pathinfo.','.$lang->url;
-                echo Html::a('<img src="'.$lang->image.'" style="width:20px;margin:3px;">'.$lang->name, ['/site/set-language', 'ii'=>$ii], ['class' => 'btn btn-default', 'data-method' => 'post']);
+                echo Html::a('<img src="'.$lang->image.'" style="width:20px;margin:3px;">'.$lang->name, ['/site/set-language', 'ii'=>$ii], ['data-method' => 'post']);
                 ?>
             </li>
         <?php endforeach;?>

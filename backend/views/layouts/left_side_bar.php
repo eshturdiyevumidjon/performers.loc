@@ -2,7 +2,6 @@
 use yii\helpers\Url;
 use backend\models\Lang;
 $pathInfo = Yii::$app->request->pathInfo;
-echo $pathinfo;
 ?>
 <div class="page-sidebar">
     <ul class="x-navigation">
@@ -42,15 +41,18 @@ echo $pathinfo;
                 <li class=""><a href=""><span class="fa fa-tasks"></span> Заказчики</a></li>                            
                 <li><a href=""><span class="fa fa-truck"></span> Исполнители</a></li>
             </ul>
-        </li>                   
+        </li>  
+        <?php if(Yii::$app->user->identity->type!=4):?>
+        <li <?= ($pathInfo == 'transports/index' ? 'class="active"' : '')?>>
+            <a href="/transports/index"><span class="fa fa-truck"></span> <span class="xn-text"><?=Yii::t('app','Transports')?></span></a>
+        <?php endif;?>                       
+        </li>                  
         <li <?= (($pathInfo == 'language/index'||$pathInfo=='translation/index') ? 'class="xn-openable active"' : 'xn-openable ')?>>
             <a href="#"><span class="fa fa-sitemap"></span> <span class="xn-text"><?=Yii::t('app','Settings')?></span></a>
             <ul>                            
                 <li  <?= ($pathInfo == 'language/index' ? 'class="active"' : '')?>>
                             <a href="/language/index"><?=Yii::t('app','Language')?></a>
                 </li>
-                
-                </li>                            
             </ul>
         </li>
     </ul>

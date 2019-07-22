@@ -65,8 +65,14 @@ return [
     'Select'=>'Tanlang',
     'Navigation'=>'Navigatsiya',
     'More'=>'Batafsil',
-
+    'Transports'=>'Transportlar',
+    'Model'=>'Model',
+    'Mark'=>'Marka',
+    'Driver'=>'Haydovchi',
+    'Owner'=>'Egasi',
+    'Transports listing'=>'Transportlar ro\'yhati',
     //themes
+
 
 ];
 ?>

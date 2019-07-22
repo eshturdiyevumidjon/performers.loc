@@ -83,7 +83,7 @@ class Lang extends \yii\db\ActiveRecord
     }   
     public static function getLanguages()
     {
-        return Arrayhelper::map(Lang::find()->where(['default'=>0])->all(),'id','name');
+        return Lang::find()->where(['status'=>1])->all();
     }
     //Получение текущего объекта языка
     static function getCurrent()

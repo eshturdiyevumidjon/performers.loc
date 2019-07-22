@@ -5,12 +5,12 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Translation;
+use backend\models\Transports;
 
 /**
- * TranslationSearch represents the model behind the search form about `backend\models\Translation`.
+ * TransportsSearch represents the model behind the search form about `backend\models\Transports`.
  */
-class TranslationSearch extends Translation
+class TransportsSearch extends Transports
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class TranslationSearch extends Translation
     public function rules()
     {
         return [
-            [['id', 'url_id'], 'integer'],
-            [['text'], 'safe'],
+            [['id', 'user_id'], 'integer'],
+            [['model', 'mark', 'driver'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class TranslationSearch extends Translation
      */
     public function search($params)
     {
-        $query = Translation::find();
+        $query = Transports::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -57,10 +57,12 @@ class TranslationSearch extends Translation
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'url_id' => $this->url_id,
+            'user_id' => $this->user_id,
         ]);
 
-        $query->andFilterWhere(['like', 'text', $this->text]);
+        $query->andFilterWhere(['like', 'model', $this->model])
+            ->andFilterWhere(['like', 'mark', $this->mark])
+            ->andFilterWhere(['like', 'driver', $this->driver]);
 
         return $dataProvider;
     }
