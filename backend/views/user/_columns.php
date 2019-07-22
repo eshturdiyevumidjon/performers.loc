@@ -1,5 +1,8 @@
 <?php
+use dosamigos\datepicker\DatePicker;
+use common\models\User;
 use yii\helpers\Url;
+use yii\helpers\Html;
 $session = Yii::$app->session;
 return [
     [
@@ -52,6 +55,14 @@ return [
         'visible' => ($session['User[birthday]'] === null || $session['User[birthday]'] == 1) ? true : false,
         'contentOptions'=>['class'=>'text-center'],
         'headerOptions'=>['class'=>'text-center'],
+        'filter'=>DatePicker::widget([
+            'model' => $searchModel,
+            'attribute' => 'birthday',
+                'clientOptions' => [
+                    'autoclose' => true,
+                    'format' => 'dd.mm.yyyy',
+                    ]
+            ]),
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
@@ -62,6 +73,7 @@ return [
         'visible' => ($session['User[type]'] === null || $session['User[type]'] == 1) ? true : false,
         'contentOptions'=>['class'=>'text-center'],
         'headerOptions'=>['class'=>'text-center'],
+        'filter' => User::getTip(),
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
@@ -70,6 +82,7 @@ return [
             return $data->getStatusDescription();
         },
         'visible' => ($session['User[status]'] === null || $session['User[status]'] == 1) ? true : false,
+        'filter'=>User::getStatus(),
         'contentOptions'=>['class'=>'text-center'],
         'headerOptions'=>['class'=>'text-center'],
     ],
@@ -79,6 +92,14 @@ return [
         'visible' => ($session['User[created_at]'] === null || $session['User[created_at]'] == 1) ? true : false,
         'contentOptions'=>['class'=>'text-center'],
         'headerOptions'=>['class'=>'text-center'],
+        'filter'=>DatePicker::widget([
+            'model' => $searchModel,
+            'attribute' => 'created_at',
+                'clientOptions' => [
+                    'autoclose' => true,
+                    'format' => 'dd.mm.yyyy',
+                    ]
+            ]),
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
@@ -86,23 +107,36 @@ return [
         'visible' => ($session['User[updated_at]'] === null || $session['User[updated_at]'] == 1) ? true : false,
         'contentOptions'=>['class'=>'text-center'],
         'headerOptions'=>['class'=>'text-center'],
+        'filter'=>DatePicker::widget([
+            'model' => $searchModel,
+            'attribute' => 'updated_at',
+                'clientOptions' => [
+                    'autoclose' => true,
+                    'format' => 'dd.mm.yyyy',
+                    ]
+            ]),
     ],
 
     [
-        'class' => 'kartik\grid\ActionColumn',
-        'dropdown' => false,
-        'vAlign'=>'middle',
-        'urlCreator' => function($action, $model, $key, $index) { 
-                return Url::to([$action,'id'=>$key]);
-        },
-        'viewOptions'=>['role'=>'modal-remote','title'=>Yii::t('app','View'),'data-toggle'=>'tooltip'],
-        'updateOptions'=>['role'=>'modal-remote','title'=>Yii::t('app','Update'), 'data-toggle'=>'tooltip'],
-        'deleteOptions'=>['role'=>'modal-remote','title'=>Yii::t('app','Delete'), 
+        'class'    => 'kartik\grid\ActionColumn',
+        'template' => '{view} {update}  {leadDelete}',
+        'updateOptions'=>['role'=>'modal-remote','title'=>'Изменить', 'data-toggle'=>'tooltip'],
+        'buttons'  => [
+
+            'leadDelete' => function ($url, $model) {
+                if($model->type == 3 || $model->type == 4){
+                    $url = Url::to(['/user/delete', 'id' => $model->id]);
+                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                          'role'=>'modal-remote','title'=>Yii::t('app','Delete'), 
                           'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
                           'data-request-method'=>'post',
                           'data-toggle'=>'tooltip',
                           'data-confirm-title'=>Yii::t('app','Are you sure?'),
-                          'data-confirm-message'=>Yii::t('app','Are you sure want to delete this item')], 
+                          'data-confirm-message'=>Yii::t('app','Are you sure want to delete this item?')
+                    ]);
+                }
+            },
+        ]
     ],
 
 ];   

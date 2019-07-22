@@ -15,7 +15,7 @@ $i=0;
     <ul class="nav nav-tabs" style="margin-top:2px;">
     <?php foreach($langs as $lang):?>
     <li class="<?=($i==0)?'active':''?>">
-        <a data-toggle="tab" href="#<?=$lang->url?>"><?=$lang->name?></a>
+        <a data-toggle="tab" href="#<?=$lang->url?>"><?=explode('-',$lang->name)[1]?></a>
     </li>
     <?php $i++; endforeach;?>
    </ul>

@@ -17,18 +17,29 @@ return [
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'user_id',
+        'contentOptions'=>['class'=>'text-center'],
+        'headerOptions'=>['class'=>'text-center'],
+        'value'=>function($data){
+            return $data->user->username;
+        }
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'model',
+        'contentOptions'=>['class'=>'text-center'],
+        'headerOptions'=>['class'=>'text-center'],
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'mark',
+          'contentOptions'=>['class'=>'text-center'],
+        'headerOptions'=>['class'=>'text-center'],
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'driver',
+          'contentOptions'=>['class'=>'text-center'],
+        'headerOptions'=>['class'=>'text-center'],
     ],
     [
         'class' => 'kartik\grid\ActionColumn',
@@ -44,7 +55,7 @@ return [
                           'data-request-method'=>'post',
                           'data-toggle'=>'tooltip',
                           'data-confirm-title'=>Yii::t('app','Are you sure?'),
-                          'data-confirm-message'=>Yii::t('app','Are you sure want to delete this item')], 
+                          'data-confirm-message'=>Yii::t('app','Are you sure want to delete this item?')], 
     ],
 
 ];   

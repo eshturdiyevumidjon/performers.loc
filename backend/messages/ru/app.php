@@ -142,6 +142,7 @@ return [
     'Sort Columns'=>'Сортировка',
     'Are you sure?'=>'Подтвердите действие',
     'Really do you want delete this item'=>'Вы уверены что хотите удалить этого элемента?',
+    'Are you sure want to delete this item?'=>'Вы уверены что хотите удалить этого элемента?',
     'Delete All' =>'Удалить все',
     'Users listing'=>'Список пользователей',
     'Dashboard'=>'Рабочий стол',
@@ -193,5 +194,8 @@ return [
     'Driver'=>'Водитель',
     'Owner'=>'Владелец',
     'Transports listing'=>'Список транспортов ',
+    'Customers'=>'Заказчики',
+    'Performers'=>'Исполнители',
+    'not-set'=>'не задано',
 ];
 ?>

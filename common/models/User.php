@@ -103,6 +103,14 @@ class User extends ActiveRecord implements IdentityInterface
 
         ];
     }
+    public static function getTip()
+    {
+        return [
+            0 => 'Администратор',
+            1 => 'Модератор',
+            2 => 'Редактор',
+        ];
+    }
 
     //Получить описание типов пользователя.
     public function getStatusDescription()
@@ -113,7 +121,7 @@ class User extends ActiveRecord implements IdentityInterface
             default: return "Неизвестно";
         }
     }
-     public function getStatus()
+     public static function getStatus()
     {
         return [
             0 => 'Активен',

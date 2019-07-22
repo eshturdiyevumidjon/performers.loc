@@ -80,6 +80,7 @@ class TransportsController extends Controller
             }
             return [
                     'title'=> Yii::t('app','Transports'),
+                    'size'=>'large',
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                         'drivers'=>$translation_driver,
@@ -136,6 +137,8 @@ class TransportsController extends Controller
                 if($model->save())
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
+                    'size'=>'large',
+
                     'title'=> Yii::t('app','Create'),
                     'content'=>'<span class="text-success">'.Yii::t('app','Complete successfully').'</span>',
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
@@ -145,6 +148,8 @@ class TransportsController extends Controller
                 else
                     return [
                     'title'=> Yii::t('app','Create'),
+                    'size'=>'large',
+
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -155,6 +160,8 @@ class TransportsController extends Controller
             }else{           
                 return [
                     'title'=> Yii::t('app','Create'),
+                    'size'=>'large',
+
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -225,6 +232,8 @@ class TransportsController extends Controller
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'title'=> Yii::t('app','Transports'),
+                    'size'=>'large',
+
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                         'drivers'=>$translation_driver,
@@ -239,6 +248,8 @@ class TransportsController extends Controller
                 $translations=Translates::find()->where(['table_name'=>$model->tableName(),'field_id'=>$model->id])->all();
                  return [
                     'title'=> Yii::t('app','Update'),
+                    'size'=>'large',
+                    
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                         'drivers'=>$translation_driver,

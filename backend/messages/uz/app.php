@@ -23,6 +23,8 @@ return [
     'Sort Columns'=>'Saralash',
     'Are you sure?'=>'Amalni tasdiqlang',
     'Really do you want delete this item'=>'Вы уверены что хотите удалить этого элемента?',
+    'Are you sure want to delete this item?'=>'Siz chindan ham ushbu ma\'lumotni o\'chirmoqchimisiz?',
+
     'Delete All' =>'Barchasini o\'chirish',
     'Users listing'=>'Foydalanuvchilar r\'oyhati',
     'Dashboard'=>'Dashboard',
@@ -71,6 +73,11 @@ return [
     'Driver'=>'Haydovchi',
     'Owner'=>'Egasi',
     'Transports listing'=>'Transportlar ro\'yhati',
+    'Customers'=>'Iste\'molchilar',
+    'Performers'=>'Ijrochilar',
+    'not-set'=>'kiritilmagan',
+
+
     //themes
 
 

@@ -35,25 +35,28 @@ $pathInfo = Yii::$app->request->pathInfo;
         <li <?= ($pathInfo == 'user/index' ? 'class="active"' : '')?>>
             <a href="/user/index"><span class="fa fa-user"></span> <span class="xn-text"><?=Yii::t('app','Users')?></span></a>                        
         </li>  
-        <li class="xn-openable">
+       <!--  <li class="xn-openable">
             <a href="#"><span class="fa fa-users"></span> <span class="xn-text"><?=Yii::t('app','Clients')?></span></a>                        
             <ul>
-                <li class=""><a href=""><span class="fa fa-tasks"></span> Заказчики</a></li>                            
-                <li><a href=""><span class="fa fa-truck"></span> Исполнители</a></li>
+                <li class=""><a href=""><span class="fa fa-tasks"></span><?=Yii::t('app','Customers')?></a></li>                            
+                <li><a href=""><span class="fa fa-truck"></span><?=Yii::t('app','Performers')?></a></li>
             </ul>
-        </li>  
+        </li> -->  
         <?php if(Yii::$app->user->identity->type!=4):?>
         <li <?= ($pathInfo == 'transports/index' ? 'class="active"' : '')?>>
             <a href="/transports/index"><span class="fa fa-truck"></span> <span class="xn-text"><?=Yii::t('app','Transports')?></span></a>
         <?php endif;?>                       
-        </li>                  
+        </li>          
+        <?php if(Yii::$app->user->identity->type!=4&&Yii::$app->user->identity->type!=3):?>
         <li <?= (($pathInfo == 'language/index'||$pathInfo=='translation/index') ? 'class="xn-openable active"' : 'xn-openable ')?>>
-            <a href="#"><span class="fa fa-sitemap"></span> <span class="xn-text"><?=Yii::t('app','Settings')?></span></a>
+            <a href="#"><span class="fa fa-gear"></span> <span class="xn-text"><?=Yii::t('app','Settings')?></span></a>
             <ul>                            
                 <li  <?= ($pathInfo == 'language/index' ? 'class="active"' : '')?>>
-                            <a href="/language/index"><?=Yii::t('app','Language')?></a>
+                            <a href="/language/index"><span class="fa fa-language"></span><?=Yii::t('app','Language')?></a>
                 </li>
             </ul>
         </li>
+        <?php endif;?>                       
+        
     </ul>
 </div>

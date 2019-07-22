@@ -72,7 +72,8 @@ class RegiterForm extends Model
         $user = new User();
         $user->username = $this->username;
         $user->email = $this->email;
-        $user->type=4;
+        $user->phone = $this->phone;
+        $user->type=2;
         $user->auth_key=$this->password;
 
         return $user->save() ? $user : null;

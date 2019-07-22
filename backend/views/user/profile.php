@@ -25,7 +25,7 @@ if (!file_exists('avatars/'.$model->image) || $model->image == '') {
             <div class="panel panel-default">
                 <div class="panel-body profile">
                     <div class="profile-image">
-                        <img src="<?=$path?>" alt="<?=$model->username?>">
+                        <br>
                     </div>
                     <div class="profile-data">
                         <div class="profile-data-name"><?=$model->username?></div>
@@ -39,11 +39,26 @@ if (!file_exists('avatars/'.$model->image) || $model->image == '') {
                 <div class="panel-body">                                    
                     <div class="contact-info">
                         <div class="col-md-6">
-                            <p><small><?= $model->getAttributeLabel('email')?></small><br><?=$model->email?></p>
-                          
+                            <p><span class="fa fa-envelope"></span>
+                            <small><?= $model->getAttributeLabel('email')?></small><br><?=$model->email?></p>
+
+                            <p><span class="fa fa-users"></span>
+                            <small><?= $model->getAttributeLabel('type')?></small><br><?=$model->getTypeDescription()?></p>
+
+                            <p><span class="fa fa-calendar"></span>
+                            <small><?= $model->getAttributeLabel('birthday')?></small><br><?=$model->birthday?></p>
+
+                            <p><span class="fa fa-phone"></span>
+                            <small><?= $model->getAttributeLabel('phone')?></small><br><?=($model->phone)?$model->phone:Yii::t('app','not-set')?></p>
+
+                            <p><span class="fa fa-pencil"></span>
+                            <small><?= $model->getAttributeLabel('updated_at')?></small><br><?=$model->updated_at?></p>
+
+                            
+                            
                         </div>
                         <div class="col-md-6">
-                            
+                                
                         </div>
                     </div>
                 </div>                                
