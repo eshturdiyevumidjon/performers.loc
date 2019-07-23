@@ -19,7 +19,7 @@ return [
     'Image'=>'Foto',
     'Created_at'=>'Q\'oshilgan sana',
     'Updated_at'=>'Tahrirlangan sana',
-    'Add'=>'Q\'oshish',
+    'Add'=>'Qo\'shish',
     'Sort Columns'=>'Saralash',
     'Are you sure?'=>'Amalni tasdiqlang',
     'Really do you want delete this item'=>'Вы уверены что хотите удалить этого элемента?',

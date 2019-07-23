@@ -121,7 +121,19 @@ class TransportsController extends Controller
                         $l=$lang->url;
                         if($l=='ru')
                         {
-                            $model->save();continue;
+                            if(!$model->save())
+                              return [
+                                'title'=> Yii::t('app','Create'),
+                                'size'=>'large',
+
+                                'content'=>$this->renderAjax('create', [
+                                    'model' => $model,
+                                ]),
+                                'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                            Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
+                    
+                            ]; 
+                           else continue;
                         }
                     foreach ($attr as $key=>$value) {
                        $t=new Translates();
@@ -134,7 +146,6 @@ class TransportsController extends Controller
                        $t->save();
                     }
                 }
-                if($model->save())
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'size'=>'large',
@@ -145,19 +156,7 @@ class TransportsController extends Controller
                             Html::a('Create More',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
         
                 ];         
-                else
-                    return [
-                    'title'=> Yii::t('app','Create'),
-                    'size'=>'large',
-
-                    'content'=>$this->renderAjax('create', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
-        
-                ];  
-            }else{           
+               }else{           
                 return [
                     'title'=> Yii::t('app','Create'),
                     'size'=>'large',
@@ -228,7 +227,24 @@ class TransportsController extends Controller
                            $t->field_value=$post["Transports"][$t->field_description][$t->language_code];
                            $t->save();
                 }
+               $translations=Translates::find()->where(['table_name'=>$model->tableName(),'field_id'=>$model->id])->all();
+                foreach ($translations as $key => $value) {
                
+                if($value->field_name=='model'){
+                $translation_model[$value->language_code]= $value->field_value;
+                    continue;
+                }
+                
+                if($value->field_name=='mark'){
+                $translation_mark[$value->language_code]=$value->field_value;
+                    continue;
+                }
+                
+                if($value->field_name=='driver'){
+                $translation_driver[$value->language_code]=$value->field_value;
+                    continue;
+                }
+            }   
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'title'=> Yii::t('app','Transports'),
@@ -245,7 +261,7 @@ class TransportsController extends Controller
                             Html::a(Yii::t('app','Edit'),['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
             }else{
-                $translations=Translates::find()->where(['table_name'=>$model->tableName(),'field_id'=>$model->id])->all();
+                           
                  return [
                     'title'=> Yii::t('app','Update'),
                     'size'=>'large',

@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 
 <div class="lang-form">
     <?php $form = ActiveForm::begin(); ?>
-
+    <?= $form->errorSummary($model); ?>
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <?=Yii::t('app',$model->getAttributeLabel('name'))?>
