@@ -16,19 +16,19 @@ class m130524_201442_init extends Migration
 
         $this->createTable('{{%user}}', [
             'id' => $this->primaryKey(),
-            'username' => $this->string()->notNull(),
-            'email' => $this->string(255)->notNull()->unique(),
-            'auth_key' => $this->string(255)->notNull(),
-            'password_hash' => $this->string(255),
-            'password_reset_token' => $this->string()->unique(),
-            'type' => $this->integer(),
-            'birthday'=>$this->date(),
+            'username' => $this->string()->notNull()->comment("ФИО"),
+            'email' => $this->string(255)->notNull()->unique()->comment("Емайл"),
+            'auth_key' => $this->string(255)->notNull()->comment("Пароль"),
+            'password_hash' => $this->string(255)->comment("Хэш пароля"),
+            'password_reset_token' => $this->string()->unique()->comment("Токен сброса пароля"),
+            'type' => $this->integer()->comment("Тип"),
+            'birthday'=>$this->date()->comment("день рождения"),
             'phone'=>$this->string(255)->comment('Телефон'),
             'image'=>$this->string(255)->comment('Фото'),
-            'status' => $this->smallInteger()->notNull()->defaultValue(10),
-            'created_at' => $this->integer()->notNull(),
-            'updated_at' => $this->integer()->notNull(),
-            'note'=>$this->text(),
+            'status' => $this->smallInteger()->notNull()->defaultValue(10)->comment("Статус"),
+            'created_at' => $this->integer()->notNull()->comment("Дата создания"),
+            'updated_at' => $this->integer()->notNull()->comment("Дата изменения"),
+            'note'=>$this->text()->comment(""),
         ], $tableOptions);
 
         $this->insert('user',array(

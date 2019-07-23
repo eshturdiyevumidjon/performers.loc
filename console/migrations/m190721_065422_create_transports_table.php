@@ -17,10 +17,10 @@ class m190721_065422_create_transports_table extends Migration
     {
         $this->createTable('{{%transports}}', [
             'id' => $this->primaryKey(),
-            'user_id' => $this->integer(),
-            'model' => $this->string(255),
-            'mark' => $this->string(255),
-            'driver' => $this->string(255),
+            'user_id' => $this->integer()->comment("Владелец"),
+            'model' => $this->string(255)->comment("Модель"),
+            'mark' => $this->string(255)->comment("Марка"),
+            'driver' => $this->string(255)->comment("Водитель"),
         ]);
 
         // creates index for column `user_id`

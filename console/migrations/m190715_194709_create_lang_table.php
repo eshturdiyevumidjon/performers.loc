@@ -60,14 +60,14 @@ class m190715_194709_create_lang_table extends Migration
             ];
         $this->createTable('{{%lang}}', [
             'id' => $this->primaryKey(),
-            'url'=>$this->string(255)->notNull(),
-            'local'=>$this->string(255),
-            'name'=>$this->string(255)->notNull(),
-            'image'=>$this->string(255),
-            'default'=>$this->integer()->defaultValue(0),
-            'status'=>$this->integer()->defaultValue(0),
-            'date_update'=>$this->integer(),
-            'date_create'=>$this->integer(),
+            'url'=>$this->string(255)->notNull()->comment("Код языка"),
+            'local'=>$this->string(255)->comment("Местное название"),
+            'name'=>$this->string(255)->notNull()->comment("Название"),
+            'image'=>$this->string(255)->comment("Флаг"),
+            'default'=>$this->integer()->defaultValue(0)->comment("Заметка"),
+            'status'=>$this->integer()->defaultValue(0)->comment("Статус"),
+            'date_update'=>$this->integer()->comment("Дата изменения"),
+            'date_create'=>$this->integer()->comment("Дата создания"),
         ]);
          $this->insert('{{%lang}}',array(
             'url'=>'ru',

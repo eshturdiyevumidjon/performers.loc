@@ -37,7 +37,6 @@ return [
                         'app'=>'app.php',
                         'app/error'=>'app/error.php',
                     ],
-                    // 'on missingTranslation' => ['backend\components\TranslationEventHandler', 'handleMissingTranslation'],
                 ],
             ],
         ],

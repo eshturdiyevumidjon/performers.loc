@@ -40,8 +40,6 @@ class LanguageController extends Controller
     {    
         $searchModel = new LangSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $defaultlanguage=[];
-        $currentlanguage=[];
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -55,10 +53,15 @@ class LanguageController extends Controller
                 $status=0;
                 Yii::$app->language='ru';
             }
-        if($model->status==0)$status=1;
+        if($model->status==0)
+            {
+                $status=1;
+            }
+
         if(Yii::$app->language==$model->url)
             Yii::$app->language='ru';
-        Yii::$app->db->createCommand()->update('lang', ['status' => $status], [ 'id' => $model->id ])->execute();
+        
+        Yii::$app->db->createCommand()->update('lang', ['status' => $status,'current'=>$current], [ 'id' => $model->id ])->execute();
         return $this->redirect(['index']);
     }
 

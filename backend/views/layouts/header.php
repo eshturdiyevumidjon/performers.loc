@@ -23,18 +23,18 @@ use backend\models\Lang;
             $current=Lang::getCurrent();
             $pathinfo = Yii::$app->request->pathInfo;
         ?>
-        <?=$pathInfo?>
         <a href="#" data-toggle="dropdown" class="btn dropdown-toggle" ><img src="<?=$current->image?>" style="width:16px;">&nbsp;<span class="caret"></span></a>
         <ul style="margin-top:-10px;">
           <?php foreach($langs as $lang):?>
             <li>
-                <?php
-                $ii=$pathinfo.','.$lang->url;
-                echo Html::a('<img src="'.$lang->image.'" style="width:20px;margin:3px;">'.$lang->name, ['/site/set-language', 'ii'=>$ii], ['data-method' => 'post']);
-                ?>
+                
+                <a href="<?= Url::to([$pathinfo, 'language' => $lang->url]) ?>" onclick="$.post( 'ru/site/set-current-language?value='+<?=$lang->id?>)">
+                    <img src="<?=$lang->image?>" style="width:20px;margin:3px;"><?=$lang->name?>
+                </a>
             </li>
         <?php endforeach;?>
         </ul>
+    
     </li>
     <!-- END SEARCH -->
     <!-- SIGN OUT -->

@@ -59,12 +59,6 @@ class SiteController extends Controller
             ],
         ];
     }   
-    public function actionSetLanguage($ii)
-    {
-        $a=explode(',',$ii);
-        Yii::$app->language=$a[1];
-        return $this->redirect([$a[0]]);
-    }
 
     /**
      * Displays homepage.
