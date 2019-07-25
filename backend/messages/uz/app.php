@@ -41,7 +41,7 @@ return [
     'Language Code'=>'Til kodi',
     'Languages'=>'Tillar',
     'Create'=>'Yaratish',
-    'Local'=>'',
+    'Local'=>'Local',
     'Name'=>'Nomi',
     'Image'=>'Foto',
     'Default'=>'',

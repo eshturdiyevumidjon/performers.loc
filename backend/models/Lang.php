@@ -23,7 +23,7 @@ use yii\helpers\Arrayhelper;
 class Lang extends \yii\db\ActiveRecord
 {
     //Переменная, для хранения текущего объекта языка
-    static $current = null;
+    public $flag;
     /**
      * {@inheritdoc}
      */
@@ -41,6 +41,7 @@ class Lang extends \yii\db\ActiveRecord
             [['url', 'name'], 'required'],
             [['default', 'status', 'date_update', 'date_create'], 'integer'],
             [['url', 'local', 'name', 'image'], 'string', 'max' => 255],
+            [['flag'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg',],
         ];
     }
     public function behaviors()
@@ -67,6 +68,7 @@ class Lang extends \yii\db\ActiveRecord
             'local' => Yii::t('app','Local'),
             'name' => Yii::t('app','Name'),
             'image' => Yii::t('app','Image'),
+            'flag' => Yii::t('app','Image'),
             'default' => Yii::t('app','Default'),
             'status' => Yii::t('app','Status'),
             'date_update' => Yii::t('app','Date Update'),
@@ -90,5 +92,15 @@ class Lang extends \yii\db\ActiveRecord
     {
        return Lang::find()->where(['url'=>Yii::$app->language])->one();
     }
-   
+    public function getStatus()
+    {
+        return [
+                '0' => 'Отключен',
+                '1' => 'Активный',
+            ];
+    }
+    public function StatusName()
+    {
+        return ($this->status=='1')?'Активный':'Отключен';
+    }
 }

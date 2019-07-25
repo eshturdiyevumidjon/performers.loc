@@ -17,25 +17,7 @@ use backend\models\Lang;
         </form>
     </li>
    
-    <li>
-        <?php 
-            $langs=Lang::getLanguages();
-            $current=Lang::getCurrent();
-            $pathinfo = Yii::$app->request->pathInfo;
-        ?>
-        <a href="#" data-toggle="dropdown" class="btn dropdown-toggle" ><img src="<?=$current->image?>" style="width:16px;">&nbsp;<span class="caret"></span></a>
-        <ul style="margin-top:-10px;">
-          <?php foreach($langs as $lang):?>
-            <li>
-                
-                <a href="<?= Url::to([$pathinfo, 'language' => $lang->url]) ?>" onclick="$.post( 'ru/site/set-current-language?value='+<?=$lang->id?>)">
-                    <img src="<?=$lang->image?>" style="width:20px;margin:3px;"><?=$lang->name?>
-                </a>
-            </li>
-        <?php endforeach;?>
-        </ul>
     
-    </li>
     <!-- END SEARCH -->
     <!-- SIGN OUT -->
     <li class="xn-icon-button pull-right">

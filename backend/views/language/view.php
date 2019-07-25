@@ -10,14 +10,22 @@ use yii\widgets\DetailView;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'image',
+            [
+                'format'=>'raw',
+                'attribute'=>'image',
+                'value'=>function($data){
+                    return "<img src='".$data->image."'>";
+                }
+            ],
             'url:url',
             'local',
             'name',
-            'date_update',
-            'default',
-            'status',
-            'date_create',
+            [
+                'attribute'=>'status',
+                'value'=>function($data){
+                    return $data->StatusName();
+                }
+            ],
         ],
     ]) ?>
 

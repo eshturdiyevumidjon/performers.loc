@@ -45,9 +45,6 @@ class LangSearch extends Lang
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination'=>[
-                'pageSize'=>1000,
-            ]
         ]);
 
         $this->load($params);

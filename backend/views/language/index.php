@@ -29,24 +29,30 @@ CrudAsset::register($this);
             'filterModel' => $searchModel,
             'pjax'=>true,
             'columns' => require(__DIR__.'/_columns.php'),
-            'toolbar'=> [
+              'toolbar'=> [
                         ['content'=>
                             '<div style="margin-top:10px;">' .
-                            '</div>'
+                            Html::a(Yii::t('app','Add').' <i class="glyphicon glyphicon-plus"></i>', ['create'],
+                            ['role'=>'modal-remote','title'=> Yii::t('app','Add'), 'class'=>'btn btn-info']).
+                            '<ul class="panel-controls">
+                                <li>{export}</li>
+                            </ul>'.
+                        '</div>'
                         ],
-                    ],           
+                    ],     
             'striped' => true,
             'condensed' => true,
             'responsive' => true,          
             'panel' => [
                 'type' => 'primary', 
-                'heading' => '<i class="glyphicon glyphicon-list"></i>'.Yii::t('app','Languages listing'),
-                'after'=>                        
+                'heading' => '<i class="glyphicon glyphicon-list"></i>&nbsp;&nbsp;&nbsp;'.Yii::t('app','Transports listing'),
+                                       
                         '<div class="clearfix"></div>',
             ]
         ])?>
     </div>
 </div>
+
 <?php Modal::begin([
     "id"=>"ajaxCrudModal",
     "footer"=>"",// always need it for jquery plugin

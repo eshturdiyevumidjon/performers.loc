@@ -158,7 +158,7 @@ return [
     //lang
     'Language Code'=>'Код языка',
     'Name'=>'Название',
-    'Local'=>'',
+    'Local'=>'Локальный',
     'Create'=>'Создать',
     'Image'=>'Фото',
     'Default'=>'',

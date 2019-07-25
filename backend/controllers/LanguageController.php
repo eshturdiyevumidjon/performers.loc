@@ -10,7 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
-
+use yii\web\UploadedFile;
 /**
  * LanguageController implements the CRUD actions for Lang model.
  */
@@ -61,7 +61,7 @@ class LanguageController extends Controller
         if(Yii::$app->language==$model->url)
             Yii::$app->language='ru';
         
-        Yii::$app->db->createCommand()->update('lang', ['status' => $status,'current'=>$current], [ 'id' => $model->id ])->execute();
+        Yii::$app->db->createCommand()->update('lang', ['status' => $status], [ 'id' => $model->id ])->execute();
         return $this->redirect(['index']);
     }
 
@@ -96,63 +96,55 @@ class LanguageController extends Controller
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
-        $request = Yii::$app->request;
-        $post=$request->post();
-        $model=new Lang();
-
-        if($request->isAjax){
-            /*
-            *   Process for ajax request
-            */
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            if($post){
-
-                 if(Yii::$app->db->createCommand()->update('lang', ['default' => '1'], [ 'id' => $post['Lang']['id'] ])->execute())
-                return [
-                    'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> Yii::t('app','Create'),
-                    'content'=>'<span class="text-success">'.Yii::t('app','Complete successfully').'</span>',
-                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a(Yii::t('app','Create More'),['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
-        
-                ];   
-                else
-                    return [
-                    'title'=>Yii::t('app','Create') ,
-                    'content'=>$this->renderAjax('create', [
-                        'model'=>$model,
-                    ]),
-                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
-        
-                ];             
-            }else{           
-                return [
-                    'title'=> Yii::t('app','Create'),
-                    'content'=>$this->renderAjax('create', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
-        
-                ];         
-            }
-        }else{
-            /*
-            *   Process for non-ajax request
-            */
-            if ($model->load($request->post())) {
-                return $this->redirect(['index']);
-            } else {
-                return $this->render('create', [
-                    'model' => $model,
-                ]);
-            }
-        }
+     public function actionCreate()
+   {
+       $request = Yii::$app->request;
+       $model = new Lang(); 
+       if($request->isAjax){
+           /*
+           *  Process for ajax request
+           */
+           Yii::$app->response->format = Response::FORMAT_JSON;
+            if($model->load($request->post()) && $model->save()){
+               $model->flag = UploadedFile::getInstance($model,'flag');
+                if(!empty($model->flag))
+                {
+                    $model->flag->saveAs('uploads/flags/' . $model->id.'.'.$model->flag->extension);
+                    Yii::$app->db->createCommand()->update('lang', ['image' =>'/uploads/flags/'. $model->id.'.'.$model->flag->extension], [ 'id' => $model->id ])->execute();
+                }
+               return [
+                   'forceReload'=>'#crud-datatable-pjax',
+                   'title'=> Yii::t('app','Create'),
+                   'content'=>'<span class="text-success">'.Yii::t('app','Complete successfully').'</span>',
+                   'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                           Html::a(Yii::t('app','Create More'),['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
        
-    }
+               ];       
+           }else{         
+               return [
+                   'title'=> Yii::t('app',"Create"),
+                   'content'=>$this->renderAjax('create', [
+                       'model' => $model,
+                   ]),
+                   'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                               Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
+       
+               ];       
+           }
+       }else{
+           /*
+           *  Process for non-ajax request
+           */
+           if ($model->load($request->post()) && $model->save()) {
+               return $this->redirect(['view', 'id' => $model->id]);
+           } else {
+               return $this->render('create', [
+                   'model' => $model,
+               ]);
+           }
+       }
+     
+   }
 
     /**
      * Updates an existing Lang model.
@@ -171,19 +163,20 @@ class LanguageController extends Controller
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            if($request->isGet){
-                return [
-                    'title'=> Yii::t('app','Update'),
-                    'content'=>$this->renderAjax('update', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
-                ];         
-            }else if($model->load($request->post()) && $model->save()){
+            if($model->load($request->post()) && $model->save()){
+                $model->flag = UploadedFile::getInstance($model,'flag');
+                if(!empty($model->flag))
+                {
+                    if($model->image!=null&&file_exists('uploads/flags/'.$model->image))
+                    {
+                        unlink(('uploads/flags/'.$model->image));
+                    }
+                    $model->flag->saveAs('uploads/flags/' . $model->id.'.'.$model->flag->extension);
+                    Yii::$app->db->createCommand()->update('user', ['image' =>'/uploads/flags/'. $model->id.'.'.$model->flag->extension], [ 'id' => $model->id ])->execute();
+                }
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Language",
+                    'title'=> Yii::t('app',"Language"),
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                     ]),
@@ -224,8 +217,8 @@ class LanguageController extends Controller
     public function actionDelete($id)
     {
         $request = Yii::$app->request;
-        Yii::$app->db->createCommand()->update('lang', ['default' => '0'], [ 'id' => $this->findModel($id)->id ])->execute();
-
+        // Yii::$app->db->createCommand()->update('lang', ['default' => '0'], [ 'id' => $this->findModel($id)->id ])->execute();
+        $this->findModel($id)->delete();
         if($request->isAjax){
             /*
             *   Process for ajax request
