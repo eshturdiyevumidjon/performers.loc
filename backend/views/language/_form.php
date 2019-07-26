@@ -13,10 +13,10 @@ use yii\widgets\ActiveForm;
    
     <div class="row">
       <div class="col-md-6">
-          <?= $form->field($model, 'url')->textInput(['maxlength' => true,'placeholder'=>'ru']) ?>
+          <?= $form->field($model, 'url')->widget(\yii\widgets\MaskedInput::className(), ['mask' => 'aa','options'=>['placeholder'=>'ru']]) ?>
       </div>
       <div class="col-md-6">
-          <?= $form->field($model, 'local')->textInput(['maxlength' => true,'placeholder'=>'ru-RU']) ?>
+         <?= $form->field($model, 'local')->widget(\yii\widgets\MaskedInput::className(), ['mask' => 'aa-AA','options'=>['placeholder'=>'ru-RU']]) ?>
       </div>
      
     </div>
