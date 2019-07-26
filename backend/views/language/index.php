@@ -45,7 +45,7 @@ CrudAsset::register($this);
             'responsive' => true,          
             'panel' => [
                 'type' => 'primary', 
-                'heading' => '<i class="glyphicon glyphicon-list"></i>&nbsp;&nbsp;&nbsp;'.Yii::t('app','Transports listing'),
+                'heading' => '<i class="glyphicon glyphicon-list"></i>&nbsp;&nbsp;&nbsp;'.Yii::t('app','Languages listing'),
                                        
                         '<div class="clearfix"></div>',
             ]

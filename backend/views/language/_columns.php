@@ -42,7 +42,7 @@ return [
         'format'=>'raw',
         'value'=>function($data){
                return '<label class="switch switch-small">
-                    <input type="checkbox"'. (($data->status==1)?' checked=""':'""').(($data->id==1||$data->id==2)?' disabled=""':'""').'value="'.$data->id.'" onchange="changeChecked('.$data->id.')">
+                    <input type="checkbox"'. (($data->status==1)?' checked=""':'""').(($data->id==1)?' disabled=""':'""').'value="'.$data->id.'" onchange="changeChecked('.$data->id.')">
                     <span></span>
                     </a>
                 </label>';
