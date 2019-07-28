@@ -3,19 +3,21 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Transports;
-use backend\models\TransportsSearch;
+use backend\models\News;
+use backend\models\NewsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
-use yii\helpers\Html;
 use backend\models\Lang;
+use yii\web\UploadedFile;
 use backend\models\Translates;
+use yii\helpers\Html;
+
 /**
- * TransportsController implements the CRUD actions for Transports model.
+ * NewsController implements the CRUD actions for News model.
  */
-class TransportsController extends Controller
+class NewsController extends Controller
 {
     /**
      * @inheritdoc
@@ -34,12 +36,12 @@ class TransportsController extends Controller
     }
 
     /**
-     * Lists all Transports models.
+     * Lists all News models.
      * @return mixed
      */
     public function actionIndex()
     {    
-        $searchModel = new TransportsSearch();
+        $searchModel = new NewsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -50,7 +52,7 @@ class TransportsController extends Controller
 
 
     /**
-     * Displays a single Transports model.
+     * Displays a single News model.
      * @param integer $id
      * @return mixed
      */
@@ -63,25 +65,20 @@ class TransportsController extends Controller
             $translations = Translates::find()->where(['table_name'=>$model->tableName(),'field_id'=>$model->id])->all();
             foreach ($translations as $key => $value) {
                 switch ($value->field_name) {
-                    case 'model':
-                        $translation_model[$value->language_code] = $value->field_value;
-                        break;
-                    case 'driver':
-                        $translation_mark[$value->language_code] = $value->field_value;
+                    case 'title':
+                        $translation_title[$value->language_code] = $value->field_value;
                         break;
                     default:
-                        $translation_driver[$value->language_code] = $value->field_value;
+                        $translation_text[$value->language_code] = $value->field_value;
                         break;
                 }
             }
             return [
-                    'title'=>Yii::t('app','Transports'),
-                    'size'=>'large',
+                    'title'=>Yii::t('app','Banners'),
                     'content'=>$this->renderAjax('view', [
                         'model'=>$model,
-                        'drivers'=>$translation_driver,
-                        'models'=>$translation_model,
-                        'marks'=>$translation_mark,
+                        'titles'=>$translation_title,
+                        'texts'=>$translation_text,
                     ]),
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a(Yii::t('app','Edit'),['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
@@ -94,34 +91,33 @@ class TransportsController extends Controller
     }
 
     /**
-     * Creates a new Transports model.
+     * Creates a new News model.
      * For ajax request will return json object
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+     public function actionCreate()
     {
         $request = Yii::$app->request;
-        $model = new Transports();  
+        $model = new News();  
+        $langs = Lang::getLanguages();
 
         if($request->isAjax){
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            $post=$request->post();
+            $post = $request->post();
             if($model->load($post)){
-                $langs=Lang::getLanguages();
-                $attr=Transports::NeedTranslation();
+
+                $attr = News::NeedTranslation();
                 foreach ($langs as $lang) {
-                        $l=$lang->url;
-                        if($l=='ru')
+                        $l = $lang->url;
+                        if($l == 'ru')
                         {
                             if(!$model->save())
                               return [
                                 'title'=> Yii::t('app','Create'),
-                                'size'=>'large',
-
                                 'content'=>$this->renderAjax('create', [
                                     'model' => $model,
                                 ]),
@@ -136,28 +132,40 @@ class TransportsController extends Controller
                        $t->table_name=$model->tableName();
                        $t->field_id=$model->id;
                        $t->field_name=$key;
-                       $t->field_value=$post["Transports"][$value][$l];
+                       $t->field_value=$post["News"][$value][$l];
                        $t->field_description=$value;
                        $t->language_code=$l;
                        $t->save();
                     }
                 }
+                
+                $model->imageFiles = UploadedFile::getInstance($model,'imageFiles');
+                $names="";
+                if(!empty($model->imageFiles))
+                {
+                    $i=0;
+                    foreach ($$model->imageFiles as $file) {
+                        $file->saveAs('uploads/news/' . $model->id.'('.$i.').'.$file->extension);
+                        $name.=$model->id.'('.$i.').'.$file->extension;
+                        $name.=';';
+                        $i++;
+                    }
+                    Yii::$app->db->createCommand()->update('news', ['image' => $name], [ 'id' => $model->id ])->execute();
+                }
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'size'=>'large',
-                    'title'=> Yii::t('app','Create'),
+                     'title'=> Yii::t('app','Create'),
                     'content'=>'<span class="text-success">'.Yii::t('app','Complete successfully').'</span>',
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a(Yii::t('app','Create more'),['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                           Html::a(Yii::t('app','Create more'),['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
         
                 ];         
-               }else{           
+            }else{           
                 return [
-                    'title'=> Yii::t('app','Create'),
-                    'size'=>'large',
-
+                     'title'=> Yii::t('app','Create'),
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
+
                     ]),
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                                 Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
@@ -180,13 +188,13 @@ class TransportsController extends Controller
     }
 
     /**
-     * Updates an existing Transports model.
+     * Updates an existing News model.
      * For ajax request will return json object
      * and for non-ajax request if update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+   public function actionUpdate($id)
     {
         $request = Yii::$app->request;
         $post=$request->post();
@@ -196,14 +204,11 @@ class TransportsController extends Controller
             $translations = Translates::find()->where(['table_name' => $model->tableName(),'field_id' => $model->id])->all();
             foreach ($translations as $key => $value) {
                switch ($value->field_name) {
-                    case 'model':
-                        $translation_model[$value->language_code] = $value->field_value;
-                        break;
-                    case 'driver':
-                        $translation_mark[$value->language_code] = $value->field_value;
+                    case 'title':
+                        $translation_title[$value->language_code] = $value->field_value;
                         break;
                     default:
-                        $translation_driver[$value->language_code] = $value->field_value;
+                        $translation_text[$value->language_code] = $value->field_value;
                         break;
                 }                
             }
@@ -214,35 +219,40 @@ class TransportsController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($model->load($request->post())){
                 $model->save();
+                $model->file = UploadedFile::getInstance($model,'file');
+                if(!empty($model->file))
+                {   
+                     if($model->image != null&&file_exists('uploads/banners/'.$model->image))
+                    {
+                        unlink(('uploads/banners/'.$model->image));
+                    }
+                    $model->file->saveAs('uploads/banners/' . $model->id.'.'.$model->file->extension);
+                    Yii::$app->db->createCommand()->update('banners', ['image' => $model->id.'.'.$model->file->extension], [ 'id' => $model->id ])->execute();
+                }
+                
                 foreach ($translations as $t) {
-                           $t->field_value = $post["Transports"][$t->field_description][$t->language_code];
+                           $t->field_value = $post["Banners"][$t->field_description][$t->language_code];
                            $t->save();
                 }
                $translations=Translates::find()->where(['table_name' => $model->tableName(),'field_id' => $model->id])->all();
                 foreach ($translations as $key => $value) {
  
                 switch ($value->field_name) {
-                    case 'model':
-                        $translation_model[$value->language_code] = $value->field_value;
-                        break;
-                    case 'driver':
-                        $translation_mark[$value->language_code] = $value->field_value;
+                    case 'title':
+                        $translation_title[$value->language_code] = $value->field_value;
                         break;
                     default:
-                        $translation_driver[$value->language_code] = $value->field_value;
+                        $translation_text[$value->language_code] = $value->field_value;
                         break;
                 }
             }   
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> Yii::t('app','Transports'),
-                    'size'=>'large',
-
+                    'title'=> Yii::t('app','Banners'),
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
-                        'drivers'=>$translation_driver,
-                        'models'=>$translation_model,
-                        'marks'=>$translation_mark,
+                        'titles'=>$translation_title,
+                        'texts'=>$translation_text,
                         
                     ]),
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
@@ -252,13 +262,10 @@ class TransportsController extends Controller
                            
                  return [
                     'title'=> Yii::t('app','Update'),
-                    'size'=>'large',
-                    
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
-                        'drivers'=>$translation_driver,
-                        'models'=>$translation_model,
-                        'marks'=>$translation_mark,
+                        'titles'=>$translation_title,
+                        'texts'=>$translation_text,
                     ]),
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                                 Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
@@ -279,7 +286,7 @@ class TransportsController extends Controller
     }
 
     /**
-     * Delete an existing Transports model.
+     * Delete an existing News model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -288,9 +295,7 @@ class TransportsController extends Controller
     public function actionDelete($id)
     {
         $request = Yii::$app->request;
-        $model=$this->findModel($id);
-        Translates::deleteAll(['table_name' => $model->tableName(),'field_id' => $id]);
-        $model->delete();
+        $this->findModel($id)->delete();
 
         if($request->isAjax){
             /*
@@ -309,7 +314,7 @@ class TransportsController extends Controller
     }
 
      /**
-     * Delete multiple existing Transports model.
+     * Delete multiple existing News model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -321,7 +326,6 @@ class TransportsController extends Controller
         $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
         foreach ( $pks as $pk ) {
             $model = $this->findModel($pk);
-            Translates::deleteAll(['table_name' => $model->tableName(),'field_id' => $id]);
             $model->delete();
         }
 
@@ -341,15 +345,15 @@ class TransportsController extends Controller
     }
 
     /**
-     * Finds the Transports model based on its primary key value.
+     * Finds the News model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Transports the loaded model
+     * @return News the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Transports::findOne($id)) !== null) {
+        if (($model = News::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

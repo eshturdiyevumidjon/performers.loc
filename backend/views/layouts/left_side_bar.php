@@ -31,7 +31,9 @@ $pathInfo = Yii::$app->request->pathInfo;
         <li <?= ($pathInfo == 'site/dashboard' ? 'class="active"' : '')?>>
             <a href="/site/dashboard"><span class="fa fa-desktop"></span> <span class="xn-text"><?=Yii::t('app','Dashboard')?></span></a>                        
         </li>                    
-        
+        <li <?= ($pathInfo == 'about-company/index' ? 'class="active"' : '')?>>
+            <a href="/about-company/index"><span class="fa fa-building"></span> <span class="xn-text"><?=Yii::t('app','About Company')?></span></a>
+        </li>
         <li <?= ($pathInfo == 'user/index' ? 'class="active"' : '')?>>
             <a href="/user/index"><span class="fa fa-user"></span> <span class="xn-text"><?=Yii::t('app','Users')?></span></a>                        
         </li>  
@@ -44,9 +46,18 @@ $pathInfo = Yii::$app->request->pathInfo;
         </li> -->  
         <?php if(Yii::$app->user->identity->type!=4):?>
         <li <?= ($pathInfo == 'transports/index' ? 'class="active"' : '')?>>
-            <a href="/transports/index"><span class="fa fa-truck"></span> <span class="xn-text"><?=Yii::t('app','Transports')?></span></a>
+            <a href="/transports/index"><span class="fa fa-truck"></span> <span class="xn-text"><?=Yii::t('app','Transports')?></span><span class="fa fa-check"></span></a>
         <?php endif;?>                       
-        </li>          
+        </li>
+        <li <?= ($pathInfo == 'banners/index' ? 'class="active"' : '')?>>
+            <a href="/banners/index"><span class="fa fa-flag"></span> <span class="xn-text"><?=Yii::t('app','Banners')?></span><span class="fa fa-check"></span></a>
+        </li>
+        <li <?= ($pathInfo == 'news/index' ? 'class="active"' : '')?>>
+            <a href="/news/index"><span class="fa fa-list-alt"></span> <span class="xn-text"><?=Yii::t('app','News')?></span></a>
+        </li> 
+        <li <?= ($pathInfo == 'transport-category/index' ? 'class="active"' : '')?>>
+            <a href="/transport-category/index"><span class="fa fa-list"></span> <span class="xn-text"><?=Yii::t('app','Category of transports')?></span></a>
+        </li>           
         <?php if(Yii::$app->user->identity->type!=4&&Yii::$app->user->identity->type!=3):?>
         <li <?= (($pathInfo == 'language/index'||$pathInfo=='translation/index') ? 'class="xn-openable active"' : 'xn-openable ')?>>
             <a href="#"><span class="fa fa-gear"></span> <span class="xn-text"><?=Yii::t('app','Settings')?></span></a>
@@ -56,6 +67,7 @@ $pathInfo = Yii::$app->request->pathInfo;
                 </li>
             </ul>
         </li>
+        
         <?php endif;?>                       
         
     </ul>

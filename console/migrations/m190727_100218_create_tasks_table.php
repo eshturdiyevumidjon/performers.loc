@@ -1,0 +1,142 @@
+<?php
+
+use yii\db\Migration;
+
+/**
+ * Handles the creation of table `{{%tasks}}`.
+ */
+class m190727_100218_create_tasks_table extends Migration
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function safeUp()
+    {
+        $this->createTable('{{%tasks}}', [
+            'id' => $this->primaryKey(),
+            'type' => $this->integer()->comment("Тип"),
+            'payed_sum' => $this->float()->comment("Сколько оплатил клиент"),
+            'status' => $this->integer()->comment("Статус"),
+            'date_cr' => $this->datetime()->comment("Дата создание заданий"),
+            'date_close' => $this->datetime()->comment("Дата закрытые заданий"),
+            'position' => $this->integer()->comment("Состояние"),
+            'user_id' => $this->integer()->comment("Исполнитель"),
+            'shipping_address' => $this->text()->comment("Адрес отгрузки"),
+            'delivery_address' => $this->text()->comment("Адрес доставки"),
+            'shipping_coordinate_x' => $this->string()->comment("Shipping Coordinate X"),
+            'shipping_coordinate_y' => $this->string()->comment("Shipping Coordinate Y"),
+            'delivery_coordinate_x' => $this->string()->comment("Delivery Coordinate X"),
+            'delivery_coordinate_y' => $this->string()->comment("Delivery Coordinate Y"),
+            'date_begin' => $this->datetime()->comment("Дата и время начала трансфера"),
+            'offer_your_price' => $this->float()->comment("Предложить свою цену"),
+            'promo_code' => $this->string(255)->comment("Промо-код"),
+            'comment' => $this->text()->comment("Комментария"),
+
+            //Пассажирские перевозки uchun kerakli polyalar
+
+            'adult_passengers' => $this->integer()->comment("Количество взрослых пассажиров"),
+            'child_count' => $this->integer()->comment("Количество детей"),
+            'category_id' => $this->integer()->comment("Категория транспорта"),
+            'flight_number_status' => $this->boolean()->comment("Номер авиа или ж/д рейса"),
+            'flight_number' => $this->string(255)->comment("Номер авиа или ж/д рейса"),
+            'meeting_with_sign_status' => $this->boolean()->comment("Встреча с табличкой"),
+            'meeting_with_sign' => $this->string(255)->comment("Встреча с табличкой"),
+
+            //Перевозка автомобилей и техники uchun kerakli polyalar
+
+            'car_model' => $this->string(255)->comment("Модель автомобиля"),
+            'car_mark' => $this->string(255)->comment("Марка автомобиля"),
+            'image' => $this->string(255)->comment("Фото"),
+            'car_on_the_go' => $this->integer()->comment("Автомобиль на ходу"),
+
+            //Грузовые перевозки uchun kerakli polyalar
+
+            //Параметры
+            'weight' => $this->float()->comment("Вес"),
+            'width' => $this->float()->comment("Ширина"),
+            'length' => $this->float()->comment("Длина"),
+            'height' => $this->float()->comment("Высота"),
+            'classification' => $this->integer()->comment("Классификация"),
+            'loading_required_status' => $this->integer()->comment("Требуется погрузка/разгрузка"),
+            'floor' => $this->integer()->comment("Этаж"),
+            'lift' => $this->integer()->comment("Лифт"),
+
+            //Помощь в переезде uchun kerakli polyalar
+            'shipping_house_type' => $this->integer()->comment("Дом/квартира"),
+            'shipping_house_floor' => $this->integer()->comment("Этаж"),
+            'shipping_house_lift' => $this->integer()->comment("Лифт"),
+            'shipping_house_area' => $this->float()->comment("Площадь"),
+            'delivery_house_type' => $this->integer()->comment("Дом/квартира"),
+            'delivery_house_floor' => $this->integer()->comment("Этаж"),
+            'delivery_house_lift' => $this->integer()->comment("Лифт"),
+            'delivery_house_area' => $this->float()->comment("Площадь"),
+            'item_description' => $this->text()->comment("Описание предметов"),
+            'alert_email' => $this->integer()->comment(""),
+            'view_performers' => $this->integer()->comment("")
+        ]);
+
+        // creates index for column `user_id`
+        $this->createIndex(
+            '{{%idx-tasks-user_id}}',
+            '{{%tasks}}',
+            'user_id'
+        );
+
+        // add foreign key for table `{{%user}}`
+        $this->addForeignKey(
+            '{{%fk-tasks-user_id}}',
+            '{{%tasks}}',
+            'user_id',
+            '{{%user}}',
+            'id',
+            'CASCADE'
+        );
+         // creates index for column `category_id`
+        $this->createIndex(
+            '{{%idx-tasks-category_id}}',
+            '{{%tasks}}',
+            'category_id'
+        );
+
+        // add foreign key for table `{{%transport_category}}`
+        $this->addForeignKey(
+            '{{%fk-tasks-category_id}}',
+            '{{%tasks}}',
+            'category_id',
+            '{{%transport_category}}',
+            'id',
+            'CASCADE'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function safeDown()
+    {
+       // drops foreign key for table `{{%user}}`
+        $this->dropForeignKey(
+            '{{%fk-tasks-user_id}}',
+            '{{%tasks}}'
+        );
+
+        // drops index for column `user_id`
+        $this->dropIndex(
+            '{{%idx-tasks-user_id}}',
+            '{{%tasks}}'
+        );
+         // drops foreign key for table `{{%transport_category}}`
+        $this->dropForeignKey(
+            '{{%fk-tasks-category_id}}',
+            '{{%tasks}}'
+        );
+
+        // drops index for column `category_id`
+        $this->dropIndex(
+            '{{%idx-tasks-category_id}}',
+            '{{%tasks}}'
+        );
+
+        $this->dropTable('{{%tasks}}');
+    }
+}
