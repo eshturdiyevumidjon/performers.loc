@@ -7,41 +7,40 @@ use johnitvn\ajaxcrud\CrudAsset;
 use johnitvn\ajaxcrud\BulkButtonWidget;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\TransportCategorySearch */
+/* @var $searchModel backend\models\TasksSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app','Category of transports');
+$this->title = Yii::t('app','Passenger Transportation');
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);
 
 ?>
-<div class="transport-category-index">
+<div class="tasks-index1">
     <div id="ajaxCrudDatatable">
         <?=GridView::widget([
             'id'=>'crud-datatable',
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'pjax'=>true,
-            'columns' => require(__DIR__.'/_columns.php'),
+            'columns' => require(__DIR__.'/_columns-passengers.php'),
             'toolbar'=> [
-                    ['content'=>
-                        '<div style="margin-top:10px;">' .
-                        Html::a(Yii::t('app','Add').' <i class="glyphicon glyphicon-plus"></i>', ['create'],
-                        ['role'=>'modal-remote','title'=> Yii::t('app','Add'), 'class'=>'btn btn-info']).
-                        '<ul class="panel-controls">
-                            <li>{export}</li>
-                        </ul>'.
-                    '</div>'
-                    ],
-                ],         
+                        ['content'=>
+                            '<div style="margin-top:10px;">'.Html::a(Yii::t('app','Add').'<i class="glyphicon glyphicon-plus"></i>', ['create-passengers'],
+                            ['role'=>'modal-remote','title'=> Yii::t('app','Add'), 'class'=>'btn btn-info']).
+                            '<ul class="panel-controls">
+                                <li>{export}</li>
+                            </ul>'.
+                        '</div>'
+                        ],
+                    ],          
             'striped' => true,
             'condensed' => true,
             'responsive' => true,          
             'panel' => [
                 'type' => 'primary', 
-                'heading' => '<i class="glyphicon glyphicon-list"></i>'.Yii::t('app','Transport Categories listing'),
-              'after'=>BulkButtonWidget::widget([
+               'heading' => '<i class="glyphicon glyphicon-list"></i>'. Yii::t('app','Tasks listing'),
+                'after'=>BulkButtonWidget::widget([
                             'buttons'=>Html::a('<i class="glyphicon glyphicon-trash"></i>&nbsp;'.Yii::t('app','Delete All'),
                                 ["bulk-delete"] ,
                                 [

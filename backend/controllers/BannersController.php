@@ -174,8 +174,6 @@ class BannersController extends Controller
             } else {
                 return $this->render('create', [
                     'model' => $model,
-                    'langs' => $langs,
-
                 ]);
             }
         }
@@ -240,6 +238,7 @@ class BannersController extends Controller
                         break;
                 }
             }   
+            if($model->save())
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'title'=> Yii::t('app','Banners'),
@@ -251,7 +250,20 @@ class BannersController extends Controller
                     ]),
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a(Yii::t('app','Edit'),['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];    
+                ];  
+                else{
+                           
+                 return [
+                    'title'=> Yii::t('app','Update'),
+                    'content'=>$this->renderAjax('update', [
+                        'model' => $model,
+                        'titles'=>$translation_title,
+                        'texts'=>$translation_text,
+                    ]),
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
+                ];        
+            }  
             }else{
                            
                  return [

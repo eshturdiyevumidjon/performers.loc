@@ -142,6 +142,7 @@ class TransportsController extends Controller
                        $t->save();
                     }
                 }
+                if($model->save())
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'size'=>'large',
@@ -150,7 +151,20 @@ class TransportsController extends Controller
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a(Yii::t('app','Create more'),['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
         
+                ];  
+                else{           
+                return [
+                    'title'=> Yii::t('app','Create'),
+                    'size'=>'large',
+
+                    'content'=>$this->renderAjax('create', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
+        
                 ];         
+            }       
                }else{           
                 return [
                     'title'=> Yii::t('app','Create'),

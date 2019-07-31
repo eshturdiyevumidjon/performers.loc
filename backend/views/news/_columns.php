@@ -16,19 +16,31 @@ return [
     // ],
     [
         'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'fone',
+        'format'=>'raw',
+        'content'=>function($data){
+            return $data->getImage('_columns');
+        },
+        'contentOptions'=>['class'=>'text-center'],
+        'headerOptions'=>['class'=>'text-center'],
+    ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'title',
+        'contentOptions'=>['class'=>'text-center'],
+        'headerOptions'=>['class'=>'text-center'],
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'text',
-    ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'fone',
+        'contentOptions'=>['class'=>'text-center'],
+        'headerOptions'=>['class'=>'text-center'],
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'date_cr',
+        'contentOptions'=>['class'=>'text-center'],
+        'headerOptions'=>['class'=>'text-center'],
     ],
     [
         'class' => 'kartik\grid\ActionColumn',

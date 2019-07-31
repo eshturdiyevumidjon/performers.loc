@@ -40,7 +40,7 @@ class TasksSearch extends Tasks
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,$id=0)
     {
         $query = Tasks::find();
 
@@ -58,7 +58,7 @@ class TasksSearch extends Tasks
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'type' => $this->type,
+            'type' => ($id == 0) ? $this->type : $id,
             'payed_sum' => $this->payed_sum,
             'status' => $this->status,
             'date_cr' => $this->date_cr,

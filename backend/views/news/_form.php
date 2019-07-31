@@ -13,7 +13,6 @@ $langs=backend\models\Lang::getLanguages();
 <div class="news-form">
 
     <?php $form = ActiveForm::begin([ 'options' => ['method' => 'post', 'enctype' => 'multipart/form-data']]); ?>
-    <?php var_dump($model->imageFiles)?>
      <ul class="nav nav-tabs" style="margin-top:2px;">
     <?php foreach($langs as $lang):?>
     <li class="<?=($i==0)?'active':''?>">
@@ -43,24 +42,16 @@ $langs=backend\models\Lang::getLanguages();
     <?php $i++; endforeach;?>
   </div>
     <div class="row">
-         <?=$form->field($model, 'imageFiles')->widget(FileInput::classname(), [
-                'pluginOptions' => [
-                    //'uploadUrl' => Url::to(['/site/create'])
-                    // 'showCaption' => false,
-                    // 'showRemove' => false,
-                    // 'showUpload' => false,
-                    // 'browseClass' => 'btn btn-primary btn-block',
-                    // 'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
-                    // 'browseLabel' =>  'Select Photo'
-                ],
-                'options' => [
-                    'multiple' => true,
-                    // 'accept' => 'image/*'
-                ]
-            ]);
-        ?>
+        <div class="col-md-6 col-xs-6">
+                <div id="image">
+                <?=$model->getImage()?>
+                </div>
+            </div>
+            <br>
+            <div class="col-md-12">
+                <?= $form->field($model, 'imageFiles')->fileInput(['class'=>"image_input"]); ?>
+            </div>
     </div>
-
 
 	<?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">
@@ -71,3 +62,26 @@ $langs=backend\models\Lang::getLanguages();
     <?php ActiveForm::end(); ?>
     
 </div>
+<?php 
+$this->registerJs(<<<JS
+    
+$(document).ready(function(){
+    var fileCollection = new Array();
+
+    $(document).on('change', '.image_input', function(e){
+        var files = e.target.files;
+        $.each(files, function(i, file){
+            fileCollection.push(file);
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function(e){
+                var template = '<img style="width:100%; max-height:180px;" src="'+e.target.result+'"> ';
+                $('#image').html('');
+                $('#image').append(template);
+            };
+        });
+    });
+});
+JS
+);
+?>

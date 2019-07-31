@@ -24,7 +24,7 @@ CrudAsset::register($this);
             'filterModel' => $searchModel,
             'pjax'=>true,
             'columns' => require(__DIR__.'/_columns.php'),
-           'toolbar'=> [
+            'toolbar'=> [
                     ['content'=>
                         '<div style="margin-top:10px;">' .
                         Html::a(Yii::t('app','Add').' <i class="glyphicon glyphicon-plus"></i>', ['create'],

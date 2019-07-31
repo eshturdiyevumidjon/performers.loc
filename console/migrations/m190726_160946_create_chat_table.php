@@ -20,7 +20,7 @@ class m190726_160946_create_chat_table extends Migration
             'id' => $this->primaryKey(),
             'type' => $this->integer()->comment("Тип"),
             'chat_id' => $this->string(255)->comment("Чат ИД"),
-            'date_cr' => $this->datetime()->comment("Дата создании"),
+            'date_cr' => $this->integer()->comment("Дата создании"),
             'from' => $this->integer()->comment("Создатель"),
             'to' => $this->integer()->comment("Получатель"),
             'title' => $this->string(255)->comment("Заголовок"),

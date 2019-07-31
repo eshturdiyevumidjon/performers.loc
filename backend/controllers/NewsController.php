@@ -74,7 +74,7 @@ class NewsController extends Controller
                 }
             }
             return [
-                    'title'=>Yii::t('app','Banners'),
+                    'title'=>Yii::t('app','News'),
                     'content'=>$this->renderAjax('view', [
                         'model'=>$model,
                         'titles'=>$translation_title,
@@ -96,7 +96,7 @@ class NewsController extends Controller
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-     public function actionCreate()
+    public function actionCreate()
     {
         $request = Yii::$app->request;
         $model = new News();  
@@ -140,17 +140,10 @@ class NewsController extends Controller
                 }
                 
                 $model->imageFiles = UploadedFile::getInstance($model,'imageFiles');
-                $names="";
                 if(!empty($model->imageFiles))
                 {
-                    $i=0;
-                    foreach ($$model->imageFiles as $file) {
-                        $file->saveAs('uploads/news/' . $model->id.'('.$i.').'.$file->extension);
-                        $name.=$model->id.'('.$i.').'.$file->extension;
-                        $name.=';';
-                        $i++;
-                    }
-                    Yii::$app->db->createCommand()->update('news', ['image' => $name], [ 'id' => $model->id ])->execute();
+                    $model->imageFiles->saveAs('uploads/news/' . $model->id.'.'.$model->imageFiles->extension);
+                    Yii::$app->db->createCommand()->update('news', ['fone' => $model->id.'.'.$model->imageFiles->extension], [ 'id' => $model->id ])->execute();
                 }
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
@@ -219,19 +212,19 @@ class NewsController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($model->load($request->post())){
                 $model->save();
-                $model->file = UploadedFile::getInstance($model,'file');
-                if(!empty($model->file))
+                $model->imageFiles = UploadedFile::getInstance($model,'imageFiles');
+                if(!empty($model->imageFiles))
                 {   
-                     if($model->image != null&&file_exists('uploads/banners/'.$model->image))
+                     if($model->fone != null&&file_exists('uploads/news/'.$model->fone))
                     {
-                        unlink(('uploads/banners/'.$model->image));
+                        unlink(('uploads/news/'.$model->fone));
                     }
-                    $model->file->saveAs('uploads/banners/' . $model->id.'.'.$model->file->extension);
-                    Yii::$app->db->createCommand()->update('banners', ['image' => $model->id.'.'.$model->file->extension], [ 'id' => $model->id ])->execute();
+                    $model->imageFiles->saveAs('uploads/news/' . $model->id.'.'.$model->imageFiles->extension);
+                    Yii::$app->db->createCommand()->update('news', ['fone' => $model->id.'.'.$model->imageFiles->extension], [ 'id' => $model->id ])->execute();
                 }
                 
                 foreach ($translations as $t) {
-                           $t->field_value = $post["Banners"][$t->field_description][$t->language_code];
+                           $t->field_value = $post["News"][$t->field_description][$t->language_code];
                            $t->save();
                 }
                $translations=Translates::find()->where(['table_name' => $model->tableName(),'field_id' => $model->id])->all();
@@ -248,7 +241,7 @@ class NewsController extends Controller
             }   
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> Yii::t('app','Banners'),
+                    'title'=> Yii::t('app','News'),
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                         'titles'=>$translation_title,
@@ -295,8 +288,14 @@ class NewsController extends Controller
     public function actionDelete($id)
     {
         $request = Yii::$app->request;
-        $this->findModel($id)->delete();
+        $model=$this->findModel($id);
+        if(file_exists('uploads/news/'.$model->fone)&&$model->fone!=null)
+            {
+                unlink('uploads/news/'.$model->fone);
+            }
+        Translates::deleteAll(['table_name' => $model->tableName(),'field_id' => $id]);
 
+        $model->delete();
         if($request->isAjax){
             /*
             *   Process for ajax request
@@ -326,6 +325,11 @@ class NewsController extends Controller
         $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
         foreach ( $pks as $pk ) {
             $model = $this->findModel($pk);
+            Translates::deleteAll(['table_name' => $model->tableName(),'field_id' => $id]);
+            if(file_exists('uploads/news/'.$model->fone)&&$model->fone!=null)
+            {
+                unlink('uploads/news/'.$model->fone);
+            }
             $model->delete();
         }
 

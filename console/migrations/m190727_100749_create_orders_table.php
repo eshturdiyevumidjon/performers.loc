@@ -16,7 +16,7 @@ class m190727_100749_create_orders_table extends Migration
             'id' => $this->primaryKey(),
             'type' => $this->integer()->comment("Способ оплаты"),
             'task_id' => $this->integer()->comment("Задание"),
-            'date_pay' => $this->datetime()->comment("Дата оплаты"),
+            'date_pay' => $this->integer()->comment("Дата оплаты"),
             'amount' => $this->float()->comment("Сумма"),
             'status' => $this->integer()->comment("Статус"),
         ]);

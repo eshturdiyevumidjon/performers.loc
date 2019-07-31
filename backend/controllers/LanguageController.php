@@ -217,8 +217,12 @@ class LanguageController extends Controller
     public function actionDelete($id)
     {
         $request = Yii::$app->request;
-        // Yii::$app->db->createCommand()->update('lang', ['default' => '0'], [ 'id' => $this->findModel($id)->id ])->execute();
-        $this->findModel($id)->delete();
+        $model=$this->findModel($id);
+        if(file_exists('uploads/flags/'.$model->image)&&$model->image!=null)
+        {
+            unlink('uploads/flags/'.$model->image);
+        }        
+        $model->delete();
         if($request->isAjax){
             /*
             *   Process for ajax request
@@ -248,6 +252,10 @@ class LanguageController extends Controller
         $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
         foreach ( $pks as $pk ) {
             $model = $this->findModel($pk);
+            if($model->image!=null&&file_exists('uploads/flags/'.$model->image))
+            {
+                unlink(('uploads/flags/'.$model->image));
+            }
             $model->delete();
         }
 

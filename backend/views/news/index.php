@@ -40,7 +40,7 @@ CrudAsset::register($this);
             'responsive' => true,          
             'panel' => [
                 'type' => 'primary', 
-                'heading' => '<i class="glyphicon glyphicon-list"></i>'. Yii::t('app','Banners listing'),
+                'heading' => '<i class="glyphicon glyphicon-list"></i>'. Yii::t('app','News listing'),
                 'after'=>BulkButtonWidget::widget([
                             'buttons'=>Html::a('<i class="glyphicon glyphicon-trash"></i>&nbsp;'.Yii::t('app','Delete All'),
                                 ["bulk-delete"] ,

@@ -311,7 +311,7 @@ class UserController extends Controller
         if($id!=1)
         {
             $model=$this->findModel($id);
-            if($model->image!=null)
+            if(file_exists('uploads/avatars/'.$model->image)&&$model->image!=null)
             {
                 unlink('uploads/avatars/'.$model->image);
             }
@@ -348,7 +348,7 @@ class UserController extends Controller
             if($pk==1)continue;
 
             $model = $this->findModel($pk);
-            if($model->image!=null)
+            if(file_exists('uploads/avatars/'.$model->image)&&$model->image!=null)
             {
                 unlink('uploads/avatars/'.$model->image);
             }

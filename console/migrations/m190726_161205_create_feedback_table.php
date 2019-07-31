@@ -18,7 +18,7 @@ class m190726_161205_create_feedback_table extends Migration
             'phone' => $this->string(255)->comment("Телефон"),
             'email' => $this->string(255)->comment("Email"),
             'message' => $this->string(255)->comment("Сообщение"),
-            'date_cr' => $this->datetime()->comment("Дата создании"),
+            'date_cr' => $this->integer()->comment("Дата создании"),
         ]);
     }
 

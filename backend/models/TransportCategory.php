@@ -14,6 +14,7 @@ use Yii;
  */
 class TransportCategory extends \yii\db\ActiveRecord
 {
+    public $translation_name;
     /**
      * {@inheritdoc}
      */
@@ -28,7 +29,9 @@ class TransportCategory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            ['name','required'],
             [['name'], 'string', 'max' => 255],
+            [['translation_name'],'safe'],
         ];
     }
 
@@ -39,7 +42,13 @@ class TransportCategory extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => Yii::t('app','Name'),
+        ];
+    }
+    public static function NeedTranslation()
+    {
+        return [
+            'name'=>'translation_name',
         ];
     }
 

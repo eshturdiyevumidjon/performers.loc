@@ -7,35 +7,33 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="tasks-form">
+<div class="tasks-form4">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'type')->textInput() ?>
-
-    <?= $form->field($model, 'payed_sum')->textInput() ?>
+   <!--  <?= $form->field($model, 'payed_sum')->textInput() ?> -->
 
     <?= $form->field($model, 'status')->textInput() ?>
 
-    <?= $form->field($model, 'date_cr')->textInput() ?>
+   <!--  <?= $form->field($model, 'date_cr')->textInput() ?> -->
 
     <?= $form->field($model, 'date_close')->textInput() ?>
 
     <?= $form->field($model, 'position')->textInput() ?>
 
-    <?= $form->field($model, 'user_id')->textInput() ?>
+    <!-- <?= $form->field($model, 'user_id')->textInput() ?> -->
 
     <?= $form->field($model, 'shipping_address')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'delivery_address')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'shipping_coordinate_x')->textInput(['maxlength' => true]) ?>
+<!--     <?= $form->field($model, 'shipping_coordinate_x')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'shipping_coordinate_y')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'delivery_coordinate_x')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'delivery_coordinate_y')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'delivery_coordinate_y')->textInput(['maxlength' => true]) ?> -->
 
     <?= $form->field($model, 'date_begin')->textInput() ?>
 
@@ -45,43 +43,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'adult_passengers')->textInput() ?>
-
-    <?= $form->field($model, 'child_count')->textInput() ?>
-
-    <?= $form->field($model, 'category_id')->textInput() ?>
-
-    <?= $form->field($model, 'flight_number_status')->checkbox() ?>
-
-    <?= $form->field($model, 'flight_number')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'meeting_with_sign_status')->textInput() ?>
-
-    <?= $form->field($model, 'meeting_with_sign')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'car_model')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'car_mark')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'image')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'car_on_the_go')->textInput() ?>
-
-    <?= $form->field($model, 'weight')->textInput() ?>
-
-    <?= $form->field($model, 'width')->textInput() ?>
-
-    <?= $form->field($model, 'length')->textInput() ?>
-
-    <?= $form->field($model, 'height')->textInput() ?>
-
-    <?= $form->field($model, 'classification')->textInput() ?>
-
-    <?= $form->field($model, 'loading_required_status')->textInput() ?>
-
-    <?= $form->field($model, 'floor')->textInput() ?>
-
-    <?= $form->field($model, 'lift')->textInput() ?>
 
     <?= $form->field($model, 'shipping_house_type')->textInput() ?>
 

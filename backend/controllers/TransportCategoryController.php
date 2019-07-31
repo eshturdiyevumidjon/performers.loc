@@ -10,7 +10,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
-
+use backend\models\Lang;
+use backend\models\Translates;
 /**
  * TransportCategoryController implements the CRUD actions for TransportCategory model.
  */
@@ -56,15 +57,22 @@ class TransportCategoryController extends Controller
     public function actionView($id)
     {   
         $request = Yii::$app->request;
+        $model=$this->findModel($id);
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
+             Yii::$app->response->format = Response::FORMAT_JSON;
+            $translations = Translates::find()->where(['table_name'=>$model->tableName(),'field_id'=>$model->id])->all();
+            foreach ($translations as $key => $value) {
+                $translation_name[$value->language_code] = $value->field_value;
+            }
             return [
-                    'title'=> "TransportCategory #".$id,
+                    'title'=> Yii::t('app','Category'),
                     'content'=>$this->renderAjax('view', [
                         'model' => $this->findModel($id),
+                        'names'=>$translation_name,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                            Html::a(Yii::t('app','Edit'),['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
         }else{
             return $this->render('view', [
@@ -83,39 +91,59 @@ class TransportCategoryController extends Controller
     {
         $request = Yii::$app->request;
         $model = new TransportCategory();  
+        $langs = Lang::getLanguages();
 
         if($request->isAjax){
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            if($request->isGet){
-                return [
-                    'title'=> "Create new TransportCategory",
-                    'content'=>$this->renderAjax('create', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-        
-                ];         
-            }else if($model->load($request->post()) && $model->save()){
+            $post = $request->post();
+            if($model->load($post)){
+                $attr = TransportCategory::NeedTranslation();
+                foreach ($langs as $lang) {
+                        $l = $lang->url;
+                        if($l == 'ru')
+                        {
+                            if(!$model->save())
+                              return [
+                                'title'=> Yii::t('app','Create'),
+                                'content'=>$this->renderAjax('create', [
+                                    'model' => $model,
+                                ]),
+                                'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                            Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
+                    
+                            ]; 
+                           else continue;
+                        }
+                    foreach ($attr as $key=>$value) {
+                       $t=new Translates();
+                       $t->table_name=$model->tableName();
+                       $t->field_id=$model->id;
+                       $t->field_name=$key;
+                       $t->field_value=$post["TransportCategory"][$value][$l];
+                       $t->field_description=$value;
+                       $t->language_code=$l;
+                       $t->save();
+                    }
+                }
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Create new TransportCategory",
-                    'content'=>'<span class="text-success">Create TransportCategory success</span>',
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Create More',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    'title'=> Yii::t('app','Create'),
+                    'content'=>'<span class="text-success">'.Yii::t('app','Complete successfully').'</span>',
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                            Html::a(Yii::t('app','Create more'),['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
         
                 ];         
             }else{           
                 return [
-                    'title'=> "Create new TransportCategory",
+                    'title'=> Yii::t('app','Create'),
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
         
                 ];         
             }
@@ -145,39 +173,59 @@ class TransportCategoryController extends Controller
     {
         $request = Yii::$app->request;
         $model = $this->findModel($id);       
-
+        $post=$request->post();
+        
         if($request->isAjax){
+            
+            $translations = Translates::find()->where(['table_name' => $model->tableName(),'field_id' => $model->id])->all();
+            foreach ($translations as $key => $value) {
+                        $translation_name[$value->language_code] = $value->field_value;
+            }
+
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            if($request->isGet){
-                return [
-                    'title'=> "Update TransportCategory #".$id,
-                    'content'=>$this->renderAjax('update', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-                ];         
-            }else if($model->load($request->post()) && $model->save()){
+            if($model->load($request->post())){
+                foreach ($translations as $t) {
+                           $t->field_value = $post["TransportCategory"][$t->field_description][$t->language_code];
+                           $t->save();
+                }
+                foreach ($translations as $key => $value) {
+                        $translation_name[$value->language_code] = $value->field_value;
+                }
+            if($model->save())
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "TransportCategory #".$id,
+                    'forceClose'=>false,
+                    'title'=> $post["TransportCategory"]["translation_name"]["en"],
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
+                        'names' => $translation_name,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];    
-            }else{
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                            Html::a(Yii::t('app','Edit'),['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                ];   
+                else{
                  return [
-                    'title'=> "Update TransportCategory #".$id,
+                    'title'=> Yii::t('app','Update'),
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
+                        'names' => $translation_name,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
+                ];        
+            }
+        }else{
+                 return [
+                    'title'=> Yii::t('app','Update'),
+                    'content'=>$this->renderAjax('update', [
+                        'model' => $model,
+                        'names' => $translation_name,
+                    ]),
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
                 ];        
             }
         }else{
@@ -204,7 +252,9 @@ class TransportCategoryController extends Controller
     public function actionDelete($id)
     {
         $request = Yii::$app->request;
-        $this->findModel($id)->delete();
+        $model=$this->findModel($id);
+        Translates::deleteAll(['table_name' => $model->tableName(),'field_id' => $id]);
+        $model->delete();  
 
         if($request->isAjax){
             /*
@@ -235,6 +285,7 @@ class TransportCategoryController extends Controller
         $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
         foreach ( $pks as $pk ) {
             $model = $this->findModel($pk);
+            Translates::deleteAll(['table_name' => $model->tableName(),'field_id' => $id]);
             $model->delete();
         }
 
