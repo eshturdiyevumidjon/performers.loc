@@ -28,7 +28,7 @@ CrudAsset::register($this);
                             '<div style="margin-top:10px;">' .
                             Html::a(Yii::t('app','Add').' <i class="glyphicon glyphicon-plus"></i>', ['create'],
                             ['role'=>'modal-remote','title'=> Yii::t('app','Add'), 'class'=>'btn btn-info']).
-                            Html::a(Yii::t('app','Sort Columns'), ['columns','id'=>10],['role'=>'modal-remote','title'=> Yii::t('app','Sort Columns'), 'class'=>'btn btn-warning']) .
+                            // Html::a(Yii::t('app','Sort Columns'), ['columns','id'=>10],['role'=>'modal-remote','title'=> Yii::t('app','Sort Columns'), 'class'=>'btn btn-warning']) .
                             '<ul class="panel-controls">
                                 <li>{export}</li>
                             </ul>'.

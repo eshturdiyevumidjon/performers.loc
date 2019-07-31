@@ -40,7 +40,7 @@ $pathInfo = Yii::$app->request->pathInfo;
          <li <?= ($pathInfo == 'chat/main' ? 'class="active"' : '')?>>
             <a href="/chat/main"><span class="fa fa-envelope"></span> <span class="xn-text"><?=Yii::t('app','Chat')?></span></a>
         </li>
-        <li <?= ((($pathInfo == 'tasks/index-passangers')||($pathInfo == 'tasks/index-vehicles')||($pathInfo == 'tasks/index-goods')||($pathInfo == 'tasks/index-help')) ? 'class="xn-openable active"' : 'xn-openable ')?>>
+        <li class="xn-openable <?= ((($pathInfo == 'tasks/index-passangers')||($pathInfo == 'tasks/index-vehicles')||($pathInfo == 'tasks/index-goods')||($pathInfo == 'tasks/index-help')) ? 'active' : '')?>">
             <a href="#"><span class="fa fa-tasks"></span> <span class="xn-text"><?=Yii::t('app','Tasks')?></span></a>                        
             <ul>
                 <li  <?= ($pathInfo == 'tasks/index-passangers' ? 'class="active"' : '')?>>
@@ -85,7 +85,7 @@ $pathInfo = Yii::$app->request->pathInfo;
             <a href="/transport-category/index"><span class="fa fa-list"></span> <span class="xn-text"><?=Yii::t('app','Category of transports')?></span><span class="fa fa-check"></span></a>
         </li>           
         <?php if(Yii::$app->user->identity->type!=4&&Yii::$app->user->identity->type!=3):?>
-        <li <?= (($pathInfo == 'language/index'||$pathInfo=='translation/index') ? 'class="xn-openable active"' : 'xn-openable ')?>>
+        <li class="xn-openable <?= (($pathInfo == 'language/index') ? 'active' : '')?>">
             <a href="#"><span class="fa fa-gear"></span> <span class="xn-text"><?=Yii::t('app','Settings')?></span></a>
             <ul>                            
                 <li  <?= ($pathInfo == 'language/index' ? 'class="active"' : '')?>>

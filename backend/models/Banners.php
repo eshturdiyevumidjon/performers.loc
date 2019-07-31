@@ -67,8 +67,8 @@ class Banners extends \yii\db\ActiveRecord
     }
     public function getImage($for='_form'){
         if($for=='_form')
-        return $this->image != null ? '<img style="width:100%;border-radius:10%;" src="/uploads/news/' . $this->image .'">' : '<img style="width:100%; height:250px;border-radius:10%;" src="/uploads/banners/noimg.jpg">';
+        return $this->image != null ? '<img style="width:100%;border-radius:10%;" src="/uploads/news/' . $this->image .'">' : '<img style="width:100%; height:250px;border-radius:10%;" src="/uploads/noimg.jpg">';
         if($for=='_columns')
-           return $this->image != null ? '<img style="width:60px; border-radius:10%;" src="/uploads/news/' . $this->image .' ">' : '<img style="width:60px;" src="/uploads/banners/noimg.jpg">';
+           return $this->image != null ? '<img style="width:60px; border-radius:10%;" src="/uploads/news/' . $this->image .' ">' : '<img style="width:60px;" src="/uploads/noimg.jpg">';
     }
 }
