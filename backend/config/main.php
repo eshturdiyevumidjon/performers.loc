@@ -22,6 +22,9 @@ return [
     'language'=>'ru-RU',
     
     'components' => [
+        'yandexMapsApi' => [
+                'class' => 'mirocow\yandexmaps\Api',
+            ],
          'assetManager' => [
                 'bundles' => [
                     'kartik\form\ActiveFormAsset' => [

@@ -80,42 +80,34 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="rc-handle-container">
                 <?= YandexMaps::widget([
-                    'htmlOptions' => [
-                        'style' => 'height: 400px;',
-                    ],
-                    'map' => new Map('yandex_map', [
-                        'center' => [$model->coordinate_x, $model->coordinate_y],
-                        'zoom' => 12,
-                        'controls' => [Map::CONTROL_ZOOM],
-                        'behaviors' => [Map::BEHAVIOR_DRAG],
-                        'type' => "yandex#map",
-                    ],
-                        [
-                            'objects' => [
-                                new Placemark(new Point($model->coordinate_x, $model->coordinate_y), [], [
-                                    'draggable' => true,
-                                    'preset' => 'islands#dotIcon',
-                                    'iconColor' => 'red',
-                                    'events' => [
-                                        'dragend' => 'js:function (e) {
-                                        //console.log(e.get(\'target\').geometry.getCoordinates());                                        
-                                        var coords = e.get(\'target\').geometry.getCoordinates();
-                                        //$( "#contacts-coordinate_x" ).val( coords[0]);
-                                        //$( "#contacts-coordinate_y" ).val( coords[1]);
-                                        $.get("/ru/about-company/set-coordinates",
-                                        { "coordinate_x" : coords[0], "coordinate_y" : coords[1] },
-                                            function(data){ }
-                                        );
-                                    }',
-                                    ]
-                                ])
-                            ]
-                        ])
-                ]) ?>
-
+    'htmlOptions' => [
+        'style' => 'height: 600px;',
+    ],
+    'map' => new Map('yandex_map', [
+        'center' => [55.7372, 37.6066],
+        'zoom' => 17,
+        'controls' => [Map::CONTROL_ZOOM],
+        'behaviors' => [Map::BEHAVIOR_DRAG],
+        'type' => "yandex#map",
+    ],
+    [
+        'objects' => [new Placemark(new Point(55.7372, 37.6066), [], [
+            'draggable' => true,
+            'preset' => 'islands#dotIcon',
+            'iconColor' => '#2E9BB9',
+            'events' => [
+                'dragend' => 'js:function (e) {
+                    console.log(e.get(\'target\').geometry.getCoordinates());
+                }'
+            ]
+        ])]
+    ])
+]) ?>
+                
             </div>
         </div>
         </section>
+
     </div>
 </div>
 
