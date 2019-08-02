@@ -80,32 +80,6 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="rc-handle-container">
                 <?= YandexMaps::widget([
-<<<<<<< HEAD
-    'htmlOptions' => [
-        'style' => 'height: 600px;',
-    ],
-    'map' => new Map('yandex_map', [
-        'center' => [55.7372, 37.6066],
-        'zoom' => 17,
-        'controls' => [Map::CONTROL_ZOOM],
-        'behaviors' => [Map::BEHAVIOR_DRAG],
-        'type' => "yandex#map",
-    ],
-    [
-        'objects' => [new Placemark(new Point(55.7372, 37.6066), [], [
-            'draggable' => true,
-            'preset' => 'islands#dotIcon',
-            'iconColor' => '#2E9BB9',
-            'events' => [
-                'dragend' => 'js:function (e) {
-                    console.log(e.get(\'target\').geometry.getCoordinates());
-                }'
-            ]
-        ])]
-    ])
-]) ?>
-                
-=======
                     'htmlOptions' => [
                         'style' => 'height: 400px;',
                     ],
@@ -139,15 +113,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         ])
                 ]) ?>
 
->>>>>>> c0880d17879768988f6b702138876a2021e43a1d
             </div>
         </div>
         </section>
-
     </div>
 </div>
-
-
-
-
- 
