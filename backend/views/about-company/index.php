@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'style' => 'height: 400px;',
                     ],
                     'map' => new Map('yandex_map', [
-                        'center' => [$model->coordinate_x, $model->coordinate_y],
+                        'center' => [$company->coordinate_x, $company->coordinate_y],
                         'zoom' => 12,
                         'controls' => [Map::CONTROL_ZOOM],
                         'behaviors' => [Map::BEHAVIOR_DRAG],
@@ -92,7 +92,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                         [
                             'objects' => [
-                                new Placemark(new Point($model->coordinate_x, $model->coordinate_y), [], [
+                                new Placemark(new Point($company->coordinate_x, $company->coordinate_y), [], [
                                     'draggable' => true,
                                     'preset' => 'islands#dotIcon',
                                     'iconColor' => 'red',
