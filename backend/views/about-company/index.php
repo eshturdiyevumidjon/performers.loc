@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div id="ajaxCrudDatatable">
         <section class="content">
             <div class="panel panel-success">
-                <div class="panel-heading ui-draggable-handle" style="background-color: #669999;">
+                <div class="panel-heading ui-draggable-handle">
                  <?=Html::a('<i class="glyphicon glyphicon-pencil"></i>'.' '.Yii::t('app','Edit').' ', ['edit'],
                     ['data-pjax'=>0,'title'=> Yii::t('app','Edit'), 'class'=>'btn btn-primary btn-xs pull-left'])?>
                 </div>
