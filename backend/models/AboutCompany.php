@@ -23,6 +23,9 @@ class AboutCompany extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    public $logo_image;
+    public $phone_numbers;
+
     public static function tableName()
     {
         return 'about_company';
@@ -35,7 +38,9 @@ class AboutCompany extends \yii\db\ActiveRecord
     {
         return [
             [['address'], 'string'],
-            [['logo', 'name', 'phone', 'email', 'facebook', 'instagram', 'coordinate_x', 'coordinate_y'], 'string', 'max' => 255],
+            [['logo_image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg,svg',],
+            [['phone_numbers'],'safe'],
+            [['logo','telegram', 'name', 'phone', 'email', 'facebook', 'instagram', 'coordinate_x', 'coordinate_y'], 'string', 'max' => 255],
         ];
     }
 
@@ -47,14 +52,20 @@ class AboutCompany extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'logo' => 'Logo',
-            'name' => 'Name',
-            'phone' => 'Phone',
-            'email' => 'Email',
+            'logo_image' => 'Logo',
+            'name' => Yii::t('app','Name'),
+            'phone_numbers' => Yii::t('app','Phone numbers'),
+            'phone' => Yii::t('app','Phone'),
+            'email' => Yii::t('app','Email'),
             'facebook' => 'Facebook',
             'instagram' => 'Instagram',
+            'telegram' => 'Telegram',
             'address' => 'Address',
             'coordinate_x' => 'Coordinate X',
             'coordinate_y' => 'Coordinate Y',
         ];
+    }
+    public function getImage(){
+        return $this->logo != null ? '<img style="width: 70px; height: 60px" src="/uploads/' . $this->logo .'">' : '<img style="width: 70px; height: 60px" src="/uploads/noimg.jpg">';
     }
 }

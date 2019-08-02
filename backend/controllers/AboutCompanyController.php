@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
+use yii\web\UploadedFile;
 
 /**
  * AboutCompanyController implements the CRUD actions for AboutCompany model.
@@ -38,12 +39,16 @@ class AboutCompanyController extends Controller
      */
     public function actionIndex()
     {    
-        $searchModel = new AboutCompanySearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        // $searchModel = new AboutCompanySearch();
+        // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+        // return $this->render('index', [
+        //     'searchModel' => $searchModel,
+        //     'dataProvider' => $dataProvider,
+        // ]);
+        $company=AboutCompany::findOne(1);
+        return $this->render('index',[
+            'company' => $company
         ]);
     }
 
@@ -59,12 +64,13 @@ class AboutCompanyController extends Controller
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'title'=> "AboutCompany #".$id,
+                    'title'=> Yii::t('app','About')
+,
                     'content'=>$this->renderAjax('view', [
                         'model' => $this->findModel($id),
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                            Html::a(Yii::t('app','Edit'),['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
         }else{
             return $this->render('view', [
@@ -95,8 +101,8 @@ class AboutCompanyController extends Controller
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
         
                 ];         
             }else if($model->load($request->post()) && $model->save()){
@@ -104,7 +110,7 @@ class AboutCompanyController extends Controller
                     'forceReload'=>'#crud-datatable-pjax',
                     'title'=> "Create new AboutCompany",
                     'content'=>'<span class="text-success">Create AboutCompany success</span>',
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a('Create More',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
         
                 ];         
@@ -114,8 +120,8 @@ class AboutCompanyController extends Controller
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
         
                 ];         
             }
@@ -153,31 +159,34 @@ class AboutCompanyController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Update AboutCompany #".$id,
+                    'title'=> Yii::t('app','Update'),
+                    'size'=>'large',
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
                 ];         
             }else if($model->load($request->post()) && $model->save()){
                 return [
+                    'title'=> Yii::t('app','About'),
+                    'size'=>'large',
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "AboutCompany #".$id,
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                            Html::a(Yii::t('app','Edit'),['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
             }else{
                  return [
-                    'title'=> "Update AboutCompany #".$id,
+                    'title'=> Yii::t('app','Update'),
+                    'size'=>'large',
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
                 ];        
             }
         }else{
@@ -193,7 +202,36 @@ class AboutCompanyController extends Controller
             }
         }
     }
+    public function actionEdit()
+    {
+        $model = $this->findModel(1);
+        $model->phone_numbers = explode(",",$model->phone);
+        
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            
+            $model->phone = implode(",",$model->phone_numbers);
+            $model->save();
+            $model->logo_image = UploadedFile::getInstance($model, 'logo_image');
+            if(!empty($model->logo_image))
+            {
+                $model->logo_image->saveAs('uploads/' . 'logo.' . $model->logo_image->extension);
+                Yii::$app->db->createCommand()->update('about_company', ['logo' => 'logo.' . $model->logo_image->extension ], [ 'id' => 1 ])->execute();
+            }
 
+            return $this->redirect(['index','model'=>$model]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+    public function actionSetCoordinates($coordinate_x, $coordinate_y)
+    {
+        $model = AboutCompany::findOne(1);
+        $model->coordinate_x = $coordinate_x;
+        $model->coordinate_y = $coordinate_y;
+        $model->save();
+    }
     /**
      * Delete an existing AboutCompany model.
      * For ajax request will return json object

@@ -165,5 +165,11 @@ return [
     //chat
     'Chat' => 'Переписки',
     'COMPOSE' => 'НАПИСАТЬ',
+    'About' => 'О Нас',
+    'Coordinate X'=>'Координата X',
+    'Coordinate Y'=>'Координата Y',
+    'Phone'=>'Телефон',
+    'Phone numbers'=>'Телефонные номера',
+
 ];
 ?>
