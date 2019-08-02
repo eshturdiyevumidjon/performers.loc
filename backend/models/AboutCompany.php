@@ -56,7 +56,7 @@ class AboutCompany extends \yii\db\ActiveRecord
             'name' => Yii::t('app','Name'),
             'phone_numbers' => Yii::t('app','Phone numbers'),
             'phone' => Yii::t('app','Phone'),
-            'email' => Yii::t('app','Email'),
+            'email' => Yii::t('app','Email address'),
             'facebook' => 'Facebook',
             'instagram' => 'Instagram',
             'telegram' => 'Telegram',

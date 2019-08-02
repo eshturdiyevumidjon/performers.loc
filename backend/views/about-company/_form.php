@@ -47,16 +47,7 @@ use katzz0\yandexmaps\Canvas as YandexMaps;
                         <div class="col-md-12">
                             <?= $form->field($model, 'address')->textarea(['rows' => 8]) ?>
                         </div>
-
-                        <div class="col-md-12">
-                            <?= $form->field($model, 'coordinate_x')->textInput(['maxlength' => true]) ?>
-                        </div>
-                        <div class="col-md-12">
-                            <?= $form->field($model, 'coordinate_y')->textInput(['maxlength' => true]) ?>
-                        </div>
                     </div>
-
-
                 </div>
                 <div class="col-md-8">
                     <?= YandexMaps::widget([
@@ -83,7 +74,7 @@ use katzz0\yandexmaps\Canvas as YandexMaps;
                                         //$( "#contacts-coordinate_x" ).val( coords[0]);
                                         //$( "#contacts-coordinate_y" ).val( coords[1]);
                                         $.get("/ru/about-company/set-coordinates",
-                                        { "id" : 1, "coordinate_x" : coords[0], "coordinate_y" : coords[1] },
+                                        {  "coordinate_x" : coords[0], "coordinate_y" : coords[1] },
                                             function(data){ }
                                         );
                                     }',
@@ -135,7 +126,8 @@ use katzz0\yandexmaps\Canvas as YandexMaps;
             <div class="panel-footer">
                    <?php if (!Yii::$app->request->isAjax){ ?>
                     <div class="form-group">
-                        <?= Html::submitButton($model->isNewRecord ? Yii::t('app','Create') : Yii::t('app','Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary pull-right']) ?>
+                        <?= Html::submitButton( Yii::t('app','Cancel'), ['class' => 'btn btn-primary pull-left']) ?>
+                        <?= Html::submitButton($model->isNewRecord ? Yii::t('app','Create') : Yii::t('app','Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-success pull-right']) ?>
                     </div>
                 <?php } ?>
             </div>                            

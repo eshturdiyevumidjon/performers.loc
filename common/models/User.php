@@ -75,6 +75,7 @@ class User extends ActiveRecord implements IdentityInterface
             'birthday'=>Yii::t('app','Birthday'),
             'phone'=>Yii::t('app','Phone number'),
             'image'=>Yii::t('app','Image'),
+            'note'=>Yii::t('app','Note'),
             'avatar'=>Yii::t('app','Image'),
             'status' => Yii::t('app','Status'),
             'created_at' => Yii::t('app','Created_at'),

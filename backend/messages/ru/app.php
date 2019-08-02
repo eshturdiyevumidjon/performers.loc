@@ -82,8 +82,9 @@ return [
 
     //About-company
     'About Company'=>'О компании',
-
-
+    'Cancel'=>'Назад',
+    'Email address'=>'Адрес электронной почты',
+    'Note'=>'Заметка',
     //Banners
     'Banners'=>'Баннеры',
     'Banners listing'=>'Список баннеров',
