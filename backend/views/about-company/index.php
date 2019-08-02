@@ -80,6 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="rc-handle-container">
                 <?= YandexMaps::widget([
+<<<<<<< HEAD
     'htmlOptions' => [
         'style' => 'height: 600px;',
     ],
@@ -104,6 +105,41 @@ $this->params['breadcrumbs'][] = $this->title;
     ])
 ]) ?>
                 
+=======
+                    'htmlOptions' => [
+                        'style' => 'height: 400px;',
+                    ],
+                    'map' => new Map('yandex_map', [
+                        'center' => [$company->coordinate_x, $company->coordinate_y],
+                        'zoom' => 12,
+                        'controls' => [Map::CONTROL_ZOOM],
+                        'behaviors' => [Map::BEHAVIOR_DRAG],
+                        'type' => "yandex#map",
+                    ],
+                        [
+                            'objects' => [
+                                new Placemark(new Point($company->coordinate_x, $company->coordinate_y), [], [
+                                    'draggable' => true,
+                                    'preset' => 'islands#dotIcon',
+                                    'iconColor' => 'red',
+                                    'events' => [
+                                        'dragend' => 'js:function (e) {
+                                        //console.log(e.get(\'target\').geometry.getCoordinates());                                        
+                                        var coords = e.get(\'target\').geometry.getCoordinates();
+                                        //$( "#contacts-coordinate_x" ).val( coords[0]);
+                                        //$( "#contacts-coordinate_y" ).val( coords[1]);
+                                        $.get("/ru/about-company/set-coordinates",
+                                        { "coordinate_x" : coords[0], "coordinate_y" : coords[1] },
+                                            function(data){ }
+                                        );
+                                    }',
+                                    ]
+                                ])
+                            ]
+                        ])
+                ]) ?>
+
+>>>>>>> c0880d17879768988f6b702138876a2021e43a1d
             </div>
         </div>
         </section>
