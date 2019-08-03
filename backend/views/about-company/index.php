@@ -22,6 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <style type="text/css">
     table th td{
         padding:10px;
+        word-break: break-all;
         justify-content: center;
     }
 </style>
@@ -31,34 +32,34 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="panel panel-success">
                 <div class="panel-heading ui-draggable-handle">
                  <?=Html::a('<i class="glyphicon glyphicon-pencil"></i>'.' '.Yii::t('app','Edit').' ', ['edit'],
-                    ['data-pjax'=>0,'title'=> Yii::t('app','Edit'), 'class'=>'btn btn-primary btn-xs pull-left'])?>
+                    ['data-pjax'=>0,'title'=> Yii::t('app','Edit'), 'class'=>'btn btn-info btn-xs pull-left'])?>
                 </div>
                 <div class="clearfix"></div>
                 <div class="panel-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered  table-responsive table-condensed">
+                        <table class="table  table-condensed">
                             <tbody>
                                 <tr>
                                     <td rowspan="2">
                                         <?=$company->getImage()?>
                                     </td>
-                                    <th style="color: #00a7d0"><?=$company->getAttributeLabel('email')?></th>
+                                    <th style="color: #00a7d0"><?=$company->getAttributeLabel('email')?>:</th>
                                     <td><?= $company->email?></td>
-                                    <th style="color: #00a7d0"><?=$company->getAttributeLabel('phone')?></th>
+                                    <th style="color: #00a7d0"><?=$company->getAttributeLabel('phone')?>:</th>
                                     <td>
                                         <?php foreach (explode(',',$company->phone) as $key => $value) {
                                     echo $value."<br>";
                                     }?> 
                                     </td>
-                                    <th style="color: #00a7d0"><?=$company->getAttributeLabel('address')?></th>
+                                    <th style="color: #00a7d0"><?=$company->getAttributeLabel('address')?>:</th>
                                     <td><?= $company->address?></td>
                                 </tr>
                                 <tr>
-                                    <th style="color: #00a7d0"><?=$company->getAttributeLabel('instagram')?></th>
+                                    <th style="color: #00a7d0"><?=$company->getAttributeLabel('instagram')?>:</th>
                                     <td><?= $company->instagram?></td>
-                                    <th style="color: #00a7d0"><?=$company->getAttributeLabel('facebook')?></th>
+                                    <th style="color: #00a7d0"><?=$company->getAttributeLabel('facebook')?>:</th>
                                     <td><?= $company->facebook?></td>
-                                    <th style="color: #00a7d0"><?=$company->getAttributeLabel('telegram')?></th>
+                                    <th style="color: #00a7d0"><?=$company->getAttributeLabel('telegram')?>:</th>
                                     <td><?= $company->telegram?></td>
                                 </tr>
                               
@@ -93,15 +94,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'objects' => [
                                 new Placemark(new Point($company->coordinate_x, $company->coordinate_y), [], [
-                                    'draggable' => true,
+                                    'draggable' => false,
                                     'preset' => 'islands#dotIcon',
                                     'iconColor' => 'red',
                                     'events' => [
                                         'dragend' => 'js:function (e) {
-                                        //console.log(e.get(\'target\').geometry.getCoordinates());                                        
                                         var coords = e.get(\'target\').geometry.getCoordinates();
-                                        //$( "#contacts-coordinate_x" ).val( coords[0]);
-                                        //$( "#contacts-coordinate_y" ).val( coords[1]);
                                         $.get("/ru/about-company/set-coordinates",
                                         { "coordinate_x" : coords[0], "coordinate_y" : coords[1] },
                                             function(data){ }

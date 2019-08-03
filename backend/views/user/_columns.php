@@ -73,13 +73,13 @@ return [
         'visible' => ($session['User[type]'] === null || $session['User[type]'] == 1) ? true : false,
         'contentOptions'=>['class'=>'text-center'],
         'headerOptions'=>['class'=>'text-center'],
-        'filter' => User::getTip(),
+        'filter' => User::getType(),
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'status',
         'content'=>function($data){
-            return $data->getStatusDescription();
+            return $data->getStatusDescription($data->status);
         },
         'visible' => ($session['User[status]'] === null || $session['User[status]'] == 1) ? true : false,
         'filter'=>User::getStatus(),
@@ -120,7 +120,8 @@ return [
     [
         'class'    => 'kartik\grid\ActionColumn',
         'template' => '{view} {update}  {leadDelete}',
-        'updateOptions'=>['role'=>'modal-remote','title'=>'Изменить', 'data-toggle'=>'tooltip'],
+        'updateOptions'=>['role'=>'modal-remote','title'=>Yii::t('app','Edit'), 'data-toggle'=>'tooltip'],
+        'viewOptions'=>['role'=>'modal-remote','title'=>Yii::t('app','View'), 'data-toggle'=>'tooltip'],
         'buttons'  => [
 
             'leadDelete' => function ($url, $model) {

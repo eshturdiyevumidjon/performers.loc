@@ -47,6 +47,12 @@ use katzz0\yandexmaps\Canvas as YandexMaps;
                         <div class="col-md-12">
                             <?= $form->field($model, 'address')->textarea(['rows' => 8]) ?>
                         </div>
+                        <div class="col-md-12">
+                            <?= $form->field($model, 'coordinate_x')->textInput(['rows' => 8]) ?>
+                        </div>
+                        <div class="col-md-12">
+                            <?= $form->field($model, 'coordinate_y')->textInput(['rows' => 8]) ?>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -69,10 +75,9 @@ use katzz0\yandexmaps\Canvas as YandexMaps;
                                     'iconColor' => 'red',
                                     'events' => [
                                         'dragend' => 'js:function (e) {
-                                        //console.log(e.get(\'target\').geometry.getCoordinates());                                        
                                         var coords = e.get(\'target\').geometry.getCoordinates();
-                                        //$( "#contacts-coordinate_x" ).val( coords[0]);
-                                        //$( "#contacts-coordinate_y" ).val( coords[1]);
+                                        $( "#aboutcompany-coordinate_x" ).val( coords[0]);
+                                        $( "#aboutcompany-coordinate_y" ).val( coords[1]);
                                         $.get("/ru/about-company/set-coordinates",
                                         {  "coordinate_x" : coords[0], "coordinate_y" : coords[1] },
                                             function(data){ }
@@ -124,12 +129,18 @@ use katzz0\yandexmaps\Canvas as YandexMaps;
        
 
             <div class="panel-footer">
-                   <?php if (!Yii::$app->request->isAjax){ ?>
-                    <div class="form-group">
-                        <?= Html::submitButton( Yii::t('app','Cancel'), ['class' => 'btn btn-primary pull-left']) ?>
-                        <?= Html::submitButton($model->isNewRecord ? Yii::t('app','Create') : Yii::t('app','Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-success pull-right']) ?>
-                    </div>
+                <div class="pull-right"> 
+                <div class="btn-group">  
+                 <?php if (!Yii::$app->request->isAjax){ ?>                         
+                     <?= Html::a( Yii::t('app','Cancel'),['index'], ['class' => 'btn btn-primary']) ?>
+                 </div>
+                 <div class="btn-group">
+                     <?= Html::submitButton($model->isNewRecord ? Yii::t('app','Create') : Yii::t('app','Save'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-success pull-right']) ?>
                 <?php } ?>
+                    
+                    </div>
+
+                </div>  
             </div>                            
     </div>
 
