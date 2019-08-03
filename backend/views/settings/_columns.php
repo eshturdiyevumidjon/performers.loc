@@ -3,11 +3,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 
 return [
-    [
-        'class' => 'kartik\grid\CheckboxColumn',
-        'width' => '20px',
-    ],
-    [
+      [
         'class' => 'kartik\grid\SerialColumn',
         'width' => '30px',
     ],
@@ -30,16 +26,13 @@ return [
     [
         'contentOptions'=>[
             'class'=>'text-center',
-            'style'=>'
-            text-align: justify;
-            word-break:break-all;
-            overflow-x;none;'
+       
         ],
         'headerOptions'=>['class'=>'text-center'],
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'value',
         'content'=>function($data){
-            return substr($data->value,0,100)."...";
+            return ($data->name);
         },
     ],
     [

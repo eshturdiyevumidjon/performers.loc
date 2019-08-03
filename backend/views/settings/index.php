@@ -40,20 +40,8 @@ CrudAsset::register($this);
             'responsive' => true,          
             'panel' => [
                 'type' => 'primary', 
-                'heading' => '<i class="glyphicon glyphicon-list"></i>'. Yii::t('app','Banners listing'),
-                'after'=>BulkButtonWidget::widget([
-                            'buttons'=>Html::a('<i class="glyphicon glyphicon-trash"></i>&nbsp;'.Yii::t('app','Delete All'),
-                                ["bulk-delete"] ,
-                                [
-                                    "class"=>"btn btn-danger btn-xs",
-                                    'role'=>'modal-remote-bulk',
-                                    'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
-                                    'data-request-method'=>'post',
-                                    'data-confirm-title'=>Yii::t('app','Are you sure?'),
-                                    'data-confirm-message'=>Yii::t('app','Are you sure want to delete this item')
-                                ]),
-                        ]).                        
-                        '<div class="clearfix"></div>',
+                'heading' => '<i class="glyphicon glyphicon-list"></i>'. Yii::t('app','Settings'),
+                'after'=>'<div class="clearfix"></div>',
             ]
         ])?>
     </div>
