@@ -30,7 +30,7 @@ $langs=backend\models\Lang::getLanguages();
             </div>
             <?php else: ?>
                 <div class="row">
-             <?= $form->field($model, 'translation_name['.$lang->url.']')->textInput(['value'=>$names[$lang->url]])->label(Yii::t('app','Name',null/*,$lang->url*/)) ?>
+             <?= $form->field($model, 'translation_name['.$lang->url.']')->textInput(['value'=>$names[$lang->url]])->label(Yii::t('app','Name',null,$lang->url)) ?>
             </div>
             <?php endif;?>    
             

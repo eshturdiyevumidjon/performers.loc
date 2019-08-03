@@ -29,6 +29,7 @@ $langs=backend\models\Lang::getLanguages();
                     [
                         'attribute'=>'fone',
                         'format'=>'raw',
+                        'label'=>Yii::t('app','Image',null,$lang->url),
                         'value'=>function($data){
                             return $data->getImage('_columns');
                         },
@@ -37,13 +38,13 @@ $langs=backend\models\Lang::getLanguages();
                     [
                         'attribute'=>'title',
                         'format'=>'html',
-                        'label'=>Yii::t('app','Title'),
+                        'label'=>Yii::t('app','Title',null,$lang->url),
                         'value'=>(($lang->url=="ru")?$model->title:$titles[$lang->url]),
                     ],
                     [
                         'attribute'=>'text',
                         'format'=>'html',
-                        'label'=>Yii::t('app','Text'),
+                        'label'=>Yii::t('app','Text',null,$lang->url),
                         'value'=>($lang->url=="ru")?$model->text:$texts[$lang->url],
                         'contentOptions' => ['class' => 'bg-red','style'=>'word-break: break-all;'],
                     ],

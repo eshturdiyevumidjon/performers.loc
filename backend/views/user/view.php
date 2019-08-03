@@ -32,7 +32,7 @@ use yii\widgets\DetailView;
             [
                 'attribute'=>'status',
                 'value'=>function($data){
-                    return $data->getStatusDescription();
+                    return $data->getStatusDescription($data->status);
                 },
             ],
             'created_at',

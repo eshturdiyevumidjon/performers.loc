@@ -29,7 +29,7 @@ $langs=backend\models\Lang::getLanguages();
                     [
                         'attribute'=>'name',
                         'format'=>'html',
-                        'label'=>Yii::t('app','Title'),
+                        'label'=>Yii::t('app','Title',null,$lang->url),
                         'value'=>(($lang->url=="ru")?$model->name:$names[$lang->url]),
                     ],
         ],

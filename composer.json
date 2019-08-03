@@ -28,6 +28,7 @@
         "kartik-v/yii2-widget-fileinput": "dev-master",
         "katzz0/yii2-yandex-maps":"dev-master",
         "wbraganca/yii2-dynamicform": "*",
+        "2amigos/yii2-ckeditor-widget": "^2.1",
         "unclead/yii2-multiple-input": "~2.0"     
     },
     "require-dev": {

@@ -72,17 +72,17 @@ $pathInfo = Yii::$app->request->pathInfo;
 
         <?php if(Yii::$app->user->identity->type!=4):?>
         <li <?= ($pathInfo == 'transports/index' ? 'class="active"' : '')?>>
-            <a href="/transports/index"><span class="fa fa-truck"></span> <span class="xn-text"><?=Yii::t('app','Transports')?></span><span class="fa fa-check"></span></a>
+            <a href="/transports/index"><span class="fa fa-truck"></span> <span class="xn-text"><?=Yii::t('app','Transports')?></span></a>
         <?php endif;?>                       
         </li>
         <li <?= ($pathInfo == 'banners/index' ? 'class="active"' : '')?>>
-            <a href="/banners/index"><span class="fa fa-flag"></span> <span class="xn-text"><?=Yii::t('app','Banners')?></span><span class="fa fa-check"></span></a>
+            <a href="/banners/index"><span class="fa fa-flag"></span> <span class="xn-text"><?=Yii::t('app','Banners')?></span></a>
         </li>
         <li <?= ($pathInfo == 'news/index' ? 'class="active"' : '')?>>
-            <a href="/news/index"><span class="fa fa-list-alt"></span> <span class="xn-text"><?=Yii::t('app','News')?></span><span class="fa fa-check"></span></a>
+            <a href="/news/index"><span class="fa fa-list-alt"></span> <span class="xn-text"><?=Yii::t('app','News')?></span></a>
         </li> 
         <li <?= ($pathInfo == 'transport-category/index' ? 'class="active"' : '')?>>
-            <a href="/transport-category/index"><span class="fa fa-list"></span> <span class="xn-text"><?=Yii::t('app','Category of transports')?></span><span class="fa fa-check"></span></a>
+            <a href="/transport-category/index"><span class="fa fa-list"></span> <span class="xn-text"><?=Yii::t('app','Category of transports')?></span></a>
         </li>           
         <?php if(Yii::$app->user->identity->type!=4&&Yii::$app->user->identity->type!=3):?>
         <li class="xn-openable <?= (($pathInfo == 'language/index') ? 'active' : '')?>">
@@ -90,6 +90,9 @@ $pathInfo = Yii::$app->request->pathInfo;
             <ul>                            
                 <li  <?= ($pathInfo == 'language/index' ? 'class="active"' : '')?>>
                             <a href="/language/index"><span class="fa fa-language"></span><?=Yii::t('app','Language')?></a>
+                </li>
+                <li  <?= ($pathInfo == 'settings/index' ? 'class="active"' : '')?>>
+                            <a href="/settings/index"><span class="fa fa-language"></span><?=Yii::t('app','Settings')?></a>
                 </li>
             </ul>
         </li>

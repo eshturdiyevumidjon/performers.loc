@@ -118,6 +118,7 @@ class NewsController extends Controller
                             if(!$model->save())
                               return [
                                 'title'=> Yii::t('app','Create'),
+                                'size'=>'large',
                                 'content'=>$this->renderAjax('create', [
                                     'model' => $model,
                                 ]),
@@ -148,6 +149,8 @@ class NewsController extends Controller
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                      'title'=> Yii::t('app','Create'),
+                    'size'=>'normal',
+
                     'content'=>'<span class="text-success">'.Yii::t('app','Complete successfully').'</span>',
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                            Html::a(Yii::t('app','Create more'),['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
@@ -156,6 +159,7 @@ class NewsController extends Controller
             }else{           
                 return [
                      'title'=> Yii::t('app','Create'),
+                     'size'=>'large',
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
 
@@ -242,6 +246,7 @@ class NewsController extends Controller
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'title'=> Yii::t('app','News'),
+                    'size'=>'normal',
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                         'titles'=>$translation_title,
@@ -255,6 +260,7 @@ class NewsController extends Controller
                            
                  return [
                     'title'=> Yii::t('app','Update'),
+                    'size'=>'large',
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                         'titles'=>$translation_title,

@@ -43,12 +43,12 @@ return [
         'headerOptions'=>['class'=>'text-center'],
     ],
    
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'type',
-        'contentOptions'=>['class'=>'text-center'],
-        'headerOptions'=>['class'=>'text-center'],
-    ],
+    // [
+    //     'class'=>'\kartik\grid\DataColumn',
+    //     'attribute'=>'type',
+    //     'contentOptions'=>['class'=>'text-center'],
+    //     'headerOptions'=>['class'=>'text-center'],
+    // ],
     [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,

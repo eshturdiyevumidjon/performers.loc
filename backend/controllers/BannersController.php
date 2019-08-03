@@ -96,12 +96,12 @@ class BannersController extends Controller
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($type)
     {
         $request = Yii::$app->request;
         $model = new Banners();  
         $langs = Lang::getLanguages();
-
+        $model->type=$type;
         if($request->isAjax){
             /*
             *   Process for ajax request
@@ -118,6 +118,7 @@ class BannersController extends Controller
                             if(!$model->save())
                               return [
                                 'title'=> Yii::t('app','Create'),
+                                'size'=>'large',
                                 'content'=>$this->renderAjax('create', [
                                     'model' => $model,
                                 ]),
@@ -147,6 +148,7 @@ class BannersController extends Controller
                 }
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
+                    'size'=>'normal',
                      'title'=> Yii::t('app','Create'),
                     'content'=>'<span class="text-success">'.Yii::t('app','Complete successfully').'</span>',
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
@@ -156,6 +158,7 @@ class BannersController extends Controller
             }else{           
                 return [
                      'title'=> Yii::t('app','Create'),
+                     'size'=>'large',
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
 
@@ -242,6 +245,7 @@ class BannersController extends Controller
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'title'=> Yii::t('app','Banners'),
+                    'size'=>'normal',
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                         'titles'=>$translation_title,
@@ -255,6 +259,7 @@ class BannersController extends Controller
                            
                  return [
                     'title'=> Yii::t('app','Update'),
+                    'size'=>'large',
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                         'titles'=>$translation_title,
@@ -268,6 +273,7 @@ class BannersController extends Controller
                            
                  return [
                     'title'=> Yii::t('app','Update'),
+                    'size'=>'large',
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                         'titles'=>$translation_title,
