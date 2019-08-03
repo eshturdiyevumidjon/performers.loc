@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use dosamigos\ckeditor\CKEditor;
+use mihaildev\ckeditor\CKEditor;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Settings */
@@ -14,11 +14,10 @@ use dosamigos\ckeditor\CKEditor;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'key')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'key')->textInput(['maxlength' => true,'disabled'=>($model->isNewRecord)?false:true]) ?>
 
     <?= $form->field($model, 'value')->widget(CKEditor::className(), [
-			        'options' => ['rows' => 20],
-			        'preset' => 'full'
+			        'editorOptions' => ['rows' => 20,'preset' => 'full']
 			    ]) ?>
 
   

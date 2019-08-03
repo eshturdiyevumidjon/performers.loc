@@ -171,6 +171,7 @@ return [
     'Coordinate Y'=>'Координата Y',
     'Phone'=>'Телефон',
     'Phone numbers'=>'Телефонные номера',
+    'Key'=>'Ключ',
 
 ];
 ?>

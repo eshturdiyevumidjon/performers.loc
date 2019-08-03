@@ -20,7 +20,7 @@ class m190803_084928_create_settings_table extends Migration
         ]);
         $this->insert('{{%settings}}',[
             'name'=>'Политика конфиденциальности',
-            'key'=>'',
+            'key'=>'politics',
             'value'=>'
                 <h1><code><strong>Политика конфиденциальности</strong></code></h1>
 

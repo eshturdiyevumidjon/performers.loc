@@ -41,7 +41,7 @@ class Settings extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => Yii::t('app','Name'),
-            'key' => 'Key',
+            'key' => Yii::t('app','Key'),
             'value' => Yii::t('app','Text'),
         ];
     }
