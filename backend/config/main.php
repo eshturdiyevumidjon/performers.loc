@@ -11,7 +11,7 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'name'=>'Itake',
+    'name'=>'iTake',
     'timeZone' => 'Asia/Tashkent',
     'defaultRoute' =>'/site/dashboard',
     'modules' => [
@@ -33,6 +33,7 @@ return [
         'i18n' => [
             'translations' => [
                 'app*' => [
+                    'basePath' => '@common/messages',
                     'class' => 'yii\i18n\PhpMessageSource',
                     'sourceLanguage' => 'en',
                     'fileMap' => [

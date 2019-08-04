@@ -76,7 +76,19 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
+    public function beforeAction($action)
+    {
+        if ($action->id == 'set-language') {
+            $this->enableCsrfValidation = false;
+        }
 
+        return parent::beforeAction($action);
+        return false;
+    }
+    public function actionSetLanguage($lang)
+    {
+        Yii::$app->language = $lang;
+    }
     /**
      * Logs in a user.
      *

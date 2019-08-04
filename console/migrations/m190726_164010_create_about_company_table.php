@@ -29,7 +29,7 @@ class m190726_164010_create_about_company_table extends Migration
          $this->insert('{{%about_company}}',array(
              'logo' => 'logo.svg',
             'name' => 'iTake',
-            'site' => 'itake.uz',
+            'site' => 'www.itake.uz',
             'phone' => '+998 94 366 66 66,+998 94 366 66 66,+998 71 266 66 66,+998 71 255 55 55',
             'email' => 'itake2019@gmail.com',
             'telegram' => '@iTakeUz',
