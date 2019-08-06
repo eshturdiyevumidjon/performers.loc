@@ -5,7 +5,7 @@
 /* @var $model \frontend\models\PasswordResetRequestForm */
 
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
+use yii\widgets\ActiveForm;
 
 $this->title = Yii::t('app','Request password reset');
 $this->params['breadcrumbs'][] = $this->title;
@@ -26,12 +26,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php endif;?>
         <div class="form_registration">
           <h1><?=$this->title?></h1>
-          <form class="tab-content input_styles">
-            <div class="form-group">
-              <input type="tel" placeholder="<?=Yii::t('app','Phone number')?>">
-            </div>
-            <button type="submit" class="btn_red"><?=Yii::t('app','Restore password')?></button>
-          </form>
+          <?php $form = ActiveForm::begin([ 'options' => ['class'=>'tab-content input_styles' ]]); ?>
+          <?= $form->field($model, 'email')->textInput(['placeholder'=>Yii::t('app','Phone number'),'style'=>'font-size:16px;','class'=>'my_input'])->label(false); ?>
+          <?= Html::submitButton( Yii::t('app','Restore password'), ['class' =>'btn_red']) ?>
+          <?php ActiveForm::end()?>
+
+        
         </div>
       </div>
 </section>

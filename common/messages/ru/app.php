@@ -56,20 +56,7 @@ return [
     'Back to dashboard'=>'Вернуться к рабочий стол',
     'Previous page'=>'Предыдущая страница',
     'Enter your login information'=>'Введите данные для входа',
-    'Phone number or email address'=>'Номер телефона или E-mail',
-    'Remember me'=>'Запомни меня',
-    'Login'=>'Вход',
-    'Signup'=>'Регистрация',
-    'Forgot your password?'=>'Забыли пароль?',
-    'Don\'t have an account yet?'=>'У вас еще нет аккаунта?',
-    'Create an account'=>'Создать аккаунт',
-    'Authorization'=>'Авторизация',
-    'Profile'=>'Профиль',
-    'Select'=>'Выберите',
-    'Navigation'=>'Навигация',
-    'More'=>'Подробнее',
-    'Message'=>'Сообщение',
-    'Surname and name / Company name'=>'Фамилия и имя/Название компании',
+    
     ''=>'',
     //transports
 
@@ -225,7 +212,25 @@ return [
     'Request password reset'=>'Восстановление пароля',
     'Restore password'=>'Восстановить пароль',
     'Code'=>'Код',
+
+    //registr
     'New password'=>'Новый пароль',
     'Confirm password'=>'Повторите пароль',
+    'Phone number or email address'=>'Номер телефона или E-mail',
+    'Remember me'=>'Запомни меня',
+    'Login'=>'Вход',
+    'Signup'=>'Регистрация',
+    'Forgot your password?'=>'Забыли пароль?',
+    'Don\'t have an account yet?'=>'У вас еще нет аккаунта?',
+    'Create an account'=>'Создать аккаунт',
+    'Authorization'=>'Авторизация',
+    'Profile'=>'Профиль',
+    'Select'=>'Выберите',
+    'Navigation'=>'Навигация',
+    'More'=>'Подробнее',
+    'Message'=>'Сообщение',
+    'Surname and name / Company name'=>'Фамилия и имя/Название компании',
+    '"Password" and "Confirm password" do not match'=>'«Пароль» и «Повторный ввод пароля» не совпадают',
+    'This email address is already taken.'=>'Этот адрес электронной почты уже занят.',
 ];
 ?>

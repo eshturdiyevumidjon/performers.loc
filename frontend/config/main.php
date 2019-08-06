@@ -11,6 +11,9 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'name'=>'iTake',
+    'language'=>'ru-Ru',
+    'defaultRoute'=>'/site/index',
+    'timeZone' => 'Asia/Tashkent',
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'i18n' => [

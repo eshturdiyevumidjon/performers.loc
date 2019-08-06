@@ -13,7 +13,10 @@ use common\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
+use frontend\models\RegisterForm;
 use frontend\models\ContactForm;
+use \yii\web\Response;
+use yii\helpers\Html;
 
 /**
  * Site controller
@@ -99,16 +102,37 @@ class SiteController extends Controller
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
+        $request = Yii::$app->request;
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            $model->password = '';
+        if($request->isAjax){
+           
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($model->load($request->post()) && $model->login()){
+               Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+                return $this->goHome();      
+            }else{    
+                $model->password = '';       
+                return [
+                    'title'=> "",
+                    'size'=>'large',
+                    'content'=>$this->renderAjax('login', [
+                        'model' => $model,
+                    ]),
+                    'footer'=>Html::submitButton('Login', ['class' => 'btn_red', 'name' => 'login-button'])
+                ];         
+            }
+        }
+        else
+        {
+            if ($model->load(Yii::$app->request->post()) && $model->login()) {
+                return $this->goBack();
+            } else {
+                $model->password = '';
 
-            return $this->render('login', [
-                'model' => $model,
-            ]);
+                return $this->render('login', [
+                    'model' => $model,
+                ]);
+            }
         }
     }
 
@@ -164,15 +188,27 @@ class SiteController extends Controller
      */
     public function actionSignup()
     {
-        $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-            return $this->goHome();
-        }
+        $request = Yii::$app->request;
+        $model = new RegisterForm();
 
-        return $this->render('signup', [
-            'model' => $model,
-        ]);
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($model->load($request->post()) && $model->signup()){
+               Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+                return $this->goHome();      
+            }else{           
+                return [
+                    'title'=> Yii::t('app','Create new user'),
+                    'size'=>'large',
+                    'content'=>$this->renderAjax('signup', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
+        
+                ];         
+            }
+        }
     }
 
     /**

@@ -20,33 +20,34 @@ $this->params['breadcrumbs'][] = $this->title;
           <ol class="breadcrumb"> 
             <li class="breadcrumb-item"><a href="/site/index"><?=Yii::t('app','Home')?></a></li>
             <?php foreach ($this->params['breadcrumbs'] as $key => $value) : ?>
-            <li class="breadcrumb-item <?=($pathInfo==$value)?'active':''?>" aria-current="page"><?=$title?></li>
+            <li class="breadcrumb-item <?=($pathInfo==$value)?'active':''?>" aria-current="page"><?=$value?></li>
             <?php endforeach; ?>
           </ol>
         </nav>
         <?php endif;?>
         <div class="form_registration">
-          <h1><?=$title?></h1>
+          <h1><?=$this->title?></h1>
           <ul class="nav tab_styles_nav">
             <li><a data-toggle="tab" class="active show" href="#ff0"><?=Yii::t('app','Performer')?></a></li>
             <li><a data-toggle="tab" href="#ff1"><?=Yii::t('app','Customer')?></a></li>
           </ul>
+    <?php $form = ActiveForm::begin(['id' => 'register-form','class'=>'tab-content input_styles']); ?>
           <form class="tab-content input_styles">
             <div id="ff0" class="tab-pane in active">
               <div class="form-group">
-                <input type="text" placeholder="<?=Yii::t('app','Surname and name / Company name')?>">
+                <?=$form->field($model,'username',$fieldOptions1)->textInput(['placeholder'=>$model->getAttributeLabel('username')])->label(false)?>
               </div>
               <div class="form-group">
-                <input type="tel" placeholder="<?=Yii::t('app','Phone number')?>">
+                <?=$form->field($model,'phone',$fieldOptions2)->textInput(['placeholder'=>$model->getAttributeLabel('phone')])->label(false)?>
               </div>
               <div class="form-group">
-                <input type="email" placeholder="E-mail">
+                <?=$form->field($model,'email',$fieldOptions2)->textInput(['placeholder'=>$model->getAttributeLabel('email')])->label(false)?>
               </div>
               <div class="form-group">
-                <input type="password" placeholder="<?=Yii::t('app','Password')?>">
+                <?=$form->field($model,'password',$fieldOptions4)->textInput(['placeholder'=>$model->getAttributeLabel('password')])->label(false)?>
               </div>
               <div class="form-group">
-                <input type="password" placeholder="<?=Yii::t('app','Confirm password')?>">
+               <?=$form->field($model,'repassword',$fieldOptions5)->textInput(['placeholder'=>$model->getAttributeLabel('repassword')])->label(false)?>
               </div>
               <div class="form-group">
                 <select name="" id="">
@@ -65,19 +66,19 @@ $this->params['breadcrumbs'][] = $this->title;
               <div class="tab-content">
                 <div id="d1" class="tab-pane in active">
                 <div class="form-group">
-                  <input type="text" placeholder="<?=Yii::t('app','Surname and name / Company name')?>">
+                  <?=$form->field($model,'username',$fieldOptions1)->textInput(['placeholder'=>$model->getAttributeLabel('username')])->label(false)?>
                 </div>
                 <div class="form-group">
-                  <input type="tel" placeholder="<?=Yii::t('app','Phone number')?>">
+                  <?=$form->field($model,'phone',$fieldOptions2)->textInput(['placeholder'=>$model->getAttributeLabel('phone')])->label(false)?>
                 </div>
                 <div class="form-group">
-                  <input type="email" placeholder="E-mail">
+                  <?=$form->field($model,'email',$fieldOptions2)->textInput(['placeholder'=>$model->getAttributeLabel('email')])->label(false)?>
                 </div>
                 <div class="form-group">
-                  <input type="password" placeholder="<?=Yii::t('app','Password')?>">
+                  <?=$form->field($model,'password',$fieldOptions4)->textInput(['placeholder'=>$model->getAttributeLabel('password')])->label(false)?>
                 </div>
                 <div class="form-group">
-                  <input type="password" placeholder="<?=Yii::t('app','Confirm password')?>">
+                  <?=$form->field($model,'repassword',$fieldOptions5)->textInput(['placeholder'=>$model->getAttributeLabel('repassword')])->label(false)?>
                 </div>
                   <div class="form-group">
                     <select name="" id="">
@@ -108,6 +109,7 @@ $this->params['breadcrumbs'][] = $this->title;
               </div>
             </div>
           </form>
+          <?php ActiveForm::end()?>
         </div>
       </div>
     </section>

@@ -12,7 +12,7 @@ use kartik\date\DatePicker;
 <div class="user-form">
 
     <?php $form = ActiveForm::begin([ 'options' => ['method' => 'post', 'enctype' => 'multipart/form-data']]); ?>
-
+    <?=$form->errorSummary($model)?>
 
  <div class="row">
         <div class="col-md-4">

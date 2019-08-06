@@ -17,6 +17,19 @@
 	.ft2{
 		padding-left: 30px;
 	}
+	.easier_item:not(.odd_e) .container {
+	    padding-left: 630px;
+	}
+	.easier_item.odd_e .container {
+	    padding-right: 630px;
+	}
+	.img_eas{
+		width: 200px;
+		height: 200px;
+	}
+	section.easier h2{
+		font-size: 38px;
+	}
 }
 @media (max-width: 991px){
 	.hdr_bottom ul li a{
@@ -52,7 +65,43 @@
 	p.adress{
 		padding-left: 20px;
 	}
-
+	.easier_item:not(.odd_e) .container{
+		padding-left: 360px;
+	}
+	.easier_item.odd_e .container{
+		padding-right: 360px;
+	}
+	.img_eas {
+	    width: 160px;
+	    height: 160px;
+	    transform: translate(0%, -50%);
+	}
+	.easier_item.odd_e{
+		background-position: center right -25%;
+	}
+	.easier_item{
+		height: auto;
+		background-position: center left -25%;
+		min-height: 250px;
+	}
+	.easier_item:not(.odd_e) .img_eas{
+	    transform: translate(-200px , -50%);
+	}
+	.img_eas img{
+		width: 70px;
+	}
+	.phone_logo{
+		display: none;
+	}
+	section.personal{
+		text-align: center;
+	}
+	.link_pers, .plays{
+		justify-content: center;
+	}
+	.link_pers a{
+		border: 1px solid rgba(255, 255, 255, 1);
+	}
 }
 @media (max-width: 576px){
 	footer{
@@ -81,7 +130,7 @@
 	.ftr_top{
 		padding-bottom: 70px;
 	}
-	.hdr_bottom .btn_red, .language_h, a.enter_to_site{
+	.hdr_bottom .btn_red, .language_h,.hdr_top a.enter_to_site{
 		display: none;
 	}
 	.hdr_top>div:nth-child(1){
@@ -176,9 +225,154 @@
 	.last_ft>div{
 		width: 100%;
 	}
-	
+	section.main_take h1{
+		line-height: 42px;
+		color: #ffffff;
+		font-size: 33px;
+		text-align: left;
+		margin-bottom: 5px;
+	}
+	section.main_take h1+p{
+		color: #ffffff;
+		font-size: 12px;
+		font-weight: 400;
+		margin-bottom: 13px;
+	}
+	.del_items{
+		height: 132px;
+	}
+	.del_items p{
+		font-size: 22px;
+		margin-bottom: 0;
+		font-weight: 600;
+	}
+	section.main_take{
+		padding-bottom: 10px;
+	}
+	section.steps_red{
+		padding-bottom: 0px;
+		padding-top: 10px;
+	}
+	.steps_item{
+		padding-top: 20px;
+		padding-bottom: 20px;
+	}
+	.steps_item h4{
+		max-width: 100%;
+	}
+	section.easier{
+		padding-top: 30px;
+	}
+	section.easier h2{
+		color: #222136;
+		font-size: 28px;
+		font-weight: 600;
+	}
+	section.easier h2.text-center{
+		margin-bottom: 25px;
+		padding: 0 15px;
+	}
+	.easier_item:not(.odd_e) .container{
+		padding-left: 35%;
+    	padding-right: 35px;
+	}
+	.easier_item{
+		min-height: 487px;
+		background-size: auto 100%;
+		background-position: right 300px center;
+		margin-bottom: 0;
+	}
+	.easier_item.odd_e {
+		background-position: left 300px center;
+	}
+	.img_eas{
+		width: 100px;
+		height: 100px;
+	    transform: translate(0);
+	    right: 75px;
+	    left: auto;
+	    top: 50px;
+	}
+	.easier_item:not(.odd_e) .img_eas{
+		transform: translate(0);
+	    left: 75px;
+	    top: 50px;
+	}
+	.easier_item .container{
+		padding-top: 120px;
+	}
+	.easier_item.odd_e .container{
+		padding-right: 35%;
+		padding-left: 35px;
+	}
+	section.personal{
+		height: 800px;
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		-ms-align-items: center;
+		align-items: center;
+		padding-top: 0;
+		padding-left: 25px;
+		padding-right: 25px;
+	}
+	section.personal h2{
+		font-size: 28px;
+		font-weight: 600;
+		line-height: 32px;
+		text-align: left;
+		margin-bottom: 12px;
+	}
+	section.personal p{
+		text-align: left;
+		font-size: 12px;
+		font-weight: 400;
+		max-width: 50%;
+		line-height: 1.2;
+	}
+	.plays{
+		-webkit-flex-direction: column;
+		-moz-flex-direction: column;
+		-ms-flex-direction: column;
+		-o-flex-direction: column;
+		flex-direction: column;
+		-ms-align-items: flex-start !important;
+		align-items: flex-start !important;
+	}
+	.link_pers{
+		-ms-align-items: flex-start !important;
+		align-items: flex-start !important;
+		justify-content: flex-start !important;
+	}
+	.plays a{
+		margin-bottom: 10px;
+	}
+	.users_btm{
+	    border-bottom: 2px solid #f0eff5;
+	    padding-top: 20px;
+	    padding-bottom: 20px;
+	}
+	header.fixed_header .user_h button.dropdown-toggle{
+		color: #222136;
+	}
+	header+section{
+		padding-top: 56px;
+	}
 }
 
+@media (max-width: 375px){
+	.easier_item:not(.odd_e) .container{
+		padding-left: 25%;
+	}
+	.easier_item:not(.odd_e) .img_eas{
+		left: 20px;
+	}
+	.img_eas{
+		right: 20px;
+	}
+}
 @media (max-width: 350px){
 	.btn_red{
 		padding: 0 10px;

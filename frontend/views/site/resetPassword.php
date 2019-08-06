@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <ol class="breadcrumb"> 
               <li class="breadcrumb-item"><a href="/site/index"><?=Yii::t('app','Home')?></a></li>
               <?php foreach ($this->params['breadcrumbs'] as $key => $value) : ?>
-              <li class="breadcrumb-item <?=($pathInfo==$value)?'active':''?>" aria-current="page"><?=$this->title?></li>
+              <li class="breadcrumb-item <?=($pathInfo==$value)?'active':''?>" aria-current="page"><?=$value?></li>
               <?php endforeach; ?>
             </ol>
           </nav>

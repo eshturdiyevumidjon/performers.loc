@@ -134,12 +134,12 @@ class User extends ActiveRecord implements IdentityInterface
         if ($this->isNewRecord) {
             $this->password_hash = Yii::$app->security->generatePasswordHash($this->auth_key);
             $this->status = 10;
-            $this->updated_at = time();
-            $this->created_at = time();      
+            $this->updated_at = (int)time();
+            $this->created_at = (int)time();      
         }
         if(!$this->isNewRecord) 
             {
-             $this->updated_at=time();
+             $this->updated_at=(int)time();
              if($this->new_password != null) {
                 $this->auth_key = $this->new_password;
                 $this->password_hash = Yii::$app->security->generatePasswordHash($this->auth_key);
