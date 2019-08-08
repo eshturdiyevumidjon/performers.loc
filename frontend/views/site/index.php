@@ -4,7 +4,7 @@
 
 $this->title = Yii::$app->name;
 ?>
- <section class="main_take" style="background-image: url(/images/glavniy_bc.jpg);">
+<section class="main_take" style="background-image: url(/images/glavniy_bg.jpg);">
       <div class="container">
         <h1><?=Yii::t('app','Urgent delivery of your goods')?></h1>
         <p><?=Yii::t('app','We connect with professional carriers near you!')?></p>

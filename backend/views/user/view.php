@@ -35,8 +35,18 @@ use yii\widgets\DetailView;
                     return $data->getStatusDescription($data->status);
                 },
             ],
-            'created_at',
-            'updated_at',
+            [
+                'attribute'=>'created_at',
+                'value'=>function($data){
+                    return $data->getCreated_at();
+                },
+            ],
+            [
+                'attribute'=>'updated_at',
+                'value'=>function($data){
+                    return $data->getUpdated_at();
+                },
+            ],
         ],
     ]) ?>
 

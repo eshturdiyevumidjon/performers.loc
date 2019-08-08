@@ -140,11 +140,12 @@ class BannersController extends Controller
                     }
                 }
                 
-                $model->file = UploadedFile::getInstance($model,'file');
-                if(!empty($model->file))
+                $model->fone = UploadedFile::getInstance($model,'fone');
+                if(!empty($model->fone))
                 {
-                    $model->file->saveAs('uploads/banners/' . $model->id.'.'.$model->file->extension);
-                    Yii::$app->db->createCommand()->update('banners', ['image' => $model->id.'.'.$model->file->extension], [ 'id' => $model->id ])->execute();
+                    $name = $model->id."-".time();
+                    $model->fone->saveAs('uploads/banners/' . $name.'.'.$model->fone->extension);
+                    Yii::$app->db->createCommand()->update('banners', ['image' => $name.'.'.$model->fone->extension], [ 'id' => $model->id ])->execute();
                 }
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
@@ -215,15 +216,17 @@ class BannersController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($model->load($request->post())){
                 $model->save();
-                $model->file = UploadedFile::getInstance($model,'file');
-                if(!empty($model->file))
+                $model->fone = UploadedFile::getInstance($model,'fone');
+                if(!empty($model->fone))
                 {   
                      if($model->image != null&&file_exists('uploads/banners/'.$model->image))
                     {
                         unlink(('uploads/banners/'.$model->image));
                     }
-                    $model->file->saveAs('uploads/banners/' . $model->id.'.'.$model->file->extension);
-                    Yii::$app->db->createCommand()->update('banners', ['image' => $model->id.'.'.$model->file->extension], [ 'id' => $model->id ])->execute();
+                    $name = $model->id."-".time();
+                  
+                    $model->fone->saveAs('uploads/banners/' . $model->id.'.'.$model->fone->extension);
+                //     Yii::$app->db->createCommand()->update('banners', ['image' => $name.'.'.$model->file->extension], [ 'id' => $model->id ])->execute();
                 }
                 foreach ($translations as $t) {
                            $t->field_value = $post["Banners"][$t->field_description][$t->language_code];
@@ -250,7 +253,6 @@ class BannersController extends Controller
                         'model' => $model,
                         'titles'=>$translation_title,
                         'texts'=>$translation_text,
-                        
                     ]),
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a(Yii::t('app','Edit'),['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])

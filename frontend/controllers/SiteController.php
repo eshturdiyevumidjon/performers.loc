@@ -144,7 +144,6 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
 
@@ -198,15 +197,24 @@ class SiteController extends Controller
                 return $this->goHome();      
             }else{           
                 return [
-                    'title'=> Yii::t('app','Create new user'),
-                    'size'=>'large',
+                    'title'=> '',
                     'content'=>$this->renderAjax('signup', [
                         'model' => $model,
                     ]),
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
+                                Html::button(Yii::t('app','Create my account'),['class'=>'btn_red','type'=>"submit"])
         
                 ];         
+            }
+        }
+        else {
+            if($model->load($request->post()) && $model->signup()){
+               Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+                return $this->goHome();      
+            }
+            else
+            {
+                return $this->render('signup',['model'=>$model]);
             }
         }
     }

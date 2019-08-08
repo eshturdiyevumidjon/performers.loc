@@ -5,8 +5,12 @@
 
 use yii\helpers\Html;
 use frontend\assets\ItakeAsset;
-
+use common\widgets\Alert;
+use yii\bootstrap\Modal;
+use johnitvn\ajaxcrud\CrudAsset; 
 ItakeAsset::register($this);
+
+CrudAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -25,6 +29,7 @@ ItakeAsset::register($this);
 
 <div class="wrap">
         <?=$this->render('header')?>
+        <?= Alert::widget() ?>
         <?= $content ?>
 </div>
 
@@ -38,3 +43,11 @@ ItakeAsset::register($this);
 </body>
 </html>
 <?php $this->endPage() ?>
+<?php Modal::begin([
+    "id"=>"ajaxCrudModal",
+    "options" => [
+        "tabindex" => false,
+    ],
+    "footer"=>"",// always need it for jquery plugin
+])?>
+<?php Modal::end(); ?>

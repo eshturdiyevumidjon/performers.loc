@@ -134,19 +134,18 @@ class User extends ActiveRecord implements IdentityInterface
         if ($this->isNewRecord) {
             $this->password_hash = Yii::$app->security->generatePasswordHash($this->auth_key);
             $this->status = 10;
-            $this->updated_at = (int)time();
-            $this->created_at = (int)time();      
+            $this->updated_at = time();
+            $this->created_at = time();      
         }
         if(!$this->isNewRecord) 
             {
-             $this->updated_at=(int)time();
+             $this->updated_at=time();
              if($this->new_password != null) {
                 $this->auth_key = $this->new_password;
                 $this->password_hash = Yii::$app->security->generatePasswordHash($this->auth_key);
             }
         }
-
-        if($this->birthday != null)
+        if($this->birthday != null)                 
             $this->birthday = \Yii::$app->formatter->asDate($this->birthday, 'php:Y-m-d');
         return parent::beforeSave($insert);
     }
@@ -154,8 +153,14 @@ class User extends ActiveRecord implements IdentityInterface
     {
         parent::afterFind();
         $this->birthday=($this->birthday)?Yii::$app->formatter->asDate($this->birthday, 'php:d.m.Y'):""; 
-        $this->created_at=Yii::$app->formatter->asDate($this->created_at, 'php:d.m.Y'); 
-        $this->updated_at=Yii::$app->formatter->asDate($this->updated_at, 'php:d.m.Y'); 
+    }
+    public function getCreated_at()
+    {
+        return Yii::$app->formatter->asDate($this->created_at, 'php:d.m.Y H:i:s'); 
+    }
+    public function getUpdated_at()
+    {
+        return Yii::$app->formatter->asDate($this->updated_at, 'php:d.m.Y H:i:s'); 
     }
     /**
      * {@inheritdoc}

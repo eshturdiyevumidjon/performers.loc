@@ -18,7 +18,7 @@ class Banners extends \yii\db\ActiveRecord
 {
     public $translation_title;
     public $translation_text;
-    public $file;
+    public $fone;
     /**
      * {@inheritdoc}
      */
@@ -35,7 +35,7 @@ class Banners extends \yii\db\ActiveRecord
     {
         return [
             [['text','title'],'required'],
-            [['file'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg',],
+            [['fone'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
             [['text'], 'string'],
             [['translation_text','translation_title'],'safe'],
             [['type'], 'integer'],
@@ -54,7 +54,7 @@ class Banners extends \yii\db\ActiveRecord
             'text' => Yii::t('app','Text'),
             'link' => Yii::t('app','Link'),
             'image' => Yii::t('app','Image'),
-            'file' => Yii::t('app','Image'),
+            'fone' => Yii::t('app','Image'),
             'type' => Yii::t('app','Type'),
         ];
     }

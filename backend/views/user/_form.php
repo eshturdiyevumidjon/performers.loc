@@ -12,8 +12,6 @@ use kartik\date\DatePicker;
 <div class="user-form">
 
     <?php $form = ActiveForm::begin([ 'options' => ['method' => 'post', 'enctype' => 'multipart/form-data']]); ?>
-    <?=$form->errorSummary($model)?>
-
  <div class="row">
         <div class="col-md-4">
            <div class="col-md-12 col-xs-12">
@@ -88,7 +86,7 @@ $(document).ready(function(){
             var reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = function(e){
-                var template = '<img style="width:100%; max-height:180px;" src="'+e.target.result+'"> ';
+                var template = '<img style="width:100%; max-height:250px;" src="'+e.target.result+'"> ';
                 $('#image').html('');
                 $('#image').append(template);
             };

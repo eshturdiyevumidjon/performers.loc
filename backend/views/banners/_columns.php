@@ -63,7 +63,9 @@ return [
                           'data-request-method'=>'post',
                           'data-toggle'=>'tooltip',
                           'data-confirm-title'=>Yii::t('app','Are you sure?'),
-                          'data-confirm-message'=>Yii::t('app','Are you sure want to delete this item')], 
+                          'data-confirm-message'=>Yii::t('app','Are you sure want to delete this item?')
+                      ], 
+
     ],
 
 ];   

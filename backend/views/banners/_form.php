@@ -22,7 +22,7 @@ $langs=backend\models\Lang::getLanguages();
             </div>
             <br>
             <div class="col-md-12">
-                <?= $form->field($model, 'file')->fileInput(['class'=>"image_input"]); ?>
+                <?= $form->field($model, 'fone')->fileInput(['class'=>"image_input"]); ?>
             </div>
         </div>
         <div class="col-md-7">

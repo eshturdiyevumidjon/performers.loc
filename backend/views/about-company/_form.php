@@ -38,13 +38,13 @@ use katzz0\yandexmaps\Canvas as YandexMaps;
 	                        <?= $form->field($model, 'logo_image')->fileInput(['class'=>"image_input"]); ?>
 	                    </div>
 	                    <div class="col-md-12">
-	                        <?= $form->field($model, 'address')->textarea(['rows' => 8]) ?>
+	                       <?= $form->field($model, 'site')->textInput(['maxlength' => true]) ?>
 	                    </div>
 	                    <div class="col-md-12">
 	              			<?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 		                </div>
 		                <div class="col-md-12">
-	                 		<?= $form->field($model, 'facebook')->textInput(['maxlength' => true]) ?>
+	                 		 <?= $form->field($model, 'address')->textarea(['rows' => 8]) ?>
 		                </div>
 		            </div>
 	            </div>
@@ -99,6 +99,8 @@ use katzz0\yandexmaps\Canvas as YandexMaps;
 	            <div class="col-md-6">
 	                 <?= $form->field($model, 'instagram')->textInput(['maxlength' => true]) ?>
 	                 <?= $form->field($model, 'telegram')->textInput(['maxlength' => true]) ?>
+	                 <?= $form->field($model, 'facebook')->textInput(['maxlength' => true]) ?>
+
 	            </div>
 	        </div>
 	        <div class="panel-footer">

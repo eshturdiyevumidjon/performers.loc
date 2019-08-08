@@ -86,36 +86,36 @@ return [
         'contentOptions'=>['class'=>'text-center'],
         'headerOptions'=>['class'=>'text-center'],
     ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'created_at',
-        'visible' => ($session['User[created_at]'] === null || $session['User[created_at]'] == 1) ? true : false,
-        'contentOptions'=>['class'=>'text-center'],
-        'headerOptions'=>['class'=>'text-center'],
-        'filter'=>DatePicker::widget([
-            'model' => $searchModel,
-            'attribute' => 'created_at',
-                'clientOptions' => [
-                    'autoclose' => true,
-                    'format' => 'dd.mm.yyyy',
-                    ]
-            ]),
-    ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'updated_at',
-        'visible' => ($session['User[updated_at]'] === null || $session['User[updated_at]'] == 1) ? true : false,
-        'contentOptions'=>['class'=>'text-center'],
-        'headerOptions'=>['class'=>'text-center'],
-        'filter'=>DatePicker::widget([
-            'model' => $searchModel,
-            'attribute' => 'updated_at',
-                'clientOptions' => [
-                    'autoclose' => true,
-                    'format' => 'dd.mm.yyyy',
-                    ]
-            ]),
-    ],
+    // [
+    //     'class'=>'\kartik\grid\DataColumn',
+    //     'attribute'=>'created_at',
+    //     'visible' => ($session['User[created_at]'] === null || $session['User[created_at]'] == 1) ? true : false,
+    //     'contentOptions'=>['class'=>'text-center'],
+    //     'headerOptions'=>['class'=>'text-center'],
+    //     'filter'=>DatePicker::widget([
+    //         'model' => $searchModel,
+    //         'attribute' => 'created_at',
+    //             'clientOptions' => [
+    //                 'autoclose' => true,
+    //                 'format' => 'dd.mm.yyyy',
+    //                 ]
+    //         ]),
+    // ],
+    // [
+    //     'class'=>'\kartik\grid\DataColumn',
+    //     'attribute'=>'updated_at',
+    //     'visible' => ($session['User[updated_at]'] === null || $session['User[updated_at]'] == 1) ? true : false,
+    //     'contentOptions'=>['class'=>'text-center'],
+    //     'headerOptions'=>['class'=>'text-center'],
+    //     'filter'=>DatePicker::widget([
+    //         'model' => $searchModel,
+    //         'attribute' => 'updated_at',
+    //             'clientOptions' => [
+    //                 'autoclose' => true,
+    //                 'format' => 'dd.mm.yyyy',
+    //                 ]
+    //         ]),
+    // ],
 
     [
         'class'    => 'kartik\grid\ActionColumn',
