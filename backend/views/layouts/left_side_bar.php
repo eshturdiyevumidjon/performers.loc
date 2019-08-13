@@ -85,7 +85,7 @@ $pathInfo = Yii::$app->request->pathInfo;
             <a href="/transport-category/index"><span class="fa fa-list"></span> <span class="xn-text"><?=Yii::t('app','Category of transports')?></span></a>
         </li>           
         <?php if(Yii::$app->user->identity->type!=4&&Yii::$app->user->identity->type!=3):?>
-        <li class="xn-openable <?= (($pathInfo == 'language/index') ? 'active' : '')?>">
+        <li class="xn-openable <?= (($pathInfo == 'language/index' || $pathInfo == 'settings/index') ? 'active' : '')?>">
             <a href="#"><span class="fa fa-gear"></span> <span class="xn-text"><?=Yii::t('app','Settings')?></span></a>
             <ul>                            
                 <li  <?= ($pathInfo == 'language/index' ? 'class="active"' : '')?>>
@@ -93,6 +93,18 @@ $pathInfo = Yii::$app->request->pathInfo;
                 </li>
                 <li  <?= ($pathInfo == 'settings/index' ? 'class="active"' : '')?>>
                             <a href="/settings/index"><span class="fa fa-language"></span><?=Yii::t('app','Settings')?></a>
+                </li>
+            </ul>
+        </li>
+
+         <li class="xn-openable <?= (($pathInfo == 'feedback/index' || $pathInfo == 'replies/index') ? 'active' : '')?>">
+            <a href="#"><span class="fa fa-gear"></span> <span class="xn-text"><?=Yii::t('app','Feedbacks')?></span></a>
+            <ul>                            
+                <li  <?= ($pathInfo == 'feedback/index' ? 'class="active"' : '')?>>
+                            <a href="/feedback/index"><span class="fa fa-inbox"></span><?=Yii::t('app','Feedbacks')?></a>
+                </li>
+                <li  <?= ($pathInfo == 'replies/index' ? 'class="active"' : '')?>>
+                            <a href="/replies/index"><span class="fa fa-reply"></span><?=Yii::t('app','Answers')?></a>
                 </li>
             </ul>
         </li>

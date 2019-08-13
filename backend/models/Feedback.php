@@ -16,6 +16,7 @@ use Yii;
  */
 class Feedback extends \yii\db\ActiveRecord
 {
+    public $feedback;
     /**
      * {@inheritdoc}
      */
@@ -27,12 +28,52 @@ class Feedback extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    
+    public function beforeSave($insert){
+        if($this->isNewRecord){
+            $this->date_cr = time();
+        }
+        return parent::beforeSave($insert);
+    }
+
+    public function getDateCreate()
+    {
+        return Yii::$app->formatter->asDate($this->date_cr, 'php:d.m.Y H:i:s'); 
+    }
+
     public function rules()
     {
         return [
-            [['date_cr'], 'safe'],
-            [['name', 'phone', 'email', 'message'], 'string', 'max' => 255],
+            [['name','message'],'required'],
+            [['date_cr','message'], 'safe'],
+            [['is_reply','is_view'],'integer'],
+            [['feedback'],'validateFor'],
+            [['name', 'phone', 'email'], 'string', 'max' => 255],
         ];
+    }
+     public function validateFor($attribute)
+    { 
+        $q=1;
+        if(strpos($this->feedback,'@')===FALSE)
+        {
+            $pattern = '/\+[0-9]{2}+[0-9]{10}/s';
+            if(!preg_match($pattern, $this->feedback)){
+                $err='Неправильный номер телефона';
+            }
+            else
+            {
+                $q = 0;
+            }
+        }
+
+        if ($q&&!filter_var($this->feedback, FILTER_VALIDATE_EMAIL)){
+            $err.=' или электронной почты';
+        }
+
+        if(isset($err))
+         {
+             $this->addError($attribute,$err);
+         }
     }
 
     /**
@@ -42,11 +83,12 @@ class Feedback extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'phone' => 'Phone',
-            'email' => 'Email',
-            'message' => 'Message',
-            'date_cr' => 'Date Cr',
+            'name' => Yii::t('app','Name'),
+            'feedback'=>Yii::t('app','Phone number or email address'),
+            'phone' => Yii::t('app','Phone number'),
+            'email' => Yii::t('app','Email'),
+            'message' => Yii::t('app','Message'),
+            'date_cr' => Yii::t('app','Date Create'),
         ];
     }
 }

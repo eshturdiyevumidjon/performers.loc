@@ -164,6 +164,7 @@ return [
     'Phone'=>'Телефон',
     'Phone numbers'=>'Телефонные номера',
     'Key'=>'Ключ',
+    'Answers'=>'Ответы',
 
     //frontent
     'Contact'=>'Контакты',
@@ -212,6 +213,8 @@ return [
     'Request password reset'=>'Восстановление пароля',
     'Restore password'=>'Восстановить пароль',
     'Code'=>'Код',
+    'Send'=>'Отправить',
+    'Message'=>'Сообщение',
 
     //registr
     'New password'=>'Новый пароль',
@@ -232,5 +235,14 @@ return [
     'Surname and name / Company name'=>'Фамилия и имя/Название компании',
     '"Password" and "Confirm password" do not match'=>'«Пароль» и «Повторный ввод пароля» не совпадают',
     'This email address is already taken.'=>'Этот адрес электронной почты уже занят.',
+    //Feedback
+    'Feedbacks listing'=>'Список отзывов',
+    'Feedbacks'=>'Отзыв',
+    'Reply'=>'Ответить',
+    'Thank you for contacting us. We will respond to you as soon as possible.'=>'
+Благодарим Вас за обращение к нам. Мы ответим вам как можно скорее.',
+    'There was an error sending your message.'=>'При отправке вашего сообщения произошла ошибка.',
+    'Registration'=>'Регистрация',
+    'Create task'=>'Создать задание',
 ];
 ?>

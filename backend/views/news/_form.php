@@ -11,7 +11,7 @@ $langs=backend\models\Lang::getLanguages();
 ?>
 
 <div class="news-form">
-
+  
     <?php $form = ActiveForm::begin([ 'options' => ['method' => 'post', 'enctype' => 'multipart/form-data']]); ?>
 
     <div class="row">

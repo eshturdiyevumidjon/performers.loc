@@ -11,13 +11,22 @@ use common\models\User;
  */
 class RegisterForm extends Model
 {
- 
     public $username;
     public $phone;
     public $email;
     public $password;
     public $repassword;
- 
+    public $code;
+
+    // public $username2;
+    // public $phone2;
+    // public $email2;
+    // public $password2;
+    // public $repassword2;
+
+    // const SCENARIO1 = 'customer';
+    // const SCENARIO2 = 'performer';
+
     /**
      * @inheritdoc
      */
@@ -25,20 +34,18 @@ class RegisterForm extends Model
     {
         return [
             ['username', 'trim'],
-            ['username', 'required'],
-            ['phone', 'required'],
             ['username', 'string', 'min' => 2, 'max' => 255],
             ['email', 'trim'],
-            ['email', 'required'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
             ['email','validateMail'],
-            ['password', 'required'],
-            ['repassword', 'required'],
             [['password', 'repassword'],'validatePassword'],
             ['password', 'string', 'min' => 6],
+            [['username','phone','email','password','repassword'],'required'/*, 'on' => self::SCENARIO1*/],
+      
         ];
     }
+
      public function attributeLabels()
     {
         return [
@@ -61,10 +68,11 @@ class RegisterForm extends Model
     }
     public function validateMail($attribute)
     { 
-        if(User::find()->where(['username'=>$this->email])->count()>0)
+        if(User::find()->where(['email'=>$this->email])->count()>0)
         $this->addError($attribute, Yii::t('app','This email address is already taken.'));        
     }
-    public function signup()
+
+     public function signup2()
     {
         if (!$this->validate()) {
             return null;
@@ -73,7 +81,7 @@ class RegisterForm extends Model
         $user->username = $this->username;
         $user->email = $this->email;
         $user->phone = $this->phone;
-        $user->type=2;
+        $user->type=4;
         $user->auth_key=$this->password;
 
         return $user->save() ? $user : null;

@@ -188,6 +188,10 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
     }
+    public static function findByPhone($phone)
+    {
+        return static::findOne(['phone' => $phone, 'status' => self::STATUS_ACTIVE]);
+    }
 
     public function getUserAvatar($for='_form'){
         if($for=='_form')
@@ -303,7 +307,18 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
-
+    public function generateCode($count_char = 4)
+    {
+        $mass = ['1','2','3','4','5','6','7','8','9','0']; 
+        $passw = ''; 
+        $count = count($mass)-1; 
+        for ($i=0; $i<$count_char; $i++) { 
+            $passw .= $mass[mt_rand(0, $count)]; 
+        } 
+        
+        $this->verification_token = $passw;
+        $this->save(); 
+    }
     public function generateEmailVerificationToken()
     {
         $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();

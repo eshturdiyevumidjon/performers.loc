@@ -14,8 +14,17 @@ use yii\widgets\DetailView;
             'name',
             'phone',
             'email:email',
-            'message',
-            'date_cr',
+             [
+                'attribute'=>'message',
+                'value'=>$model->message,
+                'contentOptions' => ['class' => 'bg-red','style'=>'word-break: break-all;'],
+            ],
+            [
+                'attribute'=>'date_cr',
+                'value'=>function($data){
+                    return $data->getDateCreate();
+                },
+            ]
         ],
     ]) ?>
 

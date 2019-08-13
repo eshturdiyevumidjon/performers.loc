@@ -8,13 +8,6 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 
-use katzz0\yandexmaps\Map;
-use katzz0\yandexmaps\JavaScript;
-use katzz0\yandexmaps\objects\Placemark;
-use katzz0\yandexmaps\Polyline;
-use katzz0\yandexmaps\Point;
-use katzz0\yandexmaps\Canvas as YandexMaps;
-
 $this->title =Yii::t('app','Contact');
 $name=Yii::$app->name;
 $company = \backend\models\AboutCompany::findOne(1);
@@ -38,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php endif;?>
         <h1><?=Yii::t('app','Contact')?></h1>
             <h4><?=Yii::t('app','Address')." ".$name?></h4>
-            <p class="adress"><img src="images/address.svg" alt=""><?=$company->address?></p>
+            <p class="adress"><img src="/images/address.svg" alt=""><?=$company->address?></p>
         <h4><?=$name." ".Yii::t('app','on the net')?></h4>
         <div class="row social_icons">
           <div class="col-lg-3 col-md-5 col-6">
@@ -57,59 +50,62 @@ $this->params['breadcrumbs'][] = $this->title;
             <a href="tel:+998 94 366 66 66"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15"><g><g><g><path fill="" d="M14.993 11.835a.725.725 0 0 1-.222.635l-2.112 2.096c-.096.106-.22.196-.374.27a1.542 1.542 0 0 1-.452.143l-.095.008a2.161 2.161 0 0 1-.207.008c-.201 0-.527-.034-.976-.103-.45-.069-1-.238-1.652-.508-.651-.27-1.39-.675-2.215-1.215-.826-.54-1.704-1.281-2.636-2.223A17.401 17.401 0 0 1 2.21 8.85 14.935 14.935 0 0 1 1.035 7a9.964 9.964 0 0 1-.667-1.54 8.172 8.172 0 0 1-.302-1.191 3.934 3.934 0 0 1-.063-.786c.01-.191.016-.297.016-.318.02-.148.068-.3.142-.453a1.19 1.19 0 0 1 .27-.373L2.543.227a.7.7 0 0 1 .509-.222c.137 0 .259.04.365.119.106.08.196.177.27.294L5.386 3.64c.095.17.122.355.08.556a.99.99 0 0 1-.27.508l-.779.778a.265.265 0 0 0-.055.104.392.392 0 0 0-.024.119c.042.222.137.476.286.762.127.254.322.564.587.929.265.365.64.786 1.128 1.262.476.487.9.866 1.27 1.136.37.27.68.468.929.595.249.127.44.204.572.23l.198.04a.379.379 0 0 0 .103-.024.265.265 0 0 0 .103-.055l.906-.921a.973.973 0 0 1 .666-.255.83.83 0 0 1 .43.096h.015l3.065 1.81c.222.138.354.312.397.524z"/></g></g></g></svg><span>+998 94 366 66 66</span></a>
           </div>
           <div class="col-6">
-            <a href="tel:+998 94 366 66 66"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="13" viewBox="0 0 15 13"><g><g clip-path="url(#clip-0403310f-7bd2-4ca9-b17c-64e51ec99131)"><g><g><path fill="" d="M7.582 2.581c2.528.025 4.111-.132 4.325 2.67h3.082C14.99.91 11.204.324 7.502.324S.015.91.015 5.25h3.058c.237-2.855 2.003-2.693 4.51-2.669z"/></g><g><path fill="" d="M1.544 6.645c.75 0 1.375.045 1.514-.693.019-.1.03-.214.03-.346H0c0 1.099.691 1.04 1.544 1.04z"/></g><g><path fill="" d="M11.927 5.606h-.029c0 .133.011.247.033.346.146.68.77.638 1.518.638.857 0 1.551.057 1.551-.984z"/></g><g><path fill="" d="M9.096 7.059a.425.425 0 1 1 0-.85.425.425 0 0 1 0 .85zm0 1.458a.425.425 0 1 1 0-.85.425.425 0 0 1 0 .85zm0 1.459a.425.425 0 1 1 0-.85.425.425 0 0 1 0 .85zm-1.75-2.917a.425.425 0 1 1 0-.85.425.425 0 0 1 0 .85zm0 1.458a.425.425 0 1 1 0-.85.425.425 0 0 1 0 .85zm0 1.459a.425.425 0 1 1 0-.85.425.425 0 0 1 0 .85zM5.595 7.059a.425.425 0 1 1 0-.85.425.425 0 0 1 0 .85zm0 1.458a.425.425 0 1 1 0-.85.425.425 0 0 1 0 .85zm0 1.459a.425.425 0 1 1 0-.85.425.425 0 0 1 0 .85zm4.826-5.118v-.436c0-.196-.225-.208-.502-.208h-.454c-.278 0-.503.012-.503.208v.667H5.753v-.667c0-.196-.225-.208-.502-.208h-.454c-.278 0-.503.012-.503.208v.817c-.73.76-3.123 3.994-3.21 4.385l.001 2.613c0 .241.196.438.438.438h11.67a.438.438 0 0 0 .438-.438V9.611c-.087-.38-2.478-3.613-3.21-4.372z"/></g></g></g></g></svg><span>+998 94 366 66 66</span></a>
-            <a href="tel:+998 94 366 66 66"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="13" viewBox="0 0 15 13"><g><g clip-path="url(#clip-0403310f-7bd2-4ca9-b17c-64e51ec99131)"><g><g><path fill="" d="M7.582 2.581c2.528.025 4.111-.132 4.325 2.67h3.082C14.99.91 11.204.324 7.502.324S.015.91.015 5.25h3.058c.237-2.855 2.003-2.693 4.51-2.669z"/></g><g><path fill="" d="M1.544 6.645c.75 0 1.375.045 1.514-.693.019-.1.03-.214.03-.346H0c0 1.099.691 1.04 1.544 1.04z"/></g><g><path fill="" d="M11.927 5.606h-.029c0 .133.011.247.033.346.146.68.77.638 1.518.638.857 0 1.551.057 1.551-.984z"/></g><g><path fill="" d="M9.096 7.059a.425.425 0 1 1 0-.85.425.425 0 0 1 0 .85zm0 1.458a.425.425 0 1 1 0-.85.425.425 0 0 1 0 .85zm0 1.459a.425.425 0 1 1 0-.85.425.425 0 0 1 0 .85zm-1.75-2.917a.425.425 0 1 1 0-.85.425.425 0 0 1 0 .85zm0 1.458a.425.425 0 1 1 0-.85.425.425 0 0 1 0 .85zm0 1.459a.425.425 0 1 1 0-.85.425.425 0 0 1 0 .85zM5.595 7.059a.425.425 0 1 1 0-.85.425.425 0 0 1 0 .85zm0 1.458a.425.425 0 1 1 0-.85.425.425 0 0 1 0 .85zm0 1.459a.425.425 0 1 1 0-.85.425.425 0 0 1 0 .85zm4.826-5.118v-.436c0-.196-.225-.208-.502-.208h-.454c-.278 0-.503.012-.503.208v.667H5.753v-.667c0-.196-.225-.208-.502-.208h-.454c-.278 0-.503.012-.503.208v.817c-.73.76-3.123 3.994-3.21 4.385l.001 2.613c0 .241.196.438.438.438h11.67a.438.438 0 0 0 .438-.438V9.611c-.087-.38-2.478-3.613-3.21-4.372z"/></g></g></g></g></svg><span>+998 94 366 66 66</span></a>
+            <a href="tel:+998 94 366 66 66"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15"><g><g><g><path fill="" d="M14.993 11.835a.725.725 0 0 1-.222.635l-2.112 2.096c-.096.106-.22.196-.374.27a1.542 1.542 0 0 1-.452.143l-.095.008a2.161 2.161 0 0 1-.207.008c-.201 0-.527-.034-.976-.103-.45-.069-1-.238-1.652-.508-.651-.27-1.39-.675-2.215-1.215-.826-.54-1.704-1.281-2.636-2.223A17.401 17.401 0 0 1 2.21 8.85 14.935 14.935 0 0 1 1.035 7a9.964 9.964 0 0 1-.667-1.54 8.172 8.172 0 0 1-.302-1.191 3.934 3.934 0 0 1-.063-.786c.01-.191.016-.297.016-.318.02-.148.068-.3.142-.453a1.19 1.19 0 0 1 .27-.373L2.543.227a.7.7 0 0 1 .509-.222c.137 0 .259.04.365.119.106.08.196.177.27.294L5.386 3.64c.095.17.122.355.08.556a.99.99 0 0 1-.27.508l-.779.778a.265.265 0 0 0-.055.104.392.392 0 0 0-.024.119c.042.222.137.476.286.762.127.254.322.564.587.929.265.365.64.786 1.128 1.262.476.487.9.866 1.27 1.136.37.27.68.468.929.595.249.127.44.204.572.23l.198.04a.379.379 0 0 0 .103-.024.265.265 0 0 0 .103-.055l.906-.921a.973.973 0 0 1 .666-.255.83.83 0 0 1 .43.096h.015l3.065 1.81c.222.138.354.312.397.524z"/></g></g></g></svg><span>+998 94 366 66 66</span></a>
+            <a href="tel:+998 94 366 66 66"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15"><g><g><g><path fill="" d="M14.993 11.835a.725.725 0 0 1-.222.635l-2.112 2.096c-.096.106-.22.196-.374.27a1.542 1.542 0 0 1-.452.143l-.095.008a2.161 2.161 0 0 1-.207.008c-.201 0-.527-.034-.976-.103-.45-.069-1-.238-1.652-.508-.651-.27-1.39-.675-2.215-1.215-.826-.54-1.704-1.281-2.636-2.223A17.401 17.401 0 0 1 2.21 8.85 14.935 14.935 0 0 1 1.035 7a9.964 9.964 0 0 1-.667-1.54 8.172 8.172 0 0 1-.302-1.191 3.934 3.934 0 0 1-.063-.786c.01-.191.016-.297.016-.318.02-.148.068-.3.142-.453a1.19 1.19 0 0 1 .27-.373L2.543.227a.7.7 0 0 1 .509-.222c.137 0 .259.04.365.119.106.08.196.177.27.294L5.386 3.64c.095.17.122.355.08.556a.99.99 0 0 1-.27.508l-.779.778a.265.265 0 0 0-.055.104.392.392 0 0 0-.024.119c.042.222.137.476.286.762.127.254.322.564.587.929.265.365.64.786 1.128 1.262.476.487.9.866 1.27 1.136.37.27.68.468.929.595.249.127.44.204.572.23l.198.04a.379.379 0 0 0 .103-.024.265.265 0 0 0 .103-.055l.906-.921a.973.973 0 0 1 .666-.255.83.83 0 0 1 .43.096h.015l3.065 1.81c.222.138.354.312.397.524z"/></g></g></g></svg><span>+998 94 366 66 66</span></a>
           </div>
         </div>
+        <div>
+          <?php $form = ActiveForm::begin(['options'=>['class'=>'contact_form input_styles']]); ?>
         
-          <form action="#" class="contact_form input_styles">
             <h1><?=Yii::t('app','Feedback form')?></h1>
-            <div class="form-group">
-              <input type="text" placeholder="<?=Yii::t('app','Name')?>">
-            </div>
-            <div class="form-group">
-              <input type="email" placeholder="<?=Yii::t('app','Phone number or email address')?>">
-            </div>
-            <div class="form-group">
-              <textarea name="" id="" cols="30" rows="10" placeholder="<?=Yii::t('app','Messsage')?>"></textarea>
-            </div>
-            <button type="submit" class="btn_red"><?=Yii::t('app','Create my account')?></button>
-          </form>
+          <?php 
+            if (isset($success)){
+                  if($save == 1)
+                    echo "<p class='alert alert-success'>$success</p>";
+                  else {
+                    echo "<p class='alert alert-warning'>$success</p>";
+                  }
+            }
+          ?>
+            <?= $form->field($model, 'name')->textInput(['autofocus' => true,'placeholder'=>Yii::t('app',$model->getAttributeLabel('Name')),'class'=>'my_input'])->label(false)?>
+            <?= $form->field($model, 'feedback')->textInput(['placeholder'=>Yii::t('app',$model->getAttributeLabel('feedback')),'class'=>'my_input'])->label(false) ?>
+            <?= $form->field($model, 'message')->textarea(['placeholder'=>Yii::t('app',$model->getAttributeLabel('Message')),'class'=>'my_input'])->label(false) ?>
+            <?= Html::submitButton(Yii::t('app','Send'), ['class'=>'btn_red']) ?>
+          <?php ActiveForm::end(); ?>
+        </div>
       </div>
       <div class="col-md-6">
-        <div style="margin-top: 100px;">
-                <?= YandexMaps::widget([
-                    'htmlOptions' => [
-                        'style' => 'height: 500px;',
-                    ],
-                    'map' => new Map('yandex_map', [
-                        'center' => [$company->coordinate_x, $company->coordinate_y],
-                        'zoom' => 12,
-                        'controls' => [Map::CONTROL_ZOOM],
-                        'behaviors' => [Map::BEHAVIOR_DRAG],
-                        'type' => "yandex#map",
-                    ],
-                        [
-                            'objects' => [
-                                new Placemark(new Point($company->coordinate_x, $company->coordinate_y), [], [
-                                    'draggable' => false,
-                                    'preset' => 'islands#dotIcon',
-                                    'iconColor' => 'red',
-                                    'events' => [
-                                        'dragend' => 'js:function (e) {
-                                        var coords = e.get(\'target\').geometry.getCoordinates();
-                                        $.get("/ru/about-company/set-coordinates",
-                                        { "coordinate_x" : coords[0], "coordinate_y" : coords[1] },
-                                            function(data){ }
-                                        );
-                                    }',
-                                    ]
-                                ])
-                            ]
-                        ])
-                ]) ?>
-              </div>
+        <div id="map">
+        </div>
+        <script>
+          function initMap () {
+            var element = document.getElementById('map');
+
+            var options = {
+              zoom : 15,
+              center:{lat:<?=$company->coordinate_x?>,lng:<?=$company->coordinate_y?>}
+            }
+
+            var myMap = new google.maps.Map(element,options);
+
+            var marker = new google.maps.Marker({
+              position:{lat:<?=$company->coordinate_x?>,lng:<?=$company->coordinate_y?>},
+              map: myMap
+            });
+
+            var InfoWindow = new google.maps.InfoWindow({
+              content: '<h1>Hello</h1>'
+            });
+
+
+            marker.addListener('click',function(){
+              InfoWindow.open(myMap, marker);
+            });
+          }
+        </script>
       </div>
     </div>
   </div>
 </section>
+<script  async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0nNC2JY5h2LxGdKCTXSXMV5ZNDrpwvvA&callback=initMap"></script>
+<script>

@@ -21,6 +21,7 @@ class ItakeAsset extends AssetBundle
       'css/swiper.min.css',
       'css/style.css',
       'css/media.css',
+      'css/mycss.css'
     ];
     public $js = [
     'js/jquery.min.js',

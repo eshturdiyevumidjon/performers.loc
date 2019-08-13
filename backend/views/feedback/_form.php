@@ -13,13 +13,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
+    <!-- <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?> -->
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'message')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'message')->textarea(['maxlength' => true,'rows' => 6]) ?>
 
-    <?= $form->field($model, 'date_cr')->textInput() ?>
+   <!--  <?= $form->field($model, 'date_cr')->textInput() ?> -->
 
   
 	<?php if (!Yii::$app->request->isAjax){ ?>

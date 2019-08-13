@@ -1,0 +1,53 @@
+.my_input:focus{
+	box-shadow: unset;
+}
+.my_input{
+	font-size:16px;
+}
+.field-loginform-rememberme::after{
+	background:none !important;
+}
+.pull-right{
+	float: right;
+}
+.pull-left{
+	float: left;
+}
+.my_modal_submit{
+	position: absolute;
+	right: 66px;
+	bottom: 70px;
+	min-width: 250px;
+	text-align: center;
+}
+.my_modal_button{
+	position: absolute;
+	right: 70px;
+	min-width: 250px;
+	text-align: center;
+}
+.backto{
+	position: absolute;
+	bottom: 13px;
+	right: 325px;
+}
+.checkbox{
+	background-color: #fff !important;
+	width:30px !important;
+	height:30px !important;
+}
+.help-block-error{
+	color: red !important;
+	text-align: center;
+}
+.help-block{
+	color: red !important;
+	text-align: center;
+}
+#loginform-rememberme{
+	width: 95% !important;
+    height: 86%;
+}
+.center{
+	text-align: center;
+}

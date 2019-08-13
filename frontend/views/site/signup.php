@@ -6,63 +6,61 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use yii\widgets\Breadcrumbs;
 $pathInfo = Yii::$app->request->pathInfo;
 $this->title = Yii::t('app','Signup');
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="form_registration">
-  <h1><?=$this->title?></h1>
-  <ul class="nav tab_styles_nav">
-    <li><a data-toggle="tab" class="active show" href="#ff0"><?=Yii::t('app','Performer')?></a></li>
-    <li><a data-toggle="tab" href="#ff1"><?=Yii::t('app','Customer')?></a></li>
-  </ul>
-
-  <form class="tab-content input_styles">
-    <div id="ff0" class="tab-pane in active">
-      <?php $form = ActiveForm::begin(['id' => 'register-form','class'=>'input_styles']); ?>
-        <?=$form->field($model,'username')->textInput(['placeholder'=>$model->getAttributeLabel('username'),'class'=>'my_input'])->label(false)?>
-        <?=$form->field($model,'phone')->textInput(['placeholder'=>$model->getAttributeLabel('phone'),'class'=>'my_input'])->label(false)?>
-        <?=$form->field($model,'email')->textInput(['placeholder'=>$model->getAttributeLabel('email'),'class'=>'my_input'])->label(false)?>
-        <?=$form->field($model,'password')->textInput(['placeholder'=>$model->getAttributeLabel('password'),'class'=>'my_input'])->label(false)?>
-       <?=$form->field($model,'repassword')->textInput(['placeholder'=>$model->getAttributeLabel('repassword'),'class'=>'my_input'])->label(false)?>
-      <button type="submit" class="btn_red"><?=Yii::t('app','Create my account')?></button>  
+<h1><?=$this->title?></h1>
+<ul class="nav  tab_styles_nav">
+  <li><a data-toggle="tab" href="#home" <?=($active == 1)?'class="active show"':''?>><?=Yii::t('app','Customer')?></a></li>
+  <li><a data-toggle="tab" href="#menu1" <?=($active == 2)?'class="active show"':''?>><?=Yii::t('app','Performer')?></a></li>
+</ul>
+<?php $form = ActiveForm::begin(['options'=>['class'=>'input_styles','id'=>'customer']]); ?>
+  <div class="tab-content">
+    <div id="home" <?=($active == 1)?'class="tab-pane in active"':'class="tab-pane fade"'?>>
+          <?=$form->field($modelCustomer,'username')->textInput(['placeholder'=>$modelCustomer->getAttributeLabel('username'),'class'=>'my_input'])->label(false)?>
+          <?=$form->field($modelCustomer,'phone')->textInput(['placeholder'=>$modelCustomer->getAttributeLabel('phone'),'class'=>'my_input'])->label(false)?>
+          <?=$form->field($modelCustomer,'email')->textInput(['placeholder'=>$modelCustomer->getAttributeLabel('email'),'class'=>'my_input'])->label(false)?>
+          <?=$form->field($modelCustomer,'password')->passwordInput(['placeholder'=>$modelCustomer->getAttributeLabel('password'),'class'=>'my_input'])->label(false)?>
+          <?=$form->field($modelCustomer,'repassword')->passwordInput(['placeholder'=>$modelCustomer->getAttributeLabel('repassword'),'class'=>'my_input'])->label(false)?>
     </div>
-
-   
-    <div id="ff1" class="tab-pane fade">
-      <ul class="nav inner_nav">
-        <li><a href="#d1" data-toggle="tab" class="active show">1</a></li>
-        <li><a href="#d2" data-toggle="tab">2</a></li>
-      </ul>
-      <div class="tab-content">
-        <div id="d1" class="tab-pane in active">
-          <?=$form->field($model,'username')->textInput(['placeholder'=>$model->getAttributeLabel('username'),'class'=>'my_input'])->label(false)?>
-          <?=$form->field($model,'phone')->textInput(['placeholder'=>$model->getAttributeLabel('phone'),'class'=>'my_input'])->label(false)?>
-          <?=$form->field($model,'email')->textInput(['placeholder'=>$model->getAttributeLabel('email'),'class'=>'my_input'])->label(false)?>
-          <?=$form->field($model,'password')->textInput(['placeholder'=>$model->getAttributeLabel('password'),'class'=>'my_input'])->label(false)?>
-          <?=$form->field($model,'repassword')->textInput(['placeholder'=>$model->getAttributeLabel('repassword'),'class'=>'my_input'])->label(false)?>
-          <button type="submit" class="btn_red"><?=Yii::t('app','Create my account')?></button>
+    <div id="menu1" <?=($active == 2)?'class="tab-pane in active"':'class="tab-pane fade"'?>>
+        <ul class="nav nav-tabs inner_nav">
+          <li><a data-toggle="tab" href="#step1" <?=($active == 1)?'class="active show"':''?> >1</a></li>
+          <li><a data-toggle="tab" href="#step2" <?=($active == 2)?'class="active show"':''?>>2</a></li>
+        </ul>
+         <div class="tab-content">
+        <div id="step1"  class="tab-pane <?=($active == 1)?'in active':'fade'?>" >
+          <?=$form->field($modelPerformer,'username')->textInput(['placeholder'=>$modelPerformer->getAttributeLabel('username'),'class'=>'my_input'])->label(false)?>
+          <?=$form->field($modelPerformer,'phone')->textInput(['placeholder'=>$modelPerformer->getAttributeLabel('phone'),'class'=>'my_input'])->label(false)?>
+          <?=$form->field($modelPerformer,'email')->textInput(['placeholder'=>$modelPerformer->getAttributeLabel('email'),'class'=>'my_input'])->label(false)?>
+          <?=$form->field($modelPerformer,'password')->passwordInput(['placeholder'=>$modelPerformer->getAttributeLabel('password'),'class'=>'my_input'])->label(false)?>
+          <?=$form->field($modelPerformer,'repassword')->passwordInput(['placeholder'=>$modelPerformer->getAttributeLabel('repassword'),'class'=>'my_input'])->label(false)?>
         </div>
-        <div id="d2" class="tab-pane fade">
+        <div id="step2" class="tab-pane <?=($active == 2)?'in active':'fade'?>">
           <label for=""><?=Yii::t('app','Verify phone number')?> </label>
           <div class="form_big_groups d-flex justify-content-between">
-            <div class="form-group">
-              <input type="tel" placeholder="<?=Yii::t('app','Phone number')?>" value="+998 90 937 86 04">
-            </div>
-            <a href="#" class="reload"><span class="aft_back"></span><img src="/images/reload.svg" alt=""></a>
+          <?=$form->field($modelPerformer,'verify_phone')->textInput(['placeholder'=>$modelPerformer->getAttributeLabel('phone'),'class'=>'my_input','value'=>$modelPerformer->phone])->label(false)?>
+            <a href="#" class="reload" id="reload"><span class="aft_back"></span><img src="/images/reload.svg" alt=""></a>
           </div>
           <div class="form-group">
-            <input type="password" placeholder="<?=Yii::t('app','Code')?>">
+          <?=$form->field($modelPerformer,'verify_code')->passwordInput(['placeholder'=>Yii::t('app','Code'),'class'=>'my_input'])->label(false)?>
+          <div class="help-block-error"><?=$error?></div>
+
 
           </div>
-          <div class="btm_form">
-            <button type="submit" class="btn_red"><?=Yii::t('app','Create my account')?></button>
-            <a href="#" class="backto"><span class="aft_back"></span><img src="images/arrow-left.svg" alt=""></a>
-          </div>
+            <a href="#" class="backto"><span class="aft_back"></span><img src="/images/arrow-left.svg" alt=""></a>
         </div>
       </div>
     </div>
-  </form>
-  <?php ActiveForm::end()?>
+  </div>
+<?php ActiveForm::end()?>
 </div>
+<?php 
+$this->registerJs(<<<JS
+    $("#reload").on("click",function(){
+      alert();
+    });
+JS
+)
+?>

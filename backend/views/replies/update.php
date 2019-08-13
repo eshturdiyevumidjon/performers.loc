@@ -3,9 +3,9 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Feedback */
+/* @var $model backend\models\Replies */
 ?>
-<div class="feedback-update">
+<div class="replies-update">
 
     <?= $this->render('_form', [
         'model' => $model,

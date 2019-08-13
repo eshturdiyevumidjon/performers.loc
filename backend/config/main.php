@@ -22,14 +22,25 @@ return [
     'language'=>'ru-RU',
     
     'components' => [
-        // 'yandexMapsApi' => [
-        //         'class' => 'mirocow\yandexmaps\Api',
-        //     ],
-        'mailer' => [
+        'mailer' => [ 
             'class' => 'yii\swiftmailer\Mailer',
-            'useFileTransport' => true,
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.gmail.com',
+                'username' => 'itake1110@gmail.com',
+                'password' => '123456itake',
+                'port' => '26',
+                'encryption' => 'ssl',
+                'streamOptions' => [ 
+                    'ssl' => [ 
+                        'allow_self_signed' => true,
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                    ],
+                ]
+            ],
         ],
-        
         'i18n' => [
             'translations' => [
                 'app*' => [

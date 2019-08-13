@@ -50,11 +50,6 @@ class ChatController extends Controller
     {
           return $this->render('main');
     }
-    public function actionTest()
-    {
-        
-          return $this->render('main');
-    }
     /**
      * Displays a single Chat model.
      * @param integer $id

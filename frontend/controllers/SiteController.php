@@ -14,9 +14,12 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\RegisterForm;
+use frontend\models\PerformerRegister;
+use frontend\models\CustomerRegister;
 use frontend\models\ContactForm;
 use \yii\web\Response;
 use yii\helpers\Html;
+use backend\models\Feedback;
 
 /**
  * Site controller
@@ -105,20 +108,19 @@ class SiteController extends Controller
         $request = Yii::$app->request;
         $model = new LoginForm();
         if($request->isAjax){
-           
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($model->load($request->post()) && $model->login()){
-               Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-                return $this->goHome();      
+               return $this->redirect(['index']);    
             }else{    
                 $model->password = '';       
                 return [
                     'title'=> "",
-                    'size'=>'large',
+                    'size'=>'normal',
                     'content'=>$this->renderAjax('login', [
                         'model' => $model,
-                    ]),
-                    'footer'=>Html::submitButton('Login', ['class' => 'btn_red', 'name' => 'login-button'])
+                    ])."<br><br>",
+                    'footer'=>Html::submitButton(Yii::t('app','Login'), ['class' => 'my_modal_submit btn_red', 'name' => 'login-button'])."<br>".
+                    Html::a(Yii::t('app','Registration'),['signup'], ['class' => 'my_modal_button btn_red','role'=>'modal-remote'])
                 ];         
             }
         }
@@ -154,15 +156,31 @@ class SiteController extends Controller
      */
     public function actionContact()
     {
-        $model = new ContactForm();
+        $model = new Feedback();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending your message.');
+            if(filter_var($model->feedback, FILTER_VALIDATE_EMAIL))
+            {
+                $model->email = $model->feedback;
             }
-
-            return $this->refresh();
+            else
+            {
+                $model->phone = $model->feedback;
+            }
+            if ($model->save()) {
+                    $success = Yii::t('app','Thank you for contacting us. We will respond to you as soon as possible.');
+                    return $this->render('contact', [
+                    'model' => $model,
+                    'success' => $success,
+                    'save'=>1,
+                ]);
+            } else {
+                    $success = Yii::t('app','There was an error sending your message.');
+                     return $this->render('contact', [
+                    'model' => $model,
+                    'success' => $success,
+                    'save'=>0,
+                ]);
+            }
         } else {
             return $this->render('contact', [
                 'model' => $model,
@@ -185,24 +203,99 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionSignup()
+  
+     public function actionSignup()
     {
         $request = Yii::$app->request;
-        $model = new RegisterForm();
+        $modelCustomer = new CustomerRegister();
+        $modelPerformer = new PerformerRegister();
+
 
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
-            if($model->load($request->post()) && $model->signup()){
-               Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-                return $this->goHome();      
-            }else{           
+            if(!empty($_POST))
+            {   
+                $modelCustomer->attributes=$_POST['CustomerRegister'];
+                $modelPerformer->attributes=$_POST['PerformerRegister'];
+                if($modelPerformer->signuped())
+                        {
+                            if($modelPerformer->valid())
+                            {
+                                $modelForm=new LoginForm();
+                                $modelForm->username=$modelPerformer->email;
+                                $modelForm->password=$modelPerformer->password;
+                                $modelForm->login();
+                                return $this->redirect(['index']);
+                            }
+                            else
+                            {
+                                 return [
+                                    'title'=> '',
+                                    'content'=>$this->renderAjax('signup', [
+                                        'modelCustomer' => $modelCustomer,
+                                        'modelPerformer' => $modelPerformer,
+                                        'error' => 'Code is not valid',
+                                        'active' => 2
+                                    ])."<br>",
+                                    'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit btn_red'])."<br>"
+                        
+                                ];  
+                            }
+                        }
+                if($modelPerformer->validate() || $modelCustomer->validate())
+                {
+
+                    if($modelCustomer->validate() && $modelCustomer->signup2()){
+                        $modelForm=new LoginForm();
+                        $modelForm->username=$modelCustomer->email;
+                        $modelForm->password=$modelCustomer->password;
+                        $modelForm->login();
+                        return $this->redirect(['index']);
+                    }
+                    else
+                    {
+                    
+                        if($modelPerformer->validate() && $modelPerformer->signup1()){
+                                 
+                                return [
+                                    'title'=> '',
+                                    'content'=>$this->renderAjax('signup', [
+                                        'modelCustomer' => $modelCustomer,
+                                        'modelPerformer' => $modelPerformer,
+                                        'active' => 2
+                                    ])."<br>",
+                                    'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit btn_red'])."<br>"
+                        
+                                ];   
+                        }
+
+                    }
+                }
+                else
+                {
+                        return [
+                        'title'=> '',
+                        'content'=>$this->renderAjax('signup', [
+                            'modelCustomer' => $modelCustomer,
+                            'modelPerformer' => $modelPerformer,
+                            'post' => $_POST,
+                            'active' => 1
+                        ])."<br>",
+                        'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit btn_red'])."<br>"
+                    ];   
+                }
+            }
+            else{           
                 return [
                     'title'=> '',
                     'content'=>$this->renderAjax('signup', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button(Yii::t('app','Create my account'),['class'=>'btn_red','type'=>"submit"])
+                        'modelCustomer' => $modelCustomer,
+                        'modelPerformer' => $modelPerformer,
+                        'post' => $_POST,
+                        'active' => 1
+
+                    ])."<br>",
+                    'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit btn_red'])."<br>"
         
                 ];         
             }
