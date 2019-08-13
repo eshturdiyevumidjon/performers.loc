@@ -14,27 +14,18 @@ use yii\bootstrap\ActiveForm;
 
 $this->title = Yii::t('app','Authorization');
 $this->params['breadcrumbs'][] = $this->title;
+print_r($post);
 ?>
-<div class="form_registration">
-     
-    <h2><?=$this->title?></h2>
    <?php $form = ActiveForm::begin(['options'=>['class'=>'input_styles']]); ?>
-        <?= $form->field($model, 'username')->textInput(['autofocus' => true,'placeholder'=>Yii::t('app','Phone number or email address'),'class'=>'my_input input_styles'])->label(false) ?>
-        <?= $form->field($model, 'password')->passwordInput(['placeholder'=>Yii::t('app',$model->getAttributeLabel('Password')),'class'=>'my_input input_styles'])->label(false) ?>
-        <div class="row" style="margin-top:-10px;">
-          <div class="col-md-6 pull-left">
-        <?= $form->field($model, 'rememberMe',['template' => '<div class="row"><div class="col-md-3 center">{input}</div><div class="col-md-9 center" >{label}</div></div>'])->input('checkbox',['class'=>'my_input']
-        )?>
+        <?= $form->field($model, 'username')->textInput(['autofocus' => true,'placeholder'=>Yii::t('app','Phone number or email address'),'class'=>'my_input'])->label(false) ?>
+        <?= $form->field($model, 'password')->passwordInput(['placeholder'=>Yii::t('app',$model->getAttributeLabel('Password')),'class'=>'my_input'])->label(false) ?>
+        <div class="d-flex align-items-center justify-content-between defau">
+          <div class="form-group_checkbox">
+              <input type="checkbox" id="sdvs" name="rememberMe" <?=($model->rememberMe)?'checked=""':''?>>
+              <label for="sdvs">Запомнить меня</label>
           </div>
-          <div class="col-md-6">
-            <div class="row">
-              <div class="col-md-12">
-             <?=Html::a(Yii::t('app','Forgot your password?'), ['request-password-reset'],
-        ['class'=>'forget_pass pull-right'])?>
-              </div>
-            </div>
+          <a href="/site/request-password-reset" class="forget_pass"><?=Yii::t('app','Forgot your password?')?></a>
           </div>
-        </div>
+      
     <?php ActiveForm::end(); ?> 
 
-</div>

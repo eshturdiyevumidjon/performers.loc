@@ -9,8 +9,6 @@ use yii\bootstrap\ActiveForm;
 $pathInfo = Yii::$app->request->pathInfo;
 $this->title = Yii::t('app','Signup');
 ?>
-<div class="form_registration">
-<h1><?=$this->title?></h1>
 <ul class="nav  tab_styles_nav">
   <li><a data-toggle="tab" href="#home" <?=($active == 1)?'class="active show"':''?>><?=Yii::t('app','Customer')?></a></li>
   <li><a data-toggle="tab" href="#menu1" <?=($active == 2)?'class="active show"':''?>><?=Yii::t('app','Performer')?></a></li>
@@ -47,7 +45,6 @@ $this->title = Yii::t('app','Signup');
           <?=$form->field($modelPerformer,'verify_code')->passwordInput(['placeholder'=>Yii::t('app','Code'),'class'=>'my_input'])->label(false)?>
           <div class="help-block-error"><?=$error?></div>
 
-
           </div>
             <a href="#" class="backto"><span class="aft_back"></span><img src="/images/arrow-left.svg" alt=""></a>
         </div>
@@ -55,7 +52,6 @@ $this->title = Yii::t('app','Signup');
     </div>
   </div>
 <?php ActiveForm::end()?>
-</div>
 <?php 
 $this->registerJs(<<<JS
     $("#reload").on("click",function(){

@@ -14,35 +14,37 @@
 	float: left;
 }
 .my_modal_submit{
-	position: absolute;
-	right: 66px;
-	bottom: 70px;
-	min-width: 250px;
-	text-align: center;
+	bottom: 80px;
+    text-align: center;
+    display: block;
+    min-width: 255px;
+    right: -255px;
+}
+.my_modal_submit2 {
+    bottom: 65px;
+    text-align: center;
+    display: block;
+    min-width: 255px;
 }
 .my_modal_button{
-	position: absolute;
-	right: 70px;
-	min-width: 250px;
-	text-align: center;
+	min-width: 255px;
+    text-align: center;
+    right: 4px;
 }
 .backto{
 	position: absolute;
 	bottom: 13px;
-	right: 325px;
+    right: 270px;
 }
-.checkbox{
-	background-color: #fff !important;
-	width:30px !important;
-	height:30px !important;
+
+.modal-footer>:not(:last-child) {
+     margin-right: 0rem !important; 
 }
 .help-block-error{
 	color: red !important;
-	text-align: center;
 }
 .help-block{
 	color: red !important;
-	text-align: center;
 }
 #loginform-rememberme{
 	width: 95% !important;
@@ -50,4 +52,32 @@
 }
 .center{
 	text-align: center;
+}
+.modal-header{
+	padding:20px;
+}
+.modal-content{
+    width: 85% !important;
+    padding: 10px;
+}
+.modal-title{
+	line-height: 0.7 !important;
+    position: absolute !important;
+    font-size: 36px !important;
+    font-weight: 600 !important;
+}
+.form-group_checkbox label {
+     position: relative; 
+    padding-left: 23px;
+    margin-bottom: 0;
+    cursor: pointer;
+    /* color: rgba(34, 33, 54, 0.45); */
+}
+.form_registration label {
+    line-height: 18px;
+    opacity: 0.6;
+    color: #222136;
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 8px;
 }

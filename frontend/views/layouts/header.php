@@ -13,11 +13,10 @@ $user=\common\models\User::find()->where(['id' => Yii::$app->user->identity->id]
         <a href="/site/index" class="logo"><img src="/images/logo.svg" alt=""></a>
         <div class="d-flex align-items-center notif">
           <div class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
+              <i class="fa fa-bars" aria-hidden="true"></i>
+              <i class="fa fa-times" aria-hidden="true"></i>
           </div>
-          <a href="#" class="notification red_notifi"><img src="/images/notification.svg" alt=""><img src="/images/notification_white.svg" alt=""></a>
+            <a href="#" class="notification"><img src="/images/notification.svg" alt=""><img src="/images/notification_white.svg" alt=""></a>
         </div>
       </div>
       <div class="d-flex align-items-center">

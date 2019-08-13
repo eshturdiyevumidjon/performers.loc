@@ -109,12 +109,24 @@ class SiteController extends Controller
         $model = new LoginForm();
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
+            $model->rememberMe = $_POST['rememberMe'];
             if($model->load($request->post()) && $model->login()){
+                return [
+                    'title'=> "Авторизация",
+                    'size'=>'normal',
+                    'width'=>'400px',
+                    'content'=>$this->renderAjax('login', [
+                        'model' => $model,
+                        'post' => $_POST,
+                    ])."<br><br>",
+                    'footer'=>Html::submitButton(Yii::t('app','Login'), ['class' => 'my_modal_submit btn_red', 'name' => 'login-button'])."<br>".
+                    Html::a(Yii::t('app','Registration'),['signup'], ['class' => 'my_modal_button btn_red','role'=>'modal-remote'])
+                ];   
                return $this->redirect(['index']);    
             }else{    
                 $model->password = '';       
                 return [
-                    'title'=> "",
+                    'title'=> "Авторизация",
                     'size'=>'normal',
                     'content'=>$this->renderAjax('login', [
                         'model' => $model,
@@ -230,14 +242,14 @@ class SiteController extends Controller
                             else
                             {
                                  return [
-                                    'title'=> '',
+                                    'title'=> Yii::t('app','Signup'),
                                     'content'=>$this->renderAjax('signup', [
                                         'modelCustomer' => $modelCustomer,
                                         'modelPerformer' => $modelPerformer,
                                         'error' => 'Code is not valid',
                                         'active' => 2
                                     ])."<br>",
-                                    'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit btn_red'])."<br>"
+                                    'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
                         
                                 ];  
                             }
@@ -258,13 +270,13 @@ class SiteController extends Controller
                         if($modelPerformer->validate() && $modelPerformer->signup1()){
                                  
                                 return [
-                                    'title'=> '',
+                                    'title'=> Yii::t('app','Signup'),
                                     'content'=>$this->renderAjax('signup', [
                                         'modelCustomer' => $modelCustomer,
                                         'modelPerformer' => $modelPerformer,
                                         'active' => 2
                                     ])."<br>",
-                                    'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit btn_red'])."<br>"
+                                    'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
                         
                                 ];   
                         }
@@ -274,20 +286,20 @@ class SiteController extends Controller
                 else
                 {
                         return [
-                        'title'=> '',
+                        'title'=> Yii::t('app','Signup'),
                         'content'=>$this->renderAjax('signup', [
                             'modelCustomer' => $modelCustomer,
                             'modelPerformer' => $modelPerformer,
                             'post' => $_POST,
                             'active' => 1
                         ])."<br>",
-                        'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit btn_red'])."<br>"
+                        'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
                     ];   
                 }
             }
             else{           
                 return [
-                    'title'=> '',
+                    'title'=> Yii::t('app','Signup'),
                     'content'=>$this->renderAjax('signup', [
                         'modelCustomer' => $modelCustomer,
                         'modelPerformer' => $modelPerformer,
@@ -295,7 +307,7 @@ class SiteController extends Controller
                         'active' => 1
 
                     ])."<br>",
-                    'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit btn_red'])."<br>"
+                    'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
         
                 ];         
             }
