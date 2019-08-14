@@ -166,6 +166,14 @@ class SiteController extends Controller
      *
      * @return mixed
      */
+    public function actionChavo()
+    {
+        return $this->render('chavo');
+    }
+    public function actionPrivacy()
+    {
+        return $this->render('privacy');
+    }
     public function actionContact()
     {
         $model = new Feedback();
@@ -179,9 +187,16 @@ class SiteController extends Controller
                 $model->phone = $model->feedback;
             }
             if ($model->save()) {
+                Yii::$app->session->setFlash('success', Yii::t('app','Thank you for contacting us. We will respond to you as soon as possible.'));
+            } else {
+                Yii::$app->session->setFlash('error', Yii::t('app','There was an error sending your message.'));
+            }
+
+            return $this->refresh();
+
+            /*if ($model->save()) {
                     $success = Yii::t('app','Thank you for contacting us. We will respond to you as soon as possible.');
                     return $this->render('contact', [
-                    'model' => $model,
                     'success' => $success,
                     'save'=>1,
                 ]);
@@ -192,7 +207,7 @@ class SiteController extends Controller
                     'success' => $success,
                     'save'=>0,
                 ]);
-            }
+            }*/
         } else {
             return $this->render('contact', [
                 'model' => $model,

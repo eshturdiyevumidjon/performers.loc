@@ -173,6 +173,7 @@ return [
     'Feedback form'=>'Форма обратной связи',
     'Create my account'=>'Создать мою учетную запись',
     'FAQ'=>'ЧаВо',
+    'Frequently Asked Questions'=>'Частые вопросы',
     'Verify phone number'=>'Подтвердите номер телефона',
     'Home'=>'Главная',
     'Service'=>'Служба поддержки',

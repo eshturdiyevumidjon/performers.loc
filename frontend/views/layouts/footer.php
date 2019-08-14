@@ -9,15 +9,15 @@
     <div class="col-lg-3 col-sm-6 ft2">
       <ul class="nav flex-column">
         <li><a href="/site/index"><?=Yii::t('app','Home')?></a></li>
-        <li><a href="#"><?=Yii::t('app','FAQ')?></a></li>
-        <li><a href="#"><?=Yii::t('app','Service')?></a></li>
+        <li><a href="/site/chavo"><?=Yii::t('app','FAQ')?></a></li>
+        <li><a href="/site/privacy"><?=Yii::t('app','Service')?></a></li>
         <li><a href="/site/contact"><?=Yii::t('app','Contact')?></a></li>
         <li><a href="#"><?=Yii::t('app','Blog')?></a></li>
       </ul>
     </div>
     <div class="col-lg-4 col-sm-6 ft3">
       <h4><?=Yii::t('app','Address')?> iTake</h4>
-      <p class="adress"><img src="/images/address.svg" alt=""><?=$company->address?></p>
+      <p class="adress"><a href="/site/contact" style="color: #fff;"><img src="/images/address.svg" alt=""><?=$company->address?></a></p>
     </div>
     <div class="col-lg-3 col-sm-6 ft4">
       <h4>iTake <?=Yii::t('app','on the net')?></h4>

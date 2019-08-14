@@ -34,9 +34,7 @@ CrudAsset::register($this);
 </div>
 
 <footer class="footer">
-    <div class="container">
         <?=$this->render('footer')?>
-    </div>
 </footer>
 
 <?php $this->endBody() ?>

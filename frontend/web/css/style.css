@@ -2018,3 +2018,115 @@ li.page-item.prev.toogle_pag svg{
 }
 
 /***********************************************************************************/
+.flex_equation{
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	padding-bottom: 60px;
+	min-height: 544px;
+}
+.equ_left{
+	flex: 0 0 350px;
+	margin-right: 30px;
+	border: 1px solid rgba(34, 33, 54, .15);
+}
+.equ_left h3{
+	padding: 15px 30px;
+	color: #ffffff;
+	font-size: 24px;
+	font-weight: 600;
+	background-color: #222136;
+	line-height: 30px;
+}
+.equ_left ul.nav li{
+	padding: 8px 0px 10px;
+	/*border-left: 1px solid 1px solid rgba(34, 33, 54, .15);*/
+	/*border-right: 1px solid 1px solid rgba(34, 33, 54, .15);*/
+	border-bottom: 1px solid rgba(34, 33, 54, .15);
+	position: relative;
+	width: 100%;
+}
+.equ_left ul.nav li a:after{
+	content: "";
+	position: absolute;
+	left: 21px;
+	top: 5px;
+	width: 13px;
+	height: 15px;
+	background: url(../images/file.svg) no-repeat;
+	background-size: contain;
+}
+.equ_left ul.nav li a{
+	color: #222136;
+	font-size: 16px;
+	font-weight: 400;
+	position: relative;
+	padding: 0 45px;
+	display: inline-block;
+}
+
+.equ_right {
+	border: 1px solid rgba(34, 33, 54, .15);
+	padding: 15px 30px;
+	background: #fff url(../images/mask.png) no-repeat left bottom;
+	background-size: auto 80%;
+	width: 100%;
+}
+.equ_right h4{
+	line-height: 31px;
+	font-size: 24px;
+	font-weight: 600;
+	margin-bottom: 15px;
+}
+.equ_right p{
+	color: rgba(34, 33, 54, 0.85);
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 22px;
+	padding-left: 30px;
+}
+
+/***********************************************************************************/
+
+.privacy{
+	max-width: 734px;
+	margin: 0 auto;
+	padding-bottom: 60px;
+}
+.privacy h1{
+	margin-bottom: 15px;
+}
+.privacy h2{
+	margin-bottom: 15px;
+	line-height: 28px;
+	font-size: 22px;
+	font-weight: 600;
+	margin-top: 60px;
+}
+.privacy p{
+	margin-bottom: 20px;
+	color: rgba(34, 33, 54, 0.85);
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 22px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***********************************************************************************/

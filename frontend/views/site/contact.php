@@ -7,12 +7,14 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
+use common\widgets\Alert;
 
 $this->title =Yii::t('app','Contact');
 $name=Yii::$app->name;
 $company = \backend\models\AboutCompany::findOne(1);
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <section class="contact">
   <div class="container">
     <div class="row">
@@ -31,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php endif;?>
         <h1><?=Yii::t('app','Contact')?></h1>
             <h4><?=Yii::t('app','Address')." ".$name?></h4>
-            <p class="adress"><img src="/images/address.svg" alt=""><?=$company->address?></p>
+            <p class="adress" onclick="showUs()"><img src="/images/address.svg" alt=""><?=$company->address?></p>
         <h4><?=$name." ".Yii::t('app','on the net')?></h4>
         <div class="row social_icons">
           <div class="col-lg-3 col-md-5 col-6">
@@ -44,30 +46,41 @@ $this->params['breadcrumbs'][] = $this->title;
           </div>
         </div>
         <h4><?=Yii::t('app','Telephone numbers')?></h4>
+        <?php $i = 0; $arr = explode(',', $company->phone); $count = count($arr)?>
         <div class="row social_icons phones">
+         <?php
+          foreach ($arr as $value){
+         ?>
           <div class="col-6">
-            <a href="tel:+998 94 366 66 66"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15"><g><g><g><path fill="" d="M14.993 11.835a.725.725 0 0 1-.222.635l-2.112 2.096c-.096.106-.22.196-.374.27a1.542 1.542 0 0 1-.452.143l-.095.008a2.161 2.161 0 0 1-.207.008c-.201 0-.527-.034-.976-.103-.45-.069-1-.238-1.652-.508-.651-.27-1.39-.675-2.215-1.215-.826-.54-1.704-1.281-2.636-2.223A17.401 17.401 0 0 1 2.21 8.85 14.935 14.935 0 0 1 1.035 7a9.964 9.964 0 0 1-.667-1.54 8.172 8.172 0 0 1-.302-1.191 3.934 3.934 0 0 1-.063-.786c.01-.191.016-.297.016-.318.02-.148.068-.3.142-.453a1.19 1.19 0 0 1 .27-.373L2.543.227a.7.7 0 0 1 .509-.222c.137 0 .259.04.365.119.106.08.196.177.27.294L5.386 3.64c.095.17.122.355.08.556a.99.99 0 0 1-.27.508l-.779.778a.265.265 0 0 0-.055.104.392.392 0 0 0-.024.119c.042.222.137.476.286.762.127.254.322.564.587.929.265.365.64.786 1.128 1.262.476.487.9.866 1.27 1.136.37.27.68.468.929.595.249.127.44.204.572.23l.198.04a.379.379 0 0 0 .103-.024.265.265 0 0 0 .103-.055l.906-.921a.973.973 0 0 1 .666-.255.83.83 0 0 1 .43.096h.015l3.065 1.81c.222.138.354.312.397.524z"/></g></g></g></svg><span>+998 94 366 66 66</span></a>
-            <a href="tel:+998 94 366 66 66"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15"><g><g><g><path fill="" d="M14.993 11.835a.725.725 0 0 1-.222.635l-2.112 2.096c-.096.106-.22.196-.374.27a1.542 1.542 0 0 1-.452.143l-.095.008a2.161 2.161 0 0 1-.207.008c-.201 0-.527-.034-.976-.103-.45-.069-1-.238-1.652-.508-.651-.27-1.39-.675-2.215-1.215-.826-.54-1.704-1.281-2.636-2.223A17.401 17.401 0 0 1 2.21 8.85 14.935 14.935 0 0 1 1.035 7a9.964 9.964 0 0 1-.667-1.54 8.172 8.172 0 0 1-.302-1.191 3.934 3.934 0 0 1-.063-.786c.01-.191.016-.297.016-.318.02-.148.068-.3.142-.453a1.19 1.19 0 0 1 .27-.373L2.543.227a.7.7 0 0 1 .509-.222c.137 0 .259.04.365.119.106.08.196.177.27.294L5.386 3.64c.095.17.122.355.08.556a.99.99 0 0 1-.27.508l-.779.778a.265.265 0 0 0-.055.104.392.392 0 0 0-.024.119c.042.222.137.476.286.762.127.254.322.564.587.929.265.365.64.786 1.128 1.262.476.487.9.866 1.27 1.136.37.27.68.468.929.595.249.127.44.204.572.23l.198.04a.379.379 0 0 0 .103-.024.265.265 0 0 0 .103-.055l.906-.921a.973.973 0 0 1 .666-.255.83.83 0 0 1 .43.096h.015l3.065 1.81c.222.138.354.312.397.524z"/></g></g></g></svg><span>+998 94 366 66 66</span></a>
+            <a href="tel:+998 94 366 66 66"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15"><g><g><g><path fill="" d="M14.993 11.835a.725.725 0 0 1-.222.635l-2.112 2.096c-.096.106-.22.196-.374.27a1.542 1.542 0 0 1-.452.143l-.095.008a2.161 2.161 0 0 1-.207.008c-.201 0-.527-.034-.976-.103-.45-.069-1-.238-1.652-.508-.651-.27-1.39-.675-2.215-1.215-.826-.54-1.704-1.281-2.636-2.223A17.401 17.401 0 0 1 2.21 8.85 14.935 14.935 0 0 1 1.035 7a9.964 9.964 0 0 1-.667-1.54 8.172 8.172 0 0 1-.302-1.191 3.934 3.934 0 0 1-.063-.786c.01-.191.016-.297.016-.318.02-.148.068-.3.142-.453a1.19 1.19 0 0 1 .27-.373L2.543.227a.7.7 0 0 1 .509-.222c.137 0 .259.04.365.119.106.08.196.177.27.294L5.386 3.64c.095.17.122.355.08.556a.99.99 0 0 1-.27.508l-.779.778a.265.265 0 0 0-.055.104.392.392 0 0 0-.024.119c.042.222.137.476.286.762.127.254.322.564.587.929.265.365.64.786 1.128 1.262.476.487.9.866 1.27 1.136.37.27.68.468.929.595.249.127.44.204.572.23l.198.04a.379.379 0 0 0 .103-.024.265.265 0 0 0 .103-.055l.906-.921a.973.973 0 0 1 .666-.255.83.83 0 0 1 .43.096h.015l3.065 1.81c.222.138.354.312.397.524z"/></g></g></g></svg><span><?=$value?></span></a>
           </div>
-          <div class="col-6">
-            <a href="tel:+998 94 366 66 66"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15"><g><g><g><path fill="" d="M14.993 11.835a.725.725 0 0 1-.222.635l-2.112 2.096c-.096.106-.22.196-.374.27a1.542 1.542 0 0 1-.452.143l-.095.008a2.161 2.161 0 0 1-.207.008c-.201 0-.527-.034-.976-.103-.45-.069-1-.238-1.652-.508-.651-.27-1.39-.675-2.215-1.215-.826-.54-1.704-1.281-2.636-2.223A17.401 17.401 0 0 1 2.21 8.85 14.935 14.935 0 0 1 1.035 7a9.964 9.964 0 0 1-.667-1.54 8.172 8.172 0 0 1-.302-1.191 3.934 3.934 0 0 1-.063-.786c.01-.191.016-.297.016-.318.02-.148.068-.3.142-.453a1.19 1.19 0 0 1 .27-.373L2.543.227a.7.7 0 0 1 .509-.222c.137 0 .259.04.365.119.106.08.196.177.27.294L5.386 3.64c.095.17.122.355.08.556a.99.99 0 0 1-.27.508l-.779.778a.265.265 0 0 0-.055.104.392.392 0 0 0-.024.119c.042.222.137.476.286.762.127.254.322.564.587.929.265.365.64.786 1.128 1.262.476.487.9.866 1.27 1.136.37.27.68.468.929.595.249.127.44.204.572.23l.198.04a.379.379 0 0 0 .103-.024.265.265 0 0 0 .103-.055l.906-.921a.973.973 0 0 1 .666-.255.83.83 0 0 1 .43.096h.015l3.065 1.81c.222.138.354.312.397.524z"/></g></g></g></svg><span>+998 94 366 66 66</span></a>
-            <a href="tel:+998 94 366 66 66"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15"><g><g><g><path fill="" d="M14.993 11.835a.725.725 0 0 1-.222.635l-2.112 2.096c-.096.106-.22.196-.374.27a1.542 1.542 0 0 1-.452.143l-.095.008a2.161 2.161 0 0 1-.207.008c-.201 0-.527-.034-.976-.103-.45-.069-1-.238-1.652-.508-.651-.27-1.39-.675-2.215-1.215-.826-.54-1.704-1.281-2.636-2.223A17.401 17.401 0 0 1 2.21 8.85 14.935 14.935 0 0 1 1.035 7a9.964 9.964 0 0 1-.667-1.54 8.172 8.172 0 0 1-.302-1.191 3.934 3.934 0 0 1-.063-.786c.01-.191.016-.297.016-.318.02-.148.068-.3.142-.453a1.19 1.19 0 0 1 .27-.373L2.543.227a.7.7 0 0 1 .509-.222c.137 0 .259.04.365.119.106.08.196.177.27.294L5.386 3.64c.095.17.122.355.08.556a.99.99 0 0 1-.27.508l-.779.778a.265.265 0 0 0-.055.104.392.392 0 0 0-.024.119c.042.222.137.476.286.762.127.254.322.564.587.929.265.365.64.786 1.128 1.262.476.487.9.866 1.27 1.136.37.27.68.468.929.595.249.127.44.204.572.23l.198.04a.379.379 0 0 0 .103-.024.265.265 0 0 0 .103-.055l.906-.921a.973.973 0 0 1 .666-.255.83.83 0 0 1 .43.096h.015l3.065 1.81c.222.138.354.312.397.524z"/></g></g></g></svg><span>+998 94 366 66 66</span></a>
-          </div>
+          <?php }?>
         </div>
         <div>
-          <?php $form = ActiveForm::begin(['options'=>['class'=>'contact_form input_styles']]); ?>
         
             <h1><?=Yii::t('app','Feedback form')?></h1>
-          <?php 
-            if (isset($success)){
-                  if($save == 1)
-                    echo "<p class='alert alert-success'>$success</p>";
-                  else {
-                    echo "<p class='alert alert-warning'>$success</p>";
-                  }
+          <?php
+            $session = Yii::$app->session;
+            $flashes = $session->getAllFlashes();
+
+            if(count($flashes) ==1 )
+            {
+              $success = $flashes[0][0];
+              $message = $flashes[0][1];
             }
-          ?>
-            <?= $form->field($model, 'name')->textInput(['autofocus' => true,'placeholder'=>Yii::t('app',$model->getAttributeLabel('Name')),'class'=>'my_input'])->label(false)?>
+            foreach ($flashes as $key => $value) {
+              if($key == 'success')
+              {
+                echo "<p class='alert alert-success'>$value</p>";
+              }
+              if($key == 'error')
+              {
+                echo "<p class='alert alert-error'>$value</p>";
+              }  
+            }
+          ?> 
+          <?php $form = ActiveForm::begin(['options'=>['class'=>'contact_form input_styles']]); ?>
+            <?= $form->field($model, 'name')->textInput(['autofocus' => true,'placeholder'=>Yii::t('app','Username'),'class'=>'my_input'])->label(false)?>
             <?= $form->field($model, 'feedback')->textInput(['placeholder'=>Yii::t('app',$model->getAttributeLabel('feedback')),'class'=>'my_input'])->label(false) ?>
             <?= $form->field($model, 'message')->textarea(['placeholder'=>Yii::t('app',$model->getAttributeLabel('Message')),'class'=>'my_input'])->label(false) ?>
             <?= Html::submitButton(Yii::t('app','Send'), ['class'=>'btn_red']) ?>
@@ -78,6 +91,27 @@ $this->params['breadcrumbs'][] = $this->title;
         <div id="map">
         </div>
         <script>
+          function showUs () {
+            var element = document.getElementById('map');
+
+            var options = {
+              zoom : 15,
+              center:{lat:<?=$company->coordinate_x?>,lng:<?=$company->coordinate_y?>}
+            }
+
+            var myMap = new google.maps.Map(element,options);
+
+            var marker = new google.maps.Marker({
+              position:{lat:<?=$company->coordinate_x?>,lng:<?=$company->coordinate_y?>},
+              map: myMap
+            });
+
+            var InfoWindow = new google.maps.InfoWindow({
+              content: '<?=$company->address?>'
+            });
+
+              InfoWindow.open(myMap, marker);
+          }
           function initMap () {
             var element = document.getElementById('map');
 
@@ -94,7 +128,7 @@ $this->params['breadcrumbs'][] = $this->title;
             });
 
             var InfoWindow = new google.maps.InfoWindow({
-              content: '<h1>Hello</h1>'
+              content: '<?=$company->address?>'
             });
 
 
@@ -108,4 +142,3 @@ $this->params['breadcrumbs'][] = $this->title;
   </div>
 </section>
 <script  async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0nNC2JY5h2LxGdKCTXSXMV5ZNDrpwvvA&callback=initMap"></script>
-<script>

@@ -59,8 +59,8 @@ $user=\common\models\User::find()->where(['id' => Yii::$app->user->identity->id]
       <div class="d-flex justify-content-between align-items-center">
         <ul class="nav">
           <li><a href="/site/index" class="active"><?=Yii::t('app','Home')?></a></li>
-          <li><a href="#"><?=Yii::t('app','FAQ')?></a></li>
-          <li><a href="#"><?=Yii::t('app','Service')?></a></li>
+          <li><a href="/site/chavo"><?=Yii::t('app','FAQ')?></a></li>
+          <li><a href="/site/privacy"><?=Yii::t('app','Service')?></a></li>
           <li><a href="/site/contact"><?=Yii::t('app','Contact')?></a></li>
           <li><a href="#"><?=Yii::t('app','Blog')?></a></li>
         </ul>
