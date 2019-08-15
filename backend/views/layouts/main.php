@@ -10,6 +10,8 @@ use backend\assets\AppAsset;
 use backend\assets\JoliAsset;
 use common\models\User;
 
+$serverName = Yii::$app->params['serverName'];
+
 if (class_exists('AppAsset')) {
         AppAsset::register($this);
     } else {
@@ -17,8 +19,8 @@ if (class_exists('AppAsset')) {
 }
 {
         $session = Yii::$app->session;
-        if( isset($session['theme']) ) $theme = $session['theme'];
-        else $theme = '/css/theme-default.css';
+        if( isset($session['theme']) ) $theme = $serverName . $session['theme'];
+        else $theme = $serverName . '/css/theme-default.css';
 
         if($session['st_sb_toggled'] != null) $st_sb_toggled = $session['st_sb_toggled'];
         else $st_sb_toggled = 0;

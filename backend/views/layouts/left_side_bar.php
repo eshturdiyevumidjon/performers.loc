@@ -2,6 +2,7 @@
 use yii\helpers\Url;
 use backend\models\Lang;
 $pathInfo = Yii::$app->request->pathInfo;
+$serverName = Yii::$app->params['serverName'];
 ?>
 <div class="page-sidebar">
     <ul class="x-navigation">
@@ -11,11 +12,11 @@ $pathInfo = Yii::$app->request->pathInfo;
         </li>
         <li class="xn-profile">
             <a href="#" class="profile-mini">
-                <img src="/extra/images/users/avatar.jpg" alt="John Doe"/>
+                <img src="<?=$serverName?>/extra/images/users/avatar.jpg" alt="John Doe"/>
             </a>
             <div class="profile">
                 <div class="profile-image">
-                    <img src="/extra/images/users/avatar.jpg" alt="John Doe"/>
+                    <img src="<?=$serverName?>/extra/images/users/avatar.jpg" alt="John Doe"/>
                 </div>
                 <div class="profile-data">
                     <div class="profile-data-name"><?=Yii::$app->user->identity->username?></div>
