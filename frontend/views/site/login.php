@@ -11,10 +11,8 @@ use yii\bootstrap\ActiveForm;
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\LoginForm */
 
-
 $this->title = Yii::t('app','Authorization');
 $this->params['breadcrumbs'][] = $this->title;
-print_r($post);
 ?>
    <?php $form = ActiveForm::begin(['options'=>['class'=>'input_styles']]); ?>
         <?= $form->field($model, 'username')->textInput(['autofocus' => true,'placeholder'=>Yii::t('app','Phone number or email address'),'class'=>'my_input'])->label(false) ?>

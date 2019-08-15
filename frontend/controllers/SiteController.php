@@ -82,6 +82,7 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
+
     public function beforeAction($action)
     {
         if ($action->id == 'set-language') {
@@ -91,10 +92,12 @@ class SiteController extends Controller
         return parent::beforeAction($action);
         return false;
     }
+
     public function actionSetLanguage($lang)
     {
         Yii::$app->language = $lang;
     }
+
     /**
      * Logs in a user.
      *
@@ -111,18 +114,8 @@ class SiteController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             $model->rememberMe = $_POST['rememberMe'];
             if($model->load($request->post()) && $model->login()){
-                return [
-                    'title'=> "Авторизация",
-                    'size'=>'normal',
-                    'width'=>'400px',
-                    'content'=>$this->renderAjax('login', [
-                        'model' => $model,
-                        'post' => $_POST,
-                    ])."<br><br>",
-                    'footer'=>Html::submitButton(Yii::t('app','Login'), ['class' => 'my_modal_submit btn_red', 'name' => 'login-button'])."<br>".
-                    Html::a(Yii::t('app','Registration'),['signup'], ['class' => 'my_modal_button btn_red','role'=>'modal-remote'])
-                ];   
-               return $this->redirect(['index']);    
+                 
+               return $this->redirect(['/profile/personal-cabinet']);    
             }else{    
                 $model->password = '';       
                 return [
@@ -155,6 +148,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
+
     public function actionLogout()
     {
         Yii::$app->user->logout();
@@ -166,14 +160,19 @@ class SiteController extends Controller
      *
      * @return mixed
      */
+    
     public function actionChavo()
     {
-        return $this->render('chavo');
+        $chavos = \backend\models\Chavo::find()->all();
+        return $this->render('chavo',['chavos' => $chavos]);
     }
+
     public function actionPrivacy()
     {
-        return $this->render('privacy');
+        $text = \backend\models\Settings::findOne(1)->value;
+        return $this->render('privacy',['text' => $text]);
     }
+
     public function actionContact()
     {
         $model = new Feedback();
@@ -193,21 +192,6 @@ class SiteController extends Controller
             }
 
             return $this->refresh();
-
-            /*if ($model->save()) {
-                    $success = Yii::t('app','Thank you for contacting us. We will respond to you as soon as possible.');
-                    return $this->render('contact', [
-                    'success' => $success,
-                    'save'=>1,
-                ]);
-            } else {
-                    $success = Yii::t('app','There was an error sending your message.');
-                     return $this->render('contact', [
-                    'model' => $model,
-                    'success' => $success,
-                    'save'=>0,
-                ]);
-            }*/
         } else {
             return $this->render('contact', [
                 'model' => $model,
@@ -252,7 +236,7 @@ class SiteController extends Controller
                                 $modelForm->username=$modelPerformer->email;
                                 $modelForm->password=$modelPerformer->password;
                                 $modelForm->login();
-                                return $this->redirect(['index']);
+                                return $this->redirect(['personal-cabinet']);
                             }
                             else
                             {
@@ -277,7 +261,7 @@ class SiteController extends Controller
                         $modelForm->username=$modelCustomer->email;
                         $modelForm->password=$modelCustomer->password;
                         $modelForm->login();
-                        return $this->redirect(['index']);
+                        return $this->redirect(['personal-cabinet']);
                     }
                     else
                     {
@@ -344,19 +328,18 @@ class SiteController extends Controller
      *
      * @return mixed
      */
+
     public function actionRequestPasswordReset()
     {
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
                 Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
-
-                return $this->goHome();
+                return $this->refresh();
             } else {
                 Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
             }
         }
-
         return $this->render('requestPasswordResetToken', [
             'model' => $model,
         ]);
@@ -369,6 +352,7 @@ class SiteController extends Controller
      * @return mixed
      * @throws BadRequestHttpException
      */
+
     public function actionResetPassword($token)
     {
         try {
@@ -433,4 +417,6 @@ class SiteController extends Controller
             'model' => $model
         ]);
     }
+
+   
 }

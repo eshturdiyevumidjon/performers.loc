@@ -16,6 +16,26 @@ return [
     'timeZone' => 'Asia/Tashkent',
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
+        // 'mailer' => [ 
+        //     'class' => 'yii\swiftmailer\Mailer',
+        //     'useFileTransport' => false,
+        //     'transport' => [
+        //         'class' => 'Swift_SmtpTransport',
+        //         'host' => 'smtp.gmail.com',
+        //         'username' => 'itake1110@gmail.com',
+        //         'password' => '123456itake',
+        //         'port' => '465',
+        //         'encryption' => 'ssl',
+               
+        //     ],
+        // ],
+        'mail' => [
+
+            'class' => 'yii\swiftmailer\Mailer',
+
+             'useFileTransport'=>'false'
+
+         ],
         'i18n' => [
             'translations' => [
                 'app*' => [

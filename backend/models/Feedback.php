@@ -44,8 +44,9 @@ class Feedback extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name','message','feedback'],'required'],
+            [['name','message','email'],'required'],
             [['date_cr','message'], 'safe'],
+            [['email'],'email'],
             [['is_reply','is_view'],'integer'],
             [['feedback'],'validateFor'],
             [['name', 'phone', 'email'], 'string', 'max' => 255],

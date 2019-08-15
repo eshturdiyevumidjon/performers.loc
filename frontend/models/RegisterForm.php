@@ -18,15 +18,6 @@ class RegisterForm extends Model
     public $repassword;
     public $code;
 
-    // public $username2;
-    // public $phone2;
-    // public $email2;
-    // public $password2;
-    // public $repassword2;
-
-    // const SCENARIO1 = 'customer';
-    // const SCENARIO2 = 'performer';
-
     /**
      * @inheritdoc
      */

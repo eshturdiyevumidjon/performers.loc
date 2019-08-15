@@ -240,10 +240,15 @@ return [
     'Feedbacks listing'=>'Список отзывов',
     'Feedbacks'=>'Отзыв',
     'Reply'=>'Ответить',
-    'Thank you for contacting us. We will respond to you as soon as possible.'=>'
-Благодарим Вас за обращение к нам. Мы ответим вам как можно скорее.',
+    'Thank you for contacting us. We will respond to you as soon as possible.'=>'Благодарим Вас за обращение к нам. Мы ответим вам как можно скорее.',
     'There was an error sending your message.'=>'При отправке вашего сообщения произошла ошибка.',
     'Registration'=>'Регистрация',
-    'Create task'=>'Создать задание',
+    'Create Task'=>'Создать задание',
+    'Personal Cabinet'=>'Личный кабинет',
+    'My Orders'=>'Мои заказы',
+    'Past Orders'=>'Прошедшие заказы',
+    'Edit Account'=>'Редактировать данные',
+    'Adding Drivers'=>'Добавление водителей',
+    'Edit Profile'=>'Редактирование профиля',
 ];
 ?>

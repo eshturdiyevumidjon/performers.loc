@@ -20,20 +20,20 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
       <div class="col-md-6">
        <?php
-              if(count($this->params['breadcrumbs'])>0):
-              ?>
-              <nav aria-label="breadcrumb" class="breadcrumb_nav">
-                <ol class="breadcrumb"> 
-                  <li class="breadcrumb-item"><a href="/site/index"><?=Yii::t('app','Home')?></a></li>
-                  <?php foreach ($this->params['breadcrumbs'] as $key => $value) : ?>
-                  <li class="breadcrumb-item <?=($pathInfo==$value)?'active':''?>" aria-current="page"><?=$this->title?></li>
-                  <?php endforeach; ?>
-                </ol>
-              </nav>
+        if(count($this->params['breadcrumbs'])>0):
+        ?>
+        <nav aria-label="breadcrumb" class="breadcrumb_nav">
+          <ol class="breadcrumb"> 
+            <li class="breadcrumb-item"><a href="/site/index"><?=Yii::t('app','Home')?></a></li>
+            <?php foreach ($this->params['breadcrumbs'] as $key => $value) : ?>
+            <li class="breadcrumb-item <?=($pathInfo==$value)?'active':''?>" aria-current="page"><?=$this->title?></li>
+            <?php endforeach; ?>
+          </ol>
+        </nav>
         <?php endif;?>
         <h1><?=Yii::t('app','Contact')?></h1>
             <h4><?=Yii::t('app','Address')." ".$name?></h4>
-            <p class="adress" onclick="showUs()"><img src="/images/address.svg" alt=""><?=$company->address?></p>
+            <p class="adress"><img src="/images/address.svg" alt=""><?=$company->address?></p>
         <h4><?=$name." ".Yii::t('app','on the net')?></h4>
         <div class="row social_icons">
           <div class="col-lg-3 col-md-5 col-6">
@@ -81,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
           ?> 
           <?php $form = ActiveForm::begin(['options'=>['class'=>'contact_form input_styles']]); ?>
             <?= $form->field($model, 'name')->textInput(['autofocus' => true,'placeholder'=>Yii::t('app','Username'),'class'=>'my_input'])->label(false)?>
-            <?= $form->field($model, 'feedback')->textInput(['placeholder'=>Yii::t('app',$model->getAttributeLabel('feedback')),'class'=>'my_input'])->label(false) ?>
+            <?= $form->field($model, 'email')->textInput(['placeholder'=>Yii::t('app','Email address'),'class'=>'my_input'])->label(false) ?>
             <?= $form->field($model, 'message')->textarea(['placeholder'=>Yii::t('app',$model->getAttributeLabel('Message')),'class'=>'my_input'])->label(false) ?>
             <?= Html::submitButton(Yii::t('app','Send'), ['class'=>'btn_red']) ?>
           <?php ActiveForm::end(); ?>
@@ -91,27 +91,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <div id="map">
         </div>
         <script>
-          function showUs () {
-            var element = document.getElementById('map');
-
-            var options = {
-              zoom : 15,
-              center:{lat:<?=$company->coordinate_x?>,lng:<?=$company->coordinate_y?>}
-            }
-
-            var myMap = new google.maps.Map(element,options);
-
-            var marker = new google.maps.Marker({
-              position:{lat:<?=$company->coordinate_x?>,lng:<?=$company->coordinate_y?>},
-              map: myMap
-            });
-
-            var InfoWindow = new google.maps.InfoWindow({
-              content: '<?=$company->address?>'
-            });
-
-              InfoWindow.open(myMap, marker);
-          }
           function initMap () {
             var element = document.getElementById('map');
 

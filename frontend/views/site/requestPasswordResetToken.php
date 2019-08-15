@@ -24,10 +24,30 @@ $this->params['breadcrumbs'][] = $this->title;
             </ol>
           </nav>
         <?php endif;?>
+        <?php
+            $session = Yii::$app->session;
+            $flashes = $session->getAllFlashes();
+
+            if(count($flashes) ==1 )
+            {
+              $success = $flashes[0][0];
+              $message = $flashes[0][1];
+            }
+            foreach ($flashes as $key => $value) {
+              if($key == 'success')
+              {
+                echo "<p class='alert alert-success'>$value</p>";
+              }
+              if($key == 'error')
+              {
+                echo "<p class='alert alert-error'>$value</p>";
+              }  
+            }
+          ?> 
         <div class="form_registration">
           <h1><?=$this->title?></h1>
           <?php $form = ActiveForm::begin([ 'options' => ['class'=>'tab-content input_styles' ]]); ?>
-          <?= $form->field($model, 'email')->textInput(['placeholder'=>Yii::t('app','Phone number'),'style'=>'font-size:16px;','class'=>'my_input'])->label(false); ?>
+          <?= $form->field($model, 'email')->textInput(['placeholder'=>Yii::t('app','Email address'),'style'=>'font-size:16px;','class'=>'my_input'])->label(false); ?>
           <?= Html::submitButton( Yii::t('app','Restore password'), ['class' =>'btn_red']) ?>
           <?php ActiveForm::end()?>
 
