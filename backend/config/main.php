@@ -14,13 +14,16 @@ return [
     'name'=>'iTake',
     'timeZone' => 'Asia/Tashkent',
     'defaultRoute' =>'/site/dashboard',
+    'language'=>'en',
     'modules' => [
-    'gridview' =>  [
-        'class' => '\kartik\grid\Module'
-        ]       
+             'gridview' =>  [
+            'class' => '\kartik\grid\Module'
+            ] ,
+            
+            // 'translations' => [
+            //     'class' => 'common\modules\translations\modules\admin\Module'
+            // ]
     ],
-    'language'=>'ru-RU',
-    
     'components' => [
         'mailer' => [ 
             'class' => 'yii\swiftmailer\Mailer',
@@ -44,6 +47,7 @@ return [
                 ]
             ],
         ],
+      
         'i18n' => [
             'translations' => [
                 'app*' => [

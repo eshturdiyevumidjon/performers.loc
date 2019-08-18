@@ -1313,7 +1313,7 @@ body .carta_d #map{
 	width: 100%;
 	height: 100%;
 }
-.download_photos button{
+/*.download_photos button{
 	cursor: pointer;
 	width: 22px;
 	height: 22px;
@@ -1335,17 +1335,17 @@ body .carta_d #map{
 	padding: 0;
 	outline: none;
 	z-index: 3;
-}
+}*/
 .download_photos .remove_photo{
 	display: none;
 }
-.download_photos.added .remove_photo{
+/*.download_photos.added .remove_photo{
 	display: -webkit-flex;
 	display: -moz-flex;
 	display: -ms-flex;
 	display: -o-flex;
 	display: flex;
-}
+}*/
 .download_photos.added .add_photo{
 	display: none;
 }

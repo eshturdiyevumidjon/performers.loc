@@ -70,11 +70,16 @@ $serverName = Yii::$app->params['serverName'];
                 </li>
             </ul>
         </li>  
-
-        <?php if(Yii::$app->user->identity->type!=4):?>
-        <li <?= ($pathInfo == 'transports/index' ? 'class="active"' : '')?>>
-            <a href="/transports/index"><span class="fa fa-truck"></span> <span class="xn-text"><?=Yii::t('app','Transports')?></span></a>
-        <?php endif;?>                       
+        <li class="xn-openable <?= (($pathInfo == 'transports/index' || $pathInfo == 'drivers/index') ? 'active' : '')?>">
+            <a href="#"><span class="fa fa-gear"></span> <span class="xn-text"><?=Yii::t('app','Transports')?></span></a>
+            <ul>                            
+                <li  <?= ($pathInfo == 'transports/index' ? 'class="active"' : '')?>>
+                            <a href="/transports/index"><span class="fa fa-truck"></span><?=Yii::t('app','Transports')?></a>
+                </li>
+                <li  <?= ($pathInfo == 'drivers/index' ? 'class="active"' : '')?>>
+                            <a href="/drivers/index"><span class="fa fa-users"></span><?=Yii::t('app','Drivers')?></a>
+                </li>
+            </ul>
         </li>
         <li <?= ($pathInfo == 'banners/index' ? 'class="active"' : '')?>>
             <a href="/banners/index"><span class="fa fa-flag"></span> <span class="xn-text"><?=Yii::t('app','Banners')?></span></a>

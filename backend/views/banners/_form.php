@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use kartik\file\FileInput;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Banners */
 /* @var $form yii\widgets\ActiveForm */
@@ -13,6 +13,9 @@ $langs=backend\models\Lang::getLanguages();
 <div class="banners-form">
 
     <?php $form = ActiveForm::begin([ 'options' => ['method' => 'post', 'enctype' => 'multipart/form-data']]); ?>
+     <?= $form->field($model, 'fone')->widget(FileInput::classname(), [
+        'options' => ['accept' => 'image/*'],
+    ]);?>
     <div class="row">
         <div class="col-md-5">
             <div class="col-md-12">
@@ -25,6 +28,8 @@ $langs=backend\models\Lang::getLanguages();
                 <?= $form->field($model, 'fone')->fileInput(['class'=>"image_input"]); ?>
             </div>
         </div>
+     
+
         <div class="col-md-7">
               <ul class="nav nav-tabs" style="margin-top:2px;">
                   <?php foreach($langs as $lang):?>

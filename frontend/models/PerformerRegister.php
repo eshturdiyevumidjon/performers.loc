@@ -74,14 +74,24 @@ class PerformerRegister extends Model
         $user->phone = $this->phone;
         $user->type=3;
         $user->generateCode();
-        $user->auth_key=$this->password;
+        $user->auth_key=($this->password);
+
+        Yii::$app
+        ->mailer
+        ->compose()
+        ->setFrom(['itake1110@gmail.com' => Yii::$app->name . ' robot'])
+        ->setTo($user->email)
+        ->setSubject('Verify account for ' . Yii::$app->name)
+        ->setHtmlBody('<b>'.$user->confirmation_code.'</b>')
+        ->send();
+
         return $user->save() ? $user : null;
     }
     public function valid()
 	{
 	 	$user = User::find()->where(['email' => $this->email,'username' => $this->username, 'type' => 3, 'phone' => $this->phone])->one();
 
-		return    $user->verification_token == $this->verify_code;
+		return    $user->confirmation_code == $this->verify_code;
 	}
 
 }

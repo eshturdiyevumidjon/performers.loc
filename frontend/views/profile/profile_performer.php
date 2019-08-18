@@ -2,8 +2,8 @@
 <div class="container">
   <nav aria-label="breadcrumb" class="breadcrumb_nav">
     <ol class="breadcrumb"> 
-      <li class="breadcrumb-item"><a href="#">Главная</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Мои активные задачи</li>
+      <li class="breadcrumb-item"><a href="/site/index">Главная</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Личный кабинет</li>
     </ol>
   </nav>
   <h1>Личный кабинет</h1>
@@ -304,7 +304,7 @@
           <span>4,5</span>
         </div>
         <div class="btn_dor">
-          <a href="/profile/edit-profile" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Edit Account')?></a>
+          <a href="/profile/edit-profile?id=<?=$user->id?>" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Edit Account')?></a>
             <a href="/profile/add-autos" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Adding Drivers')?></a>
       </div>
       <div class="gree_moder">

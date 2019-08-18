@@ -39,7 +39,6 @@ class PasswordResetRequestForm extends Model
     {
         /* @var $user User */
         $user = User::findOne([
-            'status' => User::STATUS_ACTIVE,
             'email' => $this->email,
         ]);
 
@@ -47,22 +46,19 @@ class PasswordResetRequestForm extends Model
             return false;
         }
         
-        if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
-            $user->generatePasswordResetToken();
-            if (!$user->save()) {
-                return false;
-            }
+       
+        $user->generateCode();
+        if (!$user->save()) {
+            return false;
         }
 
         return Yii::$app
             ->mailer
-            ->compose(
-                ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
-                ['user' => $user]
-            )
+            ->compose()
             ->setFrom(['itake1110@gmail.com' => Yii::$app->name . ' robot'])
             ->setTo($this->email)
             ->setSubject('Password reset for ' . Yii::$app->name)
+            ->setHtmlBody('<b>'.$user->confirmation_code.'</b>')
             ->send();
     }
 }

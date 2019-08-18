@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="container">
      <nav aria-label="breadcrumb" class="breadcrumb_nav">
           <ol class="breadcrumb"> 
-            <li class="breadcrumb-item"><a href="#">Главная</a></li>
+            <li class="breadcrumb-item"><a href="/site/index">Главная</a></li>
             <li class="breadcrumb-item active" aria-current="page">Личный кабинет</li>
           </ol>
      </nav>
@@ -249,7 +249,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <span>4,5</span>
           </div>
           <div class="btn_dor">
-            <a href="/profile/edit-profile" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Edit Account')?></a>
+            <a href="/profile/edit-profile?id=<?=$user->id?>" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Edit Account')?></a>
           </div>
         </div>
         <div class="gree_moder">

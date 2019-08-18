@@ -90,12 +90,12 @@ class m190715_194709_create_lang_table extends Migration
             'date_create'=>time(),
         ));
         
-        //   $this->batchInsert('{{%lang}}', [
-        //     'url',
-        //     'local',
-        //     'image',
-        //     'name',
-        // ], $language);
+          $this->batchInsert('{{%lang}}', [
+            'url',
+            'local',
+            'image',
+            'name',
+        ], $language);
     }
 
     /**

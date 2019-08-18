@@ -27,8 +27,11 @@ $langs=backend\models\Lang::getLanguages();
                     [
                         'attribute'=>'driver',
                         'label'=>Yii::t('app','Driver',null,$lang->url),
-                        'value'=>($lang->url=="ru")?$model->driver:$drivers[$lang->url],
+                        'value'=>function($data){
+                          return $data->driver0->fio;
+                        },
                     ],
+                      'registration_number',
                     [
                         'attribute'=>'model',
                         'label'=>Yii::t('app','Model',null,$lang->url),

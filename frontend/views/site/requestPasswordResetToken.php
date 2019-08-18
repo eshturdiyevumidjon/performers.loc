@@ -24,7 +24,9 @@ $this->params['breadcrumbs'][] = $this->title;
             </ol>
           </nav>
         <?php endif;?>
-        <?php
+      
+        <div class="form_registration">
+            <?php
             $session = Yii::$app->session;
             $flashes = $session->getAllFlashes();
 
@@ -44,10 +46,10 @@ $this->params['breadcrumbs'][] = $this->title;
               }  
             }
           ?> 
-        <div class="form_registration">
           <h1><?=$this->title?></h1>
           <?php $form = ActiveForm::begin([ 'options' => ['class'=>'tab-content input_styles' ]]); ?>
           <?= $form->field($model, 'email')->textInput(['placeholder'=>Yii::t('app','Email address'),'style'=>'font-size:16px;','class'=>'my_input'])->label(false); ?>
+          <br>
           <?= Html::submitButton( Yii::t('app','Restore password'), ['class' =>'btn_red']) ?>
           <?php ActiveForm::end()?>
 

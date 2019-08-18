@@ -103,4 +103,8 @@ class Lang extends \yii\db\ActiveRecord
     {
         return ($this->status=='1')?'Активный':'Отключен';
     }
+    public static function getLaguagesList()
+    {
+        return Lang::find()->all();
+    }
 }

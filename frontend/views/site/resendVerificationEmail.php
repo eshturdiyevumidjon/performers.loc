@@ -24,22 +24,39 @@ $this->params['breadcrumbs'][] = $this->title;
           </nav>
         <?php endif;?>
         <div class="form_registration">
+            <?php
+            $session = Yii::$app->session;
+            $flashes = $session->getAllFlashes();
+
+            if(count($flashes) ==1 )
+            {
+              $success = $flashes[0][0];
+              $message = $flashes[0][1];
+            }
+            foreach ($flashes as $key => $value) {
+              if($key == 'success')
+              {
+                echo "<p class='alert alert-success'>$value</p>";
+              }
+              if($key == 'error')
+              {
+                echo "<p class='alert alert-error'>$value</p>";
+              }  
+            }
+          ?> 
           <h1><?=$this->title?></h1>
-          <form class="tab-content input_styles">
-            <div class="form-group">
-              <input type="tel" placeholder="<?=Yii::t('app','Phone number')?>" value="+998 90 937 86 04">
-            </div>
+          <?php $form = ActiveForm::begin([ 'options' => ['class'=>'tab-content input_styles' ]]); ?>
+           <?= $form->field($model, 'email')->textInput(['placeholder'=>Yii::t('app','Email address'),'style'=>'font-size:16px;','class'=>'my_input'])->label(false); ?>
             <div class="form_big_groups d-flex justify-content-between">
-              <div class="form-group">
-                <input type="password" placeholder="<?=Yii::t('app','Code')?>">
-              </div>
-              <a href="#" class="reload"><span class="aft_back"></span><img src="/images/reload.svg" alt=""></a>
+              <?= $form->field($model, 'code')->textInput(['placeholder'=>Yii::t('app','Code'),'style'=>'font-size:16px;','class'=>'my_input'])->label(false); ?>
+              
+              <a href="/site/request-password-reset?email=<?=$model->email?>" class="reload"><span class="aft_back"></span><img src="/images/reload.svg" alt=""></a>
             </div>
             <div class="btm_form">
-              <button type="submit" class="btn_red"><?=Yii::t('app','Restore password')?></button>
+              <?= Html::submitButton( Yii::t('app','Restore password'), ['class' =>'btn_red']) ?>
               <a href="#" class="backto"><span class="aft_back"></span><img src="/images/arrow-left.svg" alt=""></a>
             </div>
-          </form>
+          <?php ActiveForm::end()?>
         </div>
       </div>
     </section>

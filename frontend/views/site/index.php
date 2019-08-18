@@ -120,10 +120,10 @@ $this->title = Yii::$app->name;
               <a href="#"><img src="/images/app_store.jpg" alt=""></a>
             </div>
             <div class="link_pers">
-              <a href="#"><img src="/images/globus.svg" alt=""></a>
-              <a href="#"><img src="/images/telegram.svg" alt=""></a>
-              <a href="#"><img src="/images/instagram.svg" alt=""></a>
-              <a href="#"><img src="/images/facebook.svg" alt=""></a>
+              <a href="<?=$company->site?>"><img src="/images/globus.svg" alt=""></a>
+              <a href="<?=$company->telegram?>"><img src="/images/telegram.svg" alt=""></a>
+              <a href="<?=$company->instagram?>"><img src="/images/instagram.svg" alt=""></a>
+              <a href="<?=$company->facebook?>"><img src="/images/facebook.svg" alt=""></a>
             </div>
           </div>
           <div class="col-lg-6">

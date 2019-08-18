@@ -12,7 +12,7 @@ use yii\filters\AccessControl;
 use common\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
+use frontend\models\VerifyAccountForm;
 use frontend\models\RegisterForm;
 use frontend\models\PerformerRegister;
 use frontend\models\CustomerRegister;
@@ -80,7 +80,8 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $company = \backend\models\AboutCompany::findOne(1);
+        return $this->render('index',['company' => $company]);
     }
 
     public function beforeAction($action)
@@ -115,7 +116,7 @@ class SiteController extends Controller
             $model->rememberMe = $_POST['rememberMe'];
             if($model->load($request->post()) && $model->login()){
                  
-               return $this->redirect(['/profile/personal-cabinet']);    
+               return $this->redirect(['/profile/index']);    
             }else{    
                 $model->password = '';       
                 return [
@@ -176,6 +177,8 @@ class SiteController extends Controller
     public function actionContact()
     {
         $model = new Feedback();
+        $company = \backend\models\AboutCompany::findOne(1);
+
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if(filter_var($model->feedback, FILTER_VALIDATE_EMAIL))
             {
@@ -195,6 +198,7 @@ class SiteController extends Controller
         } else {
             return $this->render('contact', [
                 'model' => $model,
+                'company' => $company,
             ]);
         }
     }
@@ -214,8 +218,24 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-  
-     public function actionSignup()
+    public function actionSetConfirm($email)
+    {
+         $user = \common\models\User::findOne([
+            'email' => $this->email,
+        ]);
+
+        $user->generateCode();
+         Yii::$app
+        ->mailer
+        ->compose()
+        ->setFrom(['itake1110@gmail.com' => Yii::$app->name . ' robot'])
+        ->setTo($email)
+        ->setSubject('Password reset for ' . Yii::$app->name)
+        ->setHtmlBody('<b>'.$user->confirmation_code.'</b>')
+        ->send();
+
+    }
+    public function actionSignup()
     {
         $request = Yii::$app->request;
         $modelCustomer = new CustomerRegister();
@@ -236,7 +256,7 @@ class SiteController extends Controller
                                 $modelForm->username=$modelPerformer->email;
                                 $modelForm->password=$modelPerformer->password;
                                 $modelForm->login();
-                                return $this->redirect(['personal-cabinet']);
+                                return $this->redirect(['/profile/index']);
                             }
                             else
                             {
@@ -261,7 +281,7 @@ class SiteController extends Controller
                         $modelForm->username=$modelCustomer->email;
                         $modelForm->password=$modelCustomer->password;
                         $modelForm->login();
-                        return $this->redirect(['personal-cabinet']);
+                        return $this->redirect(['/profile/index']);
                     }
                     else
                     {
@@ -329,20 +349,47 @@ class SiteController extends Controller
      * @return mixed
      */
 
-    public function actionRequestPasswordReset()
+    public function actionRequestPasswordReset($email = null)
     {
+        
         $model = new PasswordResetRequestForm();
+        if($email != null)
+            {
+                $model->email = $email;
+                    if ($model->sendEmail()) {
+                    Yii::$app->session->setFlash('success', Yii::t('app','Check your email for further instructions.'));
+                    return $this->redirect(['verify-account','email'=>$model->email]);
+                } else {
+                    Yii::$app->session->setFlash('error', Yii::t('app','Sorry, we are unable to reset password for the provided email address.'));
+                }
+            }
+
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
-                return $this->refresh();
+                Yii::$app->session->setFlash('success', Yii::t('app','Check your email for further instructions.'));
+                return $this->redirect(['verify-account','email'=>$model->email]);
             } else {
-                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
+                Yii::$app->session->setFlash('error', Yii::t('app','Sorry, we are unable to reset password for the provided email address.'));
             }
         }
         return $this->render('requestPasswordResetToken', [
             'model' => $model,
         ]);
+    }
+
+    public function actionVerifyAccount($email)
+    {
+        $model = new VerifyAccountForm();
+        $model->email = $email;
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->validateUser($email)) {
+            return $this->redirect(['reset-password','email'=>$model->email]);
+        }
+
+        return $this->render('resendVerificationEmail', [
+            'model' => $model,
+        ]);
+
     }
 
     /**
@@ -353,25 +400,22 @@ class SiteController extends Controller
      * @throws BadRequestHttpException
      */
 
-    public function actionResetPassword($token)
+    public function actionResetPassword($email)
     {
-        try {
-            $model = new ResetPasswordForm($token);
-        } catch (InvalidArgumentException $e) {
-            throw new BadRequestHttpException($e->getMessage());
-        }
+        $model = new ResetPasswordForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'New password saved.');
-
-            return $this->goHome();
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword($email)) {
+            Yii::$app->session->setFlash('success', Yii::t('app','New password saved.'));
+            return $this->redirect(['request-password-reset']);
         }
 
         return $this->render('resetPassword', [
             'model' => $model,
+            'email'=>$email,
         ]);
     }
 
+    
     /**
      * Verify email address
      *

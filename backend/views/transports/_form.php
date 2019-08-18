@@ -1,7 +1,6 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
 /* @var $this yii\web\View */
 /* @var $model backend\models\Transports */
 /* @var $form yii\widgets\ActiveForm */
@@ -26,13 +25,11 @@ $i=0;
         <p>
             <?php if($lang->url=='ru'): ?>
                  <div class="row">
-             <?= $form->field($model, 'driver')->textInput()->label(Yii::t('app','Driver',null,$lang->url)) ?>
-             <?= $form->field($model, 'model')->textInput()->label(Yii::t('app','Model',null,$lang->url)) ?>
+            <?= $form->field($model, 'model')->textInput()->label(Yii::t('app','Model',null,$lang->url)) ?>
              <?= $form->field($model, 'mark')->textInput()->label(Yii::t('app','Mark',null,$lang->url)) ?>
             </div>
             <?php else: ?>
                 <div class="row">
-             <?= $form->field($model, 'translation_driver['.$lang->url.']')->textInput(['value'=>$drivers[$lang->url]])->label(Yii::t('app','Driver',null,$lang->url)) ?>
              <?= $form->field($model, 'translation_model['.$lang->url.']')->textInput(['value'=>$models[$lang->url]])->label(Yii::t('app','Model',null,$lang->url)) ?>
              <?= $form->field($model, 'translation_mark['.$lang->url.']')->textInput(['value'=>$marks[$lang->url]])->label(Yii::t('app','Mark',null,$lang->url)) ?>
             </div>
@@ -42,7 +39,22 @@ $i=0;
      </div>
     <?php $i++; endforeach;?>
   </div>
-	<?php if (!Yii::$app->request->isAjax){ ?>
+  <div class="row">
+    <div class="col-md-6">
+            <?= $form->field($model, 'driver')->widget(\kartik\select2\Select2::classname(), [
+                  'data' => $model->getDriverList(),
+                  'size'=>\kartik\select2\Select2::SMALL,
+                  'options' => ['placeholder' => Yii::t('app','Select')],
+                  'pluginOptions' => [
+                      'allowClear' => true
+                  ],
+             ]);?>
+         </div>
+             <div class="col-md-6">
+             <?= $form->field($model, 'registration_number')->textInput()?>
+         </div>
+	</div>
+    <?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">
 	        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 	    </div>

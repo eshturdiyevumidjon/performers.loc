@@ -27,9 +27,16 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
-
+    
     public $avatar=null;
     public $new_password;
+    public $old_password;
+    public $re_password;
+
+    public $day;
+    public $month;
+    public $year;
+
     /**
      * {@inheritdoc}
      */
@@ -55,9 +62,10 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['email','username', 'auth_key','type'], 'required'],
-            [['type', 'status','created_at', 'updated_at'], 'integer'],
-            [['birthday','note'],'safe'],
-            [['username', 'email', 'auth_key','new_password','password_reset_token','password_hash','phone','image'], 'string', 'max' => 255],
+            [['type', 'status','created_at', 'updated_at','degree_of_language','alert_email','alert_site'], 'integer'],
+            [['note'],'safe'],
+            [['day','year','month'],'integer'],
+            [['username', 'email', 'auth_key','address','language','new_password','old_password','re_password','password_reset_token','password_hash','phone','image'], 'string', 'max' => 255],
             [['email'], 'unique'],
             [['avatar'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg',],
         ];
@@ -77,9 +85,14 @@ class User extends ActiveRecord implements IdentityInterface
             'image'=>Yii::t('app','Image'),
             'note'=>Yii::t('app','Note'),
             'avatar'=>Yii::t('app','Image'),
+            'language'=>Yii::t('app','Language'),
             'status' => Yii::t('app','Status'),
             'created_at' => Yii::t('app','Created_at'),
             'updated_at' => Yii::t('app','Updated_at'),
+            'day' => Yii::t('app','Day'),
+            'address' => Yii::t('app','City'),
+            'month' => Yii::t('app','Month'),
+            'year' => Yii::t('app','Year'),
         ];
     }
     //Получить описание типов пользователя.
@@ -121,7 +134,8 @@ class User extends ActiveRecord implements IdentityInterface
             case 10: return "Не активен";
         }
     }
-     public static function getStatus()
+    
+    public static function getStatus()
     {
         return [
             0 => 'Активен',
@@ -129,7 +143,7 @@ class User extends ActiveRecord implements IdentityInterface
         ];
     }
 
-     public function beforeSave($insert)
+    public function beforeSave($insert)
     {
         if ($this->isNewRecord) {
             $this->password_hash = Yii::$app->security->generatePasswordHash($this->auth_key);
@@ -147,21 +161,26 @@ class User extends ActiveRecord implements IdentityInterface
         }
         if($this->birthday != null)                 
             $this->birthday = \Yii::$app->formatter->asDate($this->birthday, 'php:Y-m-d');
+
         return parent::beforeSave($insert);
     }
+
     public function afterFind()
     {
         parent::afterFind();
         $this->birthday=($this->birthday)?Yii::$app->formatter->asDate($this->birthday, 'php:d.m.Y'):""; 
     }
+
     public function getCreated_at()
     {
         return Yii::$app->formatter->asDate($this->created_at, 'php:d.m.Y H:i:s'); 
     }
+
     public function getUpdated_at()
     {
         return Yii::$app->formatter->asDate($this->updated_at, 'php:d.m.Y H:i:s'); 
     }
+
     /**
      * {@inheritdoc}
      */
@@ -188,6 +207,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
     }
+
     public static function findByPhone($phone)
     {
         return static::findOne(['phone' => $phone, 'status' => self::STATUS_ACTIVE]);
@@ -281,7 +301,6 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
-
     /**
      * Generates password hash from password and sets it to the model
      *
@@ -315,8 +334,7 @@ class User extends ActiveRecord implements IdentityInterface
         for ($i=0; $i<$count_char; $i++) { 
             $passw .= $mass[mt_rand(0, $count)]; 
         } 
-        
-        $this->verification_token = $passw;
+        $this->confirmation_code = $passw;
         $this->save(); 
     }
     public function generateEmailVerificationToken()
@@ -354,5 +372,24 @@ class User extends ActiveRecord implements IdentityInterface
         if( isset($post['User']['email']) ) $session['User[email]'] = 1;
         if( isset($post['User']['updated_at']) ) $session['User[updated_at]'] = 1;
         if( isset($post['User']['status']) ) $session['User[status]'] = 1;
+    }
+
+    public function getMonthList()
+    {
+        return
+        [
+            1 => Yii::t('app','January'),
+            2 => Yii::t('app','February'),
+            3 => Yii::t('app','March'),
+            4 => Yii::t('app','April'),
+            5 => Yii::t('app','May'),
+            6 => Yii::t('app','June'),
+            7 => Yii::t('app','July'),
+            8 => Yii::t('app','August'),
+            9 => Yii::t('app','September'),
+            10 => Yii::t('app','October'),
+            11 => Yii::t('app','November'),
+            12 => Yii::t('app','December'),
+        ];
     }
 }

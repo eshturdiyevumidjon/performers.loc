@@ -66,11 +66,8 @@ class TransportsController extends Controller
                     case 'model':
                         $translation_model[$value->language_code] = $value->field_value;
                         break;
-                    case 'driver':
-                        $translation_mark[$value->language_code] = $value->field_value;
-                        break;
                     default:
-                        $translation_driver[$value->language_code] = $value->field_value;
+                         $translation_mark[$value->language_code] = $value->field_value;
                         break;
                 }
             }
@@ -79,7 +76,6 @@ class TransportsController extends Controller
                     'size'=>'normal',
                     'content'=>$this->renderAjax('view', [
                         'model'=>$model,
-                        'drivers'=>$translation_driver,
                         'models'=>$translation_model,
                         'marks'=>$translation_mark,
                     ]),
@@ -213,11 +209,8 @@ class TransportsController extends Controller
                     case 'model':
                         $translation_model[$value->language_code] = $value->field_value;
                         break;
-                    case 'driver':
-                        $translation_mark[$value->language_code] = $value->field_value;
-                        break;
                     default:
-                        $translation_driver[$value->language_code] = $value->field_value;
+                        $translation_mark[$value->language_code] = $value->field_value;
                         break;
                 }                
             }
@@ -239,11 +232,8 @@ class TransportsController extends Controller
                     case 'model':
                         $translation_model[$value->language_code] = $value->field_value;
                         break;
-                    case 'driver':
-                        $translation_mark[$value->language_code] = $value->field_value;
-                        break;
                     default:
-                        $translation_driver[$value->language_code] = $value->field_value;
+                        $translation_mark[$value->language_code] = $value->field_value;
                         break;
                 }
             }   
@@ -254,7 +244,6 @@ class TransportsController extends Controller
 
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
-                        'drivers'=>$translation_driver,
                         'models'=>$translation_model,
                         'marks'=>$translation_mark,
                         
@@ -270,7 +259,6 @@ class TransportsController extends Controller
                     
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
-                        'drivers'=>$translation_driver,
                         'models'=>$translation_model,
                         'marks'=>$translation_mark,
                     ]),

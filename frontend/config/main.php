@@ -16,26 +16,25 @@ return [
     'timeZone' => 'Asia/Tashkent',
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
-        // 'mailer' => [ 
-        //     'class' => 'yii\swiftmailer\Mailer',
-        //     'useFileTransport' => false,
-        //     'transport' => [
-        //         'class' => 'Swift_SmtpTransport',
-        //         'host' => 'smtp.gmail.com',
-        //         'username' => 'itake1110@gmail.com',
-        //         'password' => '123456itake',
-        //         'port' => '465',
-        //         'encryption' => 'ssl',
-               
-        //     ],
-        // ],
-        'mail' => [
-
+        'mailer' => [ 
             'class' => 'yii\swiftmailer\Mailer',
-
-             'useFileTransport'=>'false'
-
-         ],
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.gmail.com',
+                'username' => 'itake1110@gmail.com',
+                'password' => '123456itake',
+                'port' => '465',
+                'encryption' => 'ssl',
+                'streamOptions' => [ 
+                    'ssl' => [ 
+                        'allow_self_signed' => true,
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                    ],
+                ]
+            ],
+        ],
         'i18n' => [
             'translations' => [
                 'app*' => [
@@ -51,6 +50,9 @@ return [
         ],
         'assetManager'=>[
             'bundles'=>[
+                'kartik\form\ActiveFormAsset' => [
+                    'bsDependencyEnabled' => false // do not load bootstrap assets for a specific asset bundle
+                ],
                 'yii\web\JqueryAsset'=>[
                     'js'=>[]
                 ],

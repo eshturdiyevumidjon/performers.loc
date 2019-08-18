@@ -6,12 +6,10 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use yii\captcha\Captcha;
 use common\widgets\Alert;
 
 $this->title =Yii::t('app','Contact');
 $name=Yii::$app->name;
-$company = \backend\models\AboutCompany::findOne(1);
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -73,9 +71,9 @@ $this->params['breadcrumbs'][] = $this->title;
               {
                 echo "<p class='alert alert-success'>$value</p>";
               }
-              if($key == 'error')
+              if($key == 'danger')
               {
-                echo "<p class='alert alert-error'>$value</p>";
+                echo "<p class='alert alert-danger'>$value</p>";
               }  
             }
           ?> 

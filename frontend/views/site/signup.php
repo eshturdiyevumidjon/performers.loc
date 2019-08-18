@@ -3,7 +3,6 @@
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \frontend\models\SignupForm */
-
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 $pathInfo = Yii::$app->request->pathInfo;
@@ -13,7 +12,7 @@ $this->title = Yii::t('app','Signup');
   <li><a data-toggle="tab" href="#home" <?=($active == 1)?'class="active show"':''?>><?=Yii::t('app','Customer')?></a></li>
   <li><a data-toggle="tab" href="#menu1" <?=($active == 2)?'class="active show"':''?>><?=Yii::t('app','Performer')?></a></li>
 </ul>
-<?php $form = ActiveForm::begin(['options'=>['class'=>'input_styles','id'=>'customer']]); ?>
+<?php $form = ActiveForm::begin(['options'=>['class'=>'input_styles','id'=>'customerss']]); ?>
   <div class="tab-content">
     <div id="home" <?=($active == 1)?'class="tab-pane in active"':'class="tab-pane fade"'?>>
           <?=$form->field($modelCustomer,'username')->textInput(['placeholder'=>$modelCustomer->getAttributeLabel('username'),'class'=>'my_input'])->label(false)?>
@@ -27,7 +26,7 @@ $this->title = Yii::t('app','Signup');
           <li><a data-toggle="tab" href="#step1" <?=($active == 1)?'class="active show"':''?> >1</a></li>
           <li><a data-toggle="tab" <?=($active ==2 ) ? 'href="#step2"' : 'href="#step1"'?>  <?=($active == 2)?'class="active show"':''?>>2</a></li>
         </ul>
-         <div class="tab-content">
+        <div class="tab-content">
         <div id="step1"  class="tab-pane <?=($active == 1)?'in active':'fade'?>" >
           <?=$form->field($modelPerformer,'username')->textInput(['placeholder'=>$modelPerformer->getAttributeLabel('username'),'class'=>'my_input'])->label(false)?>
           <?=$form->field($modelPerformer,'phone')->textInput(['placeholder'=>$modelPerformer->getAttributeLabel('phone'),'class'=>'my_input'])->label(false)?>
@@ -36,10 +35,10 @@ $this->title = Yii::t('app','Signup');
           <?=$form->field($modelPerformer,'repassword')->passwordInput(['placeholder'=>$modelPerformer->getAttributeLabel('repassword'),'class'=>'my_input'])->label(false)?>
         </div>
         <div <?=($active ==2 ) ? 'id="step2"' : ''?> class="tab-pane <?=($active == 2)?'in active':'fade'?>">
-          <label for=""><?=Yii::t('app','Verify phone number')?> </label>
+          <label for=""><?=Yii::t('app','Verify Account')?> </label>
           <div class="form_big_groups d-flex justify-content-between">
-          <?=$form->field($modelPerformer,'verify_phone')->textInput(['placeholder'=>$modelPerformer->getAttributeLabel('phone'),'class'=>'my_input','value'=>$modelPerformer->phone])->label(false)?>
-            <a href="#" class="reload" id="reload"><span class="aft_back"></span><img src="/images/reload.svg" alt=""></a>
+          <?=$form->field($modelPerformer,'verify_phone')->textInput(['placeholder'=>$modelPerformer->getAttributeLabel('email'),'class'=>'my_input','value'=>$modelPerformer->email])->label(false)?>
+            <a href="#" onclick="alert()" class="reload"><span class="aft_back"></span><img src="/images/reload.svg" alt=""></a>
           </div>
           <div class="form-group">
           <?=$form->field($modelPerformer,'verify_code')->passwordInput(['placeholder'=>Yii::t('app','Code'),'class'=>'my_input'])->label(false)?>
@@ -52,11 +51,3 @@ $this->title = Yii::t('app','Signup');
     </div>
   </div>
 <?php ActiveForm::end()?>
-<?php 
-$this->registerJs(<<<JS
-    $("#reload").on("click",function(){
-      alert();
-    });
-JS
-)
-?>

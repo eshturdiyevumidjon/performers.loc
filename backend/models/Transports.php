@@ -42,7 +42,11 @@ class Transports extends \yii\db\ActiveRecord
         return [
             [['translation_driver','translation_mark','translation_model'],'safe'],
             [['user_id'], 'integer'],
-            [['model', 'mark', 'driver'], 'required'],
+            [['driver', 'user_id'], 'integer'],
+            [['images','registration_number'],'string'],
+            [['model','mark','registration_number'],'required'],
+            [['model', 'mark'], 'string', 'max' => 255],
+            [['driver'], 'exist', 'skipOnError' => true, 'targetClass' => Drivers::className(), 'targetAttribute' => ['driver' => 'id']],
             [['model', 'mark', 'driver'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -60,6 +64,8 @@ class Transports extends \yii\db\ActiveRecord
             'model' => Yii::t('app','Model'),
             'mark' => Yii::t('app','Mark'),
             'driver' => Yii::t('app','Driver'),
+            'image' => Yii::t('app','Image'),
+            'registration_number' => Yii::t('app','Registration Number'),
         ];
     }
     public static function NeedTranslation()
@@ -67,7 +73,6 @@ class Transports extends \yii\db\ActiveRecord
         return [
             'model'=>'translation_model',
             'mark'=>'translation_mark',
-            'driver'=>'translation_driver',
         ];
     }
     /**
@@ -92,6 +97,15 @@ class Transports extends \yii\db\ActiveRecord
             ];
         }
     }
+
+
+   /**
+    * @return \yii\db\ActiveQuery
+    */
+   public function getDriver0()
+   {
+        return $this->hasOne(Drivers::className(), ['id' => 'driver']);
+   }
  
     /**
      * @inheritdoc
@@ -113,6 +127,11 @@ class Transports extends \yii\db\ActiveRecord
         ]);
     }
 
+    public function getDriverList()
+    {
+        $data = Drivers::find()->where(['user_id'=>Yii::$app->user->identity->id])->all();
+        return Arrayhelper::map($data,'id','fio');
+    }
     /**
      * @inheritdoc
      */

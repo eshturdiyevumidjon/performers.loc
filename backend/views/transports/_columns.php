@@ -32,14 +32,17 @@ return [
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'mark',
-          'contentOptions'=>['class'=>'text-center'],
+        'contentOptions'=>['class'=>'text-center'],
         'headerOptions'=>['class'=>'text-center'],
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'driver',
-          'contentOptions'=>['class'=>'text-center'],
+        'contentOptions'=>['class'=>'text-center'],
         'headerOptions'=>['class'=>'text-center'],
+         'value'=>function($data){
+            return $data->driver0->fio;
+        }
     ],
     [
         'class' => 'kartik\grid\ActionColumn',
