@@ -87,7 +87,7 @@ class Feedback extends \yii\db\ActiveRecord
             'name' => Yii::t('app','Name'),
             'feedback'=>Yii::t('app','Phone number or email address'),
             'phone' => Yii::t('app','Phone number'),
-            'email' => Yii::t('app','Email'),
+            'email' => Yii::t('app','Email address'),
             'message' => Yii::t('app','Message'),
             'date_cr' => Yii::t('app','Date Create'),
         ];

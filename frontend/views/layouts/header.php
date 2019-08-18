@@ -16,7 +16,7 @@ $user=\common\models\User::find()->where(['id' => Yii::$app->user->identity->id]
               <i class="fa fa-bars" aria-hidden="true"></i>
               <i class="fa fa-times" aria-hidden="true"></i>
           </div>
-        <?php if(Yii::$app->user->isGuest):?>
+        <?php if(!Yii::$app->user->isGuest):?>
             <a href="#" class="notification"><img src="/images/notification.svg" alt=""><img src="/images/notification_white.svg" alt=""></a>
         <?php endif;?>
         </div>
@@ -70,7 +70,7 @@ $user=\common\models\User::find()->where(['id' => Yii::$app->user->identity->id]
           <li><a href="#"><?=Yii::t('app','Blog')?></a></li>
         </ul>
       </div>
-       <p class="create_equ"><?=Yii::t('app','Create task')?></p>
+       <p class="create_equ"><?=Yii::t('app','Create Task')?></p>
           <div class="row hdr_svgs">
             <div class="col-md-3">
               <a href="#" class="enter_to_site">

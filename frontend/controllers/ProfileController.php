@@ -82,6 +82,7 @@ class ProfileController extends Controller
             $user->day = (int)$arr[0];
             $user->month = (int)$arr[1];
             $user->year = (int)$arr[2];
+            $user->birthday = date("yyyy-mm-dd",$user->birthday);
         }
 
         if(isset($_POST['change_password']))
@@ -126,12 +127,16 @@ class ProfileController extends Controller
 
         if(isset($_POST['submit']))
         {
-            
-            $user->language = $_POST['language'];
+         
+            $user->language = implode(',',array_unique($_POST['language']));
             $user->alert_site = ($_POST['alert_site'])?1:0;
             $user->alert_email = ($_POST['alert_email'])?1:0;
             $user->degree_of_language = $_POST['degree'];
-
+            // echo "<pre>";
+            // print_r($user->attributes);
+            // print_r($_POST);
+            // echo "</pre>";
+            // die;
           
             if($user->load(Yii::$app->request->post()) && $user->validate())
             {   
