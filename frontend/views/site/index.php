@@ -95,7 +95,7 @@ $this->title = Yii::$app->name;
       </div>
       <div class="easier_item odd_e" style="background-image: url(/images/gor2.jpg);">
         <div class="container">
-          <h2><?=Yii::t('app','создай занание во')?> <br><?=Yii::t('app','registration')?></h2>
+          <h2><?=Yii::t('app','Create a task during')?> <br><?=Yii::t('app','registration')?></h2>
           <p><?=Yii::t('app','In one page Registr and Create')?> <br><?=Yii::t('app','task. Everything is simple, save time.')?></p>
           <div class="img_eas"><img src="/images/step2.svg" alt=""></div>
         </div>

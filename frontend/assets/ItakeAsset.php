@@ -22,12 +22,9 @@ class ItakeAsset extends AssetBundle
       'css/style.css',
       'css/media.css',
       'css/mycss.css',
-      'css/dd.css',
     ];
     public $js = [
       'js/jquery.min.js',
-      // 'js/jquery-1.9.0.min.js',
-
       'js/swiper.min.js',
       'js/popper.min.js',
       'js/bootstrap.min.js',
@@ -35,11 +32,10 @@ class ItakeAsset extends AssetBundle
       'js/jquery.fancybox.min.js',
       'js/all.min.js',
       'js/main.js',
-      'js/map.js',
-      'js/jquery.dd.min.js',
     ];
     public $depends = [
         // 'yii\web\YiiAsset',
         // 'yii\bootstrap\BootstrapAsset',
+        // 'yii\bootstrap\BootstrapPluginAsset',
     ];
 }

@@ -16,8 +16,29 @@ $user=\common\models\User::find()->where(['id' => Yii::$app->user->identity->id]
               <i class="fa fa-bars" aria-hidden="true"></i>
               <i class="fa fa-times" aria-hidden="true"></i>
           </div>
-        <?php if(!Yii::$app->user->isGuest):?>
-            <a href="#" class="notification"><img src="/images/notification.svg" alt=""><img src="/images/notification_white.svg" alt=""></a>
+          <?php if(!Yii::$app->user->isGuest):?>
+          <div class="dropdown notif_dropdown">
+                  <a href="#" class="notification dropdown-toggle" data-toggle="dropdown" ><img src="/images/notification.svg" alt=""><img src="/images/notification_white.svg" alt=""></a>
+                <!-- </button> -->
+                <div class="dropdown-menu flex-column" aria-labelledby="dropdownMenuButton">
+                  <a class=" active" href="#">
+                    <h5>Организация вашей работы</h5>
+                    <p>Добавление структуры для организации вашей работы.</p>
+                  </a>
+                  <a class="" href="#">
+                    <h5>Работа в командах</h5>
+                    <p>Приглашение других людей, сотрудничество и уведомления.</p>
+                  </a>
+                  <a class="" href="#">
+                    <h5>Использование на вашем телефоне</h5>
+                    <p>Как получить доступ к iTake на вашем устройстве iPhone или Android.</p>
+                  </a>
+                  <a class="" href="#">
+                    <h5>Использование на вашем телефоне</h5>
+                    <p>Как получить доступ к iTake на вашем устройстве iPhone или Android.</p>
+                  </a>
+                </div>
+              </div>
         <?php endif;?>
         </div>
       </div>

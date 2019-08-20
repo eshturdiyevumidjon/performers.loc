@@ -62,7 +62,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['email','username', 'auth_key','type'], 'required'],
-            [['type', 'status','created_at', 'updated_at','degree_of_language','alert_email','alert_site'], 'integer'],
+            [['type', 'status','created_at', 'updated_at','alert_email','alert_site'], 'integer'],
             [['note'],'safe'],
             [['day','year','month'],'integer'],
             [['username', 'email', 'auth_key','address','language','new_password','old_password','re_password','password_reset_token','password_hash','phone','image'], 'string', 'max' => 255],
@@ -349,6 +349,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+  
     public function SortColumns($post)
     {
         $session = Yii::$app->session;

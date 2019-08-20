@@ -12,7 +12,7 @@ $this->title = Yii::t('app','Signup');
   <li><a data-toggle="tab" href="#home" <?=($active == 1)?'class="active show"':''?>><?=Yii::t('app','Customer')?></a></li>
   <li><a data-toggle="tab" href="#menu1" <?=($active == 2)?'class="active show"':''?>><?=Yii::t('app','Performer')?></a></li>
 </ul>
-<?php $form = ActiveForm::begin(['options'=>['class'=>'input_styles','id'=>'customerss']]); ?>
+<?php $form = ActiveForm::begin(['enableClientScript' => false,'options'=>['class'=>'input_styles','id'=>'customerss']]); ?>
   <div class="tab-content">
     <div id="home" <?=($active == 1)?'class="tab-pane in active"':'class="tab-pane fade"'?>>
           <?=$form->field($modelCustomer,'username')->textInput(['placeholder'=>$modelCustomer->getAttributeLabel('username'),'class'=>'my_input'])->label(false)?>

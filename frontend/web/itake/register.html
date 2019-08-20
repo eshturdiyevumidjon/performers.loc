@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <link rel="stylesheet" href="font/stylesheet.css">
+      <link rel="stylesheet" href="font/roboto.css">
+      <link rel="stylesheet" href="css/all.min.css">
+      <link rel="stylesheet" href="css/jquery.fancybox.min.css">
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link rel="stylesheet" href="font/stylesheet_segoe.css">
+      <link rel="stylesheet" href="css/swiper.min.css">
+      <link rel="stylesheet" href="css/style.css">
+      <link rel="stylesheet" href="css/media.css">
+      <title>Регистрация</title> 
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center hdr_top">
+          <div class="d-flex align-items-center">
+            <a href="index.html" class="logo"><img src="images/logo.svg" alt=""></a>
+            <div class="d-flex align-items-center notif">
+              <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <a href="#" class="notification"><img src="images/notification.svg" alt=""></a>
+            </div>
+          </div>
+          <div class="d-flex align-items-center">
+            <div class="dropdown language_h">
+              <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" >
+                Ru
+              </button>
+              <div class="dropdown-menu flex-column" aria-labelledby="dropdownMenuButton">
+                <a class=" active" href="#">Ru</a>
+                <a class="" href="#">En</a>
+                <a class="" href="#">Uz</a>
+              </div>
+            </div>
+            <a href="#" class="enter_to_site"><span class="aft_back"></span>Вход/Регистрация</a>
+          </div>
+        </div>
+      </div>
+      <div class="hdr_bottom" style="display: none;">
+        <div class="container">
+          <div class="d-flex justify-content-between align-items-center">
+            <ul class="nav">
+              <li class="active"><a href="#">Главная</a></li>
+              <li><a href="#">ЧаВо</a></li>
+              <li><a href="#">Служба поддержки</a></li>
+              <li><a href="#">Контакты</a></li>
+              <li><a href="#">Блог</a></li>
+            </ul>
+            <a href="#" class="btn_red"><span>Счет:</span> <span class="price">2 347 457 руб.</span></a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="registratsion">
+      <div class="container">
+        <nav aria-label="breadcrumb" class="breadcrumb_nav">
+          <ol class="breadcrumb"> 
+            <li class="breadcrumb-item"><a href="#">Главная</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Регистрация</li>
+          </ol>
+        </nav>
+        <div class="form_registration">
+          <h1>Регистрация</h1>
+          <ul class="nav tab_styles_nav">
+            <li><a data-toggle="tab" class="active show" href="#ff0">Исполнителя</a></li>
+            <li><a data-toggle="tab" href="#ff1">Заказчика</a></li>
+          </ul>
+          <form class="tab-content input_styles">
+            <div id="ff0" class="tab-pane in active">
+              <div class="form-group">
+                <input type="text" placeholder="Фамилия и имя/Название компании">
+              </div>
+              <div class="form-group">
+                <input type="tel" placeholder="Номер телефона">
+              </div>
+              <div class="form-group">
+                <input type="email" placeholder="E-mail">
+              </div>
+              <div class="form-group">
+                <input type="password" placeholder="Пароль">
+              </div>
+              <div class="form-group">
+                <input type="password" placeholder="Подтвердить пароль">
+              </div>
+              <div class="form-group">
+                <select name="" id="">
+                  <option value="">Русский1</option>
+                  <option value="">Русский2</option>
+                  <option value="">Русский3</option>
+                </select>
+              </div>
+              <button type="submit" class="btn_red">Создать мою учетную запись</button>
+            </div>
+            <div id="ff1" class="tab-pane fade">
+              <ul class="nav inner_nav">
+                <li><a href="#d1" data-toggle="tab" class="active show">1</a></li>
+                <li><a href="#d2" data-toggle="tab">2</a></li>
+              </ul>
+              <div class="tab-content">
+                <div id="d1" class="tab-pane in active">
+                  <div class="form-group">
+                    <input type="text" placeholder="Фамилия и имя/Название компании">
+                  </div>
+                  <div class="form-group">
+                    <input type="tel" placeholder="Номер телефона">
+                  </div>
+                  <div class="form-group">
+                    <input type="email" placeholder="E-mail">
+                  </div>
+                  <div class="form-group">
+                    <input type="password" placeholder="Пароль">
+                  </div>
+                  <div class="form-group">
+                    <input type="password" placeholder="Подтвердить пароль">
+                  </div>
+                  <div class="form-group">
+                    <select name="" id="">
+                      <option value="">Русский1</option>
+                      <option value="">Русский2</option>
+                      <option value="">Русский3</option>
+                    </select>
+                  </div>
+                  <button type="submit" class="btn_red">Создать мою учетную запись</button>
+                </div>
+                <div id="d2" class="tab-pane fade">
+                  <label for="">Подтвердите номер телефона </label>
+                  <div class="form_big_groups d-flex justify-content-between">
+                    <div class="form-group">
+                      <input type="tel" placeholder="Номер телефона" value="+998 90 937 86 04">
+                    </div>
+                    <a href="#" class="reload"><span class="aft_back"></span><img src="images/reload.svg" alt=""></a>
+                  </div>
+                  <div class="form-group">
+                    <input type="password" placeholder="Код">
+
+                  </div>
+                  <div class="btm_form">
+                    <button type="submit" class="btn_red">Создать мою учетную запись</button>
+                    <a href="#" class="backto"><span class="aft_back"></span><img src="images/arrow-left.svg" alt=""></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <div class="row ftr_top">
+          <div class="col-lg-2 col-sm-6 ft1">
+            <a href="index.html" class="logo">
+              <img src="images/logo.svg" alt="">
+            </a>
+          </div>
+          <div class="col-lg-3 col-sm-6 ft2">
+            <ul class="nav flex-column">
+              <li><a href="#">Главная</a></li>
+              <li><a href="#">ЧаВо</a></li>
+              <li><a href="#">Служба поддержки</a></li>
+              <li><a href="#">Контакты</a></li>
+              <li><a href="#">Блог</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-4 col-sm-6 ft3">
+            <h4>Адрес iTake</h4>
+            <p class="adress"><img src="images/address.svg" alt="">Шайхонтохурский район, массив Джар арык, дом 7, кв 29</p>
+          </div>
+          <div class="col-lg-3 col-sm-6 ft4">
+            <h4>iTake в сети</h4>
+            <div class="row social_icons">
+              <div class="col-6">
+                <a href="#"><img src="images/globus.svg" alt=""><span>www.itake.uz</span></a>
+                <a href="#"><img src="images/facebook.svg" alt=""><span>itake.uz</span></a>
+              </div>
+              <div class="col-6">
+                <a href="#"><img src="images/telegram.svg" alt=""><span>@iTakeUz</span></a>
+                <a href="#"><img src="images/instagram.svg" alt=""><span>itake.uz</span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ftr_bottom">
+        <div class="container">
+          <div class="d-flex align-items-center justify-content-between last_ft">
+            <div>
+              <p>© 2011—2019 OOO «iTake». Используя сайт, вы обязуетесь выполнять условия <a href="#">Пользовательского соглашения.</a></p>
+            </div>
+            <div>
+              <p>Создание сайта: <a href="#">DeepX</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+ 
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/swiper.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.maskedinput.js"></script>
+    <script src="js/jquery.fancybox.min.js"></script>
+    <script src="js/all.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

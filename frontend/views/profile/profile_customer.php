@@ -233,9 +233,12 @@ $this->params['breadcrumbs'][] = $this->title;
       <div class="cabinet_right">
         <div class="user_all">
           <div class="user_dorian">
-            <img src="/images/dorian-hurst-672657-unsplash.jpg" alt="">
-            <input type="file" id="inp_file">
-            <label for="inp_file"><img src="/images/camera_photo.svg" alt="">Изменить фото</label>
+            <form id="change_image" enctype="multipart/form-data">
+              <img id="image_upload_preview" src="/images/dorian-hurst-672657-unsplash.jpg" alt="">
+              <input type="hidden" name="user_id" value="<?=$user->id?>">
+              <input type="file" name="user_image" id="inputFile">
+              <label for="inputFile"><img src="/images/camera_photo.svg" alt="">Изменить фото</label>
+            </form>
           </div>
           <p><?= $user->username ?></p>
           <div class="rating">
@@ -252,42 +255,32 @@ $this->params['breadcrumbs'][] = $this->title;
             <a href="/profile/edit-profile?id=<?=$user->id?>" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Edit Account')?></a>
           </div>
         </div>
-        <div class="gree_moder">
-          <img src="/images/shield.svg" alt=""><span>Прошел проверку <br>Модератора</span>
-        </div>
-        <div class="confirm_cont">
-          <h3>Подтвержденные контакты</h3>
-          <div class="tel_conf">
-            <div>
-              <img src="/images/c1.jpg" alt="">
-              <div>
-                <p>Телефон</p>
-                <a href="#">+998 90 937 86 04</a>
-              </div>
-            </div>
-          </div>
-          <div class="tel_conf">
-            <div>
-              <img src="/images/c2.jpg" alt="">
-              <div>
-                <p>E-mail</p>
-                <a href="#">hey@deepx.uz</a>
-              </div>
-            </div>
-          </div>
-          <div class="lang_conf">
-            <span>Языки</span>
-            <div>
-              <img src="/images/russ.svg" alt="">
-              <img src="/images/german.svg" alt="">
-              <img src="/images/usa.svg" alt="">
-            </div>
-          </div>
-          <p class="povis">Повысьте доверие пользователей к себе –  привяжите ваши аккаунты социальных сетей к профилю iTake. Мы обязуемся не раскрывать ваши контакты.</p>
-        </div>
-        <div class="banner_bl"></div>
+        <?=$this->render('cabinet_right',['company'=>$company]);?>
       </div>
     </div>
    
   </div>
 </section>
+<?php
+$this->registerJs(<<<JS
+   function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#image_upload_preview').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#inputFile").change(function () {
+        readURL(this);
+        var data = $('#change_image').serialize();
+        $.post('/ru/profile/change-photo',data,function(success){alert(success)});
+    });
+
+JS
+);
+?>

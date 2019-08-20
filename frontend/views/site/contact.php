@@ -7,6 +7,10 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use common\widgets\Alert;
+use unclead\multipleinput\MultipleInput;
+use mihaildev\ckeditor\CKEditor;
+use kartik\select2\Select2;
+use kartik\date\DatePicker;
 
 $this->title =Yii::t('app','Contact');
 $name=Yii::$app->name;
@@ -55,32 +59,49 @@ $this->params['breadcrumbs'][] = $this->title;
           <?php }?>
         </div>
         <div>
-        
             <h1><?=Yii::t('app','Feedback form')?></h1>
           <?php
             $session = Yii::$app->session;
             $flashes = $session->getAllFlashes();
-
-            if(count($flashes) ==1 )
-            {
-              $success = $flashes[0][0];
-              $message = $flashes[0][1];
-            }
             foreach ($flashes as $key => $value) {
-              if($key == 'success')
-              {
-                echo "<p class='alert alert-success'>$value</p>";
+                if($key == 'success')
+                {
+                  echo "<p class='alert alert-success'>$value</p>";
+                }
+                if($key == 'danger')
+                {
+                  echo "<p class='alert alert-danger'>$value</p>";
+                }  
               }
-              if($key == 'danger')
-              {
-                echo "<p class='alert alert-danger'>$value</p>";
-              }  
-            }
           ?> 
-          <?php $form = ActiveForm::begin(['options'=>['class'=>'contact_form input_styles']]); ?>
+          <?php $form = ActiveForm::begin(['enableClientScript' => false, 'id' => 'contact-form','enableAjaxValidation' => true,'options'=>['class'=>'contact_form input_styles','enableAjaxValidation' => true]]); ?>
             <?= $form->field($model, 'name')->textInput(['autofocus' => true,'placeholder'=>Yii::t('app','Username'),'class'=>'my_input'])->label(false)?>
-            <?= $form->field($model, 'email')->textInput(['placeholder'=>Yii::t('app','Email address'),'class'=>'my_input'])->label(false) ?>
-            <?= $form->field($model, 'message')->textarea(['placeholder'=>Yii::t('app',$model->getAttributeLabel('Message')),'class'=>'my_input'])->label(false) ?>
+           <!--  <?= $form->field($model, 'email')->textInput(['placeholder'=>Yii::t('app','Email address'),'class'=>'my_input'])->label(false)?> -->
+            <?=$form->field($model, 'message')->widget(CKEditor::className(),[
+                'editorOptions' => [
+                    'preset' => 'full', //разработанны стандартные настройки basic, standard, full данную возможность не обязательно использовать
+                    'inline' => false, //по умолчанию false
+                ],
+            ]);?>
+             <?= $form->field($model, 'email')->widget(MultipleInput::className(), [
+                        'max'               => 6,
+                        'min'               => 1, // should be at least 2 rows
+                        'allowEmptyList'    => false,
+                        'enableGuessTitle'  => true,
+                    ])->label(false)
+            ?>
+            <?php
+              echo $form->field($model, 'email')->widget(Select2::classname(), [
+                    'options' => ['placeholder' => 'Select a state ...'],
+                   
+                ]);
+            ?>
+            <?= $form->field($model, 'email')->widget(DatePicker::classname(), [
+                'pluginOptions' => [
+                    'autoclose'=>true
+                 ]
+             ]);?>
+       
             <?= Html::submitButton(Yii::t('app','Send'), ['class'=>'btn_red']) ?>
           <?php ActiveForm::end(); ?>
         </div>

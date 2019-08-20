@@ -259,40 +259,7 @@
         </form>
       </div>
       <div class="cabinet_right">
-        <div class="gree_moder">
-          <img src="/images/shield.svg" alt=""><span>Прошел проверку <br>Модератора</span>
-        </div>
-        <div class="confirm_cont">
-          <h3>Подтвержденные контакты</h3>
-          <div class="tel_conf">
-            <div>
-              <img src="/images/c1.jpg" alt="">
-              <div>
-                <p>Телефон</p>
-                <a href="#">+998 90 937 86 04</a>
-              </div>
-            </div>
-          </div>
-          <div class="tel_conf">
-            <div>
-              <img src="/images/c2.jpg" alt="">
-              <div>
-                <p>E-mail</p>
-                <a href="#">hey@deepx.uz</a>
-              </div>
-            </div>
-          </div>
-          <div class="lang_conf">
-            <span>Языки</span>
-            <div>
-              <img src="/images/russ.svg" alt="">
-              <img src="/images/german.svg" alt="">
-              <img src="/images/usa.svg" alt="">
-            </div>
-          </div>
-          <p class="povis">Повысьте доверие пользователей к себе –  привяжите ваши аккаунты социальных сетей к профилю iTake. Мы обязуемся не раскрывать ваши контакты.</p>
-        </div>
-        <div class="banner_bl"></div>
+        <?=$this->render('cabinet_right',['company'=>$company]);?>
       </div>
     </div>
    

@@ -23,7 +23,6 @@ class m130524_201442_init extends Migration
             'birthday'=>$this->date()->comment("день рождения"),
             'phone'=>$this->string(255)->comment('Телефон'),
             'language' => $this->string(255)->defaultValue('1')->comment("Язык"),
-            'degree_of_language' => $this->integer()->defaultValue(0)->comment("Язык"),
             'confirmation_code' => $this->string(255)->comment("Код"),
             'image'=>$this->string(255)->comment('Фото'),
             'status' => $this->smallInteger()->notNull()->defaultValue(10)->comment("Статус"),

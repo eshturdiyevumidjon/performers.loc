@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
             }
           ?> 
           <h1><?=$this->title?></h1>
-          <?php $form = ActiveForm::begin([ 'options' => ['class'=>'tab-content input_styles' ]]); ?>
+          <?php $form = ActiveForm::begin(['enableClientScript' => false, 'options' => ['class'=>'tab-content input_styles' ],'id'=>'request-password-form']); ?>
           <?= $form->field($model, 'email')->textInput(['placeholder'=>Yii::t('app','Email address'),'style'=>'font-size:16px;','class'=>'my_input'])->label(false); ?>
           <br>
           <?= Html::submitButton( Yii::t('app','Restore password'), ['class' =>'btn_red']) ?>
