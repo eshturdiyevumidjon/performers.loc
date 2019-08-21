@@ -39,7 +39,7 @@ class SourceMessageQuery extends \yii\db\ActiveQuery
     {
         return parent::all($db);
     }
-
+    
     /**
      * @inheritdoc
      * @return SourceMessage|array|null

@@ -1,20 +1,20 @@
 .my_input:focus{
-	box-shadow: unset;
+    box-shadow: unset;
 }
 .my_input{
-	font-size:16px;
+    font-size:16px;
 }
 .field-loginform-rememberme::after{
-	background:none !important;
+    background:none !important;
 }
 .pull-right{
-	float: right;
+    float: right;
 }
 .pull-left{
-	float: left;
+    float: left;
 }
 .my_modal_submit{
-	bottom: 80px;
+    bottom: 80px;
     text-align: center;
     display: block;
     min-width: 255px;
@@ -27,13 +27,13 @@
     min-width: 255px;
 }
 .my_modal_button{
-	min-width: 255px;
+    min-width: 255px;
     text-align: center;
     right: 4px;
 }
 .backto{
-	position: absolute;
-	bottom: 13px;
+    position: absolute;
+    bottom: 13px;
     right: 270px;
 }
 
@@ -41,26 +41,26 @@
      margin-right: 0rem !important; 
 }
 .help-block-error{
-	color: red !important;
+    color: red !important;
 }
 .help-block{
-	color: red !important;
+    color: red !important;
 }
 #loginform-rememberme{
-	width: 95% !important;
+    width: 95% !important;
     height: 86%;
 }
 .center{
-	text-align: center;
+    text-align: center;
 }
 .modal-header{
-	padding:20px;
+    padding:20px;
 }
 .modal-content{
     padding: 10px;
 }
 .modal-title{
-	line-height: 0.7 !important;
+    line-height: 0.7 !important;
     position: absolute !important;
     font-size: 36px !important;
     font-weight: 600 !important;
@@ -133,3 +133,90 @@
 p.adress a:hover{
     color: red !important;
 }
+
+/*rasmli select uchun kod*/
+.vodiapicker{
+  display: none; 
+}
+
+#a{
+  padding-left: 0px;
+}
+
+#a img, .btn-select img{
+  width: 20px;
+  
+}
+
+#a li{
+  list-style: none;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#a li:hover{
+ background-color: #F4F3F3;
+}
+
+#a li img{
+  margin: 5px;
+}
+
+#a li span, .btn-select li span{
+  margin-left: 15px;
+}
+
+/* item list */
+
+.b{
+  display: none;
+  width: 100%;
+  /*max-width: 350px;*/
+  box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: 5px;
+  
+}
+
+.open{
+  display: show !important;
+}
+
+.btn-select{
+  /*margin-top: 10px;*/
+  width: 100%;
+  /*max-width: 350px;*/
+  height: 34px;
+  border-radius: 5px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+ 
+}
+.btn-select li{
+  list-style: none;
+  float: left;
+  padding-bottom: 0px;
+  margin-left: 15px;
+}
+
+.btn-select:hover li{
+  margin-left: 15px;
+}
+
+.btn-select:hover{
+  background-color: #F4F3F3;
+  border: 1px solid transparent;
+  box-shadow: inset 0 0px 0px 1px #ccc;
+  
+  
+}
+
+.btn-select:focus{
+   outline:none;
+}
+
+.lang-select{
+  margin-left: 1px;
+}
+
+/**/

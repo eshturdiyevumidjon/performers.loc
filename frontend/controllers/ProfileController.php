@@ -10,6 +10,7 @@ use yii\filters\AccessControl;
 use \yii\web\Response;
 use yii\helpers\Html;
 use yii\web\NotFoundHttpException;
+use common\models\User;
 
 /**
  * Site controller
@@ -134,59 +135,25 @@ class ProfileController extends Controller
         }
     }
     
-    public function actionEditProfile($id = null)
+    public function actionEditProfile()
     {
-         
-        if($id == null){$id = $_POST['id_user'];}
-        $user = $this->findModel($id);
-       
-        if($user->birthday)
-        {
-            $arr = explode('.', $user->birthday);
-            $user->day = (int)$arr[0];
-            $user->month = (int)$arr[1];
-            $user->year = (int)$arr[2];
+        $request = Yii::$app->request;
+        if (Yii::$app->user->isGuest) {
+            return $this->goHome();
         }
+        $user = $this->findModel(Yii::$app->user->identity->id);
+            // echo "<pre>";
+            // print_r($request->post());
+            // echo "</pre>";
+            // die;
 
-        if(isset($_POST['save_changes']))
-        {
-         
-            $user->language = implode(',',($_POST['language']));
-            $user->alert_site = ($_POST['alert_site'])?1:0;
-            $user->alert_email = ($_POST['alert_email'])?1:0;
-
-            if(isset($_POST['day']))$user->day = $_POST['day'];
-            $user->month = $_POST['month'];
-            if(isset($_POST['year']))$user->year = $_POST['year'];
-            $user->attributes = $_POST['User'];
-            
-            if($user->validate())
-            {   
-                if(isset($user->day) && ($user->month != '0') && isset($user->year))
-                {
-                    $user->birthday = $user->day.'.'.$user->month.'.'.$user->year;
-                    if(checkdate((int)$user->month,(int)$user->day,(int)$user->year) || $user->birthday =='..')
-                    {
-                        $user->save();
-                    }
-                    else {
-                            Yii::$app->session->setFlash('danger', Yii::t('app','Check your information.Something wrong.'));
-                            return $this->render('edit_profile',['user' => $user]); 
-                    }
-                }
-
-                Yii::$app->session->setFlash('success', Yii::t('app','Changes saved.'));
-                return $this->render('edit_profile',['user' => $user]);
-
-            }
-            else
-            {
-                Yii::$app->session->setFlash('danger', Yii::t('app','Check your information.Something wrong.'));
-                return $this->render('edit_profile',['user' => $user]);
-            }
+        if($user->load($request->post()) && $user->save()){
+            Yii::$app->session->setFlash('success', Yii::t('app','Changes saved.'));
+            return $this->redirect(['edit-profile']);
         }
-        
-        return $this->render('edit_profile',['user' => $user]);
+        else{
+            return $this->render('edit_profile',['user' => $user]);
+        }
     }
 
     public function actionAddAutos()

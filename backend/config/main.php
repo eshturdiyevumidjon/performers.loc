@@ -20,9 +20,9 @@ return [
             'class' => '\kartik\grid\Module'
             ] ,
             
-            // 'translations' => [
-            //     'class' => 'common\modules\translations\modules\admin\Module'
-            // ]
+            'translations' => [
+                'class' => 'common\modules\translations\modules\admin\Module'
+            ]
     ],
     'components' => [
         'mailer' => [ 
@@ -48,19 +48,19 @@ return [
             ],
         ],
       
-        'i18n' => [
-            'translations' => [
-                'app*' => [
-                    'basePath' => '@common/messages',
-                    'class' => 'yii\i18n\PhpMessageSource',
-                    'sourceLanguage' => 'en',
-                    'fileMap' => [
-                        'app'=>'app.php',
-                        'app/error'=>'app/error.php',
-                    ],
-                ],
-            ],
-        ],
+        // 'i18n' => [
+        //     'translations' => [
+        //         'app*' => [
+        //             'basePath' => '@common/messages',
+        //             'class' => 'yii\i18n\PhpMessageSource',
+        //             'sourceLanguage' => 'en',
+        //             'fileMap' => [
+        //                 'app'=>'app.php',
+        //                 'app/error'=>'app/error.php',
+        //             ],
+        //         ],
+        //     ],
+        // ],
         
         'request' => [
             'csrfParam' => '_csrf-backend',

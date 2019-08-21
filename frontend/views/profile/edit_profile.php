@@ -1,15 +1,15 @@
 <?php
 
-/* @var $this yii\web\View */
-/* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \common\models\LoginForm */
-
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use backend\models\Lang;
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\LoginForm */
+
+$langList = Lang::getLaguagesList();
+
 $path = \yii::getAlias('@backend');
 $this->title = Yii::t('app','Edit Profile');
 $user_langs = explode(',', $user->language);
@@ -73,26 +73,11 @@ function full_data($i){
                   <input type="text" name="User[username]" value="<?=$user->username?>">
                 </div>
                 <div>
-                  <label for=""><?=$user->getAttributeLabel('day')?></label>
+                  <label for=""><?=$user->getAttributeLabel('birthday')?></label>
                   <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-12">
                       <div class="form-group">
-                        <input type="text" name="day" placeholder="<?=$user->getAttributeLabel('day')?>" value="<?=$user->day?>">
-                      </div>
-                    </div>
-                    <div class="col-lg-4">
-                      <div class="form-group">
-                        <select name="month">
-                              <option value='0'><?=$user->getAttributeLabel('month')?></option>
-                            <?php foreach ($user->getMonthList() as $key => $value): ?>
-                              <option value="<?=$key?>" <?=($user->month == $key) ? 'selected' : '' ?>><?=$value?></option>
-                            <?php endforeach ?>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-lg-4">
-                      <div class="form-group">
-                        <input type="text" name="year" placeholder="<?=$user->getAttributeLabel('year')?>" value="<?=$user->year?>">
+                        <input type="date" name="User[birthday]" placeholder="<?=$user->getAttributeLabel('birthday')?>" value="<?=$user->birthday?>">
                       </div>
                     </div>
                   </div>
@@ -113,44 +98,30 @@ function full_data($i){
                 </div>
                 <hr>
                 <label for="">Язык</label>
-                    <div id="newlink2">
-                        <div>
-                          <div class="row">
-                          <div class="col-lg-10 col-sm-9">
-                            <div class="form-group">
-                                <?=full_data($user_langs[0])?>
-                            </div>
-                          </div>
-                          <div class="col-lg-2 col-sm-3">
-                          <a href="javascript:new_link2()" id="addnew" class="forget_pass">+ Добавить</a>
-                          </div>
-                          </div>
-                          <br>
-                        </div>
-   
-                         <?php if(count($user_langs)>1){
-                            for ($i=1; $i < count($user_langs); $i++) { ?>
-                            <div id="<?=($i+100)?>">
-                               <div class="row">
-                                <div class="col-lg-10 col-sm-9">
-                                  <div class="form-group">
-                                    <select name="language[]" class="countries">
-                                      <?=full_data($user_langs[$i])?>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="col-lg-2 col-sm-3">
-                                <a href="javascript:del_link(<?=($i+100)?>)" id="addnew" class="forget_pass"> Удалить</a>
-                                </div>
-                                </div>
-                              </div>
-                              <br>
-                           <?php
-                          }
-                        }
+                <div class="row">
+                  <div class="col-lg-10 col-sm-9">
+                    <!-- <div class="form-group"> -->
+                      <select name="sss" class="vodiapicker">
+                        <?php foreach ($langList as $value) {
+                          ?>
+                          <option value="<?=$value->url?>" class="test" data-thumbnail="<?=$value->image?>"><?=$value->name?></option>
+                        <?php
+                          } 
                         ?>
-                    </div>
-                   
+                      </select>
+
+                      <div class="lang-select">
+                      <div class="btn-select" value=""></div>
+                      <div class="b">
+                        <ul id="a"></ul>
+                      </div>
+                      </div>
+                    <!-- </div> -->
+                  </div>
+                  <div class="col-lg-2 col-sm-3">
+                    <a href="#" class="forget_pass">+ Добавить</a>
+                  </div>
+                </div>                   
                   <hr>
                   <div class="get_noti">
                         <h5>Получать уведомления:</h5>

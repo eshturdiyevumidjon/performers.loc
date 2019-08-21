@@ -31,6 +31,7 @@ class ItakeAsset extends AssetBundle
       'js/jquery.maskedinput.js',
       'js/jquery.fancybox.min.js',
       'js/all.min.js',
+      'js/select.js',
       'js/main.js',
     ];
     public $depends = [

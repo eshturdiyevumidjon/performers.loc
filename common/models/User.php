@@ -63,7 +63,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [['email','username', 'auth_key','type'], 'required'],
             [['type', 'status','created_at', 'updated_at','alert_email','alert_site'], 'integer'],
-            [['note'],'safe'],
+            [['note', 'birthday'],'safe'],
             [['day','year','month'],'integer'],
             [['username', 'email', 'auth_key','address','language','new_password','old_password','re_password','password_reset_token','password_hash','phone','image'], 'string', 'max' => 255],
             [['email'], 'unique'],
@@ -151,24 +151,19 @@ class User extends ActiveRecord implements IdentityInterface
             $this->updated_at = time();
             $this->created_at = time();      
         }
-        if(!$this->isNewRecord) 
-            {
-             $this->updated_at=time();
-             if($this->new_password != null) {
+        else{
+            $this->updated_at = time();
+            if($this->new_password != null) {
                 $this->auth_key = $this->new_password;
                 $this->password_hash = Yii::$app->security->generatePasswordHash($this->auth_key);
             }
         }
-        if($this->birthday != null)                 
-            $this->birthday = \Yii::$app->formatter->asDate($this->birthday, 'php:Y-m-d');
-
         return parent::beforeSave($insert);
     }
 
     public function afterFind()
     {
         parent::afterFind();
-        $this->birthday=($this->birthday)?Yii::$app->formatter->asDate($this->birthday, 'php:d.m.Y'):""; 
     }
 
     public function getCreated_at()
