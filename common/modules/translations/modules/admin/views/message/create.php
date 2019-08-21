@@ -15,8 +15,8 @@ use kartik\daterange\DateRangePicker;
 /* @var $this yii\web\View */
 /* @var $model common\modules\translations\models\Message */
 
-$this->title = 'Create Message';
-$this->params['breadcrumbs'][] = ['label' => 'Messages', 'url' => ['index']];
+$this->title = Yii::t('app','Create Message');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app','Messages'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="message-create">

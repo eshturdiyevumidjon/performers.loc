@@ -34,9 +34,8 @@ class SourceMessageController extends Controller
      * Lists all SourceMessage models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($id = null)
     {
-
         if(Yii::$app->request->post("hasEditable")){
             \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $posts = Yii::$app->request->post("translation");
@@ -66,6 +65,7 @@ class SourceMessageController extends Controller
 
         return $this->render('index', [
             'searchModel' => $searchModel,
+            'id' => $id,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -88,17 +88,33 @@ class SourceMessageController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id = null)
     {
         $model = new SourceMessage();
+        $translation = new Message();
+
+        $model->category = 'app';
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['update', 'id' => $model->id]);
+            $langs = \backend\models\Lang::getLaguagesList();
+
+            foreach ($langs as $key => $value) {
+                $tr = new Message();
+                $tr->id = $model->id;
+                $tr->language = $value->url;
+                if($value->url == $id)
+                    $tr->translation = $model->tr;
+                $tr->save();
+            }
+
+            return $this->redirect(['index', 'id' => $id]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'id' => $id
         ]);
+
     }
 
     /**

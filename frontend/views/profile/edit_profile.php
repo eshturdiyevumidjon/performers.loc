@@ -10,26 +10,13 @@ use backend\models\Lang;
 
 $langList = Lang::getLaguagesList();
 
-$path = \yii::getAlias('@backend');
 $this->title = Yii::t('app','Edit Profile');
 $user_langs = explode(',', $user->language);
+$session = Yii::$app->session;
 
 $this->params['breadcrumbs'][] = $this->title;
 $company = \backend\models\AboutCompany::findOne(1);
-
-function full_data($i){
-  $langs = \backend\models\Lang::getLaguagesList();
-  $output = '<select name="language[]" id="countries">';
-
-  foreach($langs as $lang): 
-      $output .= '<option value="'.$lang->id.'" ';
-      if($i == $lang->id)
-      $output .= ' selected';
-      $output .= '>'.$lang->name.'</option>';
-  endforeach;
-  $output .= '</select>';
-  return $output;
-}
+$lang = Yii::$app->language;
 
 ?>
 <section class="cabinet">
@@ -52,9 +39,8 @@ function full_data($i){
         </ul>
         <div class="tab-content">
               <div id="ff0" class="tab-pane <?=($active != 2 ) ? 'in active show' : 'fade'?>">
-                <form class="input_styles cab_st" method="post" id="form1" action="/ru/profile/edit-profile">
+                <form class="input_styles cab_st" method="post" id="form1" action="/<?=$lang?>/profile/edit-profile">
                 <?php
-                  $session = Yii::$app->session;
                   $flashes = $session->getAllFlashes();
                   foreach ($flashes as $key => $value) {
                     if($key == 'success')
@@ -98,30 +84,29 @@ function full_data($i){
                 </div>
                 <hr>
                 <label for="">Язык</label>
-                <div class="row">
-                  <div class="col-lg-10 col-sm-9">
-                    <!-- <div class="form-group"> -->
-                      <select name="sss" class="vodiapicker">
-                        <?php foreach ($langList as $value) {
-                          ?>
-                          <option value="<?=$value->url?>" class="test" data-thumbnail="<?=$value->image?>"><?=$value->name?></option>
-                        <?php
-                          } 
-                        ?>
-                      </select>
-
-                      <div class="lang-select">
-                      <div class="btn-select" value=""></div>
-                      <div class="b">
-                        <ul id="a"></ul>
-                      </div>
-                      </div>
-                    <!-- </div> -->
-                  </div>
-                  <div class="col-lg-2 col-sm-3">
-                    <a href="#" class="forget_pass">+ Добавить</a>
-                  </div>
-                </div>                   
+                
+                   <table class="table" id="item_table">
+                    <tr>
+                     <td width="80%">
+                        <select name="language[]" id="aaaaa" class="vodiapicker">
+                              <?php foreach ($langList as $value) {
+                                ?>
+                                <option value="<?=$value->url?>" class="test" data-thumbnail="<?=$value->image?>" <?=($user_langs[0] == $value->url)?'selected':''?>><?=$value->name?></option>
+                              <?php
+                                } 
+                              ?>
+                          </select>
+                          <div class="lang-select">
+                            <div class="btn-select" value=""></div>
+                            <div class="b">
+                              <ul id="a"></ul>
+                            </div>
+                          </div>
+                     </td>
+                     <td>
+                      <button type="button" name="add" class="add forget_pass btn btn-link">+ Добавить</button></td>
+                    </tr>
+                  </table>
                   <hr>
                   <div class="get_noti">
                         <h5>Получать уведомления:</h5>
@@ -141,30 +126,20 @@ function full_data($i){
 
               </div>
               <div id="ff1" class="tab-pane <?=($active == 2 ) ? 'in active show' : 'fade'?>">
+                 <form class="input_styles cab_st" id="form2" action="/<?=$lang?>/profile/change-password" method="post">
                 <?php
-                  $session = Yii::$app->session;
-                  $flashes = $session->getAllFlashes();
-                  foreach ($flashes as $key => $value) {
-                    if($key == 'success')
-                    {
-                      echo "<p class='alert alert-success'>$value</p>";
-                    }
-                    if($key == 'danger')
-                    {
-                      echo "<p class='alert alert-danger'>$value</p>";
-                    }  
-                  }
+                  echo "<p class='alert alert-".$session['status']."'>".$session['message']."</p>";
+                  
                 ?>
-                <form class="input_styles cab_st" id="form2" action="/ru/profile/change-password" method="post">
                   <input type="hidden" name="id_user" value="<?=$user->id?>">
                 <div class="form-group">
-                  <input type="password" name="User[old_password]" placeholder="<?=Yii::t('app','Old Password')?>" style="margin-bottom:15px;" value="<?=$model->old_password?>">
+                  <input type="text" name="User[old_password]" placeholder="<?=Yii::t('app','Old Password')?>"  value="<?=$user->old_password?>">
                 </div>
                 <div class="form-group">
-                  <input type="password" name="User[new_password]" placeholder="<?=Yii::t('app','New Password')?>" style="margin-bottom:15px;" value="<?=$model->new_password?>">
+                  <input type="password" name="User[new_password]" placeholder="<?=Yii::t('app','New Password')?>" value="<?=$user->new_password?>">
                 </div>
                 <div class="form-group">
-                  <input type="password" name="User[re_password]" placeholder="<?=Yii::t('app','Confirm password')?>" style="margin-bottom:15px;" value="<?=$model->re_password?>">
+                  <input type="password" name="User[re_password]" placeholder="<?=Yii::t('app','Confirm password')?>"  value="<?=$user->re_password?>">
                 </div>
                 <p class=""><?=Yii::t('app','From 6 to 24 characters. Only latin letters, numbers and these characters: !@#$%^&amp;*()_+-=;,./?[]{}')?></p>
                 <hr>
@@ -177,6 +152,27 @@ function full_data($i){
         <?=$this->render('cabinet_right',['company'=>$company]);?>
       </div>
     </div>
-    
+   
   </div>
 </section>
+<?php
+$this->registerJs(<<<JS
+    $(document).ready(function(){
+      var c = 0;
+       $(document).on('click', '.add', function(){
+        c++;
+          var option = $("select").html();
+          var html = '';
+          html += '<tr>';
+          html += '<td><select name="language[]" class="vodiapicker">'+option+'</select>';
+          html += '<div class="lang-select"><div class="btn-select" value=""></div><div class="b"><ul id="a'+ c + '"></ul></div></div></td>';
+          html += '<td><button type="button" name="remove" class="btn btn-danger btn-sm remove">Удалить</button></td></tr>';
+          $('#item_table').append(html);
+         });
+          $(document).on('click', '.remove', function(){
+              $(this).closest('tr').remove();
+             });
+      })
+JS
+)
+?>

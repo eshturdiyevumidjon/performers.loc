@@ -10,10 +10,6 @@ return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'name'=>'iTake',
-    'language'=>'ru-Ru',
-    'defaultRoute'=>'/site/index',
-    'timeZone' => 'Asia/Tashkent',
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'mailer' => [ 
@@ -36,16 +32,11 @@ return [
             ],
         ],
         'i18n' => [
-            'translations' => [
-                'app*' => [
-                    'basePath' => '@common/messages',
-                    'class' => 'yii\i18n\PhpMessageSource',
-                    'sourceLanguage' => 'en',
-                    'fileMap' => [
-                        'app'=>'app.php',
-                        'app/error'=>'app/error.php',
-                    ],
-                ],
+             'translations' => [
+                '*' => [
+                    'class' => 'yii\i18n\DbMessageSource',
+                    'forceTranslation'=>true,
+                ]
             ],
         ],
         'assetManager'=>[

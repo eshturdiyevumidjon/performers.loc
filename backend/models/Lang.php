@@ -39,7 +39,7 @@ class Lang extends \yii\db\ActiveRecord
     {
         return [
             [['url', 'name'], 'required'],
-            [['default', 'status', 'date_update', 'date_create'], 'integer'],
+            [['default', 'status', 'date_update','create', 'date_create'], 'integer'],
             [['url', 'local', 'name', 'image'], 'string', 'max' => 255],
             [['flag'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg',],
         ];
@@ -79,13 +79,9 @@ class Lang extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTranslations()
-    {
-        return $this->hasMany(Translation::className(), ['url_id' => 'id']);
-    }   
     public static function getLanguages()
     {
-        return Lang::find()->where(['status'=>1])->all();
+        return Lang::find()->where(['status'=>1,'default'=>1])->all();
     }
     //Получение текущего объекта языка
     static function getCurrent()
@@ -105,6 +101,6 @@ class Lang extends \yii\db\ActiveRecord
     }
     public static function getLaguagesList()
     {
-        return Lang::find()->all();
+        return Lang::find()->where(['create'=>0])->all();
     }
 }

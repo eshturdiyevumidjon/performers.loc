@@ -13,6 +13,8 @@ class m190715_194709_create_lang_table extends Migration
     public function safeUp()
     {
         $language=[
+            ['ru','ru-RU','/uploads/flags/ru.png','Russian - Русский'],
+            ['en','en-EN','/uploads/flags/en.png','English - English'],
             ['af','af-ZA','/uploads/flags/af.png','Afrikaans - Africaans'],
             ['ar','ar-AR','/uploads/flags/ar.png','‏Arabic -العربية‏'],
             ['az','az-AZ','/uploads/flags/az.png','Azerbaijani - Azərbaycan dili'],
@@ -65,6 +67,7 @@ class m190715_194709_create_lang_table extends Migration
             'name'=>$this->string(255)->notNull()->comment("Название"),
             'image'=>$this->string(255)->comment("Флаг"),
             'default'=>$this->integer()->defaultValue(0)->comment("Заметка"),
+            'create'=>$this->integer()->defaultValue(0)->comment("Заметка"),
             'status'=>$this->integer()->defaultValue(0)->comment("Статус"),
             'date_update'=>$this->integer()->comment("Дата изменения"),
             'date_create'=>$this->integer()->comment("Дата создания"),
@@ -74,6 +77,7 @@ class m190715_194709_create_lang_table extends Migration
             'local'=>'ru-Ru',
             'name'=>'Russian - Русский',
             'default'=>1,
+            'create' => 1,
             'status'=>1,
             'image'=>'/uploads/flags/ru.png',
             'date_update'=>time(),
@@ -83,7 +87,8 @@ class m190715_194709_create_lang_table extends Migration
             'url'=>'en',
             'local'=>'en-En',
             'name'=>'English - English',
-            'default'=>0,
+            'default'=>1,
+            'create' => 1,
             'status'=>0,
             'image'=>'/uploads/flags/en.png',
             'date_update'=>time(),

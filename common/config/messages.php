@@ -5,7 +5,7 @@ return [
     'sourcePath' => dirname(dirname(__DIR__)),
     // array, required, list of language codes that the extracted messages
     // should be translated to. For example, ['zh-CN', 'de'].
-    'languages' => ['af','en', 'ar', 'az', 'be', 'bg', 'bs', 'cs', 'da', 'de', 'el', 'es', 'et', 'fa', 'fi', 'fr', 'he', 'hr', 'hu', 'hy', 'id', 'it', 'ja', 'ka', 'kk', 'ko', 'kz',  'lv', 'ms', 'nb-NO', 'nl', 'pl', 'pt', 'pt-BR', 'ro', 'ru', 'sk', 'sl', 'sr', 'sr-Latn', 'sv', 'tg', 'th', 'tr', 'uk', 'uz', 'vi', 'zh-CN', 'zh-TW'],
+    'languages' => ['ru','en'],
     // string, the name of the function for translating messages.
     // Defaults to 'Yii::t'. This is used as a mark to find the messages to be
     // translated. You may use a string for single function name or an array for
@@ -41,11 +41,11 @@ return [
     ],
 
     // 'php' output format is for saving messages to php files.
-    'format' => 'php',
+    // 'format' => 'php',
     // Root directory containing message translations.
-    'messagePath' => '@common/messages',
+    // 'messagePath' => '@common/messages',
     // boolean, whether the message file should be overwritten with the merged messages
-    'overwrite' => true,
+    // 'overwrite' => true,
     /*
     // File header used in generated messages files
     'phpFileHeader' => '',

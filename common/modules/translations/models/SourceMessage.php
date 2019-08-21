@@ -42,7 +42,7 @@ class SourceMessage extends \yii\db\ActiveRecord
 {
     const SCENARIO_SEARCH = "search";
     const STATUS_ACTIVE = 1;
-
+    public $tr;
     /**
      * @inheritdoc
      */
@@ -57,7 +57,7 @@ class SourceMessage extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['message'], 'string'],
+            [['message','tr'], 'string'],
             [['category'], 'string', 'max' => 255],
         ];
     }

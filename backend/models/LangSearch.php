@@ -18,7 +18,7 @@ class LangSearch extends Lang
     public function rules()
     {
         return [
-            [['id', 'default', 'status', 'date_update', 'date_create'], 'integer'],
+            [['id', 'default', 'status','create', 'date_update', 'date_create'], 'integer'],
             [['url', 'local', 'name', 'image'], 'safe'],
         ];
     }
@@ -57,7 +57,7 @@ class LangSearch extends Lang
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'default' => $this->default,
+            'create' => 1,
             'status' => $this->status,
             'date_update' => $this->date_update,
             'date_create' => $this->date_create,

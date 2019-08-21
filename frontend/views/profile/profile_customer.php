@@ -10,6 +10,7 @@ use yii\bootstrap\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\LoginForm */
+$lang = Yii::$app->language;
 
 
 $this->title = Yii::t('app','Personal Cabinet');
@@ -252,7 +253,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <span>4,5</span>
           </div>
           <div class="btn_dor">
-            <a href="/profile/edit-profile" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Edit Account')?></a>
+            <a href="/<?=$lang?>/profile/edit-profile?id=<?=$user->id?>" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Edit Account')?></a>
           </div>
         </div>
         <?=$this->render('cabinet_right',['company'=>$company]);?>

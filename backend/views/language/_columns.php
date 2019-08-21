@@ -63,11 +63,17 @@ return [
    
     [
         'class'    => 'kartik\grid\ActionColumn',
-        'template' => '{view} {update}  {leadDelete}',
+        'template' => '{view} {update} {leadDelete} {messages}',
         'viewOptions'=>['role'=>'modal-remote','title'=>Yii::t('app','View'),'data-toggle'=>'tooltip'],
         'updateOptions'=>['role'=>'modal-remote','title'=>'Изменить', 'data-toggle'=>'tooltip'],
         'buttons'  => [
-          
+            'messages' => function($url, $model){
+                $url = Url::to(['/translations/source-message/', 'id' => $model->url]);
+                 return Html::a('<span class="glyphicon glyphicon-book"></span>', $url, [
+                          'data-pjax'=>0,'title'=>Yii::t('app','Translations'), 
+                          'data-toggle'=>'tooltip'
+                    ]);
+            },
             'leadDelete' => function ($url, $model) {
                 if($model->default == 0){
                     $url = Url::to(['/user/delete', 'id' => $model->id]);

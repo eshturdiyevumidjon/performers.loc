@@ -14,12 +14,11 @@ return [
     'name'=>'iTake',
     'timeZone' => 'Asia/Tashkent',
     'defaultRoute' =>'/site/dashboard',
-    'language'=>'en',
+    'language'=>'ru-RU',
     'modules' => [
              'gridview' =>  [
             'class' => '\kartik\grid\Module'
             ] ,
-            
             'translations' => [
                 'class' => 'common\modules\translations\modules\admin\Module'
             ]
@@ -27,9 +26,6 @@ return [
     'components' => [
         'mailer' => [ 
             'class' => 'yii\swiftmailer\Mailer',
-            // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure a transport
-            // for the mailer to send real emails.
             'useFileTransport' => false,
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
@@ -47,21 +43,17 @@ return [
                 ]
             ],
         ],
-      
-        // 'i18n' => [
-        //     'translations' => [
-        //         'app*' => [
-        //             'basePath' => '@common/messages',
-        //             'class' => 'yii\i18n\PhpMessageSource',
-        //             'sourceLanguage' => 'en',
-        //             'fileMap' => [
-        //                 'app'=>'app.php',
-        //                 'app/error'=>'app/error.php',
-        //             ],
-        //         ],
-        //     ],
-        // ],
-        
+        'i18n' => [
+            'translations' => [
+                 'app' => [
+                    'class' => 'yii\i18n\DbMessageSource',
+                    'sourceMessageTable'=>'{{%source_message}}',
+                    'messageTable'=>'{{%message}}',
+                    'sourceLanguage' => 'en',
+                    'forceTranslation' => true,
+                ],
+            ],
+        ],
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],

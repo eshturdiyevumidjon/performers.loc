@@ -12,10 +12,22 @@ use yii\widgets\ActiveForm;
         <div class="panel-body source-message-form">
 
         <?php $form = ActiveForm::begin(); ?>
+        
+        <div class="row">
+                <?= $form->field($model, 'category')->textInput(['maxlength' => true]) ?>
+        </div>
 
-        <?= $form->field($model, 'category')->textInput(['maxlength' => true]) ?>
+        <div class="row">
 
-        <?= $form->field($model, 'message')->textarea(['rows' => 6]) ?>
+            <div class="col-md-6">
+                <?= $form->field($model, 'message')->textarea(['rows' => 6]) ?>
+            </div>
+
+            <div class="col-md-6">
+                <?= $form->field($model, 'tr')->textarea(['rows' => 6]) ?>
+            </div>
+
+        </div>
 
         <div class="form-group">
             <?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>

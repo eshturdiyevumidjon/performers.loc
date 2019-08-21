@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
             <div class="row">
 
-                <div class="tab-content source-message-update"">
+                <div class="tab-content source-message-update">
 
                     <?=  $this->render('_form', [
                         'model' => $model,

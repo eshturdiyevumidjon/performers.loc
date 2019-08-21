@@ -97,15 +97,20 @@ class LanguageController extends Controller
      * @return mixed
      */
      public function actionCreate()
-   {
+    {
        $request = Yii::$app->request;
        $model = new Lang(); 
+       $model->create = 1;
        if($request->isAjax){
            /*
            *  Process for ajax request
            */
            Yii::$app->response->format = Response::FORMAT_JSON;
             if($model->load($request->post()) && $model->save()){
+               $src = \common\modules\translations\models\SourceMessage::find()->all();
+                foreach ($src as $value) {
+                   Yii::$app->db->createCommand()->insert('message', ['id' => $value->id,'language'=>$model->url])->execute();
+                }
                $model->flag = UploadedFile::getInstance($model,'flag');
                 if(!empty($model->flag))
                 {

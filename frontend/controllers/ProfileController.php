@@ -84,7 +84,10 @@ class ProfileController extends Controller
     }
     public function beforeAction($action)
     {
-        $this->enableCsrfValidation = false;
+        if ($action->id == 'edit-profile' || $action->id == 'change-password') {
+            $this->enableCsrfValidation = false;
+        }
+
         return parent::beforeAction($action);
         return false;
     }
@@ -92,29 +95,34 @@ class ProfileController extends Controller
     {
         $id = $_POST['id_user'];
         $user = $this->findModel($id);
+        // echo "<pre>";
+        // print_r($_POST);
         $user->old_password = $_POST['User']['old_password'];
         $user->new_password = $_POST['User']['new_password'];
         $user->re_password = $_POST['User']['re_password'];
+        //  print_r($user);
+        // die;
+
         if($user->auth_key == $user->old_password)
         {
             if($user->new_password == "" || $user->re_password == "" )
             {
-                Yii::$app->session['password[status]']='danger';
-                Yii::$app->session['password[message]']=Yii::t('app','Password cannot be blank.');
+                Yii::$app->session['status']='danger';
+                Yii::$app->session['messag]']=Yii::t('app','Password cannot be blank.');
                  return $this->render('edit_profile',['user' => $user,'active'=>2]);
             }
 
             if(strlen($user->new_password) < 6 ||  strlen($user->new_password) > 24)
             {
-                Yii::$app->session['password[status]']='danger';
-                Yii::$app->session['password[message]']=Yii::t('app','Password must be contain from 6 to 24 characters');
+                Yii::$app->session['status']='danger';
+                Yii::$app->session['message']=Yii::t('app','Password must be contain from 6 to 24 characters');
                  return $this->render('edit_profile',['user' => $user,'active'=>2]);
             }
 
             if($user->new_password == $user->re_password)
             {
-                 Yii::$app->session['password[status]']='success';
-                 Yii::$app->session['password[message]']=Yii::t('app','Changes saved.');
+                 Yii::$app->session['status']='success';
+                 Yii::$app->session['message']=Yii::t('app','Changes saved.');
 
                  $user->auth_key = $user->new_password;
                  $user->save();
@@ -122,38 +130,47 @@ class ProfileController extends Controller
             }
             else
             {
-                Yii::$app->session['password[status]']='danger';
-                Yii::$app->session['password[message]']=Yii::t('app','"Password" and "Confirm password" do not match');
+                Yii::$app->session['status']='danger';
+                Yii::$app->session['message']=Yii::t('app','"Password" and "Confirm password" do not match');
                  return $this->render('edit_profile',['user' => $user,'active'=>2]);
             }
         }
         else
         {
-            Yii::$app->session['password[status]']='danger';
-            Yii::$app->session['password[message]']=Yii::t('app','Wrong old password.');
+            Yii::$app->session['status']='danger';
+            Yii::$app->session['message']=Yii::t('app','Wrong old password.');
             return $this->render('edit_profile',['user' => $user,'active'=>2]);  
         }
     }
     
-    public function actionEditProfile()
+     public function actionEditProfile($id = null)
     {
-        $request = Yii::$app->request;
-        if (Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-        $user = $this->findModel(Yii::$app->user->identity->id);
-            // echo "<pre>";
-            // print_r($request->post());
-            // echo "</pre>";
-            // die;
+         
+        if($id == null) $id = $_POST['id_user'];
+        $user = $this->findModel($id);
+        
+        if(isset($_POST['save_changes']))
+        {
+            $user->language = implode(',',($_POST['language']));
+            $user->alert_site = ($_POST['alert_site'])?1:0;
+            $user->alert_email = ($_POST['alert_email'])?1:0;
+            $user->attributes = $_POST['User'];
+            //echo $user->birthday;
 
-        if($user->load($request->post()) && $user->save()){
-            Yii::$app->session->setFlash('success', Yii::t('app','Changes saved.'));
-            return $this->redirect(['edit-profile']);
+            if($user->validate())
+            {   
+                 $user->save();
+                Yii::$app->session->setFlash('success', Yii::t('app','Changes saved.'));
+                return $this->render('edit_profile',['user' => $user]);
+
+            }
+            else
+            {
+                Yii::$app->session->setFlash('danger', Yii::t('app','Check your information.Something wrong.'));
+                return $this->render('edit_profile',['user' => $user]);
+            }
         }
-        else{
-            return $this->render('edit_profile',['user' => $user]);
-        }
+        return $this->render('edit_profile',['user' => $user]);
     }
 
     public function actionAddAutos()

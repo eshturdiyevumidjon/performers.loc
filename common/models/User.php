@@ -32,11 +32,6 @@ class User extends ActiveRecord implements IdentityInterface
     public $new_password;
     public $old_password;
     public $re_password;
-
-    public $day;
-    public $month;
-    public $year;
-
     /**
      * {@inheritdoc}
      */
@@ -64,7 +59,6 @@ class User extends ActiveRecord implements IdentityInterface
             [['email','username', 'auth_key','type'], 'required'],
             [['type', 'status','created_at', 'updated_at','alert_email','alert_site'], 'integer'],
             [['note', 'birthday'],'safe'],
-            [['day','year','month'],'integer'],
             [['username', 'email', 'auth_key','address','language','new_password','old_password','re_password','password_reset_token','password_hash','phone','image'], 'string', 'max' => 255],
             [['email'], 'unique'],
             [['avatar'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg',],
@@ -89,10 +83,10 @@ class User extends ActiveRecord implements IdentityInterface
             'status' => Yii::t('app','Status'),
             'created_at' => Yii::t('app','Created_at'),
             'updated_at' => Yii::t('app','Updated_at'),
-            'day' => Yii::t('app','Day'),
+            // 'day' => Yii::t('app','Day'),
             'address' => Yii::t('app','City'),
-            'month' => Yii::t('app','Month'),
-            'year' => Yii::t('app','Year'),
+            // 'month' => Yii::t('app','Month'),
+            // 'year' => Yii::t('app','Year'),
         ];
     }
     //Получить описание типов пользователя.
@@ -387,5 +381,15 @@ class User extends ActiveRecord implements IdentityInterface
             11 => Yii::t('app','November'),
             12 => Yii::t('app','December'),
         ];
+    }
+
+    public static function fill_unit_select_box()
+    { 
+     $langList = \backend\models\Lang::getLaguagesList();
+     $output = '';
+      foreach ($langList as $value) {
+        $output .= '<option value="'.$value->url.'" class="test" data-thumbnail="'.$value->image.'">'.$value->name.'</option>';
+            } 
+     return $output;
     }
 }

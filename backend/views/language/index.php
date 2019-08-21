@@ -21,9 +21,6 @@ CrudAsset::register($this);
         margin:auto;
     }
 </style>
-<?php
-print_r($_SERVER['HTTP_HOST']);
-?>
 <div class="lang-index">
     <div id="ajaxCrudDatatable">
         <?=GridView::widget([
