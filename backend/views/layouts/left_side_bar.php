@@ -3,6 +3,7 @@ use yii\helpers\Url;
 use backend\models\Lang;
 $pathInfo = Yii::$app->request->pathInfo;
 $serverName = Yii::$app->params['serverName'];
+$user = \common\models\User::find()->where(['id'=>Yii::$app->user->identity->id])->one();
 ?>
 <div class="page-sidebar">
     <ul class="x-navigation">
@@ -19,8 +20,8 @@ $serverName = Yii::$app->params['serverName'];
                     <img src="<?=$serverName?>/extra/images/users/avatar.jpg" alt="John Doe"/>
                 </div>
                 <div class="profile-data">
-                    <div class="profile-data-name"><?=Yii::$app->user->identity->username?></div>
-                    <div class="profile-data-title">Web Developer/Designer</div>
+                    <div class="profile-data-name"><?=$user->username?></div>
+                    <div class="profile-data-title"><?=$user->getTypeDescription()?></div>
                 </div>
                 <div class="profile-controls">
                     <a href="/user/profile" class="profile-control-left"><span class="fa fa-info"></span></a>
@@ -28,7 +29,6 @@ $serverName = Yii::$app->params['serverName'];
                 </div>
             </div>                                                                        
         </li>
-        <li class="xn-title"><?=Yii::t('app','Navigation')?></li>
         <li <?= ($pathInfo == 'site/dashboard' ? 'class="active"' : '')?>>
             <a href="/site/dashboard"><span class="fa fa-desktop"></span> <span class="xn-text"><?=Yii::t('app','Dashboard')?></span></a>                        
         </li>                    

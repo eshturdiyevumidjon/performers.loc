@@ -26,7 +26,7 @@ $count = 0;
 
     <div class="panel panel-transparent">
 
-        <div class="panel-body no-padding">
+<!--         <div class="panel-body no-padding">
 
             <div class="panel panel-default">
 
@@ -40,12 +40,22 @@ $count = 0;
 
             </div>
 
-        </div>
+        </div> -->
 
         <div class="panel-body no-padding">
 
             <div class="panel panel-default">
                 <div class="panel-body">
+                    <div class="row">
+                        <div class="pull-left">
+                            <H2><?=Yii::t('app','Translations');?></H2>
+                        </div>
+
+                        <div class="pull-right">
+                            <?=Html::a('Назадь',['/language/index'],['class'=>'btn btn-primary'])?>
+                        </div>
+                    </div>
+                    <BR>
                     <div class="table-responsive">
                         <div class="input-group pull-left form-group">
                             <input type="text" class="form-control" placeholder="Search" id="myInput">

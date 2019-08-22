@@ -93,15 +93,12 @@ class ProfileController extends Controller
     }
     public function actionChangePassword()
     {
-        $id = $_POST['id_user'];
+        $id = Yii::$app->user->identity->id;
         $user = $this->findModel($id);
-        // echo "<pre>";
-        // print_r($_POST);
+       
         $user->old_password = $_POST['User']['old_password'];
         $user->new_password = $_POST['User']['new_password'];
         $user->re_password = $_POST['User']['re_password'];
-        //  print_r($user);
-        // die;
 
         if($user->auth_key == $user->old_password)
         {
@@ -112,21 +109,22 @@ class ProfileController extends Controller
                  return $this->render('edit_profile',['user' => $user,'active'=>2]);
             }
 
-            if(strlen($user->new_password) < 6 ||  strlen($user->new_password) > 24)
-            {
-                Yii::$app->session['status']='danger';
-                Yii::$app->session['message']=Yii::t('app','Password must be contain from 6 to 24 characters');
-                 return $this->render('edit_profile',['user' => $user,'active'=>2]);
-            }
-
             if($user->new_password == $user->re_password)
             {
                  Yii::$app->session['status']='success';
                  Yii::$app->session['message']=Yii::t('app','Changes saved.');
-
+                if(strlen($user->new_password) < 6 ||  strlen($user->new_password) > 24)
+                {
+                    Yii::$app->session['status']='danger';
+                    Yii::$app->session['message']=Yii::t('app','Password must be contain from 6 to 24 characters');
+                     return $this->render('edit_profile',['user' => $user,'active'=>2]);
+                }
+                else
+                {
                  $user->auth_key = $user->new_password;
                  $user->save();
                  return $this->render('edit_profile',['user' => $user,'active'=>2]);
+                 }
             }
             else
             {
@@ -143,10 +141,9 @@ class ProfileController extends Controller
         }
     }
     
-     public function actionEditProfile($id = null)
+    public function actionEditProfile()
     {
-         
-        if($id == null) $id = $_POST['id_user'];
+       $id = Yii::$app->user->identity->id;
         $user = $this->findModel($id);
         
         if(isset($_POST['save_changes']))

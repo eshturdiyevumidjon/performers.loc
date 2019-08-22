@@ -63,7 +63,7 @@ return [
    
     [
         'class'    => 'kartik\grid\ActionColumn',
-        'template' => '{view} {update} {leadDelete} {messages}',
+        'template' => ' {update} {leadDelete} {messages}',
         'viewOptions'=>['role'=>'modal-remote','title'=>Yii::t('app','View'),'data-toggle'=>'tooltip'],
         'updateOptions'=>['role'=>'modal-remote','title'=>'Изменить', 'data-toggle'=>'tooltip'],
         'buttons'  => [

@@ -31,12 +31,15 @@ return [
                 ]
             ],
         ],
-        'i18n' => [
-             'translations' => [
-                '*' => [
+         'i18n' => [
+            'translations' => [
+                 'app' => [
                     'class' => 'yii\i18n\DbMessageSource',
-                    'forceTranslation'=>true,
-                ]
+                    'sourceMessageTable'=>'{{%source_message}}',
+                    'messageTable'=>'{{%message}}',
+                    'sourceLanguage' => 'en',
+                    'forceTranslation' => true,
+                ],
             ],
         ],
         'assetManager'=>[
