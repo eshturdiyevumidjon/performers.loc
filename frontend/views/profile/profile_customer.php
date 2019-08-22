@@ -12,7 +12,6 @@ use yii\bootstrap\ActiveForm;
 /* @var $model \common\models\LoginForm */
 $lang = Yii::$app->language;
 
-
 $this->title = Yii::t('app','Personal Cabinet');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -20,8 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
   <div class="container">
      <nav aria-label="breadcrumb" class="breadcrumb_nav">
           <ol class="breadcrumb"> 
-            <li class="breadcrumb-item"><a href="/site/index">Главная</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Личный кабинет</li>
+            <li class="breadcrumb-item"><a href="/site/index"><?=Yii::t('app','Home')?></a></li>
+            <li class="breadcrumb-item active"><?=Yii::t('app','Personal Cabinet')?></li>
           </ol>
      </nav>
     <h1><?=$title?></h1>
@@ -238,7 +237,7 @@ $this->params['breadcrumbs'][] = $this->title;
               <img id="image_upload_preview" src="/images/dorian-hurst-672657-unsplash.jpg" alt="">
               <input type="hidden" name="user_id" value="<?=$user->id?>">
               <input type="file" name="user_image" id="inputFile">
-              <label for="inputFile"><img src="/images/camera_photo.svg" alt="">Изменить фото</label>
+              <label for="inputFile"><img src="/images/camera_photo.svg" alt=""><?=Yii::t('app','Change photo')?></label>
             </form>
           </div>
           <p><?= $user->username ?></p>

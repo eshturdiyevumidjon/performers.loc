@@ -22,6 +22,7 @@ CrudAsset::register($this);
                     'filterModel' => $searchModel,
                     'pjax'=>true,
                     'responsiveWrap' => false,
+                    'summary' => false,
                     'columns' => require(__DIR__.'/_columns.php'),
                     'toolbar'=> [
                         ['content'=>

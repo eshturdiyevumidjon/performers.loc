@@ -23,9 +23,9 @@ $lang = Yii::$app->language;
   <div class="container">
      <nav aria-label="breadcrumb" class="breadcrumb_nav">
           <ol class="breadcrumb"> 
-            <li class="breadcrumb-item"><a href="/site/index">Главная</a></li>
-            <li class="breadcrumb-item"><a href="/profile/index">Личный кабинет</a></li>
-            <li class="breadcrumb-item active">Редактирование профиля</li>
+            <li class="breadcrumb-item"><a href="/site/index"><?=Yii::t('app','Home')?></a></li>
+            <li class="breadcrumb-item"><a href="/profile/index"><?=Yii::t('app','Personal Cabinet')?></a></li>
+            <li class="breadcrumb-item active"><?=Yii::t('app','Edit Profile')?></li>
           </ol>
       </nav>
       
@@ -34,8 +34,8 @@ $lang = Yii::$app->language;
       <div class="cabinet_left">
 
         <ul class="nav tab_styles_nav">
-          <li><a data-toggle="tab" <?=($active != 2 ) ? 'class="active show"' : ''?>  href="#ff0">Общие настройки</a></li>
-          <li><a data-toggle="tab" <?=($active == 2 ) ? 'class="active show"' : ''?> href="#ff1" >Сменить пароль</a></li>
+          <li><a data-toggle="tab" <?=($active != 2 ) ? 'class="active show"' : ''?>  href="#ff0"><?=Yii::t('app','General settings')?></a></li>
+          <li><a data-toggle="tab" <?=($active == 2 ) ? 'class="active show"' : ''?> href="#ff1" ><?=Yii::t('app','Change password')?></a></li>
         </ul>
         <div class="tab-content">
               <div id="ff0" class="tab-pane <?=($active != 2 ) ? 'in active show' : 'fade'?>">
@@ -75,15 +75,15 @@ $lang = Yii::$app->language;
                 <label for=""><?=$user->getAttributeLabel('phone')?></label>
                 <div class="form-group">
                   <input type="tel" value="<?=$user->phone?>" name="User[phone]">
-                  <p class="opac">Телефон скрыт от других пользователей</p>
+                  <p class="opac"><?=Yii::t('app','The phone is hidden from other users')?></p>
                 </div>
                 <label for="">E-mail</label>
                 <div class="form-group">
                   <input type="email" value="<?=$user->email?>" name="User[email]">
-                  <p class="opac">Почтовый адрес скрыт от других пользователей</p>
+                  <p class="opac"><?=Yii::t('app','Email address is hidden from other users')?></p>
                 </div>
                 <hr>
-                <label for="">Язык</label>
+                <label for=""><?=Yii::t('app','Language')?></label>
                 
                    <table class="table" id="item_table">
                     <tr>
@@ -104,21 +104,21 @@ $lang = Yii::$app->language;
                           </div>
                      </td>
                      <td>
-                      <button type="button" name="add" class="add forget_pass btn btn-link">+ Добавить</button></td>
+                      <button type="button" name="add" class="add forget_pass btn btn-link">+ <?=Yii::t('app','Add')?></button></td>
                     </tr>
                   </table>
                   <hr>
                   <div class="get_noti">
-                        <h5>Получать уведомления:</h5>
+                        <h5><?=Yii::t('app','Receive notifications:')?></h5>
                         <div class="form-group_checkbox">
                             <input type="checkbox" id="dvsv" name="alert_email" <?=($user->alert_email==1)?'checked':''?>>
-                            <label for="dvsv">Получать уведомления при поступлении заявок по электронные почте</label>
+                            <label for="dvsv"><?=Yii::t('app','Receive notifications when applications are received by e-mail')?></label>
                         </div> 
                         <div class="form-group_checkbox">
                             <input type="checkbox" id="sd2a" name="alert_site" <?=($user->alert_site==1)?'checked':''?>>
-                            <label for="sd2a">Я хочу получать новости сайта</label>
+                            <label for="sd2a"><?=Yii::t('app','I want to receive site news')?></label>
                         </div> 
-                        <p>Подписываться на задания могут только исполнители <a href="/site/index" target="_blank" >с подтвержденным аккаунтом.</a></p>
+                        <p><?=Yii::t('app','Only performers can subscribe to assignments')?> <a href="/site/index" target="_blank" ><?=Yii::t('app','with a verified account.')?></a></p>
                       </div>
                       <hr>
                 <button type="submit" name="save_changes" class="btn_red"><?=Yii::t('app','Save')?></button>
@@ -128,8 +128,8 @@ $lang = Yii::$app->language;
               <div id="ff1" class="tab-pane <?=($active == 2 ) ? 'in active show' : 'fade'?>">
                  <form class="input_styles cab_st" id="form2" action="/<?=$lang?>/profile/change-password" method="post">
                 <?php
+                if(isset($session['status']))
                   echo "<p class='alert alert-".$session['status']."'>".$session['message']."</p>";
-                  
                 ?>
                   <input type="hidden" name="id_user" value="<?=$user->id?>">
                 <div class="form-group">

@@ -76,31 +76,10 @@ $this->params['breadcrumbs'][] = $this->title;
           ?> 
           <?php $form = ActiveForm::begin(['enableClientScript' => false, 'id' => 'contact-form','enableAjaxValidation' => true,'options'=>['class'=>'contact_form input_styles','enableAjaxValidation' => true]]); ?>
             <?= $form->field($model, 'name')->textInput(['autofocus' => true,'placeholder'=>Yii::t('app','Username'),'class'=>'my_input'])->label(false)?>
-           <!--  <?= $form->field($model, 'email')->textInput(['placeholder'=>Yii::t('app','Email address'),'class'=>'my_input'])->label(false)?> -->
-            <?=$form->field($model, 'message')->widget(CKEditor::className(),[
-                'editorOptions' => [
-                    'preset' => 'full', //разработанны стандартные настройки basic, standard, full данную возможность не обязательно использовать
-                    'inline' => false, //по умолчанию false
-                ],
-            ]);?>
-             <?= $form->field($model, 'email')->widget(MultipleInput::className(), [
-                        'max'               => 6,
-                        'min'               => 1, // should be at least 2 rows
-                        'allowEmptyList'    => false,
-                        'enableGuessTitle'  => true,
-                    ])->label(false)
-            ?>
-            <?php
-              echo $form->field($model, 'email')->widget(Select2::classname(), [
-                    'options' => ['placeholder' => 'Select a state ...'],
-                   
-                ]);
-            ?>
-            <?= $form->field($model, 'email')->widget(DatePicker::classname(), [
-                'pluginOptions' => [
-                    'autoclose'=>true
-                 ]
-             ]);?>
+            <?= $form->field($model, 'email')->textInput(['placeholder'=>Yii::t('app','Email address'),'class'=>'my_input'])->label(false)?> 
+            <?=$form->field($model, 'message')->textarea(['placeholder'=>Yii::t('app','Message'),'class'=>'my_input'])->label(false)?>
+            
+            
        
             <?= Html::submitButton(Yii::t('app','Send'), ['class'=>'btn_red']) ?>
           <?php ActiveForm::end(); ?>
