@@ -64,14 +64,6 @@ class ProfileController extends Controller
         ];
     }
 
-    public function actionChangePhoto()
-    {
-        echo "<pre>";
-        print_r($_POST);
-        print_r($_FILES);
-        echo "</pre>";
-    }
-
     public function actionIndex()
     {
         $user = \common\models\User::findOne(Yii::$app->user->identity->id);
@@ -82,15 +74,17 @@ class ProfileController extends Controller
         if($user->type == 4)
             return $this->render('profile_customer',['user' => $user,'company'=>$company]);
     }
+
     public function beforeAction($action)
     {
-        if ($action->id == 'edit-profile' || $action->id == 'change-password' || $action->id == 'delete-transport' || $action->id == 'create-auto') {
+        if ($action->id == 'edit-profile' || $action->id == 'change-password' || $action->id == 'delete-transport' || $action->id == 'create-auto1' || $action->id == 'create-driver1') {
             $this->enableCsrfValidation = false;
         }
 
         return parent::beforeAction($action);
         return false;
     }
+
     public function actionChangePassword()
     {
         $id = Yii::$app->user->identity->id;
@@ -123,7 +117,7 @@ class ProfileController extends Controller
                 {
                  $user->auth_key = $user->new_password;
                  $user->save();
-                 return $this->render('edit_profile',['user' => $user,'active'=>2]);
+                    return $this->redirect(['edit_profile']);
                  }
             }
             else
@@ -164,7 +158,7 @@ class ProfileController extends Controller
             else
             {
                 Yii::$app->session->setFlash('danger', Yii::t('app','Check your information.Something wrong.'));
-                return $this->render('edit_profile',['user' => $user]);
+                return $this->redirect(['edit_profile']);
             }
         }
         return $this->render('edit_profile',['user' => $user]);
@@ -187,6 +181,62 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function actionCreateAuto1()
+    {
+        if(isset($_POST['auto']))
+        {
+            $model = new \backend\models\Transports();
+            $model->attributes = $_POST['Transports'];
+            if($model->validate()){
+                $model->save();
+                $images = [];
+                $uploadDir = "uploads/transports/";
+                for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+
+                $ext = "";
+                $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
+
+                $fPath =$model->id .'('.$i.')'. rand() . ".$ext";
+                    if($ext != ""){
+                       $images []= $fPath;
+                       $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
+                    }
+                }
+                $model->images = implode(',',$images);
+                $model->save();
+                return $this->redirect(['add-autos']);
+               }
+       }
+      
+    }
+    public function actionCreateDriver1()
+    {
+         if(isset($_POST['driver']))
+        {
+            $model = new \backend\models\Drivers();
+            $model->attributes = $_POST['Drivers'];
+            if($model->validate()){
+                $model->save();
+                $images = [];
+                $uploadDir = "uploads/drivers/";
+                for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+
+                $ext = "";
+                $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
+
+                $fPath =$model->id .'('.$i.')'. rand() . ".$ext";
+                    if($ext != ""){
+                       $images []= $fPath;
+                       $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
+                    }
+                }
+                $model->images = implode(',',$images);
+                $model->save();
+                return $this->redirect(['add-autos']);
+               }
+       }
+    
+    }
     public function actionCreateAuto()
     {
         $request = Yii::$app->request;
@@ -450,12 +500,13 @@ class ProfileController extends Controller
     public function actionDeleteTransport($id)
     {
         $model = \backend\models\Transports::find()->where(['id'=>$id])->one();
-
-        $imgs = explode(',', $model->images);
-        foreach ($imgs as $value) {
-            if(file_exists('uploads/transports/'.$value))
-            {   
-                unlink('uploads/transports/'.$value);
+        if($model->images != ""){
+            $imgs = explode(',', $model->images);
+            foreach ($imgs as $value) {
+                if(file_exists('uploads/transports/'.$value))
+                {   
+                    unlink('uploads/transports/'.$value);
+                }
             }
         }
         $model->delete();
@@ -499,12 +550,13 @@ class ProfileController extends Controller
     public function actionDeleteDriver($id)
     {
         $model = \backend\models\Drivers::find()->where(['id'=>$id])->one();
-
-        $imgs = explode(',', $model->images);
-        foreach ($imgs as $value) {
-            if(file_exists('uploads/drivers/'.$value))
-            {   
-                unlink('uploads/drivers/'.$value);
+        if($model->images != ""){
+            $imgs = explode(',', $model->images);
+            foreach ($imgs as $value) {
+                if(file_exists('uploads/drivers/'.$value))
+                {   
+                    unlink('uploads/drivers/'.$value);
+                }
             }
         }
         $model->delete();

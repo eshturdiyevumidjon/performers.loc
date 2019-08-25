@@ -250,8 +250,100 @@ class SiteController extends Controller
                 $modelCustomer->attributes=$_POST['CustomerRegister'];
                 $modelPerformer->attributes=$_POST['PerformerRegister'];
                 $modelCustomer->active = $_POST['CustomerRegister']['active'];
+                
+                if($modelCustomer->active == 1)
+                {
+                    if($modelCustomer->validate() && $modelCustomer->signup2()){
+                        $modelForm=new LoginForm();
+                        $modelForm->username=$modelCustomer->email;
+                        $modelForm->password=$modelCustomer->password;
+                        $modelForm->login();
+                        return $this->redirect(['/profile/index']);
+                    }
+                    else
+                    {
+                         return [
+                                    'title'=> Yii::t('app','Signup'),
+                                    'content'=>$this->renderAjax('signup', [
+                                        'modelCustomer' => $modelCustomer,
+                                        'modelPerformer' => $modelPerformer,
+                                        'active' => 1
+                                    ])."<br>",
+                                    'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
+                        
+                                ];
+                    }
+                }
+                if($modelCustomer->active == 2)
+                {
+                     if($modelPerformer->signuped())
+                        {
+                            if($modelPerformer->valid())
+                            {
+                                $modelForm=new LoginForm();
+                                $modelForm->username=$modelPerformer->email;
+                                $modelForm->password=$modelPerformer->password;
+                                $modelForm->login();
+                                return $this->redirect(['/profile/index']);
+                            }
+                            else
+                            {
+                                 return [
+                                    'title'=> Yii::t('app','Signup'),
+                                    'content'=>$this->renderAjax('signup', [
+                                        'modelCustomer' => $modelCustomer,
+                                        'modelPerformer' => $modelPerformer,
+                                        'error' => 'Code is not valid',
+                                        'active' => 3
+                                    ])."<br>",
+                                    'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
+                        
+                                ];  
+                            }
+                        }
+                    if($modelPerformer->validate() && $modelPerformer->signup1())
+                    {
+                         return [
+                                    'title'=> Yii::t('app','Signup'),
+                                    'content'=>$this->renderAjax('signup', [
+                                        'modelCustomer' => $modelCustomer,
+                                        'modelPerformer' => $modelPerformer,
+                                        'active' => 3
+                                    ])."<br>",
+                                    'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
+                        
+                                ];  
+                    }
+                    else{
+                        return [
+                        'title'=> Yii::t('app','Signup'),
+                        'content'=>$this->renderAjax('signup', [
+                            'modelCustomer' => $modelCustomer,
+                            'modelPerformer' => $modelPerformer,
+                            'active' => $_POST['CustomerRegister']['active']
+                        ])."<br>",
+                        'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
+                    ];   
+                    }
+                   
+                }
 
-                if($modelPerformer->signuped())
+            }
+            else
+            {
+                return [
+                    'title'=> Yii::t('app','Signup'),
+                    'content'=>$this->renderAjax('signup', [
+                        'modelCustomer' => $modelCustomer,
+                        'modelPerformer' => $modelPerformer,
+                        'active' => 1
+                    ])."<br>",
+                    'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
+        
+                ]; 
+            }
+        }
+                /*if($modelPerformer->signuped())
                         {
                             if($modelPerformer->valid())
                             {
@@ -340,7 +432,7 @@ class SiteController extends Controller
             {
                 return $this->render('signup',['model'=>$model]);
             }
-        }
+        }*/
     }
 
     /**

@@ -65,7 +65,7 @@ $this->registerJs(<<<JS
 				$('#active').val('2');
 			});
 			$(".reload").on('click',function(){
-				$.post('/$lang/site/retry?email='+$("#confirm").val(),function(success){alert(success)});
+				$.post('/$lang/site/retry?email='+$("#confirm").val(),function(success){});
 			});
 			$(".backto").on('click',function(){
 				$('[href="#step2"]').removeClass('active show');
