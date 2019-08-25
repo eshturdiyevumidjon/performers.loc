@@ -216,7 +216,7 @@ class ProfileController extends Controller
                 $model->images = implode(',',$images);
                 $model->save();
                  return [
-                    'forceClose'=>false,
+                    'forceClose'=>true,
                     'forceReload'=>'#crud-datatable-pjax'
                  ];
                }else{           
@@ -250,7 +250,9 @@ class ProfileController extends Controller
     {
         $request = Yii::$app->request;
         $model = \backend\models\Transports::find()->where(['id'=>$id])->one();
+        $old_images = explode(',', $model->images);
 
+        $st = '';
         if($request->isAjax){
             /*
             *   Process for ajax request
@@ -259,21 +261,48 @@ class ProfileController extends Controller
             
             if($model->load($request->post()) && $model->validate()){
                 $model->save();
-                $images = [];
                 $uploadDir = "uploads/transports/";
                 for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
                 $ext = "";
                 $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
+                
+                $fPath =$model->id .'('.$i.')'. rand() . ".$ext";
 
-                $fPath =$model->id .'-'. rand() . ".$ext";
+                if(isset($old_images[$i]))
+                {
+                    preg_match("/\(([^\)]*)\)/", $old_images[$i], $aMatches);
+                    $value = $aMatches[1];
+                    $st .= $value . ' ';
                     if($ext != ""){
-                       $images []= $fPath;
-                       $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
+                        if($value == $i){
+                            if(file_exists('uploads/transports/'.$old_images[$i]) && $old_images[$i] != "")
+                            {   
+                                unlink('uploads/transports/'.$old_images[$i]);
+                            }
+                            $images []= $fPath;
+                            $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath); 
+                        }
+                        else
+                        {
+                            $images []= $old_images[$i];
+                        }
                     }
+                    else{
+                        $images []= $old_images[$i];
+                    }
+                }
+                else{
+                    if($ext != ""){
+                      $images []= $fPath;
+                      $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
+                  }   
+                }
+                   
                 }
                 $model->images = implode(',',$images);
                 $model->save();
                  return [
+                    'title' => count($old_images).'/'.$st,
                     'forceClose'=>true,
                     'forceReload'=>'#crud-datatable-pjax'
                  ];
@@ -304,6 +333,120 @@ class ProfileController extends Controller
        
     }
 
+    public function actionCreateDriver()
+    {
+        $request = Yii::$app->request;
+        $model = new \backend\models\Drivers();
+
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            
+            if($model->load($request->post()) && $model->validate()){
+                $model->save();
+                $images = [];
+                $uploadDir = "uploads/drivers/";
+                for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+
+                $ext = "";
+                $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
+
+                $fPath =$model->id .'('.$i.')'. rand() . ".$ext";
+                    if($ext != ""){
+                       $images []= $fPath;
+                       $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
+                    }
+                }
+                $model->images = implode(',',$images);
+                $model->save();
+                 return [
+                    'forceClose'=>true,
+                    'forceReload'=>'#crud-datatable-pjax-2'
+                 ];
+               }else{           
+                return [
+                    'title'=> Yii::t('app','Create'),
+                    'size'=>'normal',
+                    'content'=>$this->renderAjax('create-drivers', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn_red drug sobs1','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn_red drug sobs1','type'=>"submit"])
+        
+                ];         
+            }
+        }
+    }
+
+     public function actionUpdateDriver($id)
+    {
+        $request = Yii::$app->request;
+        $model = \backend\models\Drivers::find()->where(['id'=>$id])->one();
+        $old_images = explode(',', $model->images);
+        
+        $st = [];
+        foreach ($old_images as $key => $value) {
+            preg_match("/\(([^\)]*)\)/", $value, $aMatches);
+            $value = $aMatches[1];
+            $st[] = $value;
+        }
+
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            
+            if($model->load($request->post()) && $model->validate()){
+                $model->save();
+                $uploadDir = "uploads/drivers/";
+                
+                for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+                    $ext = "";
+                    $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
+                    
+                    $fPath =$model->id .'('.$i.')'. rand() . ".$ext";
+
+                    if($ext != "" ){
+                        if(in_array($i, $st)){
+                             if(file_exists('uploads/drivers/'.$old_images[$i]) && $old_images[$i] != "")
+                                {   
+                                    unlink('uploads/drivers/'.$old_images[$i]);
+                                }
+                        }
+                        $images []= $fPath;
+                        $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath); 
+                    }
+                    else{
+                        if(in_array($i, $st)){
+                            $images []= $old_images[$i];
+                        }
+                    }
+                }
+                $model->images = implode(',',$images);
+                $model->save();
+                 return [
+                    'title' => count($old_images).'/'.$st,
+                    'forceClose'=>true,
+                    'forceReload'=>'#crud-datatable-pjax-2'
+                 ];
+               }else{           
+                return [
+                    'title'=> Yii::t('app','Create'),
+                    'size'=>'normal',
+                    'content'=>$this->renderAjax('update-drivers', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn_red drug sobs1 pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn_red drug sobs1','type'=>"submit"])
+        
+                ];         
+            }
+        }
+    }
+
     public function actionDeleteTransport($id)
     {
         $model = \backend\models\Transports::find()->where(['id'=>$id])->one();
@@ -320,8 +463,57 @@ class ProfileController extends Controller
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'forceClose'=>false,
+                    'forceClose'=>true,
                     'forceReload'=>'#crud-datatable-pjax'
+                 ];
+        }else{
+            /*
+            *   Process for non-ajax request
+            */
+            return $this->redirect(['add-autos']);
+        }
+    }
+    public function actionDeleteImage()     
+    {
+        $model = \backend\models\Drivers::find()->where(['id'=>$_POST['id']])->one();
+        $old_images = explode(',', $model->images);
+        $search = $_POST['id'].'('.$_POST['image'].')';
+        $images = [];
+        for ($i=0; $i < count($old_images); $i++) { 
+            if( $_POST['image'] == $i )
+                {
+                   if(file_exists('uploads/drivers/'.$old_images[$i]))
+                    {   
+                        unlink('uploads/drivers/'.$old_images[$i]);
+                    }  
+                }
+            $images[] = $old_images[$i];
+        }
+
+        $model->images=implode(',', $images);
+        $model->save();
+       
+        echo "<pre>";
+        print_r($_POST);
+    }
+    public function actionDeleteDriver($id)
+    {
+        $model = \backend\models\Drivers::find()->where(['id'=>$id])->one();
+
+        $imgs = explode(',', $model->images);
+        foreach ($imgs as $value) {
+            if(file_exists('uploads/drivers/'.$value))
+            {   
+                unlink('uploads/drivers/'.$value);
+            }
+        }
+        $model->delete();
+
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                    'forceClose'=>true,
+                    'forceReload'=>'#crud-datatable-pjax-2'
                  ];
         }else{
             /*

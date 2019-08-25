@@ -105,7 +105,7 @@ class SiteController extends Controller
                 $model->password = '';       
                 return [
                     'title'=> "Авторизация",
-                    'size'=>'normal',
+                    'style'=>'background-color:red;',
                     'content'=>$this->renderAjax('login', [
                         'model' => $model,
                     ])."<br><br>",

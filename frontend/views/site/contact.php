@@ -5,12 +5,8 @@
 /* @var $model \frontend\models\ContactForm */
 
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
+use yii\widgets\ActiveForm;
 use common\widgets\Alert;
-use unclead\multipleinput\MultipleInput;
-use mihaildev\ckeditor\CKEditor;
-use kartik\select2\Select2;
-use kartik\date\DatePicker;
 
 $this->title =Yii::t('app','Contact');
 $name=Yii::$app->name;
@@ -59,22 +55,9 @@ $this->params['breadcrumbs'][] = $this->title;
           <?php }?>
         </div>
         <div>
-            <h1><?=Yii::t('app','Feedback form')?></h1>
-          <?php
-            $session = Yii::$app->session;
-            $flashes = $session->getAllFlashes();
-            foreach ($flashes as $key => $value) {
-                if($key == 'success')
-                {
-                  echo "<p class='alert alert-success'>$value</p>";
-                }
-                if($key == 'danger')
-                {
-                  echo "<p class='alert alert-danger'>$value</p>";
-                }  
-              }
-          ?> 
-          <?php $form = ActiveForm::begin(['enableClientScript' => false, 'id' => 'contact-form','enableAjaxValidation' => true,'options'=>['class'=>'contact_form input_styles','enableAjaxValidation' => true]]); ?>
+          <h1><?=Yii::t('app','Feedback form')?></h1>
+          <?=Alert::widget()?>
+          <?php $form = ActiveForm::begin(['enableClientScript' => false, 'id' => 'contact-form','enableAjaxValidation' => true,'options'=>['class'=>'contact_form input_styles']]); ?>
             <?= $form->field($model, 'name')->textInput(['autofocus' => true,'placeholder'=>Yii::t('app','Username'),'class'=>'my_input'])->label(false)?>
             <?= $form->field($model, 'email')->textInput(['placeholder'=>Yii::t('app','Email address'),'class'=>'my_input'])->label(false)?> 
             <?=$form->field($model, 'message')->textarea(['placeholder'=>Yii::t('app','Message'),'class'=>'my_input'])->label(false)?>
@@ -119,3 +102,10 @@ $this->params['breadcrumbs'][] = $this->title;
   </div>
 </section>
 <script  async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0nNC2JY5h2LxGdKCTXSXMV5ZNDrpwvvA&callback=initMap"></script>
+
+<?php
+$this->registerJs(<<<JS
+      $("#w0-success-0").removeClass('fade in');
+JS
+);
+?>

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use backend\models\Lang;
+use common\widgets\Alert;
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
@@ -40,19 +41,7 @@ $lang = Yii::$app->language;
         <div class="tab-content">
               <div id="ff0" class="tab-pane <?=($active != 2 ) ? 'in active show' : 'fade'?>">
                 <form class="input_styles cab_st" method="post" id="form1" action="/<?=$lang?>/profile/edit-profile">
-                <?php
-                  $flashes = $session->getAllFlashes();
-                  foreach ($flashes as $key => $value) {
-                    if($key == 'success')
-                    {
-                      echo "<p class='alert alert-success'>$value</p>";
-                    }
-                    if($key == 'danger')
-                    {
-                      echo "<p class='alert alert-danger'>$value</p>";
-                    }  
-                  }
-                ?>
+                <?=Alert::widget()?>
                 <input type="hidden" name="id_user" value="<?=$user->id?>">
                 <label for=""><?=$user->getAttributeLabel('username')?></label>
                 <div class="form-group">
@@ -158,6 +147,7 @@ $lang = Yii::$app->language;
 <?php
 $this->registerJs(<<<JS
     $(document).ready(function(){
+      $("#w0-success-0").removeClass('fade in');
       var c = 0;
        $(document).on('click', '.add', function(){
         c++;

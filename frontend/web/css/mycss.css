@@ -224,3 +224,17 @@ p.adress a:hover{
     background: none !important;
     z-index: 2;
     }
+
+
+/*login register*/
+
+.modal-content {
+    width: 85% !important;
+    margin:auto;
+}
+.btn_red.sobs1 {
+    min-width: 50% !important;
+}
+.lert{
+  justify-content: center !important;
+}

@@ -4,7 +4,7 @@
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \frontend\models\SignupForm */
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
+use yii\widgets\ActiveForm;
 $pathInfo = Yii::$app->request->pathInfo;
 $this->title = Yii::t('app','Signup');
 $lang = Yii::$app->language;

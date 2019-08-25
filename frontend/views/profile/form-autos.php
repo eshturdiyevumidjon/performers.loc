@@ -23,12 +23,11 @@ use yii\widgets\ActiveForm;
           </div>
           </div>
            <h4 class="mrte"><?=Yii::t('app','Upload a photo')?></h4>
-            <div class="lert row">
+            <div class="lert">
                 <?php
                   $imgs = explode(',', $model->images);
                   for($i = 0; $i < 9; $i++){
                 ?>
-                <div class="col-md-4">
                 <div class="download_photos <?=($imgs[$i] != '') ? 'added' : '' ?>" id="upload_photos<?=($i+1)?>">
                   <button type="button" class="remove_photo" name="<?=($i+1)?>"><img src="/images/minus_a.svg" alt=""></button>
                   <img src="<?=($imgs[$i] != '') ? '/uploads/transports/'.$imgs[$i] : '' ?>" alt="" id="image_upload_preview<?=($i+1)?>">
@@ -36,7 +35,6 @@ use yii\widgets\ActiveForm;
                     <input id="my-file-selector<?=($i+1)?>" type="file" alt="<?=($i+1)?>" class="d-none" name="images[]" value="<?=$imgs[$i]?>">
                     <img src="/images/plus_a.svg" alt="">
                    </label>
-                </div>  
                 </div>  
                 <?php }?> 
             </div>
