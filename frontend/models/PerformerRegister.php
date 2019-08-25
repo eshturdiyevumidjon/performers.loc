@@ -52,7 +52,7 @@ class PerformerRegister extends Model
             'username' => Yii::t('app','Surname and name / Company name')/*'Фамилия и имя/Название компании'*/,
             'phone' => Yii::t('app','Phone number')/*'Телефон'*/,
             'email' => 'E-mail'/*'Логин'*/,
-            'password' => Yii::t('app','password')/*'Пароль'*/,
+            'password' => Yii::t('app','Password')/*'Пароль'*/,
             'repassword' => Yii::t('app','Confirm password')/*'Повторный ввод пароля'*/,
         ];
     }

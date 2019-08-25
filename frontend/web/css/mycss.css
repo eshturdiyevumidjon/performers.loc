@@ -217,3 +217,10 @@ p.adress a:hover{
 }
 
 /**/
+
+.hidden .form-group:after {
+    content: "";
+    position: absolute;
+    background: none !important;
+    z-index: 2;
+    }

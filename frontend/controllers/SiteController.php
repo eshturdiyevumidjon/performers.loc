@@ -84,21 +84,6 @@ class SiteController extends Controller
         return $this->render('index',['company' => $company]);
     }
 
-    public function beforeAction($action)
-    {
-        if ($action->id == 'set-language') {
-            $this->enableCsrfValidation = false;
-        }
-
-        return parent::beforeAction($action);
-        return false;
-    }
-
-    public function actionSetLanguage($lang)
-    {
-        Yii::$app->language = $lang;
-    }
-
     /**
      * Logs in a user.
      *
@@ -115,7 +100,6 @@ class SiteController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             $model->rememberMe = $_POST['rememberMe'];
             if($model->load($request->post()) && $model->login()){
-                 
                return $this->redirect(['/profile/index']);    
             }else{    
                 $model->password = '';       
@@ -142,6 +126,23 @@ class SiteController extends Controller
                 ]);
             }
         }
+    }
+
+    public function actionRetry($email)
+    {
+        $user = \common\models\User::findOne([
+            'email' => $email,
+        ]);
+
+        $user->generateCode();
+         Yii::$app
+        ->mailer
+        ->compose()
+        ->setFrom(['itake1110@gmail.com' => Yii::$app->name . ' robot'])
+        ->setTo($email)
+        ->setSubject('Verify account for ' . Yii::$app->name)
+        ->setHtmlBody('<b>'.$user->confirmation_code.'</b>')
+        ->send();
     }
 
     /**
@@ -221,7 +222,7 @@ class SiteController extends Controller
     public function actionSetConfirm($email)
     {
          $user = \common\models\User::findOne([
-            'email' => $this->email,
+            'email' => $email,
         ]);
 
         $user->generateCode();
@@ -229,7 +230,7 @@ class SiteController extends Controller
         ->mailer
         ->compose()
         ->setFrom(['itake1110@gmail.com' => Yii::$app->name . ' robot'])
-        ->setTo($email)
+        ->setTo($user->email)
         ->setSubject('Password reset for ' . Yii::$app->name)
         ->setHtmlBody('<b>'.$user->confirmation_code.'</b>')
         ->send();
@@ -240,7 +241,7 @@ class SiteController extends Controller
         $request = Yii::$app->request;
         $modelCustomer = new CustomerRegister();
         $modelPerformer = new PerformerRegister();
-
+        $modelCustomer->active = 1;
 
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -248,6 +249,8 @@ class SiteController extends Controller
             {   
                 $modelCustomer->attributes=$_POST['CustomerRegister'];
                 $modelPerformer->attributes=$_POST['PerformerRegister'];
+                $modelCustomer->active = $_POST['CustomerRegister']['active'];
+
                 if($modelPerformer->signuped())
                         {
                             if($modelPerformer->valid())
@@ -266,7 +269,7 @@ class SiteController extends Controller
                                         'modelCustomer' => $modelCustomer,
                                         'modelPerformer' => $modelPerformer,
                                         'error' => 'Code is not valid',
-                                        'active' => 2
+                                        'active' => 3
                                     ])."<br>",
                                     'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
                         
@@ -293,7 +296,7 @@ class SiteController extends Controller
                                     'content'=>$this->renderAjax('signup', [
                                         'modelCustomer' => $modelCustomer,
                                         'modelPerformer' => $modelPerformer,
-                                        'active' => 2
+                                        'active' => 3
                                     ])."<br>",
                                     'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
                         
@@ -309,8 +312,7 @@ class SiteController extends Controller
                         'content'=>$this->renderAjax('signup', [
                             'modelCustomer' => $modelCustomer,
                             'modelPerformer' => $modelPerformer,
-                            'post' => $_POST,
-                            'active' => 1
+                            'active' => $_POST['CustomerRegister']['active']
                         ])."<br>",
                         'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
                     ];   
@@ -322,9 +324,7 @@ class SiteController extends Controller
                     'content'=>$this->renderAjax('signup', [
                         'modelCustomer' => $modelCustomer,
                         'modelPerformer' => $modelPerformer,
-                        'post' => $_POST,
                         'active' => 1
-
                     ])."<br>",
                     'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
         

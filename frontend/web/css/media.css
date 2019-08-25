@@ -839,6 +839,23 @@
 	.terra.fourt img{
 		width: auto;
 	}
+	.dor_item{
+		padding: 0 15px;
+	}
+	.dor_item .lman h4{
+		padding-right: 15px;
+	}
+	.dor_item .lman a{
+		white-space: nowrap;
+	}
+	.photos_inn .d-flex{
+		justify-content: space-between;
+	}
+	.photos_inn .netr {
+		width: 49%;
+		/*height: 45%;*/
+		margin-right: 0;
+	}
 }
 
 @media (max-width: 375px){

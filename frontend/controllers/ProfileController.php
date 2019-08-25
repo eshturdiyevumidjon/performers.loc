@@ -84,7 +84,7 @@ class ProfileController extends Controller
     }
     public function beforeAction($action)
     {
-        if ($action->id == 'edit-profile' || $action->id == 'change-password') {
+        if ($action->id == 'edit-profile' || $action->id == 'change-password' || $action->id == 'delete-transport' || $action->id == 'create-auto') {
             $this->enableCsrfValidation = false;
         }
 
@@ -170,16 +170,165 @@ class ProfileController extends Controller
         return $this->render('edit_profile',['user' => $user]);
     }
 
+    //auto and drivers -- performers
     public function actionAddAutos()
     {
-        if(isset($_POST['auto']))
-        {
-           echo "<pre>";
-           print_r($_POST);
-           echo "</pre>";
-           die;
+        $autos = \backend\models\Transports::find()->all();
+        $drivers = \backend\models\Drivers::find()->all();
+        $company = \backend\models\AboutCompany::findOne(1);
+        $id = Yii::$app->user->identity->id;
+        $user = $this->findModel($id);
+       
+        return $this->render('add_autos',[
+            'user'=>$user,
+            'drivers'=>$drivers,
+            'company'=>$company,
+            'autos'=>$autos
+        ]);
+    }
+
+    public function actionCreateAuto()
+    {
+        $request = Yii::$app->request;
+        $model = new \backend\models\Transports();
+
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            
+            if($model->load($request->post()) && $model->validate()){
+                $model->save();
+                $images = [];
+                $uploadDir = "uploads/transports/";
+                for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+
+                $ext = "";
+                $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
+
+                $fPath =$model->id .'('.$i.')'. rand() . ".$ext";
+                    if($ext != ""){
+                       $images []= $fPath;
+                       $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
+                    }
+                }
+                $model->images = implode(',',$images);
+                $model->save();
+                 return [
+                    'forceClose'=>false,
+                    'forceReload'=>'#crud-datatable-pjax'
+                 ];
+               }else{           
+                return [
+                    'title'=> Yii::t('app','Create'),
+                    'size'=>'normal',
+                    'content'=>$this->renderAjax('create-autos', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn_red drug sobs1','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn_red drug sobs1','type'=>"submit"])
+        
+                ];         
+            }
+        }else{
+            /*
+            *   Process for non-ajax request
+            */
+            if ($model->load($request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
         }
-        return $this->render('add_autos',['post'=>$_POST]);
+       
+    }
+
+     public function actionUpdateAuto($id)
+    {
+        $request = Yii::$app->request;
+        $model = \backend\models\Transports::find()->where(['id'=>$id])->one();
+
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            
+            if($model->load($request->post()) && $model->validate()){
+                $model->save();
+                $images = [];
+                $uploadDir = "uploads/transports/";
+                for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+                $ext = "";
+                $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
+
+                $fPath =$model->id .'-'. rand() . ".$ext";
+                    if($ext != ""){
+                       $images []= $fPath;
+                       $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
+                    }
+                }
+                $model->images = implode(',',$images);
+                $model->save();
+                 return [
+                    'forceClose'=>true,
+                    'forceReload'=>'#crud-datatable-pjax'
+                 ];
+               }else{           
+                return [
+                    'title'=> Yii::t('app','Create'),
+                    'size'=>'normal',
+                    'content'=>$this->renderAjax('update-autos', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn_red drug sobs1 pull-left','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn_red drug sobs1','type'=>"submit"])
+        
+                ];         
+            }
+        }else{
+            /*
+            *   Process for non-ajax request
+            */
+            if ($model->load($request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
+        }
+       
+    }
+
+    public function actionDeleteTransport($id)
+    {
+        $model = \backend\models\Transports::find()->where(['id'=>$id])->one();
+
+        $imgs = explode(',', $model->images);
+        foreach ($imgs as $value) {
+            if(file_exists('uploads/transports/'.$value))
+            {   
+                unlink('uploads/transports/'.$value);
+            }
+        }
+        $model->delete();
+
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                    'forceClose'=>false,
+                    'forceReload'=>'#crud-datatable-pjax'
+                 ];
+        }else{
+            /*
+            *   Process for non-ajax request
+            */
+            return $this->redirect(['add-autos']);
+        }
     }
 
     protected function findModel($id)

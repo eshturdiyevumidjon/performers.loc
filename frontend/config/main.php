@@ -9,6 +9,7 @@ $params = array_merge(
 return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
+    'name' => 'iTake',
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
@@ -44,9 +45,9 @@ return [
         ],
         'assetManager'=>[
             'bundles'=>[
-                'yii\web\JqueryAsset'=>[
-                    'js'=>[]
-                ],
+                // 'yii\web\JqueryAsset'=>[
+                //     'js'=>[]
+                // ],
                 'yii\bootstrap\BootstrapPluginAsset'=>[
                     'js'=>[]
                 ],

@@ -24,7 +24,7 @@ class ItakeAsset extends AssetBundle
       'css/mycss.css',
     ];
     public $js = [
-      'js/jquery.min.js',
+      // 'js/jquery.min.js',
       'js/swiper.min.js',
       'js/popper.min.js',
       'js/bootstrap.min.js',
@@ -35,7 +35,7 @@ class ItakeAsset extends AssetBundle
       'js/main.js',
     ];
     public $depends = [
-        // 'yii\web\YiiAsset',
+        'yii\web\YiiAsset',
         // 'yii\bootstrap\BootstrapAsset',
         // 'yii\bootstrap\BootstrapPluginAsset',
     ];

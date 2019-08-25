@@ -683,7 +683,7 @@ class TasksController extends Controller
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
+            return ['forceClose'=>true];
         }else{
             /*
             *   Process for non-ajax request

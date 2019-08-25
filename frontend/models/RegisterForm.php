@@ -17,7 +17,7 @@ class RegisterForm extends Model
     public $password;
     public $repassword;
     public $code;
-
+    public $active;
     /**
      * @inheritdoc
      */
@@ -28,6 +28,7 @@ class RegisterForm extends Model
             ['username', 'string', 'min' => 2, 'max' => 255],
             ['email', 'trim'],
             ['email', 'email'],
+            ['active','integer'],
             ['email', 'string', 'max' => 255],
             ['email','validateMail'],
             [['password', 'repassword'],'validatePassword'],

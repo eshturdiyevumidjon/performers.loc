@@ -102,11 +102,19 @@ class Transports extends \yii\db\ActiveRecord
    /**
     * @return \yii\db\ActiveQuery
     */
-   public function getDriver0()
-   {
-        return $this->hasOne(Drivers::className(), ['id' => 'driver']);
-   }
- 
+    public function getDriver0()
+    {
+         return $this->hasOne(Drivers::className(), ['id' => 'driver']);
+    }
+    // public function beforeDelete()
+    // {
+    //     $images = explode(',',$this->images);
+
+    //     if ($images as $img) {
+    //         unlink($this->urlPath);
+    //     }
+    //     return parent::beforeDelete();
+    // }    
     /**
      * @inheritdoc
      */

@@ -36,7 +36,7 @@ class Drivers extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fio', 'phone'], 'required'],
+            // [['fio', 'phone'], 'required'],
             ['images','string'],
             [['user_id'], 'integer'],
             [['fio', 'phone'], 'string', 'max' => 255],

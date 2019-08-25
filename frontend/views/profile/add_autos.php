@@ -1,3 +1,8 @@
+<?php
+use yii\helpers\Html;
+use yii\widgets\Pjax;
+$lang = Yii::$app->language;
+?>
 <section class="cabinet">
   <div class="container">
     <nav aria-label="breadcrumb" class="breadcrumb_nav">
@@ -14,168 +19,78 @@
           <li><a data-toggle="tab" href="#ff0"><?=Yii::t('app','Adding cars')?></a></li>
           <li><a data-toggle="tab" class="active show" href="#ff1"><?=Yii::t('app','Adding Drivers')?></a></li>
         </ul>
-        <form class="tab-content input_styles cab_st" action="/profile/add-autos" id="transport_form" method="post" enctype="multipart/form-data">
+        
+        <div class="tab-content">
           <div id="ff0" class="tab-pane fade">
-            
-            <div id="dinamic">
-              <div id="auto">
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                     <input type="text" name="model[]" required="" placeholder="<?=Yii::t('app',' Car model')?>" />
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                     <input type="text" name="mark[]" required="" placeholder="<?=Yii::t('app','Car mark')?>" />
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <input type="text" name="regitr_num[]" required="" placeholder="<?=Yii::t('app','Registration Number')?>">
-                    </div>
+
+            <div class="text-right">
+               <?=Html::a(Yii::t('app','Add car'), ['create-auto'],['role'=>'modal-remote','title'=> Yii::t('app','Add car'), 'class'=>'btn_red drug sobs1'])?>
+            </div>
+            <h2 class="title_add"><?=Yii::t('app','Transports')?></h2>
+            <?php Pjax::begin(['enablePushState' => false,'id' => 'crud-datatable-pjax'])?>
+              <?php foreach ($autos as $key => $value): ?>
+                <div class="dor_item">
+                <div class="d-flex align-items-center justify-content-between lman">
+                  <h4><img src="/images/car.svg" alt="">Модель и марка автомобиля: <?=$value->model." ".$value->mark?></h4>
+
+                  <div class="lin">
+                    <?=Html::a(Yii::t('app','Update'), ['/profile/update-auto?id='.$value->id],[ 'class'=>'lin1','role'=>'modal-remote','title'=>Yii::t('app','Update')])?>
+                    <?=Html::a(Yii::t('app','Delete'), ['/profile/delete-transport?id='.$value->id],[ 'class'=>'lin2','role'=>'modal-remote',
+                      'title'=>Yii::t('app','Delete'), 
+                          'data-confirm'=>false, 'data-method'=>false, 
+                          'data-request-method'=>'post',
+                          'data-toggle'=>'tooltip',
+                          'data-confirm-title'=>Yii::t('app','Are you sure?'),
+                          'data-confirm-message'=>Yii::t('app','Are you sure want to delete this item?')])?>
                   </div>
                 </div>
-                <h4 class="mrte"><?=Yii::t('app','Upload a photo')?></h4>
-                <div class="lert">
-                  <div class="download_photos">
-                    <button class="remove_photo"><img src="/images/minus_a.svg" alt=""></button>
-                     <label class="" for="my-file-selector">
-                      <input id="my-file-selector" type="file" class="d-none">
-                      <img src="/images/plus_a.svg" alt="">
-                     </label>
-                  </div>
-                  <div class="download_photos">
-                    <img src="/images/girll.jpg" alt="">
-                    <button class="remove_photo"><img src="/images/minus_a.svg" alt=""></button>
-                    <label class="add_photo" for="my-file-selector">
-                      <input id="my-file-selector" type="file" class="d-none">
-                      <img src="/images/plus_a.svg" alt="">
-                     </label>
-                  </div>
-                  <div class="download_photos">
-                    <button class="remove_photo"><img src="/images/minus_a.svg" alt=""></button>
-                    <label class="add_photo" for="my-file-selector">
-                      <input id="my-file-selector" type="file" class="d-none">
-                      <img src="/images/plus_a.svg" alt="">
-                     </label>
-                  </div>
-                  <div class="download_photos">
-                    <button class="remove_photo"><img src="/images/minus_a.svg" alt=""></button>
-                    <label class="add_photo" for="my-file-selector">
-                      <input id="my-file-selector" type="file" class="d-none">
-                      <img src="/images/plus_a.svg" alt="">
-                     </label>
-                  </div>
-                  <div class="download_photos">
-                    <button class="remove_photo"><img src="/images/minus_a.svg" alt=""></button>
-                    <label class="add_photo" for="my-file-selector">
-                      <input id="my-file-selector" type="file" class="d-none">
-                      <img src="/images/plus_a.svg" alt="">
-                     </label>
-                  </div>
-                  <div class="download_photos">
-                    <button class="remove_photo"><img src="/images/minus_a.svg" alt=""></button>
-                    <label class="add_photo" for="my-file-selector">
-                      <input id="my-file-selector" type="file" class="d-none">
-                      <img src="/images/plus_a.svg" alt="">
-                     </label>
-                  </div>
-                  <div class="download_photos">
-                    <button class="remove_photo"><img src="/images/minus_a.svg" alt=""></button>
-                    <label class="add_photo" for="my-file-selector">
-                      <input id="my-file-selector" type="file" class="d-none">
-                      <img src="/images/plus_a.svg" alt="">
-                     </label>
+                <div class="mke"><span>Регистрационный номер::</span><b><?=$value->registration_number?></b></div>
+                <div class="photos_inn">
+                  <p>Фото</p>
+                  <div class="d-flex flex-wrap">
+                    <?php $imgs = explode(',',$value->images);
+                     foreach ($imgs as $key => $value): ?>
+                      <a href="/uploads/transports/<?=$value?>" class="netr" data-fancybox="galery"><img src="/uploads/transports/<?=$value?>" alt=""></a>
+                    <?php endforeach ?>
                   </div>
                 </div>
               </div>
-           </div>
-            <hr>
-              <button type="button"  class="add_content btn_red drug sobs1"><?=Yii::t('app','Add car')?></button>
-            <hr>
-            <div class="text-right">
-              <button id="auto" name="auto" type="submit" class="btn_red drug sobs1"><?=Yii::t('app','Save')?></button>
-            </div>
+              <?php endforeach ?>
+            <?php Pjax::end()?>
 
           </div>
+
           <div id="ff1" class="tab-pane in active"> 
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <input type="text" placeholder="<?=Yii::t('app',' Username')?>">
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <input type="tel" placeholder="<?=Yii::t('app','  Phone number')?>">
-                  </div>
-                </div>
-              </div>
-              <h4 class="mrte"><?=Yii::t('app','Upload a photo')?></h4>
-              <div class="lert">
-                <div class="download_photos">
-                  <button class="remove_photo"><img src="/images/minus_a.svg" alt=""></button>
-                   <label class="image_input" for="my-file-selector">
-                    <input id="my-file-selector" type="file" class="d-none" name="image1[]">
-                    <img src="/images/plus_a.svg" alt="">
-                   </label>
-                </div>
-                <div class="download_photos">
-                  <img src="/images/girll.jpg" alt="">
-                  <button class="remove_photo"><img src="/images/minus_a.svg" alt=""></button>
-                  <label class="add_photo" for="my-file-selector">
-                    <input id="my-file-selector" type="file" class="d-none" name="image2[]">
-                    <img src="/images/plus_a.svg" alt="">
-                   </label>
-                </div>
-                <div class="download_photos">
-                  <button class="remove_photo"><img src="/images/minus_a.svg" alt=""></button>
-                  <label class="add_photo" for="my-file-selector">
-                    <input id="my-file-selector" type="file" class="d-none" name="image3[]">
-                    <img src="/images/plus_a.svg" alt="">
-                   </label>
-                </div>
-                <div class="download_photos">
-                  <button class="remove_photo"><img src="/images/minus_a.svg" alt=""></button>
-                  <label class="add_photo" for="my-file-selector">
-                    <input id="my-file-selector" type="file" class="d-none" name="image4[]">
-                    <img src="/images/plus_a.svg" alt="">
-                   </label>
-                </div>
-                <div class="download_photos">
-                  <button class="remove_photo"><img src="/images/minus_a.svg" alt=""></button>
-                  <label class="add_photo" for="my-file-selector">
-                    <input id="my-file-selector" type="file" class="d-none" name="image5[]">
-                    <img src="/images/plus_a.svg" alt="">
-                   </label>
-                </div>
-                <div class="download_photos">
-                  <button class="remove_photo"><img src="/images/minus_a.svg" alt=""></button>
-                  <label class="add_photo" for="my-file-selector">
-                    <input id="my-file-selector" type="file" class="d-none" name="image6[]">
-                    <img src="/images/plus_a.svg" alt="">
-                   </label>
-                </div>
-                <div class="download_photos">
-                  <button class="remove_photo"><img src="/images/minus_a.svg" alt=""></button>
-                  <label class="add_photo" for="my-file-selector">
-                    <input id="my-file-selector" type="file" class="d-none" name="image7[]">
-                    <img src="/images/plus_a.svg" alt="">
-                   </label>
-                </div>
-              </div>
+
               <div class="text-right">
-                <button class="btn_red drug"><img src="/images/delete.svg" alt=""><?=Yii::t('app','Delete')?></button>
+                <a href="#" id="add_driver" class="btn_red drug sobs1"><?=Yii::t('app','Add driver')?></a>
               </div>
-              <hr>
-                <a href="#" class="btn_red drug sobs1"><?=Yii::t('app','Add driver')?></a>
-              <hr>
-              <div class="text-right">
-                <a href="#" class="btn_red drug sobs1"><?=Yii::t('app','Save')?></a>
-              </div>
+              <h2 class="title_add"><?=Yii::t('app','Drivers')?></h2>
+                  <div class="dor_item">
+                    <div class="d-flex align-items-center justify-content-between lman">
+                      <h4>Ватанабэ Масахару</h4>
+                      <div class="lin">
+                        <a href="#" class="lin1">изменить</a>
+                        <!-- / -->
+                        <a href="#" class="lin2">удалить</a>
+                      </div>
+                    </div>
+                    <div class="mke"><span>Телефон:</span><b>+998 94 363 36 36</b></div>
+                    <div class="photos_inn">
+                      <p>Фото</p>
+                      <div class="d-flex flex-wrap">
+                        <a href="/images/unsp.jpg" class="netr" data-fancybox="galery"><img src="/images/unsp.jpg" alt=""></a>
+                        <a href="/images/unsp.jpg" class="netr" data-fancybox="galery"><img src="/images/unsp.jpg" alt=""></a>
+                        <a href="/images/unsp.jpg" class="netr" data-fancybox="galery"><img src="/images/unsp.jpg" alt=""></a>
+                        <a href="/images/unsp.jpg" class="netr" data-fancybox="galery"><img src="/images/unsp.jpg" alt=""></a>
+                        <a href="/images/unsp.jpg" class="netr" data-fancybox="galery"><img src="/images/unsp.jpg" alt=""></a>
+                      </div>
+                    </div>
+                  </div>
+
           </div>
-        </form>
+          
+        </div>
       </div>
       <div class="cabinet_right">
         <?=$this->render('cabinet_right',['company'=>$company]);?>
@@ -183,25 +98,3 @@
     </div>
   </div>
 </section>
-
-<?php
-$this->registerJs(<<<JS
-  $(document).ready(function(){
-    var c = 0;
-       $(document).on('click', '.add_content', function(){
-          c++;
-          var html = '<hr>'+$("#auto").html();
-          html = '<div id="auto' + c + '">' + html;
-          removeButton = '';
-          removeButton = '<div class="text-right"><button type="button" name="auto'+c+'" class="remove_btn btn_red drug"><img src="/images/delete.svg" alt="">Delete</button></div>';
-          html = html + removeButton + '</div>';
-          $('#dinamic').append(html);
-         });
-        $(document).on('click', '.remove_btn', function(){
-            id = $(this).attr('name');
-            $("#"+id).remove();
-           });
-    });
-JS
-);
-?>
