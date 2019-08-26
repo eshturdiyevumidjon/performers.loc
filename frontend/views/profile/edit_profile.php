@@ -125,10 +125,10 @@ $lang = Yii::$app->language;
                   <input type="text" name="User[old_password]" placeholder="<?=Yii::t('app','Old Password')?>"  value="<?=$user->old_password?>">
                 </div>
                 <div class="form-group">
-                  <input type="password" name="User[new_password]" placeholder="<?=Yii::t('app','New Password')?>" value="<?=$user->new_password?>">
+                  <input type="text" name="User[new_password]" placeholder="<?=Yii::t('app','New Password')?>" value="<?=$user->new_password?>">
                 </div>
                 <div class="form-group">
-                  <input type="password" name="User[re_password]" placeholder="<?=Yii::t('app','Confirm password')?>"  value="<?=$user->re_password?>">
+                  <input type="text" name="User[re_password]" placeholder="<?=Yii::t('app','Confirm password')?>"  value="<?=$user->re_password?>">
                 </div>
                 <p class=""><?=Yii::t('app','From 6 to 24 characters. Only latin letters, numbers and these characters: !@#$%^&amp;*()_+-=;,./?[]{}')?></p>
                 <hr>

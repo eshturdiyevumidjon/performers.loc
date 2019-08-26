@@ -363,6 +363,7 @@ class m150207_210500_i18n_init extends Migration
                 'Performer\'s profile'=>'Профиль Исполнителя',
                 'Customer\'s Profile'=>'Профиль Заказчика',
                 'Add car'=>'Добавить машину',
+                'Blog'=>'Блог'
             ];
 
         $keys = array_keys($translations);

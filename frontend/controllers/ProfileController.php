@@ -137,7 +137,7 @@ class ProfileController extends Controller
     
     public function actionEditProfile()
     {
-       $id = Yii::$app->user->identity->id;
+        $id = Yii::$app->user->identity->id;
         $user = $this->findModel($id);
         
         if(isset($_POST['save_changes']))
@@ -152,13 +152,12 @@ class ProfileController extends Controller
             {   
                  $user->save();
                 Yii::$app->session->setFlash('success', Yii::t('app','Changes saved.'));
-                return $this->render('edit_profile',['user' => $user]);
-
+                return $this->redirect(['edit_profile']);
             }
             else
             {
                 Yii::$app->session->setFlash('danger', Yii::t('app','Check your information.Something wrong.'));
-                return $this->redirect(['edit_profile']);
+                return $this->render('edit_profile',['user' => $user]);
             }
         }
         return $this->render('edit_profile',['user' => $user]);
@@ -209,6 +208,7 @@ class ProfileController extends Controller
        }
       
     }
+    
     public function actionCreateDriver1()
     {
          if(isset($_POST['driver']))
@@ -234,7 +234,7 @@ class ProfileController extends Controller
                 $model->save();
                 return $this->redirect(['add-autos']);
                }
-       }
+        }
     
     }
     public function actionCreateAuto()
@@ -293,7 +293,6 @@ class ProfileController extends Controller
                 ]);
             }
         }
-       
     }
 
      public function actionUpdateAuto($id)
@@ -358,7 +357,7 @@ class ProfileController extends Controller
                  ];
                }else{           
                 return [
-                    'title'=> Yii::t('app','Create'),
+                    'title'=> Yii::t('app','Update'),
                     'size'=>'normal',
                     'content'=>$this->renderAjax('update-autos', [
                         'model' => $model,
@@ -380,7 +379,6 @@ class ProfileController extends Controller
                 ]);
             }
         }
-       
     }
 
     public function actionCreateDriver()
@@ -484,7 +482,7 @@ class ProfileController extends Controller
                  ];
                }else{           
                 return [
-                    'title'=> Yii::t('app','Create'),
+                    'title'=> Yii::t('app','Update'),
                     'size'=>'normal',
                     'content'=>$this->renderAjax('update-drivers', [
                         'model' => $model,
@@ -524,6 +522,7 @@ class ProfileController extends Controller
             return $this->redirect(['add-autos']);
         }
     }
+
     public function actionDeleteImage()     
     {
         $model = \backend\models\Drivers::find()->where(['id'=>$_POST['id']])->one();
@@ -547,6 +546,7 @@ class ProfileController extends Controller
         echo "<pre>";
         print_r($_POST);
     }
+
     public function actionDeleteDriver($id)
     {
         $model = \backend\models\Drivers::find()->where(['id'=>$id])->one();
@@ -583,7 +583,4 @@ class ProfileController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-
-   
-
 }

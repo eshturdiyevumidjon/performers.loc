@@ -1,3 +1,6 @@
+<?php
+$lang = Yii::$app->language;
+?>
 <section class="cabinet">
 <div class="container">
   <nav aria-label="breadcrumb" class="breadcrumb_nav">
@@ -289,7 +292,7 @@
     <div class="cabinet_right">
       <div class="user_all">
         <div class="user_dorian">
-          <img src="/images/dorian-hurst-672657-unsplash.jpg" alt="">
+          <img src="/uploads/users/nouser3.png" alt="">
           <input type="file" id="inp_file">
           <label for="inp_file"><img src="/images/camera_photo.svg" alt=""><?=Yii::t('app','Change photo')?></label>
         </div>
@@ -305,8 +308,8 @@
           <span>4,5</span>
         </div>
         <div class="btn_dor">
-          <a href="/profile/edit-profile" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Edit Account')?></a>
-            <a href="/profile/add-autos" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Adding cars')?></a>
+          <a href="/<?=$lang?>/profile/edit-profile" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Edit Account')?></a>
+            <a href="/<?=$lang?>/profile/add-autos" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Adding cars')?></a>
       </div>
         <?=$this->render('cabinet_right',['company'=>$company]);?>
     </div>

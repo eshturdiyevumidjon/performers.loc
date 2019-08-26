@@ -30,12 +30,7 @@ return [
         'contentOptions'=>['class'=>'text-center'],
         'headerOptions'=>['class'=>'text-center'],
     ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'text',
-        'contentOptions'=>['class'=>'text-center'],
-        'headerOptions'=>['class'=>'text-center'],
-    ],
+   
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'date_cr',

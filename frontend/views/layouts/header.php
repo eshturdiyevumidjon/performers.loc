@@ -88,7 +88,7 @@ $user=\common\models\User::find()->where(['id' => Yii::$app->user->identity->id]
           <li><a href="/site/chavo"><?=Yii::t('app','FAQ')?></a></li>
           <li><a href="/site/privacy"><?=Yii::t('app','Service')?></a></li>
           <li><a href="/site/contact"><?=Yii::t('app','Contact')?></a></li>
-          <li><a href="#"><?=Yii::t('app','Blog')?></a></li>
+          <li><a href="/site/news"><?=Yii::t('app','Blog')?></a></li>
         </ul>
       </div>
        <p class="create_equ"><?=Yii::t('app','Create Task')?></p>

@@ -156,7 +156,11 @@ class SiteController extends Controller
         Yii::$app->user->logout();
         return $this->goHome();
     }
-
+    public function actionSinglePage($id)
+    {
+        $new = \backend\models\News::find()->where(['id'=>$id])->one();
+        return $this->render('single-page',['new' => $new]);  
+    }
     /**
      * Displays contact page.
      *
@@ -167,6 +171,12 @@ class SiteController extends Controller
     {
         $chavos = \backend\models\Chavo::find()->all();
         return $this->render('chavo',['chavos' => $chavos]);
+    }
+
+    public function actionNews()
+    {
+        $news = \backend\models\News::find()->all();
+        return $this->render('blog',['news' => $news]);
     }
 
     public function actionPrivacy()

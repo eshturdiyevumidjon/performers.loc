@@ -234,7 +234,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="user_all">
           <div class="user_dorian">
             <form id="change_image" enctype="multipart/form-data">
-              <img id="image_upload_preview" src="/images/dorian-hurst-672657-unsplash.jpg" alt="">
+              <img src="/uploads/users/nouser3.png" alt="" id="image_upload_preview">
               <input type="hidden" name="user_id" value="<?=$user->id?>">
               <input type="file" name="user_image" id="inputFile">
               <label for="inputFile"><img src="/images/camera_photo.svg" alt=""><?=Yii::t('app','Change photo')?></label>
@@ -252,7 +252,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <span>4,5</span>
           </div>
           <div class="btn_dor">
-            <a href="/<?=$lang?>/profile/edit-profile" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Edit Account')?></a>
+             <a href="/<?=$lang?>/profile/edit-profile" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Edit Account')?></a>
           </div>
         </div>
         <?=$this->render('cabinet_right',['company'=>$company]);?>

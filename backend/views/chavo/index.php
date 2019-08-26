@@ -10,7 +10,7 @@ use johnitvn\ajaxcrud\BulkButtonWidget;
 /* @var $searchModel backend\models\ChavoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Chavos';
+$this->title = Yii::t('app','FAQ');
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);
@@ -25,32 +25,33 @@ CrudAsset::register($this);
             'pjax'=>true,
             'columns' => require(__DIR__.'/_columns.php'),
             'toolbar'=> [
-                ['content'=>
-                    Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'],
-                    ['role'=>'modal-remote','title'=> 'Create new Chavos','class'=>'btn btn-default']).
-                    Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
-                    ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Reset Grid']).
-                    '{toggleData}'.
-                    '{export}'
-                ],
+                  ['content'=>
+                        '<div style="margin-top:10px;">' .
+                        Html::a(Yii::t('app','Add').' <i class="glyphicon glyphicon-plus"></i>', ['create','type'=>1],
+                        ['role'=>'modal-remote','title'=> Yii::t('app','Add'), 'class'=>'btn btn-info']).
+                        '<ul class="panel-controls">
+                            <li>{export}</li>
+                        </ul>'.
+                    '</div>'
+                    ],
             ],          
             'striped' => true,
             'condensed' => true,
             'responsive' => true,          
             'panel' => [
                 'type' => 'primary', 
-                'heading' => '<i class="glyphicon glyphicon-list"></i> Chavos listing',
-                'before'=>'<em>* Resize table columns just like a spreadsheet by dragging the column edges.</em>',
-                'after'=>BulkButtonWidget::widget([
-                            'buttons'=>Html::a('<i class="glyphicon glyphicon-trash"></i>&nbsp; Delete All',
+                'heading' => '<i class="glyphicon glyphicon-list"></i>  '.Yii::t('app','FAQ'),
+                
+                  'after'=>BulkButtonWidget::widget([
+                            'buttons'=>Html::a('<i class="glyphicon glyphicon-trash"></i>&nbsp;'.Yii::t('app','Delete All'),
                                 ["bulk-delete"] ,
                                 [
                                     "class"=>"btn btn-danger btn-xs",
                                     'role'=>'modal-remote-bulk',
                                     'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
                                     'data-request-method'=>'post',
-                                    'data-confirm-title'=>'Are you sure?',
-                                    'data-confirm-message'=>'Are you sure want to delete this item'
+                                    'data-confirm-title'=>Yii::t('app','Are you sure?'),
+                                    'data-confirm-message'=>Yii::t('app','Are you sure want to delete this item')
                                 ]),
                         ]).                        
                         '<div class="clearfix"></div>',

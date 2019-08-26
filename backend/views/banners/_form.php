@@ -13,9 +13,7 @@ $langs=backend\models\Lang::getLanguages();
 <div class="banners-form">
 
     <?php $form = ActiveForm::begin([ 'options' => ['method' => 'post', 'enctype' => 'multipart/form-data']]); ?>
-     <?= $form->field($model, 'fone')->widget(FileInput::classname(), [
-        'options' => ['accept' => 'image/*'],
-    ]);?>
+   
     <div class="row">
         <div class="col-md-5">
             <div class="col-md-12">

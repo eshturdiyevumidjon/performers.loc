@@ -152,6 +152,8 @@ class User extends ActiveRecord implements IdentityInterface
                 $this->password_hash = Yii::$app->security->generatePasswordHash($this->auth_key);
             }
         }
+        $this->birthday = Yii::$app->formatter->asDate($this->birthday, 'php:Y-m-d'); 
+
         return parent::beforeSave($insert);
     }
 

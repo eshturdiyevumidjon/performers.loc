@@ -179,6 +179,9 @@
 		margin-left: 0;
 		margin-top: 15px;
 	}
+	.blog_item img{
+		height: 130px;
+	}
 }
 @media (max-width: 576px){
 	footer{
@@ -855,6 +858,12 @@
 		width: 49%;
 		/*height: 45%;*/
 		margin-right: 0;
+	}
+	.blog_item img {
+	    height: 180px;
+	}
+	section.cabinet.news h1{
+		font-size: 26px;
 	}
 }
 

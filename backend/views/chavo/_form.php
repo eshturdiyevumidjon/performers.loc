@@ -15,9 +15,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'text')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'sorting')->textInput() ?>
-
-  
 	<?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">
 	        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

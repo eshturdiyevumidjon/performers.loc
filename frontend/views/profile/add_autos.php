@@ -58,7 +58,7 @@ $lang = Yii::$app->language;
                     <?php }?> 
                 </div>
                 <div class="text-right">
-                    <button type="submit" name="auto" class="btn_red drug sobs1"><?=Yii::t('app','Save')?></button>
+                    <button type="submit" name="auto" class="btn_red drug"><?=Yii::t('app','Save')?></button>
                 </div>
               </form>
             </div>
@@ -133,7 +133,7 @@ $lang = Yii::$app->language;
                     <?php }?> 
                 </div>
                 <div class="text-right">
-                    <button type="submit" name="driver" class="btn_red drug sobs1"><?=Yii::t('app','Save')?></button>
+                    <button type="submit" name="driver" class="btn_red drug"><?=Yii::t('app','Save')?></button>
                 </div>
               </form>
               </div>

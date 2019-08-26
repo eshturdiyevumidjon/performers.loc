@@ -91,7 +91,7 @@ $user = \common\models\User::find()->where(['id'=>Yii::$app->user->identity->id]
             <a href="/transport-category/index"><span class="fa fa-list"></span> <span class="xn-text"><?=Yii::t('app','Category of transports')?></span></a>
         </li>           
         <?php if(Yii::$app->user->identity->type!=4&&Yii::$app->user->identity->type!=3):?>
-        <li class="xn-openable <?= (($pathInfo == 'language/index' || $pathInfo == 'settings/index') ? 'active' : '')?>">
+        <li class="xn-openable <?= (($pathInfo == 'language/index' || $pathInfo == 'settings/index' || $pathInfo == 'chavo/index') ? 'active' : '')?>">
             <a href="#"><span class="fa fa-gear"></span> <span class="xn-text"><?=Yii::t('app','Settings')?></span></a>
             <ul>                            
                 <li  <?= ($pathInfo == 'language/index' ? 'class="active"' : '')?>>
@@ -99,6 +99,9 @@ $user = \common\models\User::find()->where(['id'=>Yii::$app->user->identity->id]
                 </li>
                 <li  <?= ($pathInfo == 'settings/index' ? 'class="active"' : '')?>>
                             <a href="/settings/index"><span class="fa fa-language"></span><?=Yii::t('app','Settings')?></a>
+                </li>
+                  <li  <?= ($pathInfo == 'chavo/index' ? 'class="active"' : '')?>>
+                            <a href="/chavo/index"><span class="fa fa-tasks"></span><?=Yii::t('app','Chavo')?></a>
                 </li>
             </ul>
         </li>
