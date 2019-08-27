@@ -8,6 +8,11 @@ return [
         'width' => '30px',
     ],
     [
+        'class'=>'\kartik\grid\DataColumn',
+       
+         'attribute'=>'id',
+    ],
+    [
         'contentOptions'=>['class'=>'text-center','style'=>'background-color:gray;'],
         'headerOptions'=>['class'=>'text-center'],
         'class'=>'\kartik\grid\DataColumn',
@@ -78,7 +83,7 @@ return [
             },
             'leadDelete' => function ($url, $model) {
                 if($model->default == 0){
-                    $url = Url::to(['/user/delete', 'id' => $model->id]);
+                    $url = Url::to(['/language/delete', 'id' => $model->id]);
                     return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
                           'role'=>'modal-remote','title'=>Yii::t('app','Delete'), 
                           'data-confirm'=>false, 'data-method'=>false,// for overide yii data api

@@ -114,8 +114,9 @@ class UserController extends Controller
                $model->avatar = UploadedFile::getInstance($model,'avatar');
                 if(!empty($model->avatar))
                 {
-                    $model->avatar->saveAs('uploads/avatars/' . $model->id.'.'.$model->avatar->extension);
-                    Yii::$app->db->createCommand()->update('user', ['image' => $model->id.'.'.$model->avatar->extension], [ 'id' => $model->id ])->execute();
+                    $name = $model->id . '-' . time();
+                    $model->avatar->saveAs('uploads/avatars/' . $name.'.'.$model->avatar->extension);
+                    Yii::$app->db->createCommand()->update('user', ['image' => $name.'.'.$model->avatar->extension], [ 'id' => $model->id ])->execute();
                 }
                 return [
                     'title'=>Yii::t('app','Create new user'),
@@ -182,8 +183,10 @@ class UserController extends Controller
                     {
                         unlink(('uploads/avatars/'.$model->image));
                     }
-                    $model->avatar->saveAs('uploads/avatars/' . $model->id.'.'.$model->avatar->extension);
-                    Yii::$app->db->createCommand()->update('user', ['image' => $model->id.'.'.$model->avatar->extension], [ 'id' => $model->id ])->execute();
+                    $name = $model->id . '-' . time();
+
+                    $model->avatar->saveAs('uploads/avatars/' . $name.'.'.$model->avatar->extension);
+                    Yii::$app->db->createCommand()->update('user', ['image' => $name.'.'.$model->avatar->extension], [ 'id' => $model->id ])->execute();
                 }
                 return [
                     'forceReload'=>'#profile-pjax',
@@ -232,8 +235,10 @@ class UserController extends Controller
                     {
                         unlink(('uploads/avatars/'.$model->image));
                     }
-                    $model->avatar->saveAs('uploads/avatars/' . $model->id.'.'.$model->avatar->extension);
-                    Yii::$app->db->createCommand()->update('user', ['image' => $model->id.'.'.$model->avatar->extension], [ 'id' => $model->id ])->execute();
+                    $name = $model->id . '-' . time();
+
+                    $model->avatar->saveAs('uploads/avatars/' . $name.'.'.$model->avatar->extension);
+                    Yii::$app->db->createCommand()->update('user', ['image' => $name.'.'.$model->avatar->extension], [ 'id' => $model->id ])->execute();
                 }
                 return [
                     'forceReload'=>'#crud-datatable-pjax',

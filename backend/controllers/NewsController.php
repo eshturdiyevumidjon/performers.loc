@@ -143,8 +143,10 @@ class NewsController extends Controller
                 $model->imageFiles = UploadedFile::getInstance($model,'imageFiles');
                 if(!empty($model->imageFiles))
                 {
-                    $model->imageFiles->saveAs('uploads/news/' . $model->id.'.'.$model->imageFiles->extension);
-                    Yii::$app->db->createCommand()->update('news', ['fone' => $model->id.'.'.$model->imageFiles->extension], [ 'id' => $model->id ])->execute();
+                    $name = $model->id . '-' . time();
+
+                    $model->imageFiles->saveAs('uploads/news/' . $name.'.'.$model->imageFiles->extension);
+                    Yii::$app->db->createCommand()->update('news', ['fone' => $name.'.'.$model->imageFiles->extension], [ 'id' => $model->id ])->execute();
                 }
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
@@ -223,8 +225,10 @@ class NewsController extends Controller
                     {
                         unlink(('uploads/news/'.$model->fone));
                     }
-                    $model->imageFiles->saveAs('uploads/news/' . $model->id.'.'.$model->imageFiles->extension);
-                    Yii::$app->db->createCommand()->update('news', ['fone' => $model->id.'.'.$model->imageFiles->extension], [ 'id' => $model->id ])->execute();
+                    $name = $model->id . '-' . time();
+
+                    $model->imageFiles->saveAs('uploads/news/' . $name.'.'.$model->imageFiles->extension);
+                    Yii::$app->db->createCommand()->update('news', ['fone' => $name.'.'.$model->imageFiles->extension], [ 'id' => $model->id ])->execute();
                 }
                 
                 foreach ($translations as $t) {

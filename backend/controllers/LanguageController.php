@@ -227,6 +227,8 @@ class LanguageController extends Controller
         {
             unlink('uploads/flags/'.$model->image);
         }        
+       
+        Yii::$app->db->createCommand()->delete('message', ['language'=>$model->url])->execute();
         $model->delete();
         if($request->isAjax){
             /*

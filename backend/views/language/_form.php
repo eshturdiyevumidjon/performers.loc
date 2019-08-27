@@ -20,10 +20,6 @@ $adminka = Yii::$app->params['adminka'];
       <div class="col-md-6">
          <?= $form->field($model, 'local')->widget(\yii\widgets\MaskedInput::className(), ['mask' => 'aa-AA','options'=>['placeholder'=>'ru-RU']]) ?>
       </div>
-         <div class="col-md-6">
-         <?= $form->field($model, 'local')->widget(\yii\widgets\MaskedInput::className(), ['mask' => 'aa-AA','options'=>['placeholder'=>'ru-RU']]) ?>
-      </div>
-     
     </div>
     <div class="row">
       <div class="col-md-6">

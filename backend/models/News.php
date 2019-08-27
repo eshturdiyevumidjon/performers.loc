@@ -58,8 +58,13 @@ class News extends \yii\db\ActiveRecord
     }
     public function beforeSave($insert)
     {
-        if($this->isNewRecord)
-        $this->date_cr=date("Y-m-d");
+        if($this->isNewRecord){
+            $this->date_cr=Yii::$app->formatter->asDate(time(), 'php:Y-m-d');
+        }
+        else
+        {
+            $this->date_cr=Yii::$app->formatter->asDate($this->date_cr, 'php:Y-m-d'); 
+        }
         return parent::beforeSave($insert);
     }
     public function afterFind()

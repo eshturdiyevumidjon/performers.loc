@@ -13,7 +13,6 @@ use yii\widgets\DetailView;
             'id',
             'title',
             'text:ntext',
-            'sorting',
         ],
     ]) ?>
 

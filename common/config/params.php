@@ -1,6 +1,6 @@
 <?php
 return [
-    'adminka' => "http://itake.navedi.uz/admin/",
+    'adminka' => "http://itake/admin/",
     'adminEmail' => 'admin@example.com',
     'supportEmail' => 'support@example.com',
     'senderEmail' => 'noreply@example.com',

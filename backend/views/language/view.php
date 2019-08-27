@@ -1,6 +1,7 @@
 <?php
 
 use yii\widgets\DetailView;
+$adminka = Yii::$app->params['adminka'];
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Lang */
@@ -14,7 +15,7 @@ use yii\widgets\DetailView;
                 'format'=>'raw',
                 'attribute'=>'image',
                 'value'=>function($data){
-                    return "<img src='".$data->image."'>";
+                    return "<img src='/admin".$data->image."'>";
                 }
             ],
             'url:url',

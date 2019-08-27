@@ -15,7 +15,7 @@ $langs=backend\models\Lang::getLanguages();
 	 <ul class="nav nav-tabs" style="margin-top:2px;">
     <?php foreach($langs as $lang):?>
     <li class="<?=($i==0)?'active':''?>">
-        <a data-toggle="tab" href="#<?=$lang->url?>"><?=explode('-',$lang->name)[1]?></a>
+        <a data-toggle="tab" href="#<?=$lang->url?>"><?=(isset(explode('-',$lang->name)[1])?explode('-',$lang->name)[1]:$lang->name)?></a>
     </li>
     <?php $i++; endforeach;?>
    </ul>
