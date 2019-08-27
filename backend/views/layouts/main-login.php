@@ -3,9 +3,12 @@ use backend\assets\AppAsset;
 use yii\helpers\Html;
 use backend\widgets\Alert;
 
+$adminka = Yii::$app->params['adminka'];
+//echo "d=".$adminka;die;
+
 	$session = Yii::$app->session;
-    if( isset($session['theme']) ) $theme = 'http://' . $_SERVER['SERVER_NAME'] . $session['theme'];
-    else $theme = 'http://' . $_SERVER['SERVER_NAME'] . '/css/theme-default.css';
+    if( isset($session['theme']) ) $theme = $adminka . $session['theme'];
+    else $theme = $adminka . '/css/theme-default.css';
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

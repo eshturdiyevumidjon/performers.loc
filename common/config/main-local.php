@@ -3,9 +3,9 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=itake.loc',
-            'username' => 'root',
-            'password' => '',
+            'dsn' => 'mysql:host=localhost;dbname=host1766503_itake',
+            'username' => 'host1766503_umid',
+            'password' => 'ngbDEiyD',
             'charset' => 'utf8',
         ],
         // 'mailer' => [

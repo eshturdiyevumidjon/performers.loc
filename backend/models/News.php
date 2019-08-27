@@ -49,10 +49,12 @@ class News extends \yii\db\ActiveRecord
     }
     public function getImage($for='_form')
     {
+        $adminka = Yii::$app->params['adminka'];
+        
         if($for=='_form')
-        return $this->fone != null ? '<img style="width:100%;border-radius:10%;" src="/uploads/news/' . $this->fone .'">' : '<img style="width:100%; max-height:300px;border-radius:10%;" src="/uploads/noimg.jpg">';
+        return $this->fone != null ? '<img style="width:100%;border-radius:10%;" src="'.$adminka.'uploads/news/' . $this->fone .'">' : '<img style="width:100%; max-height:300px;border-radius:10%;" src="'.$adminka.'uploads/noimg.jpg">';
         if($for=='_columns')
-           return $this->fone != null ? '<img style="width:60px; border-radius:10%;" src="/uploads/news/' . $this->fone .' ">' : '<img style="width:60px;" src="/uploads/noimg.jpg">';
+           return $this->fone != null ? '<img style="width:60px; border-radius:10%;" src="'.$adminka.'uploads/news/' . $this->fone .' ">' : '<img style="width:60px;" src="'.$adminka.'uploads/noimg.jpg">';
     }
     public function beforeSave($insert)
     {

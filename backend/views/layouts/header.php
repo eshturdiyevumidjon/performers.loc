@@ -3,7 +3,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use backend\models\Lang;
 
-$serverName = Yii::$app->params['serverName'];
+$adminka = Yii::$app->params['adminka'];
 ?>
 <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
     <!-- TOGGLE NAVIGATION -->
@@ -39,25 +39,25 @@ $serverName = Yii::$app->params['serverName'];
             <div class="panel-body list-group list-group-contacts scroll" style="height: 200px;">
                 <a href="#" class="list-group-item">
                     <div class="list-group-status status-online"></div>
-                    <img src="<?=$serverName?>/extra/images/users/user2.jpg" class="pull-left" alt="John Doe"/>
+                    <img src="<?=$adminka?>/extra/images/users/user2.jpg" class="pull-left" alt="John Doe"/>
                     <span class="contacts-title">John Doe</span>
                     <p>Praesent placerat tellus id augue condimentum</p>
                 </a>
                 <a href="#" class="list-group-item">
                     <div class="list-group-status status-away"></div>
-                    <img src="<?=$serverName?>/extra/images/users/user.jpg" class="pull-left" alt="Dmitry Ivaniuk"/>
+                    <img src="<?=$adminka?>/extra/images/users/user.jpg" class="pull-left" alt="Dmitry Ivaniuk"/>
                     <span class="contacts-title">Dmitry Ivaniuk</span>
                     <p>Donec risus sapien, sagittis et magna quis</p>
                 </a>
                 <a href="#" class="list-group-item">
                     <div class="list-group-status status-away"></div>
-                    <img src="<?=$serverName?>/extra/images/users/user3.jpg" class="pull-left" alt="Nadia Ali"/>
+                    <img src="<?=$adminka?>/extra/images/users/user3.jpg" class="pull-left" alt="Nadia Ali"/>
                     <span class="contacts-title">Nadia Ali</span>
                     <p>Mauris vel eros ut nunc rhoncus cursus sed</p>
                 </a>
                 <a href="#" class="list-group-item">
                     <div class="list-group-status status-offline"></div>
-                    <img src="<?=$serverName?>/extra/images/users/user6.jpg" class="pull-left" alt="Darth Vader"/>
+                    <img src="<?=$adminka?>/extra/images/users/user6.jpg" class="pull-left" alt="Darth Vader"/>
                     <span class="contacts-title">Darth Vader</span>
                     <p>I want my money back!</p>
                 </a>
@@ -70,7 +70,7 @@ $serverName = Yii::$app->params['serverName'];
     </li>
     <!-- END MESSAGES -->
     <!-- TASKS -->
-    <li class="xn-icon-button pull-right">
+    <!--<li class="xn-icon-button pull-right">
         <a href="#"><span class="fa fa-tasks"></span></a>
         <div class="informer informer-warning">3</div>
         <div class="panel panel-primary animated zoomIn xn-drop-left xn-panel-dragging">
@@ -114,7 +114,7 @@ $serverName = Yii::$app->params['serverName'];
                 <a href="pages-tasks.html">Show all tasks</a>
             </div>                            
         </div>                        
-    </li>
+    </li>-->
     <!-- END TASKS -->
 </ul>
 <div class="message-box animated fadeIn" data-sound="alert" id="mb-signout">
@@ -144,8 +144,8 @@ $serverName = Yii::$app->params['serverName'];
 <div class="" data-sound="fail" id="mb-shop">
 </div>
 
-<audio id="audio-alert" src="<?=$serverName?>/audio/alert.mp3" preload="auto"></audio>
-<audio id="audio-fail" src="<?=$serverName?>/audio/fail.mp3" preload="auto"></audio>
+<audio id="audio-alert" src="<?=$adminka?>/audio/alert.mp3" preload="auto"></audio>
+<audio id="audio-fail" src="<?=$adminka?>/audio/fail.mp3" preload="auto"></audio>
 <?php
     $this->registerJs(
         '$("document").ready(function(){

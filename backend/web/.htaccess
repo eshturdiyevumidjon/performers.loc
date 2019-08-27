@@ -1,7 +1,13 @@
-# use mode rewrite for pretty URL support
+AddDefaultCharset UTF-8
+
 RewriteEngine on
-# if a directory or a file exists, use the request directly
+
+# if a directory or a file exists, use it directly
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-# otherwise forward the request to index.php
-RewriteRule . index.php
+
+RewriteCond $1 !^(favicon\.ico)
+RewriteRule ^(.*)$ /index.php/$1 [L]
+
+# otherwise forward it to index.php
+# RewriteRule . index.php

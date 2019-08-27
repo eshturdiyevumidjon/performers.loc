@@ -66,6 +66,8 @@ class AboutCompany extends \yii\db\ActiveRecord
         ];
     }
     public function getImage(){
-        return $this->logo != null ? '<img style="width: 70px; height: 60px" src="/uploads/' . $this->logo .'">' : '<img style="width: 70px; height: 60px" src="/uploads/noimg.jpg">';
+        
+        $adminka = Yii::$app->params['adminka'];
+        return $this->logo != null ? '<img style="width: 70px; height: 60px" src="'.$adminka.'uploads/' . $this->logo .'">' : '<img style="width: 70px; height: 60px" src="'.$adminka.'uploads/noimg.jpg">';
     }
 }

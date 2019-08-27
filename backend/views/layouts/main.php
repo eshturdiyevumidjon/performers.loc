@@ -10,7 +10,7 @@ use backend\assets\AppAsset;
 use backend\assets\JoliAsset;
 use common\models\User;
 
-$serverName = Yii::$app->params['serverName'];
+$adminka = Yii::$app->params['adminka'];
 
 if (class_exists('AppAsset')) {
         AppAsset::register($this);
@@ -19,8 +19,8 @@ if (class_exists('AppAsset')) {
 }
 {
         $session = Yii::$app->session;
-        if( isset($session['theme']) ) $theme = $serverName . $session['theme'];
-        else $theme = $serverName . '/css/theme-default.css';
+        if( isset($session['theme']) ) $theme = $adminka . $session['theme'];
+        else $theme = $adminka . '/css/theme-default.css';
 
         if($session['st_sb_toggled'] != null) $st_sb_toggled = $session['st_sb_toggled'];
         else $st_sb_toggled = 0;
@@ -72,6 +72,7 @@ if (class_exists('AppAsset')) {
             <input type="hidden" name="st_sb_fixed" id="st_sb_fixed" value="<?=$st_sb_fixed?>" >
             <input type="hidden" name="st_sb_scroll" id="st_sb_scroll" value="<?=$st_sb_scroll?>" >
             <input type="hidden" name="st_layout_boxed" id="st_layout_boxed" value="<?=$st_layout_boxed?>" >
+            <input type="hidden" name="adminka" id="adminka" value="<?=$adminka?>" >
             <!-- menu nastroykaning tugashi -->
 
             <div class="page-sidebar">

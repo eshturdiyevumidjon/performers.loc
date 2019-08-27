@@ -16,7 +16,9 @@ return [
         'attribute'=>'image',
         'format'=>'raw',
         'content'=>function($data){
-            return '<img src="'.$data->image.'" style="width:40%;height:70%;">';
+            
+            $adminka = Yii::$app->params['adminka'];
+            return '<img src="'.$adminka.$data->image.'" style="width:40%;height:70%;">';
         },
     ],
     [
@@ -90,4 +92,4 @@ return [
         ]
     ],
     
-];   
+];

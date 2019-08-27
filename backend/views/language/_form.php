@@ -6,6 +6,8 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Lang */
 /* @var $form yii\widgets\ActiveForm */
+
+$adminka = Yii::$app->params['adminka'];
 ?>
 
 <div class="lang-form">
@@ -34,7 +36,7 @@ use yii\widgets\ActiveForm;
     <div class="row">
       <div class="col-md-2">
         <div id="image">
-            <?=($model->image != null)?'<img src="'.$model->image.'">':'';?>
+            <?=($model->image != null)?'<img src="'.$adminka . $model->image.'">':'';?>
         </div>
       </div>
       <div class="col-md-4">

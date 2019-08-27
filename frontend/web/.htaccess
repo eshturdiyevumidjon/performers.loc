@@ -1,16 +1,13 @@
-<IfModule mod_rewrite.c>
-        Options +FollowSymlinks
+AddDefaultCharset UTF-8
 
-        # Включаем mod_rewrite и перенаправляем со слэша
-        RewriteEngine On
-        RewriteBase /
-        RewriteCond %{HTTP_HOST} (.*)
-        RewriteCond %{REQUEST_URI} /$ [NC]
-        RewriteRule ^(.*)(/)$ $1 [L,R=301]
+RewriteEngine on
 
-        # Если это папка или файл, открываем ее/его
-        RewriteCond %{REQUEST_FILENAME} !-f
-        RewriteCond %{REQUEST_FILENAME} !-d
-        # В противном случае перенаправляем на index.php
-        RewriteRule . index.php
-</IfModule>
+# if a directory or a file exists, use it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteCond $1 !^(favicon\.ico)
+RewriteRule ^(.*)$ /index.php/$1 [L]
+
+# otherwise forward it to index.php
+# RewriteRule . index.php
