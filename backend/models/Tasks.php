@@ -64,10 +64,10 @@ use yii\behaviors\TimestampBehavior;
  */
 class Tasks extends \yii\db\ActiveRecord
 {
-    const SCENARIO_PASSENGERS = 'passengers';
-    const SCENARIO_VEHICLES = 'vehicles';
-    const SCENARIO_GOODS = 'goods';
-    const SCENARIO_HELP = 'help';
+    // const SCENARIO_PASSENGERS = 'passengers';
+    // const SCENARIO_VEHICLES = 'vehicles';
+    // const SCENARIO_GOODS = 'goods';
+    // const SCENARIO_HELP = 'help';
     public $items;
 
     /**
@@ -92,10 +92,10 @@ class Tasks extends \yii\db\ActiveRecord
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => TransportCategory::className(), 'targetAttribute' => ['category_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
 
-            [[/*'type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','adult_passengers','child_count','category_id','flight_number_status',*/'meeting_with_sign_status'],'required', 'on' => self::SCENARIO_PASSENGERS],
-            [[/*'type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','car_model','car_mark','image',*/'car_on_the_go'],'required', 'on' => self::SCENARIO_VEHICLES],
-            [[/*'type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','comment','weight','width','length','height','classification',*/'loading_required_status','floor','lift'],'required', 'on' => self::SCENARIO_GOODS],
-            [[/*'type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','comment','shipping_house_type','shipping_house_floor','shipping_house_lift','shipping_house_area','delivery_house_type','delivery_house_floor','delivery_house_lift','delivery_house_area','item_description','alert_email',*/'view_performers'],'required', 'on' => self::SCENARIO_HELP]
+            // [['type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','adult_passengers','child_count','category_id','flight_number_status','meeting_with_sign_status'],'required', 'on' => self::SCENARIO_PASSENGERS],
+            // [['type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','car_model','car_mark','image','car_on_the_go'],'required', 'on' => self::SCENARIO_VEHICLES],
+            // [['type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','comment','weight','width','length','height','classification','loading_required_status','floor','lift'],'required', 'on' => self::SCENARIO_GOODS],
+            // [['type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','comment','shipping_house_type','shipping_house_floor','shipping_house_lift','shipping_house_area','delivery_house_type','delivery_house_floor','delivery_house_lift','delivery_house_area','item_description','alert_email','view_performers'],'required', 'on' => self::SCENARIO_HELP]
 
         ];
     }
@@ -110,21 +110,21 @@ class Tasks extends \yii\db\ActiveRecord
             ],
         ];
     }
-     public function scenarios()
-    {
+    //  public function scenarios()
+    // {
 
-        $scenarios = parent::scenarios();
+    //     $scenarios = parent::scenarios();
 
-        $scenarios[self::SCENARIO_PASSENGERS] = ['type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','comment','adult_passengers','child_count','category_id','flight_number_status','flight_number','meeting_with_sign_status','alert_email','meeting_with_sign'];
+    //     $scenarios[self::SCENARIO_PASSENGERS] = ['type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','comment','adult_passengers','child_count','category_id','flight_number_status','flight_number','meeting_with_sign_status','alert_email','meeting_with_sign'];
 
-        $scenarios[self::SCENARIO_VEHICLES] = ['type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','comment','car_model','car_mark','image','alert_email','car_on_the_go'];
+    //     $scenarios[self::SCENARIO_VEHICLES] = ['type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','comment','car_model','car_mark','image','alert_email','car_on_the_go'];
 
-        $scenarios[self::SCENARIO_GOODS] = ['type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','comment','weight','width','length','height','classification','loading_required_status','floor','alert_email','lift'];
+    //     $scenarios[self::SCENARIO_GOODS] = ['type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','comment','weight','width','length','height','classification','loading_required_status','floor','alert_email','lift'];
 
-        $scenarios[self::SCENARIO_HELP] = ['type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','comment','shipping_house_type','shipping_house_floor','shipping_house_lift','shipping_house_area','delivery_house_type','delivery_house_floor','delivery_house_lift','delivery_house_area','item_description','alert_email','view_performers'];
+    //     $scenarios[self::SCENARIO_HELP] = ['type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','comment','shipping_house_type','shipping_house_floor','shipping_house_lift','shipping_house_area','delivery_house_type','delivery_house_floor','delivery_house_lift','delivery_house_area','item_description','alert_email','view_performers'];
 
-        return $scenarios;
-    }
+    //     return $scenarios;
+    // }
     /**
      * {@inheritdoc}
      */

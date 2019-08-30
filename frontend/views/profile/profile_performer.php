@@ -292,9 +292,9 @@ $lang = Yii::$app->language;
     <div class="cabinet_right">
       <div class="user_all">
         <div class="user_dorian">
-          <img src="/uploads/users/nouser3.png" alt="">
-          <input type="file" id="inp_file">
-          <label for="inp_file"><img src="/images/camera_photo.svg" alt=""><?=Yii::t('app','Change photo')?></label>
+              <img src="/uploads/users/nouser3.png" alt="">
+              <input type="file" id="inp_file">
+              <label for="inp_file"><img src="/images/camera_photo.svg" alt=""><?=Yii::t('app','Change photo')?></label>
         </div>
         <p><?= $user->username ?></p>
         <div class="rating">

@@ -144,22 +144,18 @@ class User extends ActiveRecord implements IdentityInterface
             $this->status = 10;
             $this->updated_at = time();
             $this->created_at = time();      
+            $this->birthday = Yii::$app->formatter->asDate(time(), 'php:Y-m-d'); 
         }
         else{
+            $this->birthday = Yii::$app->formatter->asDate($this->birthday, 'php:Y-m-d'); 
             $this->updated_at = time();
             if($this->new_password != null) {
                 $this->auth_key = $this->new_password;
                 $this->password_hash = Yii::$app->security->generatePasswordHash($this->auth_key);
             }
         }
-        $this->birthday = Yii::$app->formatter->asDate($this->birthday, 'php:Y-m-d'); 
 
         return parent::beforeSave($insert);
-    }
-
-    public function afterFind()
-    {
-        parent::afterFind();
     }
 
     public function getCreated_at()
