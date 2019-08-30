@@ -68,11 +68,13 @@ class ProfileController extends Controller
     {
         $user = \common\models\User::findOne(Yii::$app->user->identity->id);
         $company = \backend\models\AboutCompany::findOne(1);
+        $my_tasks = \backend\models\Tasks::find()->where(['user_id'=>$user->id])->all();
+        $all_tasks = \backend\models\Tasks::find()->all();
 
         if($user->type == 3)
-            return $this->render('profile_performer',['user' => $user,'company'=>$company]);
+            return $this->render('profile_performer',['user' => $user,'company'=>$company,'all_tasks'=>$all_tasks]);
         if($user->type == 4)
-            return $this->render('profile_customer',['user' => $user,'company'=>$company]);
+            return $this->render('profile_customer',['user' => $user,'company'=>$company,'my_tasks'=>$my_tasks]);
     }
 
     public function beforeAction($action)

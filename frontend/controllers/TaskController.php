@@ -74,7 +74,6 @@ class TaskController extends Controller
     
     public function actionViewGoods($id)
     {   
-        $this->enableCsrfValidation = false;
         return $this->render('goods/view-goods', [
             'model' => $this->findModel($id),
         ]);
@@ -82,9 +81,10 @@ class TaskController extends Controller
   
     public function actionCreateGoods()
     {
-        $request = Yii::$app->request;
         $model = new Tasks();  
         $model->type=3;
+        $model->attributes = $_POST['Tasks'];
+        
         if (isset($_POST['submit']) && $model->save()) {
             return $this->redirect(['goods/view-goods', 'id' => $model->id]);
         } else {
