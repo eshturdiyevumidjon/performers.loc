@@ -53,6 +53,7 @@ use yii\widgets\ActiveForm;
                 'options'=>[
                       'placeholder'=>$model->getAttributeLabel('date_begin'),
                       'class'=>'my_input other_date_inp',
+                      'style'=>'cursor:pointer;'
                     ],
                     'pluginOptions' => [
                           'format' => 'dd.mm.yyyy hh:ii',
@@ -73,7 +74,8 @@ use yii\widgets\ActiveForm;
                 'options'=>[
                       'placeholder'=>$model->getAttributeLabel('date_begin2'),
                       'class'=>'my_input other_date_inp option',
-                      'id'=>'option'
+                      'id'=>'option',
+                      'style'=>'cursor:pointer;'
                     ],
                     'pluginOptions' => [
                           'format' => 'dd.mm.yyyy hh:ii',
@@ -92,7 +94,7 @@ use yii\widgets\ActiveForm;
              <?= $form->field($model, 'offer_your_price')->widget(\yii\widgets\MaskedInput::className(),['mask' => '9','clientOptions' => ['repeat' => 10, 'greedy' => false],'options'=>['class'=>'my_input','placeholder'=>$model->getAttributeLabel('offer_your_price')]])->label(false) ?>
        
         <h4><?=Yii::t('app','Number of passengers')?></h4>
-        <div class="form-group" id="passengers">
+        <div class="form-group" id="passengers" style="cursor: pointer;">
           <div class="spans">
             <span class="large_young"><?=Yii::t('app','Adults')?>: <?=isset($model->count_adult)?$model->count_adult:0?></span>
             <span class="small_young"><?=Yii::t('app','Children')?>: <?=$model->countDeti?></span>
@@ -102,7 +104,7 @@ use yii\widgets\ActiveForm;
 
            <div class="d-flex align-items-center justify-content-between row">
               <div class="col-md-2"><b><?=Yii::t('app','Adults')?></b></div>
-              <div class="form_count" style="width: 100px;height: 50px;">
+              <div class="form_count" style="width: 100px;height: 35px;">
                 <button class="minus_count" name="minus_adult" style="width: 33%;"><img src="/images/minus_a.svg" alt=""></button>
                 <input type="number" min=0 name="count_adult" value='<?=isset($model->count_adult)?$model->count_adult:0?>' style="width: 33%;">
                 <button class="plus_count" name="plus_adult" style="width: 33%;"><img src="/images/plus_a.svg" alt="" ></button>
@@ -116,7 +118,7 @@ use yii\widgets\ActiveForm;
             Автолюлька
             <p class="opac d_mob_none">до 10 кг, до 6 месяцев</p>
             </div>
-            <div class="form_count" style="width: 100px;height: 50px;">
+            <div class="form_count" style="width: 100px;height: 35px;">
               <button class="minus_count" name="minus_avtolulka" style="width: 33%;"><img src="/images/minus_a.svg" alt=""></button>
               <input type="number" name="count_avtolulka"  min=0 value='<?=isset($model->count_avtolulka)?$model->count_avtolulka:0?>' style="width: 33%;">
               <button class="plus_count" name="plus_avtolulka" style="width: 33%;"><img src="/images/plus_a.svg" alt="" ></button>
@@ -128,7 +130,7 @@ use yii\widgets\ActiveForm;
             Автокресло
             <p class="opac d_mob_none">9–25 кг, 0–7 лет</p>
             </div>
-            <div class="form_count" style="width: 100px;height: 50px;">
+            <div class="form_count" style="width: 100px;height: 35px;">
               <button class="minus_count" name="minus_avtokreslo" style="width: 33%;"><img src="/images/minus_a.svg" alt=""></button>
               <input type="number" min=0  name="count_avtokreslo" value="<?=isset($model->count_avtokreslo)?$model->count_avtokreslo:0?>" style="width: 33%;">
               <button class="plus_count" name="plus_avtokreslo"  style="width: 33%;"><img src="/images/plus_a.svg" alt="" ></button>
@@ -140,7 +142,7 @@ use yii\widgets\ActiveForm;
             Бустер
             <p class="opac d_mob_none">22–36 кг, 6–12 лет</p>
             </div>
-            <div class="form_count"  style="width: 100px;height: 50px;">
+            <div class="form_count"  style="width: 100px;height: 35px;">
               <button class="minus_count" name="minus_buster" style="width: 33%;"><img src="/images/minus_a.svg" alt=""></button>
               <input type="number" name="count_buster" min=0 value='<?=isset($model->count_buster)?$model->count_buster:0?>' style="width: 33%;">
               <button class="plus_count" name="plus_buster" style="width: 33%;"><img src="/images/plus_a.svg" alt="" ></button>

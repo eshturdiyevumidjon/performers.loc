@@ -90,12 +90,46 @@ use yii\widgets\DetailView;
         </div>
         <div class="terra aut">
           <p class="retect"><?=Yii::t('app','Passengers')?></p>
-          <div class="row_retact">
+          <div class="row_retact" id="passengers" style="cursor: pointer;">
             <div>
                 <span><img src="/images/people.svg" alt=""><?=Yii::t('app','Adults')?>: <?=$model->count_adult?></span>
             </div>
             <div>
                 <span><img src="/images/baby.svg" alt=""><?=Yii::t('app','Children')?>: <?=$model->countDeti?></span>
+            </div>
+          </div>
+          <div class="col-md-6 option" id="count_passengers" >
+            <div class="d-flex align-items-center justify-content-between row">
+                <div class="col-md-6"><b><?=Yii::t('app','Adults')?></b> :</div>
+                <span><?=$model->count_adult?></span>
+            </div>
+            
+            <div class="d-flex align-items-center justify-content-between row">
+              <div class="col-md-6"> <b><?=Yii::t('app','Children')?></b></div>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between row" style="margin-bottom: 5px;">
+              <div class="col-md-6">
+              Автолюлька :
+              <p class="opac d_mob_none">до 10 кг, до 6 месяцев</p>
+              </div>
+              <span><?=$model->count_avtolulka?></span>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between row" style="margin-bottom: 5px;">
+              <div class="col-md-6">
+              Автокресло
+              <p class="opac d_mob_none">9–25 кг, 0–7 лет</p>
+              </div>
+              <span><?=$model->count_avtokreslo?></span>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between row" style="margin-bottom: 5px;">
+              <div class="col-md-6">
+              Бустер
+              <p class="opac d_mob_none">22–36 кг, 6–12 лет</p>
+              </div>
+              <span><?=$model->count_buster?></span>
             </div>
           </div>
         </div>
@@ -210,3 +244,14 @@ use yii\widgets\DetailView;
     </div>
   </div>
 </section>
+<?php
+$this->registerJs(<<<JS
+  $(document).ready(function(){
+    $('#passengers').click(function(){
+        $('#count_passengers').toggle(300);
+      })
+  });
+JS
+);
+?>
+

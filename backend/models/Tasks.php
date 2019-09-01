@@ -93,7 +93,7 @@ class Tasks extends \yii\db\ActiveRecord
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => TransportCategory::className(), 'targetAttribute' => ['category_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
 
-            [['type','shipping_address','delivery_address','date_begin','offer_your_price','count_adult','category_id','flight_number_status','meeting_with_sign_status'],'required', 'on' => self::SCENARIO_PASSENGERS],
+            [['type','shipping_address','delivery_address','date_begin','offer_your_price','count_adult','flight_number_status','meeting_with_sign_status'],'required', 'on' => self::SCENARIO_PASSENGERS],
             [['type','date_close','shipping_address','delivery_address','date_begin','offer_your_price','promo_code','car_model','car_mark','car_on_the_go'],'required', 'on' => self::SCENARIO_VEHICLES],
             [['type','date_close','shipping_address','delivery_address','date_begin','offer_your_price','weight','width','length','height','classification','loading_required_status'],'required', 'on' => self::SCENARIO_GOODS],
             [['type','date_close','shipping_address','delivery_address','date_begin','offer_your_price','comment','shipping_house_type','shipping_house_floor','shipping_house_lift','shipping_house_area','delivery_house_type','delivery_house_floor','delivery_house_lift','delivery_house_area','alert_email'],'required', 'on' => self::SCENARIO_HELP]
@@ -154,10 +154,10 @@ class Tasks extends \yii\db\ActiveRecord
             'car_mark' => Yii::t('app','Car mark'),
             'image' => 'Image',
             'car_on_the_go' => Yii::t('app','Car On The Go'),
-            'weight' => Yii::t('app','Weight'),
-            'width' => Yii::t('app','Width'),
-            'length' => Yii::t('app','Length'),
-            'height' => Yii::t('app','Height'),
+            'weight' => Yii::t('app','Weight(kg)'),
+            'width' => Yii::t('app','Width(sm)'),
+            'length' => Yii::t('app','Length(sm)'),
+            'height' => Yii::t('app','Height(sm)'),
             'classification' => Yii::t('app','Classification'),
             'items' => Yii::t('app','Classification'),
             'loading_required_status' => Yii::t('app','Required load'),

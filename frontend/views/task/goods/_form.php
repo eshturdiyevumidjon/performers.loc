@@ -45,6 +45,7 @@ use yii\widgets\ActiveForm;
               <?= $form->field($model, 'date_begin')->widget(DatePicker::classname(), [
                          'options'=>[
                           'class'=>'my_input other_date_inp',
+                          'style'=>'cursor:pointer;',
                           'placeholder'=>$model->getAttributeLabel('date_begin'),
                         ],
                         'pluginOptions' => [
@@ -54,6 +55,7 @@ use yii\widgets\ActiveForm;
              <?= $form->field($model, 'date_close')->widget(DatePicker::classname(), [
                         'options'=>[
                           'class'=>'my_input other_date_inp',
+                          'style'=>'cursor:pointer;',
                           'placeholder'=>$model->getAttributeLabel('date_close'),
                         ],
                         'pluginOptions' => [
@@ -109,13 +111,13 @@ use yii\widgets\ActiveForm;
           </div>
           <div class="row mband" id="option">
 
-            <div class="col-sm-12">
+            <div class="col-sm-6">
                <div class="form-group_checkbox mt10 mb15 vnu_m">
                   <input type="checkbox" id="bww556" name="lift" value="1" <?=($model->lift == '1') ? 'checked' :'' ?>>
                   <label for="bww556"><?=$model->getAttributeLabel('lift')?></label>
               </div>
             </div>
-            <div class="col-sm-12">
+            <div class="col-sm-6">
             <?= $form->field($model, 'floor')->textInput(['class'=>'my_input','placeholder'=>$model->getAttributeLabel('floor')])->label(false) ?>
             </div>
           </div>

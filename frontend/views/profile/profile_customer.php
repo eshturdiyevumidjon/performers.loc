@@ -99,7 +99,9 @@ $this->params['breadcrumbs'][] = $this->title;
               <button><span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><g><g clip-path="url(#clip-67c7ecfe-51a6-4606-85cb-9c7ae5002df6)"><g><g><path fill="" d="M6 0L4.95 1.05l4.2 4.2H0v1.5h9.15l-4.2 4.2L6 12l6-6z"></path></g></g></g></g></svg></span></button>
             </a>
             <?php endforeach ?>
-            
+            <?= \yii\widgets\LinkPager::widget([
+                'pagination' => $pages,
+            ]);?>
 
             <ul class="pagination">
               <li class="page-item"><a class="" href="#">1</a></li>

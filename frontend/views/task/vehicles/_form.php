@@ -44,6 +44,7 @@ use yii\widgets\ActiveForm;
             <h4 class="mt10"><?=Yii::t('app','Date')?></h4>
               <?= $form->field($model, 'date_begin')->widget(DatePicker::classname(), [
                          'options'=>[
+                          'style'=>'cursor:pointer;',
                           'class'=>'my_input other_date_inp',
                           'placeholder'=>$model->getAttributeLabel('date_begin'),
                         ],
@@ -53,6 +54,7 @@ use yii\widgets\ActiveForm;
                      ])->hint('<p class="opac d_mob_none">'.Yii::t('app',"Start date and time when the shipment is ready to ship").'</p>')->label(false);?>
              <?= $form->field($model, 'date_close')->widget(DatePicker::classname(), [
                         'options'=>[
+                          'style'=>'cursor:pointer;',
                           'class'=>'my_input other_date_inp',
                           'placeholder'=>$model->getAttributeLabel('date_close'),
                         ],

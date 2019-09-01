@@ -11,6 +11,7 @@ use \yii\web\Response;
 use yii\helpers\Html;
 use yii\web\NotFoundHttpException;
 use common\models\User;
+use yii\data\Pagination;
 
 /**
  * Site controller
@@ -68,13 +69,19 @@ class ProfileController extends Controller
     {
         $user = \common\models\User::findOne(Yii::$app->user->identity->id);
         $company = \backend\models\AboutCompany::findOne(1);
-        $my_tasks = \backend\models\Tasks::find()->where(['user_id'=>$user->id])->all();
+        $my_tasks = \backend\models\Tasks::find()->where(['user_id'=>$user->id]);
         $all_tasks = \backend\models\Tasks::find()->all();
+
+        $countQuery = clone $my_tasks;
+        $pages = new Pagination(['totalCount' => $countQuery->count()]);
+        $models = $my_tasks->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
 
         if($user->type == 3)
             return $this->render('profile_performer',['user' => $user,'company'=>$company,'all_tasks'=>$all_tasks]);
         if($user->type == 4)
-            return $this->render('profile_customer',['user' => $user,'company'=>$company,'my_tasks'=>$my_tasks]);
+            return $this->render('profile_customer',['user' => $user,'company'=>$company,'my_tasks'=>$models,'pages' => $pages]);
     }
 
     public function beforeAction($action)

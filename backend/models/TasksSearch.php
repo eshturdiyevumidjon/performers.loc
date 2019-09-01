@@ -18,7 +18,7 @@ class TasksSearch extends Tasks
     public function rules()
     {
         return [
-            [['id', 'type', 'status', 'position', 'user_id', 'adult_passengers', 'child_count', 'category_id', 'car_on_the_go', 'classification', 'loading_required_status', 'floor', 'lift', 'shipping_house_type', 'shipping_house_floor', 'shipping_house_lift', 'delivery_house_type', 'delivery_house_floor', 'delivery_house_lift', 'alert_email', 'view_performers'], 'integer'],
+            [['id', 'type', 'status', 'position', 'user_id', 'category_id', 'car_on_the_go', 'classification', 'loading_required_status', 'floor', 'lift', 'shipping_house_type', 'shipping_house_floor', 'shipping_house_lift', 'delivery_house_type', 'delivery_house_floor', 'delivery_house_lift', 'alert_email', 'view_performers'], 'integer'],
             [['payed_sum', 'offer_your_price', 'weight', 'width', 'length', 'height', 'shipping_house_area', 'delivery_house_area'], 'number'],
             [['date_cr', 'date_close', 'shipping_address', 'delivery_address', 'shipping_coordinate_x', 'shipping_coordinate_y', 'delivery_coordinate_x', 'delivery_coordinate_y', 'date_begin', 'promo_code', 'comment', 'flight_number_status', 'flight_number', 'meeting_with_sign_status', 'meeting_with_sign', 'car_model', 'car_mark', 'image', 'item_description'], 'safe'],
         ];
@@ -67,8 +67,6 @@ class TasksSearch extends Tasks
             'user_id' => $this->user_id,
             'date_begin' => $this->date_begin,
             'offer_your_price' => $this->offer_your_price,
-            'adult_passengers' => $this->adult_passengers,
-            'child_count' => $this->child_count,
             'category_id' => $this->category_id,
             'car_on_the_go' => $this->car_on_the_go,
             'weight' => $this->weight,

@@ -69,6 +69,7 @@ use yii\widgets\ActiveForm;
              <?= $form->field($model, 'date_begin')->widget(DatePicker::classname(), [
                          'options'=>[
                           'class'=>'my_input other_date_inp',
+                          'style'=>'cursor:pointer;',
                           'placeholder'=>$model->getAttributeLabel('date_begin'),
                         ],
                         'pluginOptions' => [
@@ -80,6 +81,7 @@ use yii\widgets\ActiveForm;
              <?= $form->field($model, 'date_close')->widget(DatePicker::classname(), [
                         'options'=>[
                           'class'=>'my_input other_date_inp',
+                          'style'=>'cursor:pointer;',
                           'placeholder'=>$model->getAttributeLabel('date_close'),
                         ],
                         'pluginOptions' => [
@@ -105,7 +107,7 @@ use yii\widgets\ActiveForm;
             </div>
             <div class="form_count" id="need_relocation" style="display: none;">
               <button class="minus_count"><img src="/images/minus_a.svg" alt=""></button>
-              <input type="number" name="count_relocation" placeholder="bewprw" min=1 value='<?=isset($model->count_relocation)?$model->count_relocation:1?>'>
+              <input type="number" name="count_relocation" placeholder="bewprw" min=0 value='<?=isset($model->count_relocation)?$model->count_relocation:1?>'>
               <button class="plus_count"><img src="/images/plus_a.svg" alt=""></button>
             </div>
           </div>
@@ -116,7 +118,7 @@ use yii\widgets\ActiveForm;
             </div>
             <div class="form_count" id="need_piano" style="display: none;">
               <button class="minus_count"><img src="/images/minus_a.svg" alt=""></button>
-              <input type="number"  min=1 name="count_piano" placeholder="bewprw" min=1 value='<?=isset($model->count_piano)?$model->count_piano:1?>'>
+              <input type="number"  min=0 name="count_piano" placeholder="bewprw" min=0 value='<?=isset($model->count_piano)?$model->count_piano:1?>'>
               <button class="plus_count"><img src="/images/plus_a.svg" alt=""></button>
             </div>
           </div>
@@ -127,7 +129,7 @@ use yii\widgets\ActiveForm;
             </div>
             <div class="form_count" id="need_furniture" style="display: none;">
               <button class="minus_count"><img src="/images/minus_a.svg" alt=""></button>
-              <input type="number"  min=1 name="count_furniture" placeholder="bewprw" min=1 value='<?=isset($model->count_furniture)?$model->count_furniture:1?>'>
+              <input type="number"  min=0 name="count_furniture" placeholder="bewprw" min=0 value='<?=isset($model->count_furniture)?$model->count_furniture:1?>'>
               <button class="plus_count"><img src="/images/plus_a.svg" alt=""></button>
             </div>
           </div>
@@ -138,7 +140,7 @@ use yii\widgets\ActiveForm;
             </div>
             <div class="form_count" id="need_building_materials" style="display: none;">
               <button class="minus_count"><img src="/images/minus_a.svg" alt=""></button>
-              <input type="number"  min=1 name="count_building_materials" placeholder="bewprw" min=1 value='<?=isset($model->count_building_materials)?$model->count_building_materials:1?>'>
+              <input type="number"  min=0 name="count_building_materials" placeholder="bewprw" min=0 value='<?=isset($model->count_building_materials)?$model->count_building_materials:1?>'>
               <button class="plus_count"><img src="/images/plus_a.svg" alt=""></button>
             </div>
           </div>              
@@ -149,7 +151,7 @@ use yii\widgets\ActiveForm;
             </div>
             <div class="form_count" id="need_personal_items" style="display: none;">
               <button class="minus_count"><img src="/images/minus_a.svg" alt=""></button>
-              <input type="number"  min=1 name="count_personal_items" placeholder="bewprw" min=1 value='<?=isset($model->count_personal_items)?$model->count_personal_items:1?>'>
+              <input type="number"  min=0 name="count_personal_items" placeholder="bewprw" min=0 value='<?=isset($model->count_personal_items)?$model->count_personal_items:1?>'>
               <button class="plus_count"><img src="/images/plus_a.svg" alt=""></button>
             </div>
           </div>
@@ -160,7 +162,7 @@ use yii\widgets\ActiveForm;
             </div>
             <div class="form_count" id="need_special_equipments" style="display: none;">
               <button class="minus_count"><img src="/images/minus_a.svg" alt=""></button>
-              <input type="number"  min=1 name="count_special_equipments" placeholder="bewprw" min=1 value='<?=isset($model->count_special_equipments)?$model->count_special_equipments:1?>'>
+              <input type="number"  min=0 name="count_special_equipments" placeholder="bewprw" min=0 value='<?=isset($model->count_special_equipments)?$model->count_special_equipments:1?>'>
               <button class="plus_count"><img src="/images/plus_a.svg" alt=""></button>
             </div>
           </div>
@@ -171,7 +173,7 @@ use yii\widgets\ActiveForm;
             </div>
              <div class="form_count" id="need_purchases" style="display: none;">
                 <button class="minus_count"><img src="/images/minus_a.svg" alt=""></button>
-                <input type="number"  min=1 name="count_purchases" placeholder="bewprw" min=1 value='<?=isset($model->count_purchases)?$model->count_purchases:1?>'>
+                <input type="number"  min=0 name="count_purchases" placeholder="bewprw" min=0 value='<?=isset($model->count_purchases)?$model->count_purchases:1?>'>
                 <button class="plus_count"><img src="/images/plus_a.svg" alt=""></button>
               </div>
           </div>
@@ -182,7 +184,7 @@ use yii\widgets\ActiveForm;
             </div>
            <div class="form_count" id="need_other_items" style="display: none;">
                 <button class="minus_count"><img src="/images/minus_a.svg" alt=""></button>
-                <input type="number"  min=1 name="count_other_items" placeholder="bewprw" min=1 value='<?=isset($model->count_other_items)?$model->count_other_items:1?>'>
+                <input type="number"  min=0 name="count_other_items" placeholder="bewprw" min=0 value='<?=isset($model->count_other_items)?$model->count_other_items:1?>'>
                 <button class="plus_count"><img src="/images/plus_a.svg" alt=""></button>
               </div>
           </div>
@@ -193,7 +195,8 @@ use yii\widgets\ActiveForm;
               <label for="bww55"><?=Yii::t('app','Need packing?')?></label>
           </div>
           <div id="need_packing" style="display: none;width: 100%;">
-           <?= $form->field($model, 'packing_area')->textInput(['placeholder'=>$model->getAttributeLabel('packing_area'),'class'=>'my_input'])->label(false) ?>
+            <?= $form->field($model, 'packing_area')->widget(\yii\widgets\MaskedInput::className(),['mask' => '9','clientOptions' => ['repeat' => 10, 'greedy' => false],'options'=>['class'=>'my_input','placeholder'=>$model->getAttributeLabel('offer_your_price')]])->label(false) ?>
+          
            </div>
         </div>
         <hr>
@@ -203,7 +206,8 @@ use yii\widgets\ActiveForm;
               <label for="ascacs"><?=Yii::t('app','Loaders')?></label>
           </div>
           <div id="need_loaders" style="display: none;width: 100%;">
-          <?= $form->field($model, 'count_loader')->textInput(['placeholder'=>$model->getAttributeLabel('count_loader'),'class'=>'my_input'])->label(false) ?>
+            <?= $form->field($model, 'count_loader')->widget(\yii\widgets\MaskedInput::className(),['mask' => '9','clientOptions' => ['repeat' => 10, 'greedy' => false],'options'=>['class'=>'my_input','placeholder'=>$model->getAttributeLabel('offer_your_price')]])->label(false) ?>
+         
           </div>
         </div>
 
@@ -355,7 +359,7 @@ $this->registerJs(<<<JS
         {
           $("#"+id).hide(300);
           $("#"+id+" input").removeAttr('required');
-          $("#"+id+" input").val('1');
+          $("#"+id+" input").val('0');
           $("#"+id+" :text").val('');
     
         }
@@ -372,7 +376,7 @@ $this->registerJs(<<<JS
           {
             $("#"+id).hide(300);
             $("#"+id+" input").removeAttr('required');
-            $("#"+id+" input").val('1');
+            $("#"+id+" input").val('0');
             $("#"+id+" :text").val('');
       
           }
