@@ -1,3 +1,3 @@
-<?= $this->render('_form-vehicles', [
+<?= $this->render('_form', [
     'model' => $model,
 ]) ?>

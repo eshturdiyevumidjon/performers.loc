@@ -29,7 +29,8 @@
         "katzz0/yii2-yandex-maps":"dev-master",
         "wbraganca/yii2-dynamicform": "*",
         "unclead/yii2-multiple-input": "~2.0",
-        "mihaildev/yii2-ckeditor": "*"     
+        "mihaildev/yii2-ckeditor": "*",
+        "kartik-v/yii2-widget-datetimepicker": "dev-master"     
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

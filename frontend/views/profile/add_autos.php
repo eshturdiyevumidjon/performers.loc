@@ -166,7 +166,7 @@ $lang = Yii::$app->language;
                         <?php
                         if($value->images != ""){ 
                         $imgs = explode(',',$value->images);
-                         foreach ($imgs as $key => $value): ?>
+                         foreach ($imgs as $value): ?>
                           <a href="/uploads/drivers/<?=$value?>" class="netr" data-fancybox="galery"><img src="/uploads/drivers/<?=$value?>" alt=""></a>
                         <?php endforeach;} ?>
                       </div>

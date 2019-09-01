@@ -32,7 +32,7 @@ class TaskController extends Controller
     }
     public function beforeAction($action)
     {
-        if ($action->id == 'create-goods') {
+        if ($action->id == 'create-goods' || $action->id == 'create-help') {
             $this->enableCsrfValidation = false;
         }
 
@@ -72,95 +72,200 @@ class TaskController extends Controller
      * @return mixed
      */
     
-    public function actionViewGoods($id)
+    public function actionView($id)
     {   
-        return $this->render('goods/view-goods', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-  
-    public function actionCreateGoods()
-    {
-        $model = new Tasks();  
-        $model->type=3;
-        $model->attributes = $_POST['Tasks'];
-        
-        if (isset($_POST['submit']) && $model->save()) {
-            return $this->redirect(['goods/view-goods', 'id' => $model->id]);
-        } else {
-            return $this->render('goods/create-goods', [
-                'model' => $model,
-            ]);
+        $model = $this->findModel($id);
+        switch ($model->type) {
+            case '1': return $this->render('passengers/view-passengers', [
+                            'model' => $model,
+                        ]);
+            case '2': return $this->render('vehicles/view-vehicles', [
+                            'model' => $model,
+                        ]);
+            case '3': return $this->render('goods/view-goods', [
+                            'model' => $model,
+                        ]);
+            default:  return $this->render('help/view-help', [
+                            'model' => $model,
+                        ]);;
         }
-       
     }
-   
     public function actionCreatePassengers()
     {
-        $request = Yii::$app->request;
-        $model = new Tasks();  
+        $model = new Tasks();
+        $model->scenario = Tasks::SCENARIO_PASSENGERS;
         $model->type=1;
-        if (isset($_POST['submit']) && $model->save()) {
-            return $this->redirect(['passengers/view-passengers', 'id' => $model->id]);
+        $model->alert_email = isset($_POST['alert_email']) ? 1 : 0;
+        $model->meeting_with_sign_status = isset($_POST['meeting_with_sign_status']) ? 1 : 0;
+        $model->flight_number_status = isset($_POST['flight_number_status']) ? 1 : 0;
+        $model->return = isset($_POST['return']) ? 1 : 0;
+
+        $model->count_adult = $_POST['count_adult'];
+        $model->count_avtolulka = $_POST['count_avtolulka'];
+        $model->count_avtokreslo = $_POST['count_avtokreslo'];
+        $model->count_buster = $_POST['count_buster'];
+
+        if($model->load(Yii::$app->request->post()) && $model->save())
+        {
+            return $this->redirect(['view','id'=>$model->id]);
         } else {
             return $this->render('passengers/create-passengers', [
                 'model' => $model,
+                'post'=>$_POST
             ]);
         }
        
     }
-     public function actionViewPassengers($id)
-    {   
-        $this->enableCsrfValidation = false;
-        return $this->render('passengers/view-passengers', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-  
-    public function actionCreateVehicles()
+    public function actionCreateGoods()
     {
-        $request = Yii::$app->request;
-        $model = new Tasks();  
-        $model->type=2;
-        if (isset($_POST['submit']) && $model->save()) {
-            return $this->redirect(['vehicles/view-vehicles', 'id' => $model->id]);
-        } else {
-            return $this->render('vehicles/create-vehicles', [
-                'model' => $model,
-            ]);
-        }
-       
-    }
-     public function actionViewVehicles($id)
-    {   
-        $this->enableCsrfValidation = false;
-        return $this->render('vehicles/view-vehicles', [
-            'model' => $this->findModel($id),
-        ]);
-    }
+        $model = new Tasks();
+        $model->scenario = Tasks::SCENARIO_GOODS;
+        $model->type=3;
+        $model->loading_required_status = isset($_POST['loading_required_status']) ? 1 : 0;
+        $model->alert_email = isset($_POST['alert_email']) ? 1 : 0;
+        $model->lift = isset($_POST['lift']) ? 1 : 0;
+        if(isset($_POST['tip_gruz']))
+            $model->classification = implode(',',$_POST['tip_gruz']);
 
-     public function actionCreateHelp()
+        if($model->load(Yii::$app->request->post()) && $model->save())
+        {
+            $images = [];
+            $uploadDir = "uploads/tasks/";
+            for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+
+            $ext = "";
+            $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
+
+            $fPath =$model->id .'('.$i.')'. rand() . ".$ext";
+                if($ext != ""){
+                   $images []= $fPath;
+                   $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
+                }
+            }
+            $model->image = implode(',',$images);
+            $model->save();
+
+            return $this->redirect(['view','id'=>$model->id]);
+        } else {
+            return $this->render('goods/create-goods', [
+                'model' => $model,
+                'post'=>$_POST
+            ]);
+        }
+       
+    }
+    public function actionCreateHelp()
     {
-        $request = Yii::$app->request;
-        $model = new Tasks();  
+        $model = new Tasks();
+        $model->scenario = Tasks::SCENARIO_HELP;
         $model->type=4;
-        if (isset($_POST['submit']) && $model->save()) {
-            return $this->redirect(['help/view-help', 'id' => $model->id]);
+        $model->alert_email = isset($_POST['alert_email']) ? 1 : 0;
+        $model->delivery_house_lift = isset($_POST['delivery_house_lift']) ? 1 : 0;
+        $model->shipping_house_lift = isset($_POST['shipping_house_lift']) ? 1 : 0;
+        $model->demolition = isset($_POST['demolition']) ? 1 : 0;
+        
+        if(isset($_POST['need_relocation'])){
+            $model->need_relocation = 1;
+            $model->count_relocation = $_POST['count_relocation'];
+        }
+        if(isset($_POST['need_piano'])){
+            $model->need_piano = 1;
+            $model->count_piano = $_POST['count_piano'];
+        }
+        if(isset($_POST['need_furniture'])){
+            $model->need_furniture = 1;
+            $model->count_furniture = $_POST['count_furniture'];
+        }
+        if(isset($_POST['need_building_materials'])){
+            $model->need_building_materials = 1;
+            $model->count_building_materials = $_POST['count_building_materials'];
+        }
+        if(isset($_POST['need_personal_items'])){
+            $model->need_personal_items = 1;
+            $model->count_personal_items = $_POST['count_personal_items'];
+        }
+        if(isset($_POST['need_special_equipments'])){
+            $model->need_special_equipments = 1;
+            $model->count_special_equipments = $_POST['count_special_equipments'];
+        }
+        if(isset($_POST['need_purchases'])){
+            $model->need_purchases = 1;
+            $model->count_purchases = $_POST['count_purchases'];
+        }
+        if(isset($_POST['need_other_items'])){
+            $model->need_other_items = 1;
+            $model->count_other_items = $_POST['count_other_items'];
+        }
+        if(isset($_POST['need_packing'])){
+            $model->need_packing = 1;
+        }
+        if(isset($_POST['need_loaders'])){
+            $model->need_loader = 1;
+        }
+
+        if($model->load(Yii::$app->request->post()) && $model->save())
+        {
+
+            $images = [];
+            $uploadDir = "uploads/tasks/";
+            for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+
+            $ext = "";
+            $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
+
+            $fPath =$model->id .'('.$i.')'. rand() . ".$ext";
+                if($ext != ""){
+                   $images []= $fPath;
+                   $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
+                }
+            }
+            $model->image = implode(',',$images);
+            $model->save();
+
+            return $this->redirect(['view','id'=>$model->id]);
         } else {
             return $this->render('help/create-help', [
                 'model' => $model,
+                'post'=>$_POST
             ]);
         }
        
     }
-     public function actionViewHelp($id)
-    {   
-        $this->enableCsrfValidation = false;
-        return $this->render('help/view-help', [
-            'model' => $this->findModel($id),
-        ]);
-    }
+    public function actionCreateVehicles()
+    {
+        $model = new Tasks();
+        $model->scenario = Tasks::SCENARIO_VEHICLES;
+        $model->type=2;
+        $model->alert_email = isset($_POST['alert_email']) ? 1 : 0;
+        $model->car_on_the_go = isset($_POST['car_on_the_go']) ? 1 : 0;
 
+        if($model->load(Yii::$app->request->post()) && $model->save())
+        {
+            $images = [];
+            $uploadDir = "uploads/tasks/";
+            for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+
+            $ext = "";
+            $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
+
+            $fPath =$model->id .'('.$i.')'. rand() . ".$ext";
+                if($ext != ""){
+                   $images []= $fPath;
+                   $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
+                }
+            }
+            $model->image = implode(',',$images);
+            $model->save();
+
+            return $this->redirect(['view','id'=>$model->id]);
+        } else {
+            return $this->render('vehicles/create-vehicles', [
+                'model' => $model,
+                'post'=>$_POST
+            ]);
+        }
+       
+    }
     public function actionUpdateVehicles($id)
     {
         $request = Yii::$app->request;

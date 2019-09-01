@@ -119,7 +119,7 @@ class ProfileController extends Controller
                 {
                  $user->auth_key = $user->new_password;
                  $user->save();
-                    return $this->redirect(['edit_profile']);
+                    return $this->redirect(['edit-profile']);
                  }
             }
             else
@@ -154,7 +154,7 @@ class ProfileController extends Controller
             {   
                  $user->save();
                 Yii::$app->session->setFlash('success', Yii::t('app','Changes saved.'));
-                return $this->redirect(['edit_profile']);
+                return $this->redirect(['edit-profile']);
             }
             else
             {

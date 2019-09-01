@@ -1,3 +1,3 @@
-<?= $this->render('_form-help', [
+<?= $this->render('_form', [
     'model' => $model,
 ]) ?>

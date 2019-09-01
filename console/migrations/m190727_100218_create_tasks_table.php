@@ -17,8 +17,8 @@ class m190727_100218_create_tasks_table extends Migration
             'type' => $this->integer()->comment("Тип"),
             'payed_sum' => $this->float()->comment("Сколько оплатил клиент"),
             'status' => $this->integer()->comment("Статус"),
-            'date_cr' => $this->integer()->comment("Дата создание заданий"),
-            'date_close' => $this->integer()->comment("Дата закрытые заданий"),
+            'date_cr' => $this->date()->comment("Дата создание заданий"),
+            'date_close' => $this->date()->comment("Дата закрытые заданий"),
             'position' => $this->integer()->comment("Состояние"),
             'user_id' => $this->integer()->comment("Исполнитель"),
             'shipping_address' => $this->text()->comment("Адрес отгрузки"),
@@ -27,15 +27,19 @@ class m190727_100218_create_tasks_table extends Migration
             'shipping_coordinate_y' => $this->string()->comment("Shipping Coordinate Y"),
             'delivery_coordinate_x' => $this->string()->comment("Delivery Coordinate X"),
             'delivery_coordinate_y' => $this->string()->comment("Delivery Coordinate Y"),
-            'date_begin' => $this->integer()->comment("Дата и время начала трансфера"),
+            'date_begin' => $this->datetime()->comment("Дата и время начала трансфера"),
             'offer_your_price' => $this->float()->comment("Предложить свою цену"),
             'promo_code' => $this->string(255)->comment("Промо-код"),
             'comment' => $this->text()->comment("Комментария"),
 
             //Пассажирские перевозки uchun kerakli polyalar
 
-            'adult_passengers' => $this->integer()->comment("Количество взрослых пассажиров"),
-            'child_count' => $this->integer()->comment("Количество детей"),
+            'count_adult' => $this->integer()->defaultValue(0)->comment("Количество взрослых пассажиров"),
+            'date_begin2' => $this->datetime()->comment("Дата и время начала обратного трансфера"),
+            'count_avtolulka' => $this->integer()->defaultValue(0)->comment("Количество детей(до 10 кг, до 6 месяцев)"),
+            'count_avtokreslo' => $this->integer()->defaultValue(0)->comment("Количество детей(9–25 кг, 0–7 лет)"),
+            'count_buster' => $this->integer()->defaultValue(0)->comment("Количество детей(22–36 кг, 6–12 лет)"),
+            'return' => $this->integer()->defaultValue(0)->comment("Добавить обратный маршрут"),
             'category_id' => $this->integer()->comment("Категория транспорта"),
             'flight_number_status' => $this->boolean()->comment("Номер авиа или ж/д рейса"),
             'flight_number' => $this->string(255)->comment("Номер авиа или ж/д рейса"),
@@ -72,7 +76,31 @@ class m190727_100218_create_tasks_table extends Migration
             'delivery_house_area' => $this->float()->comment("Площадь"),
             'item_description' => $this->text()->comment("Описание предметов"),
             'alert_email' => $this->integer()->comment(""),
-            'view_performers' => $this->integer()->comment("")
+            'view_performers' => $this->integer()->comment(""),
+            'need_packing' => $this->integer()->defaultValue(0)->comment("Нужна ли упаковка"),
+            'packing_area' => $this->integer()->comment("Объём"),
+            'need_loader' => $this->integer()->defaultValue(0)->comment('Грузчики'),
+            'count_loader' => $this->integer()->comment('Количество грузчиков'),
+            'demolition' => $this->integer()->defaultValue(0)->comment('Нужна разборка'),
+            
+            'need_relocation' => $this->integer()->defaultValue(0)->comment('переезды'),
+            'count_relocation' => $this->integer()->comment('Количество переезды'), 
+            'need_furniture' => $this->integer()->defaultValue(0)->comment('Мебель и бытовая техника'),
+            'count_furniture' => $this->integer()->comment('Количество Мебель и бытовая техника'), 
+            'need_personal_items' => $this->integer()->defaultValue(0)->comment('Личные вещи'),
+            'count_personal_items' => $this->integer()->comment('Количество Личные вещи'), 
+            'need_purchases' => $this->integer()->defaultValue(0)->comment('Покупки'),
+            'count_purchases' => $this->integer()->comment('Количество Покупки'), 
+            'need_piano' => $this->integer()->defaultValue(0)->comment('Пианино и сейфы'),
+            'count_piano' => $this->integer()->comment('Количество Пианино и сейфы'),
+            'need_building_materials' => $this->integer()->defaultValue(0)->comment('Стройматериалы'),
+            'count_building_materials' => $this->integer()->comment('Количество Стройматериалы'), 
+            'need_special_equipments' => $this->integer()->defaultValue(0)->comment('Спецтехника и негабарит'),
+            'count_special_equipments' => $this->integer()->comment('Количество Спецтехника и негабарит'),
+            'need_other_items' => $this->integer()->defaultValue(0)->comment('Прочие грузы'),
+            'count_other_items' => $this->integer()->comment('Количество Прочие грузы'),
+
+
         ]);
 
         // creates index for column `user_id`

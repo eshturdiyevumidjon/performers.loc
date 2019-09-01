@@ -238,3 +238,6 @@ p.adress a:hover{
 .lert{
   justify-content: center !important;
 }
+.option{
+  display: none;
+}
