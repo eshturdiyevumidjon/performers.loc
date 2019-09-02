@@ -52,6 +52,7 @@ class TaskController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+        
     }
 
     public function actionIndexGoods()
@@ -63,6 +64,7 @@ class TaskController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+
     }
 
   
@@ -89,6 +91,7 @@ class TaskController extends Controller
                             'model' => $model,
                         ]);;
         }
+    
     }
     public function actionCreatePassengers()
     {
@@ -277,6 +280,7 @@ class TaskController extends Controller
                     'model' => $model,
                 ]);
             }
+    
     }
 
     public function actionDelete($id)
@@ -296,6 +300,7 @@ class TaskController extends Controller
             */
             return $this->redirect(['index']);
         }
+    
     }
 
     protected function findModel($id)
@@ -305,5 +310,6 @@ class TaskController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    
     }
 }

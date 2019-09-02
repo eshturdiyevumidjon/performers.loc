@@ -1,5 +1,6 @@
 <?php
-
+use yii\helpers\Html;
+use \backend\models\Tasks;
 /* @var $this yii\web\View */
 
 $this->title = Yii::$app->name;
@@ -9,38 +10,24 @@ $this->title = Yii::$app->name;
         <h1><?=Yii::t('app','Urgent delivery of your goods')?></h1>
         <p><?=Yii::t('app','We connect with professional carriers near you!')?></p>
         <div class="row">
-          <div class="col-lg-6">
-            <a href="#" class="del_items">
-              <div class="del_img">
-                <img src="/images/bus.svg" alt="">
+          <?php
+              for ($i=0; $i < 4; $i++) { 
+            ?>
+              <div class="col-lg-6">
+                <?php if (Yii::$app->user->isGuest): ?>
+                 <?=Html::a('<div class="del_img"><img src="'.Tasks::getInf()[$i][2].'" alt=""></div><p>'.Tasks::getInf()[$i][0].'</p>', ['/site/signup'],['role'=>'modal-remote', 'class'=>'del_items'])?>
+                <?php else: ?>
+                  <a href="<?=Tasks::getInf()[$i][1]?>" class="del_items">
+                    <div class="del_img">
+                     <img src="<?=Tasks::getInf()[$i][2]?>" alt="">
+                    </div>
+                    <p><?=Tasks::getInf()[$i][0]?></p>
+                  </a>
+                <?php endif ?>
               </div>
-              <p><?=Yii::t('app','Passenger Transportation')?></p>
-            </a>
-          </div>
-          <div class="col-lg-6">
-            <a href="#" class="del_items">
-              <div class="del_img">
-                <img src="/images/surface.svg" alt="">
-              </div>
-              <p><?=Yii::t('app','Freight transportation')?></p>
-            </a>
-          </div>
-          <div class="col-lg-6">
-            <a href="#" class="del_items">
-              <div class="del_img">
-                <img src="/images/surface3.svg" alt="">
-              </div>
-              <p><?=Yii::t('app','Transportation of cars and equipment')?></p>
-            </a>
-          </div>
-          <div class="col-lg-6">
-            <a href="#" class="del_items">
-              <div class="del_img">
-                <img src="/images/surface4.svg" alt="">
-              </div>
-              <p><?=Yii::t('app','Relocation assistance')?></p>
-            </a>
-          </div>
+            <?php
+              }
+            ?>
         </div>
       </div>
     </section>

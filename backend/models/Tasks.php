@@ -269,6 +269,16 @@ class Tasks extends \yii\db\ActiveRecord
         }
     }
 
+    public static function getInf()
+    {
+        return [
+            [Yii::t('app','Passenger Transportation'),'/task/create-passengers','/images/bus.svg'],
+            [Yii::t('app','Transportation of cars and equipment'),'/task/create-vehicles','/images/surface3.svg'],
+            [Yii::t('app','Freight transportation'),'/task/create-goods','/images/surface.svg'],
+            [Yii::t('app','Relocation assistance'),'/task/create-help','/images/surface4.svg'],
+        ];
+    }
+
     public function getTypeOfTheGoods($type)
     {
         switch ($type) {

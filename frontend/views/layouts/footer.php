@@ -12,7 +12,7 @@
         <li><a href="/site/chavo"><?=Yii::t('app','FAQ')?></a></li>
         <li><a href="/site/privacy"><?=Yii::t('app','Service')?></a></li>
         <li><a href="/site/contact"><?=Yii::t('app','Contact')?></a></li>
-        <li><a href="#"><?=Yii::t('app','Blog')?></a></li>
+        <li><a href="/site/news"><?=Yii::t('app','Blog')?></a></li>
       </ul>
     </div>
     <div class="col-lg-4 col-sm-6 ft3">
