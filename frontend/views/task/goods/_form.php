@@ -152,8 +152,14 @@ use yii\widgets\ActiveForm;
           <span class="numb_textarea"><span id="counter">0</span>/5000</span>
         </div>
           <?= $form->field($model, 'comment')->textarea(['rows' => 6,'id'=>'textfield','class'=>'my_input'])->label(false) ?>
-
+          <?php if (Yii::$app->user->isGuest): ?>
+            <div style="width: 30%; text-align: center;float: right; margin-right: 5%;">
+              <?=Html::a(Yii::t('app','Publish'), ['/site/signup'],['role'=>'modal-remote','class'=>'btn_red'])?>
+            </div>
+          <?php else: ?>
             <?= Html::submitButton(Yii::t('app','Publish'), ['class' => 'btn_red']) ?>
+          <?php endif ?>
+
         <?php ActiveForm::end(); ?>
        
         

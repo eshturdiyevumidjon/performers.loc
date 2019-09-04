@@ -14,16 +14,12 @@ $this->title = Yii::$app->name;
               for ($i=0; $i < 4; $i++) { 
             ?>
               <div class="col-lg-6">
-                <?php if (Yii::$app->user->isGuest): ?>
-                 <?=Html::a('<div class="del_img"><img src="'.Tasks::getInf()[$i][2].'" alt=""></div><p>'.Tasks::getInf()[$i][0].'</p>', ['/site/signup'],['role'=>'modal-remote', 'class'=>'del_items'])?>
-                <?php else: ?>
                   <a href="<?=Tasks::getInf()[$i][1]?>" class="del_items">
                     <div class="del_img">
                      <img src="<?=Tasks::getInf()[$i][2]?>" alt="">
                     </div>
                     <p><?=Tasks::getInf()[$i][0]?></p>
                   </a>
-                <?php endif ?>
               </div>
             <?php
               }

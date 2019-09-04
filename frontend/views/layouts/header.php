@@ -98,15 +98,11 @@ $user=\common\models\User::find()->where(['id' => Yii::$app->user->identity->id]
               for ($i=0; $i < 4; $i++) { 
             ?>
                <div class="col-md-3">
-                <?php if (Yii::$app->user->isGuest): ?>
-                 <?=Html::a('<span class="aft_back"></span>'.Tasks::getTypeIconSvg($i+1).'<span>'.Tasks::getInf()[$i][0].'</span>', ['/site/signup'],['role'=>'modal-remote', 'class'=>'enter_to_site'])?>
-                <?php else: ?>
                   <a href="<?=Tasks::getInf()[$i][1]?>" class="enter_to_site">
                     <span class="aft_back"></span>
                     <?=Tasks::getTypeIconSvg($i+1)?>
                     <span><?=Tasks::getInf()[$i][0]?></span>
                   </a>
-                <?php endif ?>
               </div>
             <?php
               }

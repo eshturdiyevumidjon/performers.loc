@@ -36,7 +36,7 @@ use yii\widgets\ActiveForm;
         <div class="row">
           <div class="col-md-6 order_left"> 
             <h4><?=Yii::t('app','Address')?></h4>
-             <?= $form->field($model, 'shipping_address')->textInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input otp_punkt'])->label(false) ?>
+             <?= $form->field($model, 'shipping_address')->textInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input otp_punkt','id'=>'shipping_address'])->label(false) ?>
             <hr>
              <?= $form->field($model, 'delivery_address')->textInput(['placeholder'=>Yii::t('app','Destination'),'class'=>'my_input otp_punkt2'])->label(false) ?>
             <div class="d-flex align-items-center justify-content-between tire d_mob_none fre_sp">
@@ -181,7 +181,13 @@ use yii\widgets\ActiveForm;
         </div>
           <?= $form->field($model, 'comment')->textarea(['rows' => 6,'id'=>'textfield','class'=>'my_input'])->label(false) ?>
 
+            <?php if (Yii::$app->user->isGuest): ?>
+            <div style="width: 30%; text-align: center;float: right; margin-right: 5%;">
+              <?=Html::a(Yii::t('app','Publish'), ['/site/signup'],['role'=>'modal-remote','class'=>'btn_red'])?>
+            </div>
+          <?php else: ?>
             <?= Html::submitButton(Yii::t('app','Publish'), ['class' => 'btn_red']) ?>
+          <?php endif ?>
         <?php ActiveForm::end(); ?>
        
         
@@ -200,7 +206,7 @@ function initMap() {
     zoom: 13
   });
   var card = document.getElementById('pac-card');
-  var input = document.getElementById('pac-input');
+  var input = document.getElementById('shipping_address');
   var types = document.getElementById('type-selector');
   var strictBounds = document.getElementById('strict-bounds-selector');
 
@@ -282,7 +288,7 @@ function initMap() {
       });
 }
 </script>
-<script  async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0nNC2JY5h2LxGdKCTXSXMV5ZNDrpwvvA&callback=initMap"></script>
+<script  async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAIUZfJr01SrsKER6zBPwBcmPNy0rfXPc&libraries=places&callback=initMap"></script>
 <?php
 $this->registerJs(<<<JS
   if($('#bww5').prop("checked") == true)
