@@ -592,4 +592,9 @@ class ProfileController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    public function actionChangePhoto()
+    {
+        echo "<pre>";
+        print_r($_FILES['user_image']);
+    }
 }

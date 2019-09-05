@@ -130,8 +130,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="user_all">
           <div class="user_dorian">
               <img src="/uploads/users/nouser3.png" alt="" id="image_upload_preview">
-              <input type="file" name="user_image" id="inputFile">
-              <label for="inputFile"><img src="/images/camera_photo.svg" alt=""><?=Yii::t('app','Change photo')?></label>
+              <form id="form" action="ajaxupload.php" method="post" enctype="multipart/form-data">
+                <input type="file" name="user_image" id="inputFile">
+              </form>
+              <label for="inputFile"><img src="/images/camera_photo.svg" alt=""><p style="color:black;"><?=Yii::t('app','Change photo')?></p></label>
           </div>
           <p><?= $user->username ?></p>
           <div class="rating">
@@ -168,12 +170,41 @@ $this->registerJs(<<<JS
         }
     }
 
-    $("#inputFile").change(function () {
-        readURL(this);
-        var data = $('#change_image').serialize();
-        $.post('/ru/profile/change-photo',data,function(success){alert(success)});
-    });
-
+    $("#inputFile").on('change',(function(e) {
+      readURL(this);
+      e.preventDefault();
+      $.ajax({
+       url: "/$lang/profile/change-photo",
+       type: "POST",
+       data:  new FormData(this),
+       contentType: false,
+             cache: false,
+       processData:false,
+       beforeSend : function()
+       {
+        //$("#preview").fadeOut();
+        $("#err").fadeOut();
+       },
+       success: function(data)
+          {
+        if(data=='invalid')
+        {
+         // invalid file format.
+         $("#err").html("Invalid File !").fadeIn();
+        }
+        else
+        {
+         // view uploaded file.
+         $("#preview").html(data).fadeIn();
+         $("#form")[0].reset(); 
+        }
+          },
+         error: function(e) 
+          {
+        $("#err").html(e).fadeIn();
+          }          
+        });
+     }));
 JS
 );
 ?>
