@@ -19,10 +19,14 @@ use yii\widgets\DetailView;
         <!-- <h2>Мои чаты</h2>             -->
         <div class="confirm_cont">
           <div class="user_inner">
-            <img src="/images/user.jpg" alt="">
+            <?php if ($user->image != null && file_exists($user->image)): ?>
+              <img src="/uploads/avatars/<?=$user->image?>">
+            <?php else: ?>
+              <img src="/uploads/nouser3.png">
+            <?php endif ?>
             <div>
-              <p>Ватанабэ Масахару</p>
-              <div class="rating">
+              <p><?=$user->username?></p>
+              <!-- <div class="rating">
                 <a href="#" class="rating_img">
                   <img src="/images/star.svg" alt="">
                   <img src="/images/star.svg" alt="">
@@ -31,7 +35,7 @@ use yii\widgets\DetailView;
                   <img src="/images/star.svg" alt="">
                 </a>
                 <span>4,5</span>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="lang_conf">
@@ -44,12 +48,15 @@ use yii\widgets\DetailView;
           </div>
           <p class="povis">Телефон и Email скрыты, будут доступны исполнителю</p>
         </div>
-        <div class="banner_bl"></div>
+        
+        <div class="banner_bl">
+          <img style="width: 100%;" src="/admin/uploads/banners/<?= $banner->image?>" alt="">
+        </div>
       </div>
       <div class="inner_right">
         <div class="wet">
-          <h2>Доставить груз в Москву</h2>
-          <div class="rating">
+          <h2><?=$model->getType()[1]?></h2>
+          <!-- <div class="rating">
             <a href="#" class="rating_img">
               <img src="/images/star.svg" alt="">
               <img src="/images/star.svg" alt="">
@@ -58,7 +65,7 @@ use yii\widgets\DetailView;
               <img src="/images/star.svg" alt="">
             </a>
             <span>4,5</span>
-          </div>
+          </div> -->
               <h5><?=Yii::t('app','Description')?></h5>
               <p><?=$model->comment?></p>
             </div>
@@ -172,12 +179,14 @@ use yii\widgets\DetailView;
           </div>
         </div>
         <div class="pay_inner">
-          <p>Оплачен: <b>30%</b><span>2 347 457 руб.</span></p>
-          <a href="#" class="forget_pass">Условия отмены брони</a>
+          <p>Оплачен: <b>30%</b><!-- <span>2 347 457 руб.</span> --></p>
+          <a href="/site/cancellation-policy" target="_blank" class="forget_pass">Условия отмены брони</a>
         </div>
-        <div class="text_right_ent">
-          <a href="#" class="enter_to_site"><span class="aft_back"></span>Заказать услугу</a>
-        </div>
+        <?php if ($user->type == 3): ?>
+          <div class="text_right_ent">
+            <a href="#" class="enter_to_site"><span class="aft_back"></span>Заказать услугу</a>
+          </div>
+        <?php endif ?>
         <div class="zayavka">
           <h2>Заявка</h2>
           <div class="item_to_city">
@@ -186,16 +195,16 @@ use yii\widgets\DetailView;
                   <img src="/images/dest.jpg" alt="">
                   <div>
                     <p>Ватанабэ Масахару</p>
-                    <div class="rating">
+                    <!-- <div class="rating">
                       <a href="#" class="rating_img">
                         <img src="/images/star.svg" alt="">
                         <img src="/images/star.svg" alt="">
                         <img src="/images/star.svg" alt="">
-                        <!-- <img src="/images/star.svg" alt="">
-                        <img src="/images/star.svg" alt=""> -->
+                        <img src="/images/star.svg" alt="">
+                        <img src="/images/star.svg" alt="">
                       </a>
                       <span>3</span>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
                 <div class="price_cop">
@@ -233,9 +242,11 @@ use yii\widgets\DetailView;
                       <img src="/images/usa.svg" alt="">
                     </div>
                   </div>
+                <?php if ($user->type == 4): ?>
                   <div class="col-sm-3">
                     <a href="#" class="enter_to_site"><span class="aft_back"></span>Заказать</a>
                   </div>
+                <?php endif;?>
                 </div>
               </div>
           </div>

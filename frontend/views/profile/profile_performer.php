@@ -291,22 +291,24 @@ $lang = Yii::$app->language;
     </div>
     <div class="cabinet_right">
       <div class="user_all">
-        <div class="user_dorian">
-              <img src="/uploads/users/nouser3.png" alt="">
-              <input type="file" id="inp_file">
-              <label for="inp_file"><img src="/images/camera_photo.svg" alt=""><?=Yii::t('app','Change photo')?></label>
+       <div class="user_dorian">
+            <img src="/uploads/avatars/nouser3.png" alt="" id="image_upload_preview">
+            <form id="form" action="ajaxupload.php" method="post" enctype="multipart/form-data">
+              <input type="file" name="user_image" id="inputFile">
+            </form>
+            <label for="inputFile"><img src="/images/camera_photo.svg" alt=""><p style="color:black;"><?=Yii::t('app','Change photo')?></p></label>
         </div>
         <p><?= $user->username ?></p>
         <div class="rating">
-          <a href="#" class="rating_img">
-            <img src="/images/star.svg" alt="">
-            <img src="/images/star.svg" alt="">
-            <img src="/images/star.svg" alt="">
-            <img src="/images/star.svg" alt="">
-            <img src="/images/star.svg" alt="">
-          </a>
-          <span>4,5</span>
-        </div>
+     <!--      <a href="#" class="rating_img">
+       <img src="/images/star.svg" alt="">
+       <img src="/images/star.svg" alt="">
+       <img src="/images/star.svg" alt="">
+       <img src="/images/star.svg" alt="">
+       <img src="/images/star.svg" alt="">
+     </a>
+     <span>4,5</span>
+             </div> -->
         <div class="btn_dor">
           <a href="/<?=$lang?>/profile/edit-profile" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Edit Account')?></a>
             <a href="/<?=$lang?>/profile/add-autos" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Adding cars')?></a>

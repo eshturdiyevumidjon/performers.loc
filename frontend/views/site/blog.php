@@ -57,7 +57,7 @@
                     <?php foreach ($news as $key => $value): ?>
                        <div class="col-xl-4 col-sm-6">
                       <a href="/<?=$lang?>/site/single-page?id=<?=$value->id?>" class="blog_item">
-                        <img src="http://itake.loc/uploads/news/<?= $value->fone?>" alt="">
+                        <img src="/admin/uploads/news/<?= $value->fone?>" alt="">
                          
                          <img src="/uploads/news/1.jpg" alt="">
                         <div class="blog_text">

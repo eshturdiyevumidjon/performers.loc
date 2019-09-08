@@ -33,9 +33,8 @@ use yii\widgets\ActiveForm;
           <div class="col-md-6 order_left"> 
             <h4><?=Yii::t('app','Address')?></h4>
              <?= $form->field($model, 'shipping_address')->textInput(['placeholder'=>$model->getAttributeLabel('shipping_address'),'class'=>'my_input otp_punkt'])->label(false) ?>
-             <?= $form->field($model, 'shipping_house_type')->dropDownList([1=> Yii::t('app','House'),2=>Yii::t('app','Apartment')])->label(false)?>
+             <?= $form->field($model, 'shipping_house_type')->textInput(['placeholder'=>Yii::t('app','Department'),'class'=>'my_input'])->label(false) ?>
              <?= $form->field($model, 'shipping_house_floor')->textInput(['placeholder'=>$model->getAttributeLabel('shipping_house_floor'),'class'=>'my_input'])->label(false) ?>
-             <?= $form->field($model, 'shipping_house_area')->textInput(['placeholder'=>$model->getAttributeLabel('shipping_house_area'),'class'=>'my_input'])->label(false) ?>
               <div class="form-group_checkbox">
                   <input type="checkbox" id="bwwp" name="shipping_house_lift" value="1" <?=($model->shipping_house_lift ==1)? "checked":""?>>
                   <label for="bwwp"><?=Yii::t('app','Lift')?></label>
@@ -44,11 +43,10 @@ use yii\widgets\ActiveForm;
             <hr class="ker">
             <div id="map_for_mobile"></div>
             <?= $form->field($model, 'delivery_address')->textInput(['placeholder'=>$model->getAttributeLabel('delivery_address'),'class'=>'my_input otp_punkt2'])->label(false) ?>
-             <?= $form->field($model, 'delivery_house_type')->dropDownList([1=> Yii::t('app','House'),2=>Yii::t('app','Apartment')])->label(false)?>
+             <?= $form->field($model, 'delivery_house_type')->textInput(['placeholder'=>Yii::t('app','Department'),'class'=>'my_input'])->label(false) ?>
 
              <?= $form->field($model, 'delivery_house_floor')->textInput(['placeholder'=>$model->getAttributeLabel('delivery_house_floor'),'class'=>'my_input'])->label(false) ?>
-             <?= $form->field($model, 'delivery_house_area')->textInput(['placeholder'=>$model->getAttributeLabel('delivery_house_area'),'class'=>'my_input'])->label(false) ?>
-              <div class="form-group_checkbox negat">
+             <div class="form-group_checkbox negat">
                   <input type="checkbox" id="bwwpr" name="delivery_house_lift"value="1" <?=($model->delivery_house_lift ==1)? "checked":""?>>
                   <label for="bwwpr">Наличие лифта</label>
               </div>
@@ -56,7 +54,6 @@ use yii\widgets\ActiveForm;
               <h4>Время в пути: <span>43 ч 03 мин</span></h4>
               <h4>Расстояние:  <span>3406 км</span></h4>
             </div>
-            
           </div>
           <div class="col-md-6 d_mob_none carta_d">
             <div id="map"></div> 
@@ -206,7 +203,7 @@ use yii\widgets\ActiveForm;
               <label for="ascacs"><?=Yii::t('app','Loaders')?></label>
           </div>
           <div id="need_loaders" style="display: none;width: 100%;">
-            <?= $form->field($model, 'count_loader')->widget(\yii\widgets\MaskedInput::className(),['mask' => '9','clientOptions' => ['repeat' => 10, 'greedy' => false],'options'=>['class'=>'my_input','placeholder'=>$model->getAttributeLabel('offer_your_price')]])->label(false) ?>
+            <?= $form->field($model, 'count_loader')->widget(\yii\widgets\MaskedInput::className(),['mask' => '9','clientOptions' => ['repeat' => 10, 'greedy' => false],'options'=>['class'=>'my_input','placeholder'=>$model->getAttributeLabel('count_loader')]])->label(false) ?>
          
           </div>
         </div>

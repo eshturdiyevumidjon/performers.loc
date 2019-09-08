@@ -11,7 +11,7 @@
       <div class="cabinet_left">
           <h1><?=$new->title?> </h1>
           <span class="news_date"><?=$new->date_cr?></span>
-          <img src="http://itake.loc/uploads/news/<?= $new->fone?>" alt="" class="new_img">
+          <img src="/admin/uploads/news/<?= $new->fone?>" alt="" class="new_img">
           <p>
             <?=$new->title?>
           </p>

@@ -259,6 +259,26 @@ class ProfileController extends Controller
             
             if($model->load($request->post()) && $model->validate()){
                 $model->save();
+                $query = \backend\models\Marks::find()->where(['mark_name' => $model->car_mark]);
+                if($query->count() == 0){
+                    $car_mark = new \backend\models\Marks();
+                    $car_mark->mark_name = $model->car_mark;
+                    $car_mark->save();
+                    $id = $car_mark->id;
+                }
+                else{
+                    $id = $query->one()->id;
+                }
+
+                $query = \backend\models\Models::find()->where(['model_name' => $model->car_model]);
+
+                if($query->count() == 0){
+                    $car_model = new \backend\models\Models();
+                    $car_model->model_name = $model->car_model;
+                    $car_model->mark_id = $id;
+                    $car_model->save();
+                }
+
                 $images = [];
                 $uploadDir = "uploads/transports/";
                 for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
@@ -591,10 +611,5 @@ class ProfileController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
-    public function actionChangePhoto()
-    {
-        echo "<pre>";
-        print_r($_FILES['user_image']);
     }
 }

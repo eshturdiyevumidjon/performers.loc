@@ -26,20 +26,13 @@ use yii\widgets\ActiveForm;
       </div>
       <hr>
        <?php $form = ActiveForm::begin(['id'=>"passengers_form",'options'=>['enctype'=>'multipart/form-data','class'=>'input_styles']]); ?>
-
-       <?php
-        // echo "<pre>";
-        // print_r($form->errorSummary($model));
-        // print_r($model->attributes);
-        // echo "</pre>";
-       ?>
         <div class="row">
           <div class="col-md-6 order_left"> 
             <h4><?=Yii::t('app','Address')?></h4>
              <?= $form->field($model, 'shipping_address')->textInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input otp_punkt','id'=>'shipping_address'])->label(false) ?>
             <hr>
              <?= $form->field($model, 'delivery_address')->textInput(['placeholder'=>Yii::t('app','Destination'),'class'=>'my_input otp_punkt2'])->label(false) ?>
-            <div class="d-flex align-items-center justify-content-between tire d_mob_none fre_sp">
+            <div class="d-flex align-items-center justify-content-between tire d_mob_none">
               <h4>Время в пути: <span>43 ч 03 мин</span></h4>
               <h4>Расстояние:  <span>3406 км</span></h4>
             </div>

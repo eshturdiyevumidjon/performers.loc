@@ -86,17 +86,17 @@ class Tasks extends \yii\db\ActiveRecord
     {
         return [
             [['type', 'status','need_packing','packing_area','need_loader', 'demolition','need_relocation','count_relocation','need_furniture','count_furniture','need_piano','count_purchases','need_personal_items','need_purchases','count_personal_items','count_piano','demolition','need_building_materials','count_building_materials','need_special_equipments','count_special_equipments','need_other_items','count_other_items','count_loader', 'position', 'user_id', 'count_avtokreslo','count_buster','count_avtolulka','count_adult', 'return', 'category_id', 'flight_number_status', 'meeting_with_sign_status', 'car_on_the_go', 'loading_required_status', 'floor', 'lift', 'shipping_house_type', 'shipping_house_floor', 'shipping_house_lift', 'delivery_house_type', 'delivery_house_floor', 'delivery_house_lift', 'alert_email', 'view_performers'], 'integer'],
-            [['payed_sum', 'offer_your_price', 'weight', 'width', 'length', 'height', 'shipping_house_area', 'delivery_house_area'], 'number'],
+            [['payed_sum', 'offer_your_price', 'weight', 'width', 'length', 'height'], 'number'],
             [['date_cr', 'date_close', 'date_begin','date_begin2'], 'safe'],
             [['shipping_address', 'delivery_address','classification', 'comment', 'item_description'], 'string'],
             [['shipping_coordinate_x', 'shipping_coordinate_y', 'delivery_coordinate_x', 'delivery_coordinate_y', 'promo_code', 'flight_number', 'meeting_with_sign', 'car_model', 'car_mark', 'image'], 'string', 'max' => 255],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => TransportCategory::className(), 'targetAttribute' => ['category_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
 
-            [['type','shipping_address','delivery_address','date_begin','offer_your_price','count_adult','flight_number_status','meeting_with_sign_status'],'required', 'on' => self::SCENARIO_PASSENGERS],
-            [['type','date_close','shipping_address','delivery_address','date_begin','offer_your_price','promo_code','car_model','car_mark','car_on_the_go'],'required', 'on' => self::SCENARIO_VEHICLES],
-            [['type','date_close','shipping_address','delivery_address','date_begin','offer_your_price','weight','width','length','height','classification','loading_required_status'],'required', 'on' => self::SCENARIO_GOODS],
-            [['type','date_close','shipping_address','delivery_address','date_begin','offer_your_price','comment','shipping_house_type','shipping_house_floor','shipping_house_lift','shipping_house_area','delivery_house_type','delivery_house_floor','delivery_house_lift','delivery_house_area','alert_email'],'required', 'on' => self::SCENARIO_HELP]
+            [['type','shipping_address','delivery_address','date_begin'],'required', 'on' => self::SCENARIO_PASSENGERS],
+            [['type','date_close','shipping_address','delivery_address','date_begin'],'required', 'on' => self::SCENARIO_VEHICLES],
+            [['type','date_close','shipping_address','delivery_address','date_begin'],'required', 'on' => self::SCENARIO_GOODS],
+            [['type','date_close','shipping_address','delivery_address','date_begin'],'required', 'on' => self::SCENARIO_HELP]
 
         ];
     }
@@ -112,7 +112,7 @@ class Tasks extends \yii\db\ActiveRecord
 
         $scenarios[self::SCENARIO_GOODS] = ['type','date_close','shipping_address','delivery_address','date_begin','offer_your_price','promo_code','comment','weight','width','length','height','classification','loading_required_status','floor','alert_email','lift'];
 
-        $scenarios[self::SCENARIO_HELP] = ['need_packing','packing_area','need_loader', 'demolition','need_relocation','count_relocation','need_furniture','count_furniture','need_piano','count_purchases','need_personal_items','need_purchases','count_personal_items','count_piano','demolition','need_building_materials','count_building_materials','need_special_equipments','count_special_equipments','need_other_items','count_other_items','count_loader','type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','comment','shipping_house_type','shipping_house_floor','shipping_house_lift','shipping_house_area','delivery_house_type','delivery_house_floor','delivery_house_lift','delivery_house_area','item_description','alert_email','view_performers'];
+        $scenarios[self::SCENARIO_HELP] = ['need_packing','packing_area','need_loader', 'demolition','need_relocation','count_relocation','need_furniture','count_furniture','need_piano','count_purchases','need_personal_items','need_purchases','count_personal_items','count_piano','demolition','need_building_materials','count_building_materials','need_special_equipments','count_special_equipments','need_other_items','count_other_items','count_loader','type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','comment','shipping_house_type','shipping_house_floor','shipping_house_lift','delivery_house_type','delivery_house_floor','delivery_house_lift','item_description','alert_email','view_performers'];
 
         return $scenarios;
     }
@@ -166,11 +166,9 @@ class Tasks extends \yii\db\ActiveRecord
             'shipping_house_type' => Yii::t('app','Type'),
             'shipping_house_floor' => Yii::t('app','Floor'),
             'shipping_house_lift' => Yii::t('app','Lift'),
-            'shipping_house_area' => Yii::t('app','Area'),
             'delivery_house_type' => Yii::t('app','Type'),
             'delivery_house_floor' => Yii::t('app','Floor'),
             'delivery_house_lift' => Yii::t('app','Lift'),
-            'delivery_house_area' => Yii::t('app','Area'),
             'item_description' => Yii::t('app','Description items'),
             'alert_email' => Yii::t('app','Alert Email'),
             'view_performers' => Yii::t('app','Only performers'),

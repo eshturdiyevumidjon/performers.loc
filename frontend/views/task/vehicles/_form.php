@@ -1,7 +1,9 @@
 <?php
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use kartik\date\DatePicker;
 use yii\widgets\ActiveForm;
+use kartik\select2\Select2;
 ?>
 <section class="order">
   <div class="container">
@@ -36,7 +38,7 @@ use yii\widgets\ActiveForm;
              <?= $form->field($model, 'shipping_address')->textInput(['placeholder'=>$model->getAttributeLabel('shipping_address'),'class'=>'my_input otp_punkt'])->label(false) ?>
             <hr>
              <?= $form->field($model, 'delivery_address')->textInput(['placeholder'=>$model->getAttributeLabel('delivery_address'),'class'=>'my_input otp_punkt2'])->label(false) ?>
-            <div class="d-flex align-items-center justify-content-between tire d_mob_none fre_sp">
+            <div class="d-flex align-items-center justify-content-between tire d_mob_none">
               <h4>Время в пути: <span>43 ч 03 мин</span></h4>
               <h4>Расстояние:  <span>3406 км</span></h4>
             </div>
@@ -73,8 +75,10 @@ use yii\widgets\ActiveForm;
              <?= $form->field($model, 'offer_your_price')->widget(\yii\widgets\MaskedInput::className(),['mask' => '9','clientOptions' => ['repeat' => 10, 'greedy' => false],'options'=>['class'=>'my_input','placeholder'=>$model->getAttributeLabel('offer_your_price')]])->label(false) ?>
         
         <h4>Модель и марка автомобиля</h4>
-        <?= $form->field($model, 'car_model')->textInput(['placeholder'=>Yii::t('app','Car model'),'class'=>'my_input'])->label(false) ?>
-        <?= $form->field($model, 'car_mark')->textInput(['placeholder'=>Yii::t('app','Car mark'),'class'=>'my_input'])->label(false) ?>
+        
+       
+        <?= $form->field($model, 'car_mark')->dropDownList(ArrayHelper::map(\backend\models\Marks::find()->all(),'id','mark_name'), ['class'=>'my_input','prompt' => Yii::t('app','Car mark'),'style'=>'cursor:pointer;'])->label(false)?>
+         <?= $form->field($model, 'car_model')->dropDownList(ArrayHelper::map(\backend\models\Models::find()->all(),'id','mark_name'), ['class'=>'my_input','prompt' => Yii::t('app','Car model'),'style'=>'cursor:pointer;'])->label(false)?>
         <div class="d-flex align-items-center hodu">
           <div class="form-group_checkbox mt10 mb15 vnu_m">
               <input type="checkbox" id="bww55" name="car_on_the_go" value="1" <?=($model->car_on_the_go == 1)?'checked':''?>>

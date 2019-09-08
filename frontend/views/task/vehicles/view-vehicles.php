@@ -22,7 +22,7 @@ use yii\widgets\DetailView;
                 <img src="/images/user.jpg" alt="">
                 <div>
                   <p>Ватанабэ Масахару</p>
-                  <div class="rating">
+                  <!-- <div class="rating">
                     <a href="#" class="rating_img">
                       <img src="/images/star.svg" alt="">
                       <img src="/images/star.svg" alt="">
@@ -31,7 +31,7 @@ use yii\widgets\DetailView;
                       <img src="/images/star.svg" alt="">
                     </a>
                     <span>4,5</span>
-                  </div>
+                  </div> -->
                 </div>
               </div>
               <div class="lang_conf">
@@ -150,16 +150,16 @@ use yii\widgets\DetailView;
                       <img src="/images/dest.jpg" alt="">
                       <div>
                         <p>Ватанабэ Масахару</p>
-                        <div class="rating">
+                        <!-- <div class="rating">
                           <a href="#" class="rating_img">
                             <img src="/images/star.svg" alt="">
                             <img src="/images/star.svg" alt="">
                             <img src="/images/star.svg" alt="">
-                            <!-- <img src="/images/star.svg" alt="">
-                            <img src="/images/star.svg" alt=""> -->
+                            <img src="/images/star.svg" alt="">
+                            <img src="/images/star.svg" alt="">
                           </a>
                           <span>3</span>
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                     <div class="price_cop">

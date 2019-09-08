@@ -16,10 +16,94 @@ use yii\widgets\DetailView;
     </nav>
     <div class="d-flex inner_main">
       <div class="inner_left">
-        <h2>Мои чаты</h2>
+        <h2 id="chat" style="cursor:pointer;">Мои чаты</h2>
         <div class="chat_inner">
-          <div class="form">
+          <div class="form" style="overflow-y: scroll; height: 400px; ">
             <div class="user1 user_chats">
+              <div class="avatar">
+                <img src="/images/user.jpg" alt="">
+              </div>
+              <div>
+                <div class="sms">
+                  <p>Здравствуйте! Я могу Вам чем-то помочь? Если помощь не нужна, то закройте окно чата. Всегда буду рад ответить Вам.</p>
+                  <span class="time_sms">12:15</span>
+                </div>
+                <div class="sms down_file">
+                  <a href="#"><img src="/images/file-download.svg" alt=""></a>
+                  <p>Здравствуйте! Я могу Вам чем-то помочь?</p>
+                  <span class="size_file">347,34 Кб PNG</span>
+                  <span class="time_sms">12:15</span>
+                </div>
+              </div>
+            </div>
+             <div class="user1 user_chats">
+              <div class="avatar">
+                <img src="/images/user.jpg" alt="">
+              </div>
+              <div>
+                <div class="sms">
+                  <p>Здравствуйте! Я могу Вам чем-то помочь? Если помощь не нужна, то закройте окно чата. Всегда буду рад ответить Вам.</p>
+                  <span class="time_sms">12:15</span>
+                </div>
+                <div class="sms down_file">
+                  <a href="#"><img src="/images/file-download.svg" alt=""></a>
+                  <p>Здравствуйте! Я могу Вам чем-то помочь?</p>
+                  <span class="size_file">347,34 Кб PNG</span>
+                  <span class="time_sms">12:15</span>
+                </div>
+              </div>
+            </div> <div class="user1 user_chats">
+              <div class="avatar">
+                <img src="/images/user.jpg" alt="">
+              </div>
+              <div>
+                <div class="sms">
+                  <p>Здравствуйте! Я могу Вам чем-то помочь? Если помощь не нужна, то закройте окно чата. Всегда буду рад ответить Вам.</p>
+                  <span class="time_sms">12:15</span>
+                </div>
+                <div class="sms down_file">
+                  <a href="#"><img src="/images/file-download.svg" alt=""></a>
+                  <p>Здравствуйте! Я могу Вам чем-то помочь?</p>
+                  <span class="size_file">347,34 Кб PNG</span>
+                  <span class="time_sms">12:15</span>
+                </div>
+              </div>
+            </div>
+             <div class="user1 user_chats">
+              <div class="avatar">
+                <img src="/images/user.jpg" alt="">
+              </div>
+              <div>
+                <div class="sms">
+                  <p>Здравствуйте! Я могу Вам чем-то помочь? Если помощь не нужна, то закройте окно чата. Всегда буду рад ответить Вам.</p>
+                  <span class="time_sms">12:15</span>
+                </div>
+                <div class="sms down_file">
+                  <a href="#"><img src="/images/file-download.svg" alt=""></a>
+                  <p>Здравствуйте! Я могу Вам чем-то помочь?</p>
+                  <span class="size_file">347,34 Кб PNG</span>
+                  <span class="time_sms">12:15</span>
+                </div>
+              </div>
+            </div>
+             <div class="user1 user_chats">
+              <div class="avatar">
+                <img src="/images/user.jpg" alt="">
+              </div>
+              <div>
+                <div class="sms">
+                  <p>Здравствуйте! Я могу Вам чем-то помочь? Если помощь не нужна, то закройте окно чата. Всегда буду рад ответить Вам.</p>
+                  <span class="time_sms">12:15</span>
+                </div>
+                <div class="sms down_file">
+                  <a href="#"><img src="/images/file-download.svg" alt=""></a>
+                  <p>Здравствуйте! Я могу Вам чем-то помочь?</p>
+                  <span class="size_file">347,34 Кб PNG</span>
+                  <span class="time_sms">12:15</span>
+                </div>
+              </div>
+            </div>
+             <div class="user1 user_chats">
               <div class="avatar">
                 <img src="/images/user.jpg" alt="">
               </div>
@@ -71,16 +155,16 @@ use yii\widgets\DetailView;
             <img src="/images/user.jpg" alt="">
             <div>
               <p>Ватанабэ Масахару</p>
-              <div class="rating">
-                <a href="#" class="rating_img">
-                  <img src="/images/star.svg" alt="">
-                  <img src="/images/star.svg" alt="">
-                  <img src="/images/star.svg" alt="">
-                  <img src="/images/star.svg" alt="">
-                  <img src="/images/star.svg" alt="">
-                </a>
-                <span>4,5</span>
-              </div>
+             <!--  <div class="rating">
+               <a href="#" class="rating_img">
+                 <img src="/images/star.svg" alt="">
+                 <img src="/images/star.svg" alt="">
+                 <img src="/images/star.svg" alt="">
+                 <img src="/images/star.svg" alt="">
+                 <img src="/images/star.svg" alt="">
+               </a>
+               <span>4,5</span>
+             </div> -->
             </div>
           </div>
           <div class="tel_conf">
@@ -307,16 +391,16 @@ use yii\widgets\DetailView;
                   <img src="/images/dest.jpg" alt="">
                   <div>
                     <p>Ватанабэ Масахару</p>
-                    <div class="rating">
+                   <!--  <div class="rating">
                       <a href="#" class="rating_img">
                         <img src="/images/star.svg" alt="">
                         <img src="/images/star.svg" alt="">
                         <img src="/images/star.svg" alt="">
-                        <!-- <img src="/images/star.svg" alt="">
-                        <img src="/images/star.svg" alt=""> -->
+                        <img src="/images/star.svg" alt="">
+                        <img src="/images/star.svg" alt="">
                       </a>
                       <span>3</span>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
                 <div class="price_cop">
@@ -365,3 +449,13 @@ use yii\widgets\DetailView;
     </div>
   </div>
 </section>
+
+<?php $this->registerJs(<<<JS
+  $(document).ready(function(){
+    $('#chat').on('click',function(){
+        $('.chat_inner').toggle(500);
+      })
+    });
+JS
+);
+?>

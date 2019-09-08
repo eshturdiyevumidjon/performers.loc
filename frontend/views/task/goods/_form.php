@@ -23,20 +23,13 @@ use yii\widgets\ActiveForm;
       </div>
       <hr>
        <?php $form = ActiveForm::begin(['id'=>"goods_form",'options'=>['enctype'=>'multipart/form-data', 'class'=>'input_styles']]); ?>
-       <?php
-        // echo "<pre>";
-        // print_r($form->errorSummary($model));
-        // print_r($model->attributes);
-        // print_r($post);
-        // echo "</pre>";
-       ?>
         <div class="row">
           <div class="col-md-6 order_left"> 
             <h4><?=Yii::t('app','Address')?></h4>
              <?= $form->field($model, 'shipping_address')->textInput(['placeholder'=>$model->getAttributeLabel('shipping_address'),'class'=>'my_input otp_punkt'])->label(false) ?>
             <hr>
              <?= $form->field($model, 'delivery_address')->textInput(['placeholder'=>$model->getAttributeLabel('delivery_address'),'class'=>'my_input otp_punkt2'])->label(false) ?>
-            <div class="d-flex align-items-center justify-content-between tire d_mob_none fre_sp">
+            <div class="d-flex align-items-center justify-content-between tire d_mob_none">
               <h4>Время в пути: <span>43 ч 03 мин</span></h4>
               <h4>Расстояние:  <span>3406 км</span></h4>
             </div>
@@ -266,26 +259,22 @@ $this->registerJs(<<<JS
     if($(this).prop("checked") == true)
     {
       $('#option').show(300);
-      $('#option :text').attr('required', 'required');
     }
     else
     {
       $('#option').hide(300);
       $('#option :text').val('');
-      $('#option :text').removeAttr('required');
     }
     $(document).ready(function(){
     $('#bww5').change(function(){
       if($(this).prop("checked") == true)
         {
           $('#option').show(300);
-          $('#option :text').attr('required', 'required');
         }
         else
         {
           $('#option').hide(300);
           $('#option :text').val('');
-          $('#option :text').removeAttr('required');
         }
       });
 

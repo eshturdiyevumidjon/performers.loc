@@ -352,96 +352,6 @@ class SiteController extends Controller
                 ]; 
             }
         }
-                /*if($modelPerformer->signuped())
-                        {
-                            if($modelPerformer->valid())
-                            {
-                                $modelForm=new LoginForm();
-                                $modelForm->username=$modelPerformer->email;
-                                $modelForm->password=$modelPerformer->password;
-                                $modelForm->login();
-                                return $this->redirect(['/profile/index']);
-                            }
-                            else
-                            {
-                                 return [
-                                    'title'=> Yii::t('app','Signup'),
-                                    'content'=>$this->renderAjax('signup', [
-                                        'modelCustomer' => $modelCustomer,
-                                        'modelPerformer' => $modelPerformer,
-                                        'error' => 'Code is not valid',
-                                        'active' => 3
-                                    ])."<br>",
-                                    'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
-                        
-                                ];  
-                            }
-                        }
-                if($modelPerformer->validate() || $modelCustomer->validate())
-                {
-
-                    if($modelCustomer->validate() && $modelCustomer->signup2()){
-                        $modelForm=new LoginForm();
-                        $modelForm->username=$modelCustomer->email;
-                        $modelForm->password=$modelCustomer->password;
-                        $modelForm->login();
-                        return $this->redirect(['/profile/index']);
-                    }
-                    else
-                    {
-                    
-                        if($modelPerformer->validate() && $modelPerformer->signup1()){
-                                 
-                                return [
-                                    'title'=> Yii::t('app','Signup'),
-                                    'content'=>$this->renderAjax('signup', [
-                                        'modelCustomer' => $modelCustomer,
-                                        'modelPerformer' => $modelPerformer,
-                                        'active' => 3
-                                    ])."<br>",
-                                    'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
-                        
-                                ];   
-                        }
-
-                    }
-                }
-                else
-                {
-                        return [
-                        'title'=> Yii::t('app','Signup'),
-                        'content'=>$this->renderAjax('signup', [
-                            'modelCustomer' => $modelCustomer,
-                            'modelPerformer' => $modelPerformer,
-                            'active' => $_POST['CustomerRegister']['active']
-                        ])."<br>",
-                        'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
-                    ];   
-                }
-            }
-            else{           
-                return [
-                    'title'=> Yii::t('app','Signup'),
-                    'content'=>$this->renderAjax('signup', [
-                        'modelCustomer' => $modelCustomer,
-                        'modelPerformer' => $modelPerformer,
-                        'active' => 1
-                    ])."<br>",
-                    'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
-        
-                ];         
-            }
-        }
-        else {
-            if($model->load($request->post()) && $model->signup()){
-               Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-                return $this->goHome();      
-            }
-            else
-            {
-                return $this->render('signup',['model'=>$model]);
-            }
-        }*/
     }
 
     /**
@@ -562,6 +472,10 @@ class SiteController extends Controller
             'model' => $model
         ]);
     }
-
+    public function actionCancellationPolicy()
+    {
+        $text = \backend\models\Settings::findOne(1)->value;
+        return $this->render('privacy',['text' => $text]);
+    }
    
 }

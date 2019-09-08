@@ -54,7 +54,6 @@ class TaskController extends Controller
         ]);
         
     }
-
     public function actionIndexGoods()
     {    
         $searchModel = new TasksSearch();
@@ -66,8 +65,6 @@ class TaskController extends Controller
         ]);
 
     }
-
-  
     /**
      * Displays a single Tasks model.
      * @param integer $id
@@ -77,18 +74,29 @@ class TaskController extends Controller
     public function actionView($id)
     {   
         $model = $this->findModel($id);
+        $user = \common\models\User::findOne(Yii::$app->user->identity->id);
+        $banner = \backend\models\Banners::findOne(1);
+
         switch ($model->type) {
             case '1': return $this->render('passengers/view-passengers', [
                             'model' => $model,
+                            'user'=>$user,
+                            'banner'=>$banner,
                         ]);
             case '2': return $this->render('vehicles/view-vehicles', [
                             'model' => $model,
+                            'user'=>$user,
+                            'banner'=>$banner,
                         ]);
             case '3': return $this->render('goods/view-goods', [
                             'model' => $model,
+                            'user'=>$user,
+                            'banner'=>$banner,
                         ]);
             default:  return $this->render('help/view-help', [
                             'model' => $model,
+                            'user'=>$user,
+                            'banner'=>$banner,
                         ]);;
         }
     
@@ -282,7 +290,6 @@ class TaskController extends Controller
             }
     
     }
-
     public function actionDelete($id)
     {
         $request = Yii::$app->request;
@@ -302,7 +309,6 @@ class TaskController extends Controller
         }
     
     }
-
     protected function findModel($id)
     {
         if (($model = Tasks::findOne($id)) !== null) {
@@ -311,5 +317,47 @@ class TaskController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     
+    }
+    public function actionCreateRequest()
+    {
+        $request = Yii::$app->request;
+        $model = new \backend\models\Request();
+
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            
+            if($model->load($request->post()) && $model->validate()){
+                $model->save();
+                 return [
+                    'forceClose'=>true,
+                    'forceReload'=>'#crud-datatable-pjax'
+                 ];
+               }else{           
+                return [
+                    'title'=> Yii::t('app','Create'),
+                    'size'=>'normal',
+                    'content'=>$this->renderAjax('request', [
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn_red drug sobs1','data-dismiss'=>"modal"]).
+                                Html::button(Yii::t('app','Save'),['class'=>'btn_red drug sobs1','type'=>"submit"])
+        
+                ];         
+            }
+        }else{
+            /*
+            *   Process for non-ajax request
+            */
+            if ($model->load($request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
+        }
     }
 }
