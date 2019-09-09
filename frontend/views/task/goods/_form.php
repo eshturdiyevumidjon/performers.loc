@@ -68,16 +68,49 @@ use yii\widgets\ActiveForm;
         <h4><?=Yii::t('app','Cargo Parameters')?></h4>
         <div class="row mband">
           <div class="col-sm-6">
-            <?= $form->field($model, 'weight')->textInput(['class'=>'my_input','placeholder'=>$model->getAttributeLabel('weight')])->label(false) ?>
+            <?= $form->field($model, 'weight')->widget(\yii\widgets\MaskedInput::className(), [
+                    'options' => [
+                        'class' => 'my_input',
+                        'placeholder'=> $model->getAttributeLabel('weight')
+                    ],
+                    'clientOptions' => [
+                        'alias' => 'decimal'
+                    ]
+                ])->label(false) ?>
+           
           </div>
           <div class="col-sm-6">
-             <?= $form->field($model, 'width')->textInput(['class'=>'my_input','placeholder'=>$model->getAttributeLabel('width')])->label(false) ?>
+            <?= $form->field($model, 'width')->widget(\yii\widgets\MaskedInput::className(), [
+                    'options' => [
+                        'class' => 'my_input',
+                        'placeholder'=> $model->getAttributeLabel('width')
+                    ],
+                    'clientOptions' => [
+                        'alias' => 'decimal'
+                    ]
+                ])->label(false) ?>
           </div>
           <div class="col-sm-6">
-             <?= $form->field($model, 'length')->textInput(['class'=>'my_input','placeholder'=>$model->getAttributeLabel('length')])->label(false) ?>
+            <?= $form->field($model, 'length')->widget(\yii\widgets\MaskedInput::className(), [
+                    'options' => [
+                        'class' => 'my_input',
+                        'placeholder'=> $model->getAttributeLabel('length')
+                    ],
+                    'clientOptions' => [
+                        'alias' => 'decimal'
+                    ]
+                ])->label(false) ?>
           </div>
           <div class="col-sm-6">
-             <?= $form->field($model, 'height')->textInput(['class'=>'my_input','placeholder'=>$model->getAttributeLabel('height')])->label(false) ?>
+            <?= $form->field($model, 'height')->widget(\yii\widgets\MaskedInput::className(), [
+                    'options' => [
+                        'class' => 'my_input',
+                        'placeholder'=> $model->getAttributeLabel('height')
+                    ],
+                    'clientOptions' => [
+                        'alias' => 'decimal'
+                    ]
+                ])->label(false) ?>
           </div>
         </div>
         <div class="d-flex align-items-center barat">
@@ -131,7 +164,7 @@ use yii\widgets\ActiveForm;
               <button type="button" class="remove_photo" name="<?=($i+1)?>"><img src="/images/minus_a.svg" alt=""></button>
               <img src="" alt="" id="image_upload_preview<?=($i+1)?>">
               <label class="add_photo" for="my-file-selector<?=($i+1)?>">
-                <input id="my-file-selector<?=($i+1)?>" type="file" alt="<?=($i+1)?>" class="d-none" name="images[]">
+                <input id="my-file-selector<?=($i+1)?>" type="file" alt="<?=($i+1)?>" class="d-none" name="images[]" accept="image/*">
                 <img src="/images/plus_a.svg" alt="">
                </label>
             </div>  

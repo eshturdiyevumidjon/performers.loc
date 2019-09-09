@@ -30,7 +30,7 @@ class Models extends \yii\db\ActiveRecord
     {
         return [
             [['mark_id'], 'integer'],
-            [['name_model'], 'string', 'max' => 255],
+            [['name_model','mark_id'], 'string', 'max' => 255],
             [['mark_id'], 'exist', 'skipOnError' => true, 'targetClass' => Marks::className(), 'targetAttribute' => ['mark_id' => 'id']],
         ];
     }
@@ -42,8 +42,8 @@ class Models extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name_model' => 'Name Model',
-            'mark_id' => 'Mark ID',
+            'name_model' => Yii::t('app','Car model'),
+            'mark_id' => Yii::t('app','Car mark'),
         ];
     }
 
@@ -53,5 +53,10 @@ class Models extends \yii\db\ActiveRecord
     public function getMark()
     {
         return $this->hasOne(Marks::className(), ['id' => 'mark_id']);
+    }
+
+    public function getMarksList()
+    {
+        return \yii\helpers\ArrayHelper::map(\backend\models\Marks::find()->all(),'id','name_mark');
     }
 }

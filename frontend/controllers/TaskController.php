@@ -76,27 +76,33 @@ class TaskController extends Controller
         $model = $this->findModel($id);
         $user = \common\models\User::findOne(Yii::$app->user->identity->id);
         $banner = \backend\models\Banners::findOne(1);
+        $requests = \backend\models\Request::find()->joinWith('user')->select('user.*,request.*')->where(['request.task_id'=>$id])->all();
+       
 
         switch ($model->type) {
             case '1': return $this->render('passengers/view-passengers', [
                             'model' => $model,
                             'user'=>$user,
                             'banner'=>$banner,
+                            'requests'=>$requests,
                         ]);
             case '2': return $this->render('vehicles/view-vehicles', [
                             'model' => $model,
                             'user'=>$user,
                             'banner'=>$banner,
+                            'requests'=>$requests,
                         ]);
             case '3': return $this->render('goods/view-goods', [
                             'model' => $model,
                             'user'=>$user,
                             'banner'=>$banner,
+                            'requests'=>$requests,
                         ]);
             default:  return $this->render('help/view-help', [
                             'model' => $model,
                             'user'=>$user,
                             'banner'=>$banner,
+                            'requests'=>$requests,
                         ]);;
         }
     
@@ -318,17 +324,17 @@ class TaskController extends Controller
         }
     
     }
-    public function actionCreateRequest()
+    public function actionCreateRequest($id)
     {
         $request = Yii::$app->request;
         $model = new \backend\models\Request();
-
+        $model->task_id = $id;
         if($request->isAjax){
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            
+        
             if($model->load($request->post()) && $model->validate()){
                 $model->save();
                  return [
@@ -339,7 +345,7 @@ class TaskController extends Controller
                 return [
                     'title'=> Yii::t('app','Create'),
                     'size'=>'normal',
-                    'content'=>$this->renderAjax('request', [
+                    'content'=>$this->renderAjax('request/create', [
                         'model' => $model,
                     ]),
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn_red drug sobs1','data-dismiss'=>"modal"]).
@@ -354,7 +360,7 @@ class TaskController extends Controller
             if ($model->load($request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
-                return $this->render('create', [
+                return $this->render('request-create', [
                     'model' => $model,
                 ]);
             }

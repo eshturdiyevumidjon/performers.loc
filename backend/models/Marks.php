@@ -39,7 +39,7 @@ class Marks extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name_mark' => 'Name Mark',
+            'name_mark' => Yii::t('app','Car mark'),
         ];
     }
 

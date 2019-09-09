@@ -29,6 +29,7 @@ class Transports extends \yii\db\ActiveRecord
     public $translation_mark;
     public $translation_driver;
 
+    public $active;
     public static function tableName()
     {
         return 'transports';
@@ -41,13 +42,11 @@ class Transports extends \yii\db\ActiveRecord
     {
         return [
             [['translation_driver','translation_mark','translation_model'],'safe'],
-            [['user_id'], 'integer'],
+            [['user_id','active','model','mark'], 'integer'],
             [['driver', 'user_id'], 'integer'],
             [['images','registration_number'],'string'],
             [['model','mark','registration_number'],'required'],
-            [['model', 'mark'], 'string', 'max' => 255],
             [['driver'], 'exist', 'skipOnError' => true, 'targetClass' => Drivers::className(), 'targetAttribute' => ['driver' => 'id']],
-            [['model', 'mark', 'driver'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -106,6 +105,14 @@ class Transports extends \yii\db\ActiveRecord
     {
          return $this->hasOne(Drivers::className(), ['id' => 'driver']);
     }
+    public function getModel()
+    {
+         return \backend\models\Models::find()->where(['id'=>$this->model])->one()->name_model;
+    }
+    public function getMark()
+    {
+         return \backend\models\Marks::find()->where(['id'=>$this->mark])->one()->name_mark;
+    }
     // public function beforeDelete()
     // {
     //     $images = explode(',',$this->images);
@@ -157,5 +164,15 @@ class Transports extends \yii\db\ActiveRecord
             }
         }
         return $model;
+    }
+
+    public static function getMarks()
+    {
+     return ArrayHelper::map(\backend\models\Marks::find()->all(),'id','name_mark');   
+    }
+
+    public static function getModels()
+    {
+     return ArrayHelper::map(\backend\models\Models::find()->all(),'id','name_model');   
     }
 }

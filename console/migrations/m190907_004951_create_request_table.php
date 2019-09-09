@@ -22,7 +22,8 @@ class m190907_004951_create_request_table extends Migration
             'date_create' => $this->integer()->comment("Дата создания"),
             'price' => $this->integer()->comment("Цена"),
             'user_id' => $this->integer()->comment("Испольнитель"),
-            'car_id' => $this->integer()->comment("Марка и Модел автомобиля"),
+            'mark_id' => $this->integer()->comment("Марка автомобиля"),
+            'model_id' => $this->integer()->comment("Модел автомобиля"),
         ]);
 
         // creates index for column `task_id`

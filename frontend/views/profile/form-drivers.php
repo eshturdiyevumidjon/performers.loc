@@ -25,11 +25,11 @@ $lang = Yii::$app->language;
                   $imgs = explode(',', $model->images);
                   for($i = 0; $i < 9; $i++){
                 ?>
-                <div class="download_photos <?=($imgs[$i] != '') ? 'added' : '' ?>" id="upload_photos<?=($i+1)?>">
+                <div class="download_photos <?=($imgs[$i] != '') ? 'added' : '' ?>" id="uploads_photos_update_drivers<?=($i+1)?>">
                   <button type="button" class="remove_photo" name="<?=($i+1)?>"><img src="/images/minus_a.svg" alt=""></button>
-                  <img src="<?=($imgs[$i] != '') ? '/uploads/drivers/'.$imgs[$i] : '' ?>" alt="" id="image_upload_preview<?=($i+1)?>">
-                  <label class="add_photo" for="my-file-selector<?=($i+1)?>">
-                    <input id="my-file-selector<?=($i+1)?>" type="file" alt="<?=($i+1)?>" class="d-none" name="images[]" value="<?=$imgs[$i]?>">
+                  <img src="<?=($imgs[$i] != '') ? '/uploads/drivers/'.$imgs[$i] : '' ?>" alt="" id="image_upload_preview_update_drivers<?=($i+1)?>">
+                  <label class="add_photo" for="my-file-selector-update-driver<?=($i+1)?>">
+                    <input id="my-file-selector-update-driver<?=($i+1)?>" type="file" alt="<?=($i+1)?>" class="d-none" name="images[]" value="<?=$imgs[$i]?>" accept="image/*">
                     <img src="/images/plus_a.svg" alt="">
                    </label>
                 </div>  
@@ -41,11 +41,11 @@ $lang = Yii::$app->language;
 $id = $model->id;
 $this->registerJs(<<<JS
   $(document).ready(function(){
-    function readURL(input,id) {
+    function readURL2(input,id) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
-                $('#image_upload_preview'+id).attr('src', e.target.result);
+                $('#image_upload_preview_update_drivers'+id).attr('src', e.target.result);
             }
             reader.readAsDataURL(input.files[0]);
         }
@@ -53,15 +53,14 @@ $this->registerJs(<<<JS
 
     $(".remove_photo").on('click',function () {
         id = $(this).attr('name');
-        $("#upload_photos"+id).removeClass('added');
-        $('#image_upload_preview'+id).attr('src', '');
+        $("#uploads_photos_update_drivers"+id).removeClass('added');
+        $('#image_upload_preview_update_drivers'+id).attr('src', '');
     });
 
     $(".d-none").change(function () {
         id = $(this).attr('alt');
-        readURL(this,id);
-        $("#upload_photos"+id).addClass('added');
-        var data = $('#change_image').serialize();
+        readURL2(this,id);
+        $("#uploads_photos_update_drivers"+id).addClass('added');
     });
   });
 JS

@@ -101,7 +101,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
   </div>
 </section>
-<script  async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0nNC2JY5h2LxGdKCTXSXMV5ZNDrpwvvA&callback=initMap"></script>
+<script  async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAIUZfJr01SrsKER6zBPwBcmPNy0rfXPc&callback=initMap"></script>
 
 <?php
 $this->registerJs(<<<JS

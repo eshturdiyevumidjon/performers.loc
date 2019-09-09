@@ -85,11 +85,11 @@ class Tasks extends \yii\db\ActiveRecord
    public function rules()
     {
         return [
-            [['type', 'status','need_packing','packing_area','need_loader', 'demolition','need_relocation','count_relocation','need_furniture','count_furniture','need_piano','count_purchases','need_personal_items','need_purchases','count_personal_items','count_piano','demolition','need_building_materials','count_building_materials','need_special_equipments','count_special_equipments','need_other_items','count_other_items','count_loader', 'position', 'user_id', 'count_avtokreslo','count_buster','count_avtolulka','count_adult', 'return', 'category_id', 'flight_number_status', 'meeting_with_sign_status', 'car_on_the_go', 'loading_required_status', 'floor', 'lift', 'shipping_house_type', 'shipping_house_floor', 'shipping_house_lift', 'delivery_house_type', 'delivery_house_floor', 'delivery_house_lift', 'alert_email', 'view_performers'], 'integer'],
+            [['type', 'status','need_packing','packing_area','need_loader', 'demolition','need_relocation','count_relocation','need_furniture','count_furniture','need_piano','count_purchases','need_personal_items','need_purchases','count_personal_items','count_piano','demolition','need_building_materials','count_building_materials','need_special_equipments','count_special_equipments','need_other_items','count_other_items','count_loader', 'position', 'user_id', 'count_avtokreslo','count_buster','count_avtolulka','count_adult', 'return', 'category_id', 'flight_number_status', 'meeting_with_sign_status', 'car_model', 'car_mark', 'car_on_the_go', 'loading_required_status', 'floor', 'lift', 'shipping_house_type', 'shipping_house_floor', 'shipping_house_lift', 'delivery_house_type', 'delivery_house_floor', 'delivery_house_lift', 'alert_email', 'view_performers'], 'integer'],
             [['payed_sum', 'offer_your_price', 'weight', 'width', 'length', 'height'], 'number'],
             [['date_cr', 'date_close', 'date_begin','date_begin2'], 'safe'],
             [['shipping_address', 'delivery_address','classification', 'comment', 'item_description'], 'string'],
-            [['shipping_coordinate_x', 'shipping_coordinate_y', 'delivery_coordinate_x', 'delivery_coordinate_y', 'promo_code', 'flight_number', 'meeting_with_sign', 'car_model', 'car_mark', 'image'], 'string', 'max' => 255],
+            [['shipping_coordinate_x', 'shipping_coordinate_y', 'delivery_coordinate_x', 'delivery_coordinate_y', 'promo_code', 'flight_number', 'meeting_with_sign', 'image'], 'string', 'max' => 255],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => TransportCategory::className(), 'targetAttribute' => ['category_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
 
@@ -155,9 +155,9 @@ class Tasks extends \yii\db\ActiveRecord
             'image' => 'Image',
             'car_on_the_go' => Yii::t('app','Car On The Go'),
             'weight' => Yii::t('app','Weight(kg)'),
-            'width' => Yii::t('app','Width(sm)'),
-            'length' => Yii::t('app','Length(sm)'),
-            'height' => Yii::t('app','Height(sm)'),
+            'width' => Yii::t('app','Width(m)'),
+            'length' => Yii::t('app','Length(m)'),
+            'height' => Yii::t('app','Height(m)'),
             'classification' => Yii::t('app','Classification'),
             'items' => Yii::t('app','Classification'),
             'loading_required_status' => Yii::t('app','Required load'),
@@ -293,5 +293,12 @@ class Tasks extends \yii\db\ActiveRecord
     {
         return ($type == 1) ? Yii::t('app','Yes') : Yii::t('app','No');
     }
-
+     public function getModel()
+    {
+         return \backend\models\Models::find()->where(['id'=>$this->car_model])->one()->name_model;
+    }
+    public function getMark()
+    {
+         return \backend\models\Marks::find()->where(['id'=>$this->car_mark])->one()->name_mark;
+    }
 }

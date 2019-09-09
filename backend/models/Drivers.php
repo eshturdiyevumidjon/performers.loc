@@ -38,6 +38,7 @@ class Drivers extends \yii\db\ActiveRecord
         return [
             // [['fio', 'phone'], 'required'],
             ['images','string'],
+            [['fio', 'phone'], 'required'],
             [['user_id'], 'integer'],
             [['fio', 'phone'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],

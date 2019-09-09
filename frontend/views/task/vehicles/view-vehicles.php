@@ -17,39 +17,13 @@ use yii\widgets\DetailView;
         <div class="d-flex inner_main">
           <div class="inner_left">
             <!-- <h2>Мои чаты</h2>             -->
-            <div class="confirm_cont">
-              <div class="user_inner">
-                <img src="/images/user.jpg" alt="">
-                <div>
-                  <p>Ватанабэ Масахару</p>
-                  <!-- <div class="rating">
-                    <a href="#" class="rating_img">
-                      <img src="/images/star.svg" alt="">
-                      <img src="/images/star.svg" alt="">
-                      <img src="/images/star.svg" alt="">
-                      <img src="/images/star.svg" alt="">
-                      <img src="/images/star.svg" alt="">
-                    </a>
-                    <span>4,5</span>
-                  </div> -->
-                </div>
-              </div>
-              <div class="lang_conf">
-                <span>Языки</span>
-                <div>
-                  <img src="/images/russ.svg" alt="">
-                  <img src="/images/german.svg" alt="">
-                  <img src="/images/usa.svg" alt="">
-                </div>
-              </div>
-              <p class="povis">Телефон и Email скрыты, будут доступны исполнителю</p>
-            </div>
-            <div class="banner_bl"></div>
+          <?= $this->render('../request/inner_left',['user'=>$user,'banner'=>$banner]);?>
           </div>
          <div class="inner_right">
         <div class="wet">
-          <h2>Доставить груз в Москву</h2>
-          <div class="rating">
+          <h2><?=$model->getType()[2]?></h2>
+          
+        <!--   <div class="rating">
             <a href="#" class="rating_img">
               <img src="/images/star.svg" alt="">
               <img src="/images/star.svg" alt="">
@@ -58,7 +32,7 @@ use yii\widgets\DetailView;
               <img src="/images/star.svg" alt="">
             </a>
             <span>4,5</span>
-          </div>
+          </div> -->
           <h5><?=Yii::t('app','Description')?></h5>
           <p><?=$model->comment?></p>
         </div>
@@ -91,7 +65,7 @@ use yii\widgets\DetailView;
               <p class="retect"><?=Yii::t('app','Additional options')?></p>
               <div class="row_retact">
                 <div>
-                    <span><img src="/images/check.svg" alt=""><?=Yii::t('app','Model and brand of car')?>: <?=$model->car_model." ".$model->car_mark?></span>
+                    <span><img src="/images/check.svg" alt=""><?=Yii::t('app','Model and brand of car')?>: <?=$model->getModel()." ".$model->getMark()?></span>
                 </div>
                 <?php if ($model->car_on_the_go == 1): ?>
                 <div>
@@ -136,73 +110,18 @@ use yii\widgets\DetailView;
               </div>
             </div>
             <div class="pay_inner">
-              <p>Оплачен: <b>30%</b><span>2 347 457 руб.</span></p>
-              <a href="#" class="forget_pass">Условия отмены брони</a>
+              <p><?=Yii::t('app','Paid')?>: <b>30%</b><!-- <span>2 347 457 руб.</span> --></p>
+          <a href="/site/cancellation-policy" target="_blank" class="forget_pass"><?=Yii::t('app','Cancellation Policy')?></a>
             </div>
-            <div class="text_right_ent">
-              <a href="#" class="enter_to_site"><span class="aft_back"></span>Заказать услугу</a>
-            </div>
+            <?php if ($user->type == 3): ?>
+              <div class="text_right_ent">
+                <?=\yii\helpers\Html::a('<span class="aft_back"></span>'.Yii::t('app','Order service'), ['create-request','id'=>$model->id],
+                  ['role'=>'modal-remote', 'class'=>'enter_to_site'])?>
+              </div>
+            <?php endif ?>
             <div class="zayavka">
               <h2>Заявка</h2>
-              <div class="item_to_city">
-                  <div class="item_to_city_top">
-                    <div class="user_inner">
-                      <img src="/images/dest.jpg" alt="">
-                      <div>
-                        <p>Ватанабэ Масахару</p>
-                        <!-- <div class="rating">
-                          <a href="#" class="rating_img">
-                            <img src="/images/star.svg" alt="">
-                            <img src="/images/star.svg" alt="">
-                            <img src="/images/star.svg" alt="">
-                            <img src="/images/star.svg" alt="">
-                            <img src="/images/star.svg" alt="">
-                          </a>
-                          <span>3</span>
-                        </div> -->
-                      </div>
-                    </div>
-                    <div class="price_cop">
-                      <h6>2 347 457 руб.</h6>
-                      <p class="cal_tack">Предложения</p>
-                    </div>
-                  </div>
-                  <span class="line_toc"></span>
-                  <p class="mode"><img src="/images/car.svg" alt="">Модель и марка автомобиля: Мitsubishi Lancer Evolution X</p>
-                  <div class="photos_inn">
-                    <p>Фото</p>
-                    <div class="d-flex flex-wrap">
-                      <a href="#" class="netr"><img src="/images/unsp.jpg" alt=""></a>
-                      <a href="#" class="netr"><img src="/images/unsp.jpg" alt=""></a>
-                      <a href="#" class="netr"><img src="/images/unsp.jpg" alt=""></a>
-                      <a href="#" class="netr"><img src="/images/unsp.jpg" alt=""></a>
-                      <a href="#" class="netr"><img src="/images/unsp.jpg" alt=""></a>
-                    </div>
-                  </div>
-                  <div class="item_to_city_bottom">
-                    <div class="row">
-                      <div class="col-sm-3">
-                        <p class="cal_tack">Cоздан</p>
-                        <span>03.07.2019 20:13</span>
-                      </div>
-                      <div class="col-sm-3">
-                        <p class="cal_tack">Телефон</p>
-                        <span>+998 94 363 36 36</span>
-                      </div>
-                      <div class="col-sm-3">
-                        <p class="cal_tack">Языки</p>
-                        <div>
-                          <img src="/images/russ.svg" alt="">
-                          <img src="/images/german.svg" alt="">
-                          <img src="/images/usa.svg" alt="">
-                        </div>
-                      </div>
-                      <div class="col-sm-3">
-                        <a href="#" class="enter_to_site"><span class="aft_back"></span>Заказать</a>
-                      </div>
-                    </div>
-                  </div>
-              </div>
+                <?= $this->render('../request/index',['user'=>$user,'requests'=>$requests])?>
             </div>
           </div>
         </div>

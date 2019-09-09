@@ -188,9 +188,9 @@ class m150207_210500_i18n_init extends Migration
                 'Train/Flight Number'=>'Номер ж/д рейса',
                 'Date and time of return transfer'=>'Дата и время обратного трансфера',
                 'Create Order'=>'Создание заказа',
-                'Width(sm)'=>'Ширина(см)',
-                'Length(sm)'=>'Длина(см)',
-                'Height(sm)'=>'Высота(см)',
+                'Width(m)'=>'Ширина(м)',
+                'Length(m)'=>'Длина(м)',
+                'Height(m)'=>'Высота(м)',
                 'Classification'=>'Классификация',
                 'Required load'=>'Требуется погрузка/разгрузка',
                 'House'=>'Дом',
@@ -394,7 +394,14 @@ class m150207_210500_i18n_init extends Migration
                 'Performer\'s profile'=>'Профиль Исполнителя',
                 'Customer\'s Profile'=>'Профиль Заказчика',
                 'Add car'=>'Добавить машину',
-                'Blog'=>'Блог'
+                'Blog'=>'Блог',
+                'Phone and Email are hidden, will be available to the performer'=>'Телефон и Email скрыты, будут доступны исполнителю',
+                'Distance'=>'Расстояние',
+                'Travel time'=>'Время в пути',
+                'Cancellation Policy'=>'Условия отмены брони',
+                'Paid'=>'Оплачен',
+                'Order service'=>'Заказать услугу',
+                'Order'=>'Заказать',
             ];
 
         $keys = array_keys($translations);

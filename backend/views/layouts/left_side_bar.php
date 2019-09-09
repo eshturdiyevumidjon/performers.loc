@@ -70,9 +70,15 @@ $user = \common\models\User::find()->where(['id'=>Yii::$app->user->identity->id]
                 </li>
             </ul>
         </li>  
-        <li class="xn-openable <?= (($pathInfo == 'transports/index' || $pathInfo == 'drivers/index') ? 'active' : '')?>">
+        <li class="xn-openable <?= (($pathInfo == 'transports/index' || $pathInfo == 'drivers/index' || $pathInfo == 'models/index' || $pathInfo == 'marks/index') ? 'active' : '')?>">
             <a href="#"><span class="fa fa-gear"></span> <span class="xn-text"><?=Yii::t('app','Transports')?></span></a>
-            <ul>                            
+            <ul>    
+               <li  <?= ($pathInfo == 'marks/index' ? 'class="active"' : '')?>>
+                            <a href="<?=$adminka?>marks/index"><span class="fa fa-truck"></span><?=Yii::t('app','Car mark')?></a>
+                </li>     
+                <li  <?= ($pathInfo == 'models/index' ? 'class="active"' : '')?>>
+                            <a href="<?=$adminka?>models/index"><span class="fa fa-truck"></span><?=Yii::t('app','Car model')?></a>
+                </li>                 
                 <li  <?= ($pathInfo == 'transports/index' ? 'class="active"' : '')?>>
                             <a href="<?=$adminka?>transports/index"><span class="fa fa-truck"></span><?=Yii::t('app','Transports')?></a>
                 </li>

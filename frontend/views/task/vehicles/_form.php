@@ -77,8 +77,8 @@ use kartik\select2\Select2;
         <h4>Модель и марка автомобиля</h4>
         
        
-        <?= $form->field($model, 'car_mark')->dropDownList(ArrayHelper::map(\backend\models\Marks::find()->all(),'id','mark_name'), ['class'=>'my_input','prompt' => Yii::t('app','Car mark'),'style'=>'cursor:pointer;'])->label(false)?>
-         <?= $form->field($model, 'car_model')->dropDownList(ArrayHelper::map(\backend\models\Models::find()->all(),'id','mark_name'), ['class'=>'my_input','prompt' => Yii::t('app','Car model'),'style'=>'cursor:pointer;'])->label(false)?>
+        <?= $form->field($model, 'car_mark')->dropDownList(ArrayHelper::map(\backend\models\Marks::find()->all(),'id','name_mark'), ['class'=>'my_input','prompt' => Yii::t('app','Car mark'),'style'=>'cursor:pointer;'])->label(false)?>
+         <?= $form->field($model, 'car_model')->dropDownList(ArrayHelper::map(\backend\models\Models::find()->all(),'id','name_model'), ['class'=>'my_input','prompt' => Yii::t('app','Car model'),'style'=>'cursor:pointer;'])->label(false)?>
         <div class="d-flex align-items-center hodu">
           <div class="form-group_checkbox mt10 mb15 vnu_m">
               <input type="checkbox" id="bww55" name="car_on_the_go" value="1" <?=($model->car_on_the_go == 1)?'checked':''?>>
@@ -99,7 +99,7 @@ use kartik\select2\Select2;
               <button type="button" class="remove_photo" name="<?=($i+1)?>"><img src="/images/minus_a.svg" alt=""></button>
               <img src="" alt="" id="image_upload_preview<?=($i+1)?>">
               <label class="add_photo" for="my-file-selector<?=($i+1)?>">
-                <input id="my-file-selector<?=($i+1)?>" type="file" alt="<?=($i+1)?>" class="d-none" name="images[]">
+                <input id="my-file-selector<?=($i+1)?>" type="file" alt="<?=($i+1)?>" class="d-none" name="images[]" accept="image/*"accept="image/*">
                 <img src="/images/plus_a.svg" alt="">
                </label>
             </div>  

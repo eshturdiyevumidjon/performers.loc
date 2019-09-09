@@ -3,7 +3,11 @@
 namespace backend\models;
 
 use Yii;
-
+use common\models\User;
+use backend\base\AppActiveQuery;
+use yii\behaviors\BlameableBehavior;
+use yii\helpers\ArrayHelper;
+use yii\web\ForbiddenHttpException;
 /**
  * This is the model class for table "request".
  *
@@ -33,7 +37,9 @@ class Request extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['task_id', 'date_create', 'price', 'user_id', 'car_id'], 'integer'],
+            [['price','mark_id','model_id'],'required'],
+            [['mark_id','model_id'],'required'],
+            [['task_id', 'date_create', 'price', 'user_id'], 'integer'],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tasks::className(), 'targetAttribute' => ['task_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -47,11 +53,74 @@ class Request extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'task_id' => 'Task ID',
-            'date_create' => 'Date Create',
+            'date_create' => Yii::t('app','Created'),
             'price' => 'Price',
             'user_id' => 'User ID',
-            'car_id' => 'Car ID',
+            'mark_id' => Yii::t('app','Car mark'),
+            'model_id' => Yii::t('app','Car model'),
         ];
+    }
+    public function beforeSave($insert)
+    {
+        if($this->isNewRecord){
+            $this->date_create = time();
+        }
+        return parent::beforeSave($insert);
+    }
+
+    public function getCreatedDate()
+    {
+        return Yii::$app->formatter->asDate($this->date_create, 'php:d.m.Y H:i');
+    }
+
+    public function behaviors()
+    {
+        if(Yii::$app->user->identity){
+            return [
+                [
+                    'class' => BlameableBehavior::class,
+                    'createdByAttribute' => 'user_id',
+                    'updatedByAttribute' => null,
+                    'value' => function($event) {
+                        return Yii::$app->user->identity->id;
+                    },
+                ],
+            ];
+        }
+    }
+
+    public static function find()
+    {
+        if(Yii::$app->user->isGuest == false)
+        {
+            if(Yii::$app->user->identity->type === 3)
+            {
+                $userId = Yii::$app->user->identity->id;
+            }
+            else $userId = null;
+        } 
+        else $userId = null;
+
+        return new AppActiveQuery(get_called_class(), [
+           'companyId' => $userId,
+        ]);
+    }
+
+  
+    public static function findOne($condition)
+    {
+        $model = parent::findOne($condition);
+        if(Yii::$app->user->isGuest == false) 
+        {
+            if(Yii::$app->user->identity->type === 3)
+            {
+                $userId = Yii::$app->user->identity->id;
+                if($model->user_id != $userId){
+                    throw new ForbiddenHttpException('Доступ запрещен');
+                }
+            }
+        }
+        return $model;
     }
 
     /**
@@ -62,11 +131,26 @@ class Request extends \yii\db\ActiveRecord
         return $this->hasOne(Tasks::className(), ['id' => 'task_id']);
     }
 
+    public function getModel()
+    {
+        return $this->hasOne(Models::className(), ['id' => 'model_id']);
+    }
+
+    public function getMark()
+    {
+        return $this->hasOne(Marks::className(), ['id' => 'mark_id']);
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    public function getAuto()
+    {
+        return Transports::find()->where(['mark'=>$this->mark_id,'model'=>$this->model_id])->one();
     }
 }

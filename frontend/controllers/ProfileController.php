@@ -86,7 +86,7 @@ class ProfileController extends Controller
 
     public function beforeAction($action)
     {
-        if ($action->id == 'edit-profile' || $action->id == 'change-password' || $action->id == 'delete-transport' || $action->id == 'create-auto1' || $action->id == 'create-driver1') {
+        if ($action->id == 'edit-profile' || $action->id == 'change-password' || $action->id == 'delete-transport' || $action->id == 'create-auto1' || $action->id == 'create-driver1' || $action->id == 'add-autos') {
             $this->enableCsrfValidation = false;
         }
 
@@ -175,161 +175,111 @@ class ProfileController extends Controller
     //auto and drivers -- performers
     public function actionAddAutos()
     {
+        $post = Yii::$app->request->post();
+
         $autos = \backend\models\Transports::find()->all();
         $drivers = \backend\models\Drivers::find()->all();
         $company = \backend\models\AboutCompany::findOne(1);
         $id = Yii::$app->user->identity->id;
         $user = $this->findModel($id);
+        $transport = new \backend\models\Transports();
+        $driver = new \backend\models\Drivers();
        
+        $transport->active = (Yii::$app->session['active']) ? Yii::$app->session['active'] : 1; 
+        if(isset($post['submit'])){
+
+            $transport->active = $post['active'];
+
+            if($post['submit'] == 'add_transport')
+            {
+                $transport['attributes'] = $post['Transports'];
+                if($transport->validate())
+                {
+                    $transport->save();
+                    Yii::$app->session['active'] = 1;
+                    $images = [];
+                    $uploadDir = "uploads/transports/";
+                    for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+
+                    $ext = "";
+                    $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
+
+                    $fPath =$transport->id .'('.$i.')'. rand() . ".$ext";
+                        if($ext != ""){
+                           $images []= $fPath;
+                           $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
+                        }
+                    }
+                    $transport->images = implode(',',$images);
+                    $transport->save();
+                    $this->redirect(['add-autos']);
+                }
+                else
+                     return $this->render('add_autos',[
+                            'user'=>$user,
+                            'drivers'=>$drivers,
+                            'company'=>$company,
+                            'autos'=>$autos,
+                            'transport'=>$transport,
+                            'driver'=>$driver
+                        ]);
+
+            }
+             if( $post['submit'] == 'add_driver')
+            {
+                $driver['attributes'] = $post['Drivers'];
+
+                if($driver->validate())
+                {
+                    $driver->save();
+                    Yii::$app->session['active'] = 2;
+                    $images = [];
+                    $uploadDir = "uploads/drivers/";
+                    for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+
+                    $ext = "";
+                    $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
+
+                    $fPath =$driver->id .'('.$i.')'. rand() . ".$ext";
+                        if($ext != ""){
+                           $images []= $fPath;
+                           $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
+                        }
+                    }
+                    $driver->images = implode(',',$images);
+                    $driver->save();
+                    $this->redirect(['add-autos']);
+                }
+                else
+                     return $this->render('add_autos',[
+                            'user'=>$user,
+                            'drivers'=>$drivers,
+                            'company'=>$company,
+                            'autos'=>$autos,
+                            'transport'=>$transport,
+                            'driver'=>$driver
+                        ]);
+
+            }
+        }else
+
         return $this->render('add_autos',[
             'user'=>$user,
             'drivers'=>$drivers,
             'company'=>$company,
-            'autos'=>$autos
+            'autos'=>$autos,
+            'transport'=>$transport,
+            'driver'=>$driver
         ]);
     }
 
-    public function actionCreateAuto1()
-    {
-        if(isset($_POST['auto']))
-        {
-            $model = new \backend\models\Transports();
-            $model->attributes = $_POST['Transports'];
-            if($model->validate()){
-                $model->save();
-                $images = [];
-                $uploadDir = "uploads/transports/";
-                for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
-
-                $ext = "";
-                $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
-
-                $fPath =$model->id .'('.$i.')'. rand() . ".$ext";
-                    if($ext != ""){
-                       $images []= $fPath;
-                       $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
-                    }
-                }
-                $model->images = implode(',',$images);
-                $model->save();
-                return $this->redirect(['add-autos']);
-               }
-       }
-      
-    }
-    
-    public function actionCreateDriver1()
-    {
-         if(isset($_POST['driver']))
-        {
-            $model = new \backend\models\Drivers();
-            $model->attributes = $_POST['Drivers'];
-            if($model->validate()){
-                $model->save();
-                $images = [];
-                $uploadDir = "uploads/drivers/";
-                for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
-
-                $ext = "";
-                $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
-
-                $fPath =$model->id .'('.$i.')'. rand() . ".$ext";
-                    if($ext != ""){
-                       $images []= $fPath;
-                       $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
-                    }
-                }
-                $model->images = implode(',',$images);
-                $model->save();
-                return $this->redirect(['add-autos']);
-               }
-        }
-    
-    }
-    public function actionCreateAuto()
-    {
-        $request = Yii::$app->request;
-        $model = new \backend\models\Transports();
-
-        if($request->isAjax){
-            /*
-            *   Process for ajax request
-            */
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            
-            if($model->load($request->post()) && $model->validate()){
-                $model->save();
-                $query = \backend\models\Marks::find()->where(['mark_name' => $model->car_mark]);
-                if($query->count() == 0){
-                    $car_mark = new \backend\models\Marks();
-                    $car_mark->mark_name = $model->car_mark;
-                    $car_mark->save();
-                    $id = $car_mark->id;
-                }
-                else{
-                    $id = $query->one()->id;
-                }
-
-                $query = \backend\models\Models::find()->where(['model_name' => $model->car_model]);
-
-                if($query->count() == 0){
-                    $car_model = new \backend\models\Models();
-                    $car_model->model_name = $model->car_model;
-                    $car_model->mark_id = $id;
-                    $car_model->save();
-                }
-
-                $images = [];
-                $uploadDir = "uploads/transports/";
-                for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
-
-                $ext = "";
-                $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
-
-                $fPath =$model->id .'('.$i.')'. rand() . ".$ext";
-                    if($ext != ""){
-                       $images []= $fPath;
-                       $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
-                    }
-                }
-                $model->images = implode(',',$images);
-                $model->save();
-                 return [
-                    'forceClose'=>true,
-                    'forceReload'=>'#crud-datatable-pjax'
-                 ];
-               }else{           
-                return [
-                    'title'=> Yii::t('app','Create'),
-                    'size'=>'normal',
-                    'content'=>$this->renderAjax('create-autos', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn_red drug sobs1','data-dismiss'=>"modal"]).
-                                Html::button(Yii::t('app','Save'),['class'=>'btn_red drug sobs1','type'=>"submit"])
-        
-                ];         
-            }
-        }else{
-            /*
-            *   Process for non-ajax request
-            */
-            if ($model->load($request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                return $this->render('create', [
-                    'model' => $model,
-                ]);
-            }
-        }
-    }
-
-     public function actionUpdateAuto($id)
+   
+    public function actionUpdateAuto($id)
     {
         $request = Yii::$app->request;
         $model = \backend\models\Transports::find()->where(['id'=>$id])->one();
         $old_images = explode(',', $model->images);
-
+        Yii::$app->session['active'] = 1;
         $st = '';
         if($request->isAjax){
             /*
@@ -410,58 +360,12 @@ class ProfileController extends Controller
         }
     }
 
-    public function actionCreateDriver()
-    {
-        $request = Yii::$app->request;
-        $model = new \backend\models\Drivers();
-
-        if($request->isAjax){
-            /*
-            *   Process for ajax request
-            */
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            
-            if($model->load($request->post()) && $model->validate()){
-                $model->save();
-                $images = [];
-                $uploadDir = "uploads/drivers/";
-                for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
-
-                $ext = "";
-                $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
-
-                $fPath =$model->id .'('.$i.')'. rand() . ".$ext";
-                    if($ext != ""){
-                       $images []= $fPath;
-                       $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
-                    }
-                }
-                $model->images = implode(',',$images);
-                $model->save();
-                 return [
-                    'forceClose'=>true,
-                    'forceReload'=>'#crud-datatable-pjax-2'
-                 ];
-               }else{           
-                return [
-                    'title'=> Yii::t('app','Create'),
-                    'size'=>'normal',
-                    'content'=>$this->renderAjax('create-drivers', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn_red drug sobs1','data-dismiss'=>"modal"]).
-                                Html::button(Yii::t('app','Save'),['class'=>'btn_red drug sobs1','type'=>"submit"])
-        
-                ];         
-            }
-        }
-    }
-
      public function actionUpdateDriver($id)
     {
         $request = Yii::$app->request;
         $model = \backend\models\Drivers::find()->where(['id'=>$id])->one();
         $old_images = explode(',', $model->images);
+        Yii::$app->session['active'] = 2;
         
         $st = [];
         foreach ($old_images as $key => $value) {

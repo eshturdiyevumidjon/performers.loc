@@ -33,7 +33,7 @@ use yii\widgets\ActiveForm;
           <div class="col-md-6 order_left"> 
             <h4><?=Yii::t('app','Address')?></h4>
              <?= $form->field($model, 'shipping_address')->textInput(['placeholder'=>$model->getAttributeLabel('shipping_address'),'class'=>'my_input otp_punkt'])->label(false) ?>
-             <?= $form->field($model, 'shipping_house_type')->textInput(['placeholder'=>Yii::t('app','Department'),'class'=>'my_input'])->label(false) ?>
+             <?= $form->field($model, 'shipping_house_type')->textInput(['placeholder'=>Yii::t('app','Apartment'),'class'=>'my_input'])->label(false) ?>
              <?= $form->field($model, 'shipping_house_floor')->textInput(['placeholder'=>$model->getAttributeLabel('shipping_house_floor'),'class'=>'my_input'])->label(false) ?>
               <div class="form-group_checkbox">
                   <input type="checkbox" id="bwwp" name="shipping_house_lift" value="1" <?=($model->shipping_house_lift ==1)? "checked":""?>>
@@ -43,7 +43,7 @@ use yii\widgets\ActiveForm;
             <hr class="ker">
             <div id="map_for_mobile"></div>
             <?= $form->field($model, 'delivery_address')->textInput(['placeholder'=>$model->getAttributeLabel('delivery_address'),'class'=>'my_input otp_punkt2'])->label(false) ?>
-             <?= $form->field($model, 'delivery_house_type')->textInput(['placeholder'=>Yii::t('app','Department'),'class'=>'my_input'])->label(false) ?>
+             <?= $form->field($model, 'delivery_house_type')->textInput(['placeholder'=>Yii::t('app','Apartment'),'class'=>'my_input'])->label(false) ?>
 
              <?= $form->field($model, 'delivery_house_floor')->textInput(['placeholder'=>$model->getAttributeLabel('delivery_house_floor'),'class'=>'my_input'])->label(false) ?>
              <div class="form-group_checkbox negat">
@@ -225,7 +225,7 @@ use yii\widgets\ActiveForm;
               <button type="button" class="remove_photo" name="<?=($i+1)?>"><img src="/images/minus_a.svg" alt=""></button>
               <img src="" alt="" id="image_upload_preview<?=($i+1)?>">
               <label class="add_photo" for="my-file-selector<?=($i+1)?>">
-                <input id="my-file-selector<?=($i+1)?>" type="file" alt="<?=($i+1)?>" class="d-none" name="images[]">
+                <input id="my-file-selector<?=($i+1)?>" type="file" alt="<?=($i+1)?>" class="d-none" name="images[]" accept="image/*">
                 <img src="/images/plus_a.svg" alt="">
                </label>
             </div>  
