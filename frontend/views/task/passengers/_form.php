@@ -30,11 +30,15 @@ use yii\widgets\ActiveForm;
           <div class="col-md-6 order_left"> 
             <h4><?=Yii::t('app','Address')?></h4>
              <?= $form->field($model, 'shipping_address')->textInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input otp_punkt','id'=>'shipping_address'])->label(false) ?>
+             <?= $form->field($model, 'shipping_coordinate_x')->hiddenInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input hidden otp_punkt','id'=>'shipping_address_coordinate_x'])->label(false) ?>
+             <?= $form->field($model, 'shipping_coordinate_y')->hiddenInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input hidden otp_punkt','id'=>'shipping_address_coordinate_y'])->label(false) ?>
             <hr>
              <?= $form->field($model, 'delivery_address')->textInput(['placeholder'=>Yii::t('app','Destination'),'class'=>'my_input otp_punkt2','id'=>'delivery_address'])->label(false) ?>
-            <div class="d-flex align-items-center justify-content-between tire d_mob_none">
-              <h4>Время в пути: <span>43 ч 03 мин</span></h4>
-              <h4>Расстояние:  <span>3406 км</span></h4>
+              <?= $form->field($model, 'delivery_coordinate_x')->hiddenInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input hidden otp_punkt','id'=>'delivery_address_coordinate_x'])->label(false) ?>
+             <?= $form->field($model, 'delivery_coordinate_y')->hiddenInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input hidden otp_punkt','id'=>'delivery_address_coordinate_y'])->label(false) ?>
+            <div class="d-flex align-items-center justify-content-between tire d_mob_none" id="inform">
+              <h4><?=Yii::t('app','Travel time')?>: <span id="time"></span></h4>
+              <h4><?=Yii::t('app','Distance')?>: <span id="destination"></span></h4>
             </div>
             <div id="map_for_mobile"></div>
             <h4 class="mt10"><?=Yii::t('app','Date')?></h4>
@@ -187,103 +191,7 @@ use yii\widgets\ActiveForm;
     </div>
   </div>
 </section>
- 
-<script>
-// This example requires the Places library. Include the libraries=places
-// parameter when you first load the API. For example:
-// <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
-
-function initMap() {
-  var map = new google.maps.Map(document.getElementById('map'), {
-    mapTypeControl: false,
-    center: {lat: -33.8688, lng: 151.2195},
-    zoom: 13
-  });
-
-  new AutocompleteDirectionsHandler(map);
-}
-
-/**
- * @constructor
- */
-function AutocompleteDirectionsHandler(map) {
-  this.map = map;
-  this.originPlaceId = null;
-  this.destinationPlaceId = null;
-  this.travelMode = 'WALKING';
-  this.directionsService = new google.maps.DirectionsService;
-  this.directionsRenderer = new google.maps.DirectionsRenderer;
-  this.directionsRenderer.setMap(map);
-
-  var originInput = document.getElementById('shipping_address');
-  var destinationInput = document.getElementById('delivery_address');
-  // var modeSelector = document.getElementById('mode-selector');
-
-  var originAutocomplete = new google.maps.places.Autocomplete(originInput);
-  // Specify just the place data fields that you need.
-  originAutocomplete.setFields(['place_id']);
-
-  var destinationAutocomplete =
-      new google.maps.places.Autocomplete(destinationInput);
-  // Specify just the place data fields that you need.
-  destinationAutocomplete.setFields(['place_id']);
-
-  this.setupClickListener('changemode-walking', 'WALKING');
-  this.setupClickListener('changemode-transit', 'TRANSIT');
-  this.setupClickListener('changemode-driving', 'DRIVING');
-
-  this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
-  this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
-
-  this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originInput);
-  this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(
-      destinationInput);
-  // this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(modeSelector);
-}
-
-AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function(
-    autocomplete, mode) {
-  var me = this;
-  autocomplete.bindTo('bounds', this.map);
-
-  autocomplete.addListener('place_changed', function() {
-    var place = autocomplete.getPlace();
-
-    if (!place.place_id) {
-      window.alert('Please select an option from the dropdown list.');
-      return;
-    }
-    if (mode === 'ORIG') {
-      me.originPlaceId = place.place_id;
-    } else {
-      me.destinationPlaceId = place.place_id;
-    }
-    me.route();
-  });
-};
-
-AutocompleteDirectionsHandler.prototype.route = function() {
-  if (!this.originPlaceId || !this.destinationPlaceId) {
-    return;
-  }
-  var me = this;
-
-  this.directionsService.route(
-      {
-        origin: {'placeId': this.originPlaceId},
-        destination: {'placeId': this.destinationPlaceId},
-        travelMode: this.travelMode
-      },
-      function(response, status) {
-        if (status === 'OK') {
-          me.directionsRenderer.setDirections(response);
-        } else {
-          window.alert('Directions request failed due to ' + status);
-        }
-      });
-};
-</script>
-<script  async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAIUZfJr01SrsKER6zBPwBcmPNy0rfXPc&libraries=places&callback=initMap"></script>
+<?=$this->render('../request/map.php')?> 
 <?php
 $this->registerJs(<<<JS
   if($('#bww5').prop("checked") == true)

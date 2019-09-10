@@ -32,7 +32,9 @@ use yii\widgets\ActiveForm;
        <div class="row">
           <div class="col-md-6 order_left"> 
             <h4><?=Yii::t('app','Address')?></h4>
-             <?= $form->field($model, 'shipping_address')->textInput(['placeholder'=>$model->getAttributeLabel('shipping_address'),'class'=>'my_input otp_punkt'])->label(false) ?>
+               <?= $form->field($model, 'shipping_address')->textInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input otp_punkt','id'=>'shipping_address'])->label(false) ?>
+             <?= $form->field($model, 'shipping_coordinate_x')->hiddenInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input hidden otp_punkt','id'=>'shipping_address_coordinate_x'])->label(false) ?>
+             <?= $form->field($model, 'shipping_coordinate_y')->hiddenInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input hidden otp_punkt','id'=>'shipping_address_coordinate_y'])->label(false) ?>
              <?= $form->field($model, 'shipping_house_type')->textInput(['placeholder'=>Yii::t('app','Apartment'),'class'=>'my_input'])->label(false) ?>
              <?= $form->field($model, 'shipping_house_floor')->textInput(['placeholder'=>$model->getAttributeLabel('shipping_house_floor'),'class'=>'my_input'])->label(false) ?>
               <div class="form-group_checkbox">
@@ -42,7 +44,9 @@ use yii\widgets\ActiveForm;
             
             <hr class="ker">
             <div id="map_for_mobile"></div>
-            <?= $form->field($model, 'delivery_address')->textInput(['placeholder'=>$model->getAttributeLabel('delivery_address'),'class'=>'my_input otp_punkt2'])->label(false) ?>
+              <?= $form->field($model, 'delivery_address')->textInput(['placeholder'=>Yii::t('app','Destination'),'class'=>'my_input otp_punkt2','id'=>'delivery_address'])->label(false) ?>
+              <?= $form->field($model, 'delivery_coordinate_x')->hiddenInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input hidden otp_punkt','id'=>'delivery_address_coordinate_x'])->label(false) ?>
+             <?= $form->field($model, 'delivery_coordinate_y')->hiddenInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input hidden otp_punkt','id'=>'delivery_address_coordinate_y'])->label(false) ?>
              <?= $form->field($model, 'delivery_house_type')->textInput(['placeholder'=>Yii::t('app','Apartment'),'class'=>'my_input'])->label(false) ?>
 
              <?= $form->field($model, 'delivery_house_floor')->textInput(['placeholder'=>$model->getAttributeLabel('delivery_house_floor'),'class'=>'my_input'])->label(false) ?>
@@ -50,9 +54,9 @@ use yii\widgets\ActiveForm;
                   <input type="checkbox" id="bwwpr" name="delivery_house_lift"value="1" <?=($model->delivery_house_lift ==1)? "checked":""?>>
                   <label for="bwwpr">Наличие лифта</label>
               </div>
-            <div class="d-flex align-items-center justify-content-between d_mob_none">
-              <h4>Время в пути: <span>43 ч 03 мин</span></h4>
-              <h4>Расстояние:  <span>3406 км</span></h4>
+            <div class="d-flex align-items-center justify-content-between d_mob_none" id="inform">
+             <h4><?=Yii::t('app','Travel time')?>: <span id="time"></span></h4>
+              <h4><?=Yii::t('app','Distance')?>: <span id="destination"></span></h4>
             </div>
           </div>
           <div class="col-md-6 d_mob_none carta_d">
@@ -254,99 +258,9 @@ use yii\widgets\ActiveForm;
   </div>
 </section>
  
-<script>
-// This example requires the Places library. Include the libraries=places
-// parameter when you first load the API. For example:
-// <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
-function initMap() {
-  var map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: -33.8688, lng: 151.2195},
-    zoom: 13
-  });
-  var card = document.getElementById('pac-card');
-  var input = document.getElementById('pac-input');
-  var types = document.getElementById('type-selector');
-  var strictBounds = document.getElementById('strict-bounds-selector');
+<?=$this->render('../request/map.php')?>
 
-  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card);
-
-  var autocomplete = new google.maps.places.Autocomplete(input);
-
-  // Bind the map's bounds (viewport) property to the autocomplete object,
-  // so that the autocomplete requests use the current map bounds for the
-  // bounds option in the request.
-  autocomplete.bindTo('bounds', map);
-
-  // Set the data fields to return when the user selects a place.
-  autocomplete.setFields(
-      ['address_components', 'geometry', 'icon', 'name']);
-
-  var infowindow = new google.maps.InfoWindow();
-  var infowindowContent = document.getElementById('infowindow-content');
-  infowindow.setContent(infowindowContent);
-  var marker = new google.maps.Marker({
-    map: map,
-    anchorPoint: new google.maps.Point(0, -29)
-  });
-
-  autocomplete.addListener('place_changed', function() {
-    infowindow.close();
-    marker.setVisible(false);
-    var place = autocomplete.getPlace();
-    if (!place.geometry) {
-      // User entered the name of a Place that was not suggested and
-      // pressed the Enter key, or the Place Details request failed.
-      window.alert("No details available for input: '" + place.name + "'");
-      return;
-    }
-
-    // If the place has a geometry, then present it on a map.
-    if (place.geometry.viewport) {
-      map.fitBounds(place.geometry.viewport);
-    } else {
-      map.setCenter(place.geometry.location);
-      map.setZoom(17);  // Why 17? Because it looks good.
-    }
-    marker.setPosition(place.geometry.location);
-    marker.setVisible(true);
-
-    var address = '';
-    if (place.address_components) {
-      address = [
-        (place.address_components[0] && place.address_components[0].short_name || ''),
-        (place.address_components[1] && place.address_components[1].short_name || ''),
-        (place.address_components[2] && place.address_components[2].short_name || '')
-      ].join(' ');
-    }
-
-    infowindowContent.children['place-icon'].src = place.icon;
-    infowindowContent.children['place-name'].textContent = place.name;
-    infowindowContent.children['place-address'].textContent = address;
-    infowindow.open(map, marker);
-  });
-
-  // Sets a listener on a radio button to change the filter type on Places
-  // Autocomplete.
-  function setupClickListener(id, types) {
-    var radioButton = document.getElementById(id);
-    radioButton.addEventListener('click', function() {
-      autocomplete.setTypes(types);
-    });
-  }
-
-  setupClickListener('changetype-all', []);
-  setupClickListener('changetype-address', ['address']);
-  setupClickListener('changetype-establishment', ['establishment']);
-  setupClickListener('changetype-geocode', ['geocode']);
-
-  document.getElementById('use-strict-bounds')
-      .addEventListener('click', function() {
-        console.log('Checkbox clicked! New state=' + this.checked);
-        autocomplete.setOptions({strictBounds: this.checked});
-      });
-}
-</script>
 <script  async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0nNC2JY5h2LxGdKCTXSXMV5ZNDrpwvvA&callback=initMap"></script>
 <?php
 $this->registerJs(<<<JS

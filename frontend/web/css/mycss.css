@@ -14,6 +14,9 @@
 .pull-left{
     float: left;
 }
+#inform{
+  display: none !important;
+}
 .my_modal_submit{
     bottom: 80px;
     text-align: center;

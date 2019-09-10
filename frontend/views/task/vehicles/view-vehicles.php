@@ -92,19 +92,19 @@ use yii\widgets\DetailView;
                 </div>
                 <div class="col-sm-6 v_koord">
                   <div class="v_trans">
-                    <div>
+                    <div style="word-break: break-all;">
                       <img src="/images/otp.svg" alt="" class="nt-1">
-                      <span><?=$model->shipping_address?></span>
+                      <strong><?=$model->shipping_address?></strong>
                     </div>
                     <img src="/images/mang.svg" alt="" class="nt-2">
-                    <div>
+                    <div style="word-break: break-all;">
                       <img src="/images/otp2.svg" alt="" class="nt-3">
-                      <span><?=$model->delivery_address?></span>
+                      <strong><?=$model->delivery_address?></strong>
                     </div>
                   </div>
                   <div>
-                    <p>Расстояние:   <b>3406 км</b></p>
-                    <p>Время в пути:  <b>43 ч 03 мин</b></p>
+                    <p><?=Yii::t('app','Distance')?>:   <b id="destination"></b></p>
+                    <p><?=Yii::t('app','Travel time')?>:  <b id="time"></b></p>
                   </div>
                 </div>
               </div>
@@ -126,6 +126,5 @@ use yii\widgets\DetailView;
         </div>
       </div>
     </section>
-    ]) ?>
-
-</div>
+<?= $this->render('../request/map2',['model'=>$model])?>
+  
