@@ -147,12 +147,13 @@ $lang = Yii::$app->language;
     <div class="cabinet_right">
       <div class="user_all">
        <div class="user_dorian">
-            <img src="/uploads/avatars/nouser3.png" alt="" id="image_upload_preview">
-            <form id="form" action="ajaxupload.php" method="post" enctype="multipart/form-data">
-              <input type="file" name="user_image" id="inputFile">
+            <img src="<?=($user->image != null ) ? '/admin/uploads/avatars/'.$user->image : '/uploads/nouser3.png'?>" id="image_upload_preview">
+            <form id="form" action="<?=$lang?>/profile/change-photo" method="post" enctype="multipart/form-data">
+              <input type="file" name="user_image" id="inputFile" accept="image/*">
             </form>
             <label for="inputFile"><img src="/images/camera_photo.svg" alt=""><p style="color:black;"><?=Yii::t('app','Change photo')?></p></label>
         </div>
+        <div id="err"></div>
         <p><?= $user->username ?></p>
         <div class="rating">
      <!--      <a href="#" class="rating_img">
@@ -168,9 +169,54 @@ $lang = Yii::$app->language;
           <a href="/<?=$lang?>/profile/edit-profile" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Edit Account')?></a>
             <a href="/<?=$lang?>/profile/add-autos" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Adding cars')?></a>
       </div>
-        <?=$this->render('cabinet_right',['company'=>$company]);?>
+        <?=$this->render('cabinet_right',['company'=>$company,'banner'=>$banner]);?>
     </div>
   </div>
  
 </div>
 </section>
+<?php
+$this->registerJs(<<<JS
+   function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#image_upload_preview').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#inputFile").on('change',(function(e) {
+      readURL(this);
+      e.preventDefault();
+      $.ajax({
+       url: "/$lang/profile/change-photo",
+       type: "POST",
+       data:  new FormData(this),
+       contentType: false,
+             cache: false,
+       processData:false,
+       beforeSend : function()
+       {
+        //$("#preview").fadeOut();
+        $("#err").fadeOut();
+       },
+       success: function(data)
+          {
+            alert(data);
+             // view uploaded file.
+             $("#preview").html(data).fadeIn();
+             $("#form")[0].reset(); 
+          },
+         error: function(e) 
+          {
+        $("#err").html(e).fadeIn();
+          }          
+        });
+     }));
+JS
+);
+?>

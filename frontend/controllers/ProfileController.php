@@ -71,6 +71,7 @@ class ProfileController extends Controller
         $company = \backend\models\AboutCompany::findOne(1);
         $my_tasks = \backend\models\Tasks::find()->where(['user_id'=>$user->id]);
         $all_tasks = \backend\models\Tasks::find()->all();
+        $banner = \backend\models\Banners::findOne(1);
 
         $countQuery = clone $my_tasks;
         $pages = new Pagination(['totalCount' => $countQuery->count()]);
@@ -79,14 +80,14 @@ class ProfileController extends Controller
             ->all();
 
         if($user->type == 3)
-            return $this->render('profile_performer',['user' => $user,'company'=>$company,'all_tasks'=>$all_tasks]);
+            return $this->render('profile_performer',['user' => $user,'company'=>$company,'all_tasks'=>$all_tasks,'banner'=>$banner]);
         if($user->type == 4)
-            return $this->render('profile_customer',['user' => $user,'company'=>$company,'my_tasks'=>$models,'pages' => $pages]);
+            return $this->render('profile_customer',['user' => $user,'company'=>$company,'my_tasks'=>$models,'banner'=>$banner,'pages' => $pages]);
     }
 
     public function beforeAction($action)
     {
-        if ($action->id == 'edit-profile' || $action->id == 'change-password' || $action->id == 'delete-transport' || $action->id == 'create-auto1' || $action->id == 'create-driver1' || $action->id == 'add-autos') {
+        if ($action->id == 'edit-profile' || $action->id == 'change-password' || $action->id == 'delete-transport' || $action->id == 'create-auto1' || $action->id == 'create-driver1' || $action->id == 'add-autos' || $action->id == 'change-photo') {
             $this->enableCsrfValidation = false;
         }
 
@@ -148,6 +149,7 @@ class ProfileController extends Controller
     {
         $id = Yii::$app->user->identity->id;
         $user = $this->findModel($id);
+        $banner = \backend\models\Banners::findOne(1);
         
         if(isset($_POST['save_changes']))
         {
@@ -169,7 +171,7 @@ class ProfileController extends Controller
                 return $this->render('edit_profile',['user' => $user]);
             }
         }
-        return $this->render('edit_profile',['user' => $user]);
+        return $this->render('edit_profile',['user' => $user,'banner'=>$banner]);
     }
 
     //auto and drivers -- performers
@@ -514,6 +516,31 @@ class ProfileController extends Controller
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+    public function actionChangePhoto()
+    {
+        $user = \common\models\User::findOne($_POST['id']);
+        $path = '/admin/uploads/avatars/'; // upload directory
+
+        if($_FILES['image'])
+        {
+
+        $img = $_FILES['image']['name'];
+        $tmp = $_FILES['image']['tmp_name'];
+
+        $ext = strtolower(pathinfo($img, PATHINFO_EXTENSION));
+
+        $user->image = $user->id .'('.$i.')'. rand() . '.'.$ext;
+        $path = $path. $user->image; 
+        if(move_uploaded_file($tmp,$path)) 
+            {
+                echo "<img src='$path' />";
+                 $user->save();
+            }
+        }
+        else{
+            echo "sarvar";
         }
     }
 }

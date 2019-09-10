@@ -31,7 +31,7 @@ use yii\widgets\ActiveForm;
             <h4><?=Yii::t('app','Address')?></h4>
              <?= $form->field($model, 'shipping_address')->textInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input otp_punkt','id'=>'shipping_address'])->label(false) ?>
             <hr>
-             <?= $form->field($model, 'delivery_address')->textInput(['placeholder'=>Yii::t('app','Destination'),'class'=>'my_input otp_punkt2'])->label(false) ?>
+             <?= $form->field($model, 'delivery_address')->textInput(['placeholder'=>Yii::t('app','Destination'),'class'=>'my_input otp_punkt2','id'=>'delivery_address'])->label(false) ?>
             <div class="d-flex align-items-center justify-content-between tire d_mob_none">
               <h4>Время в пути: <span>43 ч 03 мин</span></h4>
               <h4>Расстояние:  <span>3406 км</span></h4>
@@ -195,91 +195,93 @@ use yii\widgets\ActiveForm;
 
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
+    mapTypeControl: false,
     center: {lat: -33.8688, lng: 151.2195},
     zoom: 13
   });
-  var card = document.getElementById('pac-card');
-  var input = document.getElementById('shipping_address');
-  var types = document.getElementById('type-selector');
-  var strictBounds = document.getElementById('strict-bounds-selector');
 
-  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card);
+  new AutocompleteDirectionsHandler(map);
+}
 
-  var autocomplete = new google.maps.places.Autocomplete(input);
+/**
+ * @constructor
+ */
+function AutocompleteDirectionsHandler(map) {
+  this.map = map;
+  this.originPlaceId = null;
+  this.destinationPlaceId = null;
+  this.travelMode = 'WALKING';
+  this.directionsService = new google.maps.DirectionsService;
+  this.directionsRenderer = new google.maps.DirectionsRenderer;
+  this.directionsRenderer.setMap(map);
 
-  // Bind the map's bounds (viewport) property to the autocomplete object,
-  // so that the autocomplete requests use the current map bounds for the
-  // bounds option in the request.
-  autocomplete.bindTo('bounds', map);
+  var originInput = document.getElementById('shipping_address');
+  var destinationInput = document.getElementById('delivery_address');
+  // var modeSelector = document.getElementById('mode-selector');
 
-  // Set the data fields to return when the user selects a place.
-  autocomplete.setFields(
-      ['address_components', 'geometry', 'icon', 'name']);
+  var originAutocomplete = new google.maps.places.Autocomplete(originInput);
+  // Specify just the place data fields that you need.
+  originAutocomplete.setFields(['place_id']);
 
-  var infowindow = new google.maps.InfoWindow();
-  var infowindowContent = document.getElementById('infowindow-content');
-  infowindow.setContent(infowindowContent);
-  var marker = new google.maps.Marker({
-    map: map,
-    anchorPoint: new google.maps.Point(0, -29)
-  });
+  var destinationAutocomplete =
+      new google.maps.places.Autocomplete(destinationInput);
+  // Specify just the place data fields that you need.
+  destinationAutocomplete.setFields(['place_id']);
+
+  this.setupClickListener('changemode-walking', 'WALKING');
+  this.setupClickListener('changemode-transit', 'TRANSIT');
+  this.setupClickListener('changemode-driving', 'DRIVING');
+
+  this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
+  this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
+
+  this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(originInput);
+  this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(
+      destinationInput);
+  // this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(modeSelector);
+}
+
+AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function(
+    autocomplete, mode) {
+  var me = this;
+  autocomplete.bindTo('bounds', this.map);
 
   autocomplete.addListener('place_changed', function() {
-    infowindow.close();
-    marker.setVisible(false);
     var place = autocomplete.getPlace();
-    if (!place.geometry) {
-      // User entered the name of a Place that was not suggested and
-      // pressed the Enter key, or the Place Details request failed.
-      window.alert("No details available for input: '" + place.name + "'");
+
+    if (!place.place_id) {
+      window.alert('Please select an option from the dropdown list.');
       return;
     }
-
-    // If the place has a geometry, then present it on a map.
-    if (place.geometry.viewport) {
-      map.fitBounds(place.geometry.viewport);
+    if (mode === 'ORIG') {
+      me.originPlaceId = place.place_id;
     } else {
-      map.setCenter(place.geometry.location);
-      map.setZoom(17);  // Why 17? Because it looks good.
+      me.destinationPlaceId = place.place_id;
     }
-    marker.setPosition(place.geometry.location);
-    marker.setVisible(true);
-
-    var address = '';
-    if (place.address_components) {
-      address = [
-        (place.address_components[0] && place.address_components[0].short_name || ''),
-        (place.address_components[1] && place.address_components[1].short_name || ''),
-        (place.address_components[2] && place.address_components[2].short_name || '')
-      ].join(' ');
-    }
-
-    infowindowContent.children['place-icon'].src = place.icon;
-    infowindowContent.children['place-name'].textContent = place.name;
-    infowindowContent.children['place-address'].textContent = address;
-    infowindow.open(map, marker);
+    me.route();
   });
+};
 
-  // Sets a listener on a radio button to change the filter type on Places
-  // Autocomplete.
-  function setupClickListener(id, types) {
-    var radioButton = document.getElementById(id);
-    radioButton.addEventListener('click', function() {
-      autocomplete.setTypes(types);
-    });
+AutocompleteDirectionsHandler.prototype.route = function() {
+  if (!this.originPlaceId || !this.destinationPlaceId) {
+    return;
   }
+  var me = this;
 
-  setupClickListener('changetype-all', []);
-  setupClickListener('changetype-address', ['address']);
-  setupClickListener('changetype-establishment', ['establishment']);
-  setupClickListener('changetype-geocode', ['geocode']);
-
-  document.getElementById('use-strict-bounds')
-      .addEventListener('click', function() {
-        console.log('Checkbox clicked! New state=' + this.checked);
-        autocomplete.setOptions({strictBounds: this.checked});
+  this.directionsService.route(
+      {
+        origin: {'placeId': this.originPlaceId},
+        destination: {'placeId': this.destinationPlaceId},
+        travelMode: this.travelMode
+      },
+      function(response, status) {
+        if (status === 'OK') {
+          me.directionsRenderer.setDirections(response);
+        } else {
+          window.alert('Directions request failed due to ' + status);
+        }
       });
-}
+};
 </script>
 <script  async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAIUZfJr01SrsKER6zBPwBcmPNy0rfXPc&libraries=places&callback=initMap"></script>
 <?php

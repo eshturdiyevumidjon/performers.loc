@@ -129,9 +129,10 @@ $this->params['breadcrumbs'][] = $this->title;
       <div class="cabinet_right">
         <div class="user_all">
           <div class="user_dorian">
-              <img src="/uploads/avatars/nouser3.png" alt="" id="image_upload_preview">
+              <img src="<?=($user->image != null ) ? '/admin/uploads/avatars/'.$user->image : '/uploads/nouser3.png'?>" id="image_upload_preview">
               <form id="form" action="ajaxupload.php" method="post" enctype="multipart/form-data">
-                <input type="file" name="user_image" id="inputFile">
+                <input type="hidden" name="id" value="<?=$user->id?>">
+                <input type="file" name="user_image" id="inputFile" accept="image/*">
               </form>
               <label for="inputFile"><img src="/images/camera_photo.svg" alt=""><p style="color:black;"><?=Yii::t('app','Change photo')?></p></label>
           </div>
@@ -151,7 +152,7 @@ $this->params['breadcrumbs'][] = $this->title;
              <a href="/<?=$lang?>/profile/edit-profile" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Edit Account')?></a>
           </div>
         </div>
-        <?=$this->render('cabinet_right',['company'=>$company]);?>
+        <?=$this->render('cabinet_right',['company'=>$company,'banner'=>$banner]);?>
       </div>
     </div>
    

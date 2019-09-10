@@ -2,7 +2,9 @@
 use yii\widgets\Pjax;
 ?>
 <?php Pjax::begin(['enablePushState' => false,'id' => 'crud-datatable-pjax'])?>
-
+<?php if(count($requests)>0): ?>
+<h2>Заявка</h2>
+<?php endif;?>
 <?php foreach ($requests as $key => $value): ?>
   <div class="item_to_city" style="margin-bottom: 3px;">
     <div class="item_to_city_top">
@@ -58,7 +60,7 @@ use yii\widgets\Pjax;
           <?php if ($user->type == 4): ?>
           <span><?=$value['user']->phone?></span>
           <?php else: ?>
-          <span>+998 ** *** ** **</span>
+          <span>*** ** *** ** **</span>
           <?php endif ?>
         </div>
         <div class="col-sm-3">
@@ -69,7 +71,7 @@ use yii\widgets\Pjax;
             <?php endforeach ?>
           </div>
         </div>
-      <?php if ($user->type == 4): ?>
+      <?php if ($active_user->type == 4): ?>
         <div class="col-sm-3">
           <a href="#" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Order')?></a>
         </div>

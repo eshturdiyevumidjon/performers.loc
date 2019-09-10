@@ -138,7 +138,7 @@ $lang = Yii::$app->language;
         </div>
       </div>
       <div class="cabinet_right">
-        <?=$this->render('cabinet_right',['company'=>$company]);?>
+        <?=$this->render('cabinet_right',['company'=>$company,'banners'=>$banner]);?>
       </div>
     </div>
    

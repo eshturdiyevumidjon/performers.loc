@@ -1,7 +1,7 @@
 <div class="confirm_cont">
   <div class="user_inner">
-    <?php if ($user->image != null && file_exists($user->image)): ?>
-      <img src="/uploads/avatars/<?=$user->image?>">
+    <?php if ($user->image != null ): ?>
+      <img src="/admin/uploads/avatars/<?=$user->image?>">
     <?php else: ?>
       <img src="/uploads/nouser3.png">
     <?php endif ?>

@@ -113,15 +113,14 @@ use yii\widgets\DetailView;
               <p><?=Yii::t('app','Paid')?>: <b>30%</b><!-- <span>2 347 457 руб.</span> --></p>
           <a href="/site/cancellation-policy" target="_blank" class="forget_pass"><?=Yii::t('app','Cancellation Policy')?></a>
             </div>
-            <?php if ($user->type == 3): ?>
+            <?php if ($active_user->type == 3): ?>
               <div class="text_right_ent">
                 <?=\yii\helpers\Html::a('<span class="aft_back"></span>'.Yii::t('app','Order service'), ['create-request','id'=>$model->id],
                   ['role'=>'modal-remote', 'class'=>'enter_to_site'])?>
               </div>
             <?php endif ?>
             <div class="zayavka">
-              <h2>Заявка</h2>
-                <?= $this->render('../request/index',['user'=>$user,'requests'=>$requests])?>
+                <?= $this->render('../request/index',['user'=>$user,'active_user'=>$active_user,'requests'=>$requests])?>
             </div>
           </div>
         </div>

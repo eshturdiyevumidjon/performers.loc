@@ -74,7 +74,8 @@ class TaskController extends Controller
     public function actionView($id)
     {   
         $model = $this->findModel($id);
-        $user = \common\models\User::findOne(Yii::$app->user->identity->id);
+        $user = $model->user;
+        $active_user = \common\models\User::findOne(Yii::$app->user->identity->id);
         $banner = \backend\models\Banners::findOne(1);
         $requests = \backend\models\Request::find()->joinWith('user')->select('user.*,request.*')->where(['request.task_id'=>$id])->all();
        
@@ -85,24 +86,28 @@ class TaskController extends Controller
                             'user'=>$user,
                             'banner'=>$banner,
                             'requests'=>$requests,
+                            'active_user'=>$active_user,
                         ]);
             case '2': return $this->render('vehicles/view-vehicles', [
                             'model' => $model,
                             'user'=>$user,
                             'banner'=>$banner,
                             'requests'=>$requests,
+                            'active_user'=>$active_user,
                         ]);
             case '3': return $this->render('goods/view-goods', [
                             'model' => $model,
                             'user'=>$user,
                             'banner'=>$banner,
                             'requests'=>$requests,
+                            'active_user'=>$active_user,
                         ]);
             default:  return $this->render('help/view-help', [
                             'model' => $model,
                             'user'=>$user,
                             'banner'=>$banner,
                             'requests'=>$requests,
+                            'active_user'=>$active_user,
                         ]);;
         }
     

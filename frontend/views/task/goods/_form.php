@@ -71,6 +71,7 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'weight')->widget(\yii\widgets\MaskedInput::className(), [
                     'options' => [
                         'class' => 'my_input',
+
                         'placeholder'=> $model->getAttributeLabel('weight')
                     ],
                     'clientOptions' => [

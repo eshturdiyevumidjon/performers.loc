@@ -6,6 +6,9 @@ $language=Yii::$app->language;
 $langs=\backend\models\Lang::getLanguages();
 $pathInfo=Yii::$app->request->pathInfo;
 $user=\common\models\User::find()->where(['id' => Yii::$app->user->identity->id])->one();
+$hot_tasks = \backend\models\Tasks::find()->orderBy([
+    'id' => SORT_DESC
+    ])->limit(4)->all();
 ?>
 <header <?=( $pathInfo == 'site/index' || $pathInfo == '')?'class="fixed_header"':''?>>
   <div class="container">
@@ -17,27 +20,18 @@ $user=\common\models\User::find()->where(['id' => Yii::$app->user->identity->id]
               <i class="fa fa-bars" aria-hidden="true"></i>
               <i class="fa fa-times" aria-hidden="true"></i>
           </div>
-          <?php if(/*!Yii::$app->user->isGuest*/1):?>
+          <?php if(!Yii::$app->user->isGuest):?>
           <div class="dropdown notif_dropdown">
                   <a href="#" class="notification dropdown-toggle" data-toggle="dropdown" ><img src="/images/notification.svg" alt=""><img src="/images/notification_white.svg" alt=""></a>
                 <!-- </button> -->
                 <div class="dropdown-menu flex-column" aria-labelledby="dropdownMenuButton">
-                  <a class=" active" href="#">
-                    <h5><?=Yii::t('app','Organization of your work')?></h5>
-                    <p><?=Yii::t('app','Adding a structure to organize your work.')?></p>
+                  <?php foreach ($hot_tasks as $value): ?>
+                    <a class="" href="/task/view?id=<?=$value->id?>">
+                    <h5><?=Tasks::getInf()[$value->type-1][0]?></h5>
+                    <p><?=$value->comment?></p>
                   </a>
-                  <a class="" href="#">
-                    <h5><?=Yii::t('app','Team work')?></h5>
-                    <p><?=Yii::t('app','Inviting other people, collaboration and notifications.')?></p>
                   </a>
-                  <a class="" href="#">
-                    <h5><?=Yii::t('app','Use on your phone')?></h5>
-                    <p><?=Yii::t('app','How to access iTake on your iPhone or Android device.')?></p>
-                  </a>
-                  <a class="" href="#">
-                    <h5><?=Yii::t('app','Use on your phone')?></h5>
-                    <p><?=Yii::t('app','How to access iTake on your iPhone or Android device.')?></p>
-                  </a>
+                  <?php endforeach ?>
                 </div>
               </div>
         <?php endif;?>
@@ -57,12 +51,12 @@ $user=\common\models\User::find()->where(['id' => Yii::$app->user->identity->id]
             </div>
         </div>
         <?php if(Yii::$app->user->isGuest):?>
-       <?=Html::a('<span class="aft_back"></span>'.Yii::t('app','Login / Register').' <i class="glyphicon glyphicon-plus"></i>', ['login'],
+       <?=Html::a('<span class="aft_back"></span>'.Yii::t('app','Login / Register').' <i class="glyphicon glyphicon-plus"></i>', ['/site/login'],
         ['role'=>'modal-remote'/*'data-pjax'=>0*/, 'class'=>'enter_to_site'])?>
       <?php else:?>
         <div class="dropdown user_h">
           <button class="dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" >
-            <img src="/images/user.jpg" alt="">
+            <?=$user->getUserAvatar('_columns')?>
             <span><?=$user->username?></span>
           </button>
           <div class="dropdown-menu flex-column" aria-labelledby="dropdownMenuButton2">
