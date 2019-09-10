@@ -208,6 +208,8 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->image != null ? '<img style="width:100%; height:250px;" src="'.$adminka.'uploads/avatars/' . $this->image .'">' : '<img style="width:100%; height:250px;" src="'.$adminka.'uploads/nouser3.png">';
         if($for=='_columns')
            return $this->image != null ? '<img style="width:60px;" src="'.$adminka.'uploads/avatars/' . $this->image .' ">' : '<img style="width:60px;" src="'.$adminka.'uploads/nouser3.png">';
+       if($for == 'head')
+         return $this->image != null ? '<img style="width:34px;" src="'.$adminka.'uploads/avatars/' . $this->image .' ">' : '<img style="width:34px;" src="'.$adminka.'uploads/nouser3.png">';
     }
     
     /**

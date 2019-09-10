@@ -56,7 +56,7 @@ $hot_tasks = \backend\models\Tasks::find()->orderBy([
       <?php else:?>
         <div class="dropdown user_h">
           <button class="dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" >
-            <?=$user->getUserAvatar('_columns')?>
+            <?=$user->getUserAvatar('head')?>
             <span><?=$user->username?></span>
           </button>
           <div class="dropdown-menu flex-column" aria-labelledby="dropdownMenuButton2">
