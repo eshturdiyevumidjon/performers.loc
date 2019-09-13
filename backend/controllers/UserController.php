@@ -219,15 +219,15 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $request = Yii::$app->request;
-        $model = $this->findModel($id);       
-
+        $model = $this->findModel($id);  
         if($request->isAjax){
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($model->load($request->post()) && $model->save()){
-                
+                $model->role_performer = implode(',', $_POST['User']['permissions']);
+                $model->save();
                 $model->avatar = UploadedFile::getInstance($model,'avatar');
                 if(!empty($model->avatar))
                 {
@@ -243,15 +243,10 @@ class UserController extends Controller
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'forceClose'=>true,
-                    // 'size'=>'large',
-                    // 'title'=> Yii::t('app','User'),
-                    // 'content'=>$this->renderAjax('view', [
-                    //     'model' => $model,
-                    // ]),
-                    // 'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                    //         Html::a(Yii::t('app','Edit'),['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
             }else{
+                $model->permissions = explode(',', $model->role_performer);     
+
                  return [
                     'title'=> Yii::t('app','Update'),
                     'size'=>'large',
@@ -269,6 +264,7 @@ class UserController extends Controller
             if ($model->load($request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
+                $model->permissions = explode(',', $model->role_performer);     
                 return $this->render('update', [
                     'model' => $model,
                 ]);

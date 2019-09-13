@@ -27,8 +27,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="form_registration">
       <h1><?=$this->title?></h1>
       <?php $form = ActiveForm::begin([ 'options' => ['class'=>'tab-content input_styles' ]]); ?>
-           <?= $form->field($model, 'password')->textInput(['placeholder'=>Yii::t('app','New password'),'style'=>'font-size:16px;','class'=>'my_input'])->label(false); ?>
-          <?= $form->field($model, 'repassword')->textInput(['placeholder'=>Yii::t('app','Confirm password'),'style'=>'font-size:16px;','class'=>'my_input'])->label(false); ?>
+           <?= $form->field($model, 'password')->passwordInput(['placeholder'=>Yii::t('app','New password'),'style'=>'font-size:16px;','class'=>'my_input'])->label(false); ?>
+          <?= $form->field($model, 'repassword')->passwordInput(['placeholder'=>Yii::t('app','Confirm password'),'style'=>'font-size:16px;','class'=>'my_input'])->label(false); ?>
           <?= Html::submitButton( Yii::t('app','Restore password'), ['class' =>'btn_red']) ?>
              
           <?php ActiveForm::end()?>

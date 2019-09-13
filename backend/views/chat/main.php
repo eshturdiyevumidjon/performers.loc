@@ -1,198 +1,173 @@
 <?php
-use yii\helpers\Html;
-use yii\widgets\LinkPager;
-use yii\bootstrap\Modal;
-use johnitvn\ajaxcrud\CrudAsset; 
-
-$this->title=Yii::t('app','Chat');
-$this->params['breadcrumbs'][] = $this->title;
-CrudAsset::register($this);
+$adminka = Yii::$app->params['adminka'];
 ?>
+
 <div class="content-frame">                                    
-                    <!-- START CONTENT FRAME TOP -->
+    <!-- START CONTENT FRAME TOP -->
     <div class="content-frame-top">                        
         <div class="page-title">                    
-            <h2><span class="fa fa-inbox"></span> Inbox <small>(3 unread)</small></h2>
-        </div>                                                                                
-        
+            <h2><span class="fa fa-comments"></span> Messages</h2>
+        </div>                                                    
         <div class="pull-right">                            
-            <button class="btn btn-default"><span class="fa fa-cogs"></span> Settings</button>
-            <button class="btn btn-default content-frame-left-toggle"><span class="fa fa-bars"></span></button>
-        </div>                        
+            <button class="btn btn-danger"><span class="fa fa-book"></span> Contacts</button>
+            <button class="btn btn-default content-frame-right-toggle"><span class="fa fa-bars"></span></button>
+        </div>                           
     </div>
     <!-- END CONTENT FRAME TOP -->
     
-    <!-- START CONTENT FRAME LEFT -->
-    <div class="content-frame-left" style="display: none;">
-        <div class="block">
-            <?= Html::a(Yii::t('app','COMPOSE').' <i class="fa fa-edit"></i>', ['create'],
-                            ['role'=>'modal-remote','title'=> Yii::t('app','COMPOSE'), 'class'=>'btn-block btn-lg btn btn-info'])?>
+    <!-- START CONTENT FRAME RIGHT -->
+    <div class="content-frame-right" style="display: none;">
+        
+        <div class="list-group list-group-contacts border-bottom push-down-10">
+            <a href="#" class="list-group-item">                                 
+                <!-- <div class="list-group-status status-online"></div> -->
+                <img src="<?=$adminka?>/extra/images/users/user.jpg" class="pull-left" alt="Dmitry Ivaniuk">
+                <span class="contacts-title">Dmitry Ivaniuk</span>
+                <p>Hello my friend, how are...</p>
+            </a>                                
+            <a href="#" class="list-group-item">                                    
+                <div class="list-group-status status-online"></div>
+                <img src="<?=$adminka?>/extra/images/users/user3.jpg" class="pull-left" alt="Nadia Ali">
+                <span class="contacts-title">Nadia Ali</span>
+                <p>Wanna se my photos?</p>
+            </a>                                                                
+            <a href="#" class="list-group-item active">         
+                <div class="list-group-status status-online"></div>
+                <img src="<?=$adminka?>/extra/images/users/user2.jpg" class="pull-left" alt="John Doe">
+                <div class="contacts-title">John Doe <span class="label label-danger">5</span></div>
+                <p>This project is awesome</p>                                       
+            </a>
+            <a href="#" class="list-group-item">         
+                <div class="list-group-status status-away"></div>
+                <img src="<?=$adminka?>/extra/images/users/user4.jpg" class="pull-left" alt="Brad Pitt">
+                <span class="contacts-title">Brad Pitt</span>
+                <p>ok</p>                     
+            </a>
+            <a href="#" class="list-group-item">         
+                <div class="list-group-status status-offline"></div>
+                <img src="<?=$adminka?>/extra/images/users/no-image.jpg" class="pull-left" alt="Darth Vader">
+                <span class="contacts-title">Darth Vader</span>
+                <p>We should win this war!!!1</p>
+            </a>
+            <a href="#" class="list-group-item">         
+                <div class="list-group-status status-offline"></div>
+                <img src="<?=$adminka?>/extra/images/users/no-image.jpg" class="pull-left" alt="Kim Kardashian">
+                <span class="contacts-title">Kim Kardashian</span>
+                <p>You received a letter from Darth?</p>
+            </a>
+            <a href="#" class="list-group-item">         
+                <div class="list-group-status status-offline"></div>
+                <img src="<?=$adminka?>/extra/images/users/no-image.jpg" class="pull-left" alt="Jason Statham">
+                <span class="contacts-title">Jason Statham</span>
+                <p>Lets play chess...</p>
+            </a>                            
         </div>
+        
         <div class="block">
-            <div class="list-group border-bottom">
-                <a href="#" class="list-group-item active"><span class="fa fa-inbox"></span> Inbox <span class="badge badge-success">3</span></a>
-                <a href="#" class="list-group-item"><span class="fa fa-star"></span> Starred <span class="badge badge-warning">6</span></a>
-                <a href="#" class="list-group-item"><span class="fa fa-rocket"></span> Sent</a>
-                <a href="#" class="list-group-item"><span class="fa fa-flag"></span> Flagged</a>
-                <a href="#" class="list-group-item"><span class="fa fa-trash-o"></span> Deleted <span class="badge badge-default">1.4k</span></a>                            
-            </div>                        
-        </div>
-        <div class="block">
-            <h4>Labels</h4>
+            <h4>Status</h4>
             <div class="list-group list-group-simple">                                
-                <a href="#" class="list-group-item"><span class="fa fa-circle text-success"></span> Clients</a>
-                <a href="#" class="list-group-item"><span class="fa fa-circle text-warning"></span> Social</a>
-                <a href="#" class="list-group-item"><span class="fa fa-circle text-danger"></span> Work</a>
-                <a href="#" class="list-group-item"><span class="fa fa-circle text-info"></span> Family</a>
-                <a href="#" class="list-group-item"><span class="fa fa-circle text-primary"></span> Friends</a>
+                <a href="#" class="list-group-item"><span class="fa fa-circle text-success"></span> Online</a>
+                <a href="#" class="list-group-item"><span class="fa fa-circle text-warning"></span> Away</a>
+                <a href="#" class="list-group-item"><span class="fa fa-circle text-muted"></span> Offline</a>                                
             </div>
         </div>
+        
     </div>
-    <!-- END CONTENT FRAME LEFT -->
-    
+    <!-- END CONTENT FRAME RIGHT -->
+
     <!-- START CONTENT FRAME BODY -->
-    <div class="content-frame-body" style="height: 855px;">
+    <div class="content-frame-body content-frame-body-left" style="height: 599px;">
         
-        <div class="panel panel-default">
-            <div class="panel-heading ui-draggable-handle">
-                <label class="check mail-checkall">
-                    <div class="btn-group">
-                        <input type="checkbox" id="select_all">
-                    </div>
-                </label>
-                <div class="btn-group">
-                    <button class="btn btn-default"><span class="fa fa-mail-reply"></span></button>
-                    <button class="btn btn-default"><span class="fa fa-mail-forward"></span></button>
+        <div class="messages messages-img">
+            <div class="item in item-visible">
+                <div class="image">
+                    <img src="<?=$adminka?>/extra/images/users/user2.jpg" alt="John Doe">
                 </div>
-                <div class="btn-group">
-
-                    <button class="btn btn-default"><span class="fa fa-star"></span></button>                               
+                <div class="text">
+                    <div class="heading">
+                        <a href="#">John Doe</a>
+                        <span class="date">08:33</span>
+                    </div>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed facilisis suscipit eros vitae iaculis.
+                </div>
+            </div>
+            <div class="item item-visible">
+                <div class="image">
+                    <img src="<?=$adminka?>/extra/images/users/user.jpg" alt="Dmitry Ivaniuk">
                 </div>                                
-                <a class="btn btn-default" href="chat/test"><span class="fa fa-trash-o"></span></a>                                                                    
-                <div class="pull-right" style="width: 180px;">
-                    <div class="input-group">
-                        <?php echo kartik\date\DatePicker::widget([
-                                 'name' => 'search',
-                                 'language'=>'ru',
-                                 'type' => kartik\date\DatePicker::TYPE_COMPONENT_PREPEND,
-                                 'value' => '23-Feb-1982',
-                                 'pluginOptions' => [
-                                     'autoclose'=>true,
-                                     'todayBtn' => true,
-                                     'todayHighlight' => true,
-                                     'format' => 'dd-M-yyyy'
-                                 ]
-                           ]);
-                        ?>                                    
+                <div class="text">
+                    <div class="heading">
+                        <a href="#">Dmitry Ivaniuk</a>
+                        <span class="date">08:39</span>
+                    </div>                                    
+                    Integer et ipsum vitae urna mattis dictum. Sed eu sollicitudin nibh, in luctus velit.
+                </div>
+            </div>
+            <div class="item item-visible">
+                <div class="image">
+                    <img src="<?=$adminka?>/extra/images/users/user.jpg" alt="Dmitry Ivaniuk">
+                </div>                                
+                <div class="text">
+                    <div class="heading">
+                        <a href="#">Dmitry Ivaniuk</a>
+                        <span class="date">08:42</span>
+                    </div>                                    
+                    In dapibus ex ut nisl laoreet aliquam. Donec in mollis leo. Aenean nec suscipit neque, non iaculis justo. Quisque eget odio efficitur, porta risus vitae, sagittis neque.
+                </div>
+            </div>
+            <div class="item in item-visible">
+                <div class="image">
+                    <img src="<?=$adminka?>/extra/images/users/user2.jpg" alt="John Doe">
+                </div>
+                <div class="text">
+                    <div class="heading">
+                        <a href="#">John Doe</a>
+                        <span class="date">08:58</span>
+                    </div>
+                    Curabitur et euismod urna?
+                </div>
+            </div>
+            <div class="item item-visible">
+                <div class="image">
+                    <img src="<?=$adminka?>/extra/images/users/user.jpg" alt="Dmitry Ivaniuk">
+                </div>                                
+                <div class="text">
+                    <div class="heading">
+                        <a href="#">Dmitry Ivaniuk</a>
+                        <span class="date">09:11</span>
+                    </div>                                    
+                    Fusce ultricies erat quis massa interdum, eu elementum urna iaculis
+                </div>
+            </div>
+            <div class="item in item-visible">
+                <div class="image">
+                    <img src="<?=$adminka?>/extra/images/users/user2.jpg" alt="John Doe">
+                </div>
+                <div class="text">
+                    <div class="heading">
+                        <a href="#">John Doe</a>
+                        <span class="date">09:22</span>
+                    </div>
+                    Vestibulum cursus ipsum ut dolor vulputate dapibus. Donec elementum est vel vulputate malesuada?
+                </div>
+            </div>
+        </div>                        
+        
+        <div class="panel panel-default push-up-10">
+            <div class="panel-body panel-body-search">
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default"><span class="fa fa-camera"></span></button>
+                        <button class="btn btn-default"><span class="fa fa-chain"></span></button>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Your message...">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default">Send</button>
                     </div>
                 </div>
             </div>
-            <div class="panel-body mail">
-                <div class="mail-item mail-unread mail-info">                                    
-                    <div class="mail-checkbox">
-                       <input type="checkbox" name="check[]" >
-                    </div>
-                    <div class="mail-star">
-                        <span class="fa fa-star-o"></span>
-                    </div>
-                    <div class="mail-user">Dmitry Ivaniuk</div>                                    
-                    <a href="pages-mailbox-message.html" class="mail-text">Product development</a>                                    
-                    <div class="mail-date">Today, 11:21</div>
-                </div>
-                
-                <div class="mail-item mail-unread mail-danger">                                    
-                    <div class="mail-checkbox">
-                      <input type="checkbox" name="check[]" >
-                    </div>
-                    <div class="mail-star">
-                        <span class="fa fa-star-o"></span>
-                    </div>
-                    <div class="mail-user">John Doe</div>                                    
-                    <a href="pages-mailbox-message.html" class="mail-text">New Windows 9 App</a>                                    
-                    <div class="mail-date">Today, 10:36</div>
-                </div>
-                
-                <div class="mail-item mail-success">
-                    <div class="mail-checkbox">
-                       <input type="checkbox" name="check[]" >
-                    </div>
-                    <div class="mail-star">
-                        <span class="fa fa-star-o"></span>
-                    </div>
-                    <div class="mail-user">Nadia Ali</div>                                    
-                    <a href="pages-mailbox-message.html" class="mail-text">Check my new song</a>                                    
-                    <div class="mail-date">Yesterday, 20:19</div>
-                </div>
-                
-                <div class="mail-item mail-warning">
-                    <div class="mail-checkbox">
-              <input type="checkbox" name="check[]" >
-                    </div>
-                    <div class="mail-star starred">
-                        <span class="fa fa-star-o"></span>
-                    </div>
-                    <div class="mail-user">Brad Pitt</div>                                    
-                    <a href="pages-mailbox-message.html" class="mail-text">How are you? Need some work?</a>                                    
-                    <div class="mail-date">Sep 15</div>
-                </div>
-                
-                <div class="mail-item mail-info">
-                    <div class="mail-checkbox">
-                     <input type="checkbox" name="check[]" >
-                    </div>
-                    <div class="mail-star">
-                        <span class="fa fa-star-o"></span>
-                    </div>
-                    <div class="mail-user">Dmitry Ivaniuk</div>                                    
-                    <a href="pages-mailbox-message.html" class="mail-text">Can you check this docs?</a>                                    
-                    <div class="mail-date">Sep 14</div>
-                    <div class="mail-attachments">
-                        <span class="fa fa-paperclip"></span> 11Kb
-                    </div>
-                </div>
-                
-                <div class="mail-item">
-                    <div class="mail-checkbox">
-                      <input type="checkbox" name="check[]" >
-                    </div>
-                    <div class="mail-star starred">
-                        <span class="fa fa-star-o"></span>
-                    </div>
-                    <div class="mail-user">HTC</div>                                    
-                    <a href="pages-mailbox-message.html" class="mail-text">New updates on your phone HD7</a>
-                    <div class="mail-date">Sep 13</div>
-                    <div class="mail-attachments">
-                        <span class="fa fa-paperclip"></span> 58Mb
-                    </div>
-                </div>
-            </div>
-            <div class="panel-footer">                                
-                <button class="btn btn-default"><span class="fa fa-warning"></span></button>
-                <button class="btn btn-default"><span class="fa fa-trash-o"></span></button>                                    
-            </div>                            
         </div>
         
     </div>
-    <!-- END CONTENT FRAME BODY -->
+    <!-- END CONTENT FRAME BODY -->      
 </div>
-<?php Modal::begin([
-    "id"=>"ajaxCrudModal",
-    "options" => [
-        "tabindex" => false,
-    ],
-    "footer"=>"",// always need it for jquery plugin
-])?>
-<?php Modal::end(); ?>
-
-<?php 
-$this->registerJs(<<<JS
-    $('#select_all').change(function(){
-     if($(this).is(":checked")){
-       $(':checkbox').prop('checked',true);
-           }else{
-       $(':checkbox').prop('checked',false);
-    }
-});
-JS
-);
-?>

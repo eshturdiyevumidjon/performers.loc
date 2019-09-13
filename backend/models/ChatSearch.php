@@ -59,7 +59,7 @@ class ChatSearch extends Chat
             'id' => $this->id,
             'type' => $this->type,
             'date_cr' => $this->date_cr,
-            'from' => $this->from,
+            'from' => Yii::$app->user->identity->id,
             'to' => $this->to,
             'reply' => $this->reply,
         ]);

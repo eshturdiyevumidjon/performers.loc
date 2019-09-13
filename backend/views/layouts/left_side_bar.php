@@ -38,9 +38,9 @@ $user = \common\models\User::find()->where(['id'=>Yii::$app->user->identity->id]
         <li <?= ($pathInfo == 'user/index' ? 'class="active"' : '')?>>
             <a href="<?=$adminka?>user/index"><span class="fa fa-user"></span> <span class="xn-text"><?=Yii::t('app','Users')?></span></a>                        
         </li>  
-         <!--<li <?php // ($pathInfo == 'chat/main' ? 'class="active"' : '')?>>
-            <a href="<?php //$adminka?>chat/main"><span class="fa fa-envelope"></span> <span class="xn-text"><?php //Yii::t('app','Chat')?></span></a>
-        </li>-->
+         <li <?php  ($pathInfo == 'chat/index' ? 'class="active"' : '')?>>
+            <a href="<?=$adminka?>chat/index"><span class="fa fa-envelope"></span> <span class="xn-text"><?= Yii::t('app','Chat')?></span></a>
+        </li>
         <li class="xn-openable <?= ((($pathInfo == 'tasks/index-passangers')||($pathInfo == 'tasks/index-vehicles')||($pathInfo == 'tasks/index-goods')||($pathInfo == 'tasks/index-help')) ? 'active' : '')?>">
             <a href="#"><span class="fa fa-tasks"></span> <span class="xn-text"><?=Yii::t('app','Tasks')?></span></a>                        
             <ul>
@@ -70,7 +70,7 @@ $user = \common\models\User::find()->where(['id'=>Yii::$app->user->identity->id]
                 </li>
             </ul>
         </li>  
-        <li class="xn-openable <?= (($pathInfo == 'transports/index' || $pathInfo == 'drivers/index' || $pathInfo == 'models/index' || $pathInfo == 'marks/index') ? 'active' : '')?>">
+        <li class="xn-openable <?= (($pathInfo == 'transports/index' || $pathInfo == 'drivers/index' || $pathInfo == 'models/index' || $pathInfo == 'marks/index' || $pathInfo == 'transport-category/index') ? 'active' : '')?>">
             <a href="#"><span class="fa fa-gear"></span> <span class="xn-text"><?=Yii::t('app','Transports')?></span></a>
             <ul>    
                <li  <?= ($pathInfo == 'marks/index' ? 'class="active"' : '')?>>
@@ -85,6 +85,9 @@ $user = \common\models\User::find()->where(['id'=>Yii::$app->user->identity->id]
                 <li  <?= ($pathInfo == 'drivers/index' ? 'class="active"' : '')?>>
                             <a href="<?=$adminka?>drivers/index"><span class="fa fa-users"></span><?=Yii::t('app','Drivers')?></a>
                 </li>
+                <li <?= ($pathInfo == 'transport-category/index' ? 'class="active"' : '')?>>
+                    <a href="<?=$adminka?>transport-category/index"><span class="fa fa-list"></span> <span class="xn-text"><?=Yii::t('app','Category of transports')?></span></a>
+                </li>
             </ul>
         </li>
         <li <?= ($pathInfo == 'banners/index' ? 'class="active"' : '')?>>
@@ -93,9 +96,7 @@ $user = \common\models\User::find()->where(['id'=>Yii::$app->user->identity->id]
         <li <?= ($pathInfo == 'news/index' ? 'class="active"' : '')?>>
             <a href="<?=$adminka?>news/index"><span class="fa fa-list-alt"></span> <span class="xn-text"><?=Yii::t('app','News')?></span></a>
         </li> 
-        <li <?= ($pathInfo == 'transport-category/index' ? 'class="active"' : '')?>>
-            <a href="<?=$adminka?>transport-category/index"><span class="fa fa-list"></span> <span class="xn-text"><?=Yii::t('app','Category of transports')?></span></a>
-        </li>           
+                   
         <?php if(Yii::$app->user->identity->type!=4&&Yii::$app->user->identity->type!=3):?>
         <li class="xn-openable <?= (($pathInfo == 'language/index' || $pathInfo == 'settings/index' || $pathInfo == 'chavo/index') ? 'active' : '')?>">
             <a href="#"><span class="fa fa-gear"></span> <span class="xn-text"><?=Yii::t('app','Settings')?></span></a>

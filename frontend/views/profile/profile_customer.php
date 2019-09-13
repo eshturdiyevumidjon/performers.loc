@@ -6,6 +6,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use common\widgets\Alert;
 use \backend\models\Tasks; 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
@@ -23,6 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <li class="breadcrumb-item active"><?=Yii::t('app','Personal Cabinet')?></li>
           </ol>
      </nav>
+    <?=Alert::widget()?>
     <h1><?=$title?></h1>
     <div class="flex_cabinet">
       <div class="cabinet_left">
@@ -54,7 +56,8 @@ $this->params['breadcrumbs'][] = $this->title;
           </div>
           </div>
           <div id="ff1" class="tab-pane in"> 
-            <?php foreach ($my_tasks as $key => $value): ?>
+            <?php if (count($my_tasks) > 0): ?>
+              <?php foreach ($my_tasks as $key => $value): ?>
               <a href="/<?=$lang?>/task/view?id=<?=$value->id?>" class="item_to_city">
               <div class="item_to_city_top">
                 <div class="sur_">
@@ -99,11 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
               <button><span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><g><g clip-path="url(#clip-67c7ecfe-51a6-4606-85cb-9c7ae5002df6)"><g><g><path fill="" d="M6 0L4.95 1.05l4.2 4.2H0v1.5h9.15l-4.2 4.2L6 12l6-6z"></path></g></g></g></g></svg></span></button>
             </a>
             <?php endforeach ?>
-            <?= \yii\widgets\LinkPager::widget([
-                'pagination' => $pages,
-            ]);?>
-
-            <ul class="pagination">
+              <!-- <ul class="pagination">
               <li class="page-item"><a class="" href="#">1</a></li>
               <li class="page-item"><a class="" href="#">2</a></li>
               <li class="page-item"><a class="" href="#">3</a></li>
@@ -119,8 +118,10 @@ $this->params['breadcrumbs'][] = $this->title;
                   <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><g><g clip-path="url(#clip-67c7ecfe-51a6-4606-85cb-9c7ae5002df6)"><g><g><path fill="" d="M6 0L4.95 1.05l4.2 4.2H0v1.5h9.15l-4.2 4.2L6 12l6-6z"></path></g></g></g></g></svg>
                 </a>
               </li>
-            </ul>
-
+            </ul> -->
+            <?php else: ?>
+              <h4><?=Yii::t('app','You don’t have anything yet')?></h4>
+            <?php endif ?>
           </div>
           <div id="ff2" class="tab-pane fade"> 
           </div>
@@ -152,7 +153,7 @@ $this->params['breadcrumbs'][] = $this->title;
              <a href="/<?=$lang?>/profile/edit-profile" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Edit Account')?></a>
           </div>
         </div>
-        <?=$this->render('cabinet_right',['company'=>$company,'banner'=>$banner]);?>
+        <?=$this->render('cabinet_right',['company'=>$company,'banner'=>$banner,'user'=>$user]);?>
       </div>
     </div>
    
@@ -160,6 +161,8 @@ $this->params['breadcrumbs'][] = $this->title;
 </section>
 <?php
 $this->registerJs(<<<JS
+  $("#w0-success-0").removeClass('fade in');
+
    function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -181,7 +184,7 @@ $this->registerJs(<<<JS
        data:  new FormData(this),
        contentType: false,
              cache: false,
-       processData:false,
+       processData: false,
        beforeSend : function()
        {
         //$("#preview").fadeOut();
@@ -189,6 +192,7 @@ $this->registerJs(<<<JS
        },
        success: function(data)
           {
+            alert(data);
         if(data=='invalid')
         {
          // invalid file format.

@@ -43,6 +43,8 @@ class m150207_210500_i18n_init extends Migration
         $this->createIndex('idx_message_language', '{{%message}}', 'language');
 
         $translations = [
+                'Doesn\'t passed verification'=>'Не прошел проверку',
+                'Access to order for the performer'=>'Доступ для заказа для исполнителя ',
                 'User'=>'Пользователь',
                 'Close'=>'Закрыть',
                 'Edit'=>'Изменить',
@@ -63,6 +65,8 @@ class m150207_210500_i18n_init extends Migration
                 'Created_at'=>'Дата создания',
                 'Updated_at'=>'Дата изменения',
                 'Add'=>'Добавить',
+                'You don’t have anything yet'=>'У вас пока ничево нет',
+                'Get Invoice'=>'Получить инвойс',
                 'Sort Columns'=>'Сортировка',
                 'Are you sure?'=>'Подтвердите действие',
                 'Really do you want delete this item'=>'Вы уверены что хотите удалить этого элемента?',
@@ -127,7 +131,7 @@ class m150207_210500_i18n_init extends Migration
                 'Link'=>'Ссылка',
                 'Image'=>'Фото',
                 'Type'=>'Тип',
-
+                'My profile'=>'Мой профиль',
                 //News
                 'News'=>'Новости',
                 'News listing' => 'Список новостей',

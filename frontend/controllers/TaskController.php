@@ -131,6 +131,7 @@ class TaskController extends Controller
         {
             return $this->redirect(['view','id'=>$model->id]);
         } else {
+            $model->alert_email = 1;
             return $this->render('passengers/create-passengers', [
                 'model' => $model,
                 'post'=>$_POST
@@ -169,6 +170,7 @@ class TaskController extends Controller
 
             return $this->redirect(['view','id'=>$model->id]);
         } else {
+            $model->alert_email = 1;
             return $this->render('goods/create-goods', [
                 'model' => $model,
                 'post'=>$_POST
@@ -246,6 +248,7 @@ class TaskController extends Controller
 
             return $this->redirect(['view','id'=>$model->id]);
         } else {
+            $model->alert_email = 1;
             return $this->render('help/create-help', [
                 'model' => $model,
                 'post'=>$_POST
@@ -281,6 +284,7 @@ class TaskController extends Controller
 
             return $this->redirect(['view','id'=>$model->id]);
         } else {
+            $model->alert_email = 1;
             return $this->render('vehicles/create-vehicles', [
                 'model' => $model,
                 'post'=>$_POST
@@ -371,4 +375,5 @@ class TaskController extends Controller
             }
         }
     }
+
 }

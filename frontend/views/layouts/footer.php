@@ -38,7 +38,7 @@
   <div class="container">
     <div class="d-flex align-items-center justify-content-between last_ft">
       <div>
-        <p><?=Yii::t('app','© 2011—2019 «iTake» LLC. By using the site, you agree to be bound by the terms')?><a href="#"><?=Yii::t('app','User agreement.')?></a></p>
+        <p><?=Yii::t('app','© 2011—2019 «iTake» LLC. By using the site, you agree to be bound by the terms')?><a href="/site/privacy" target="_blank"><?=Yii::t('app','User agreement.')?></a></p>
       </div>
       <div>
         <p><?=Yii::t('app','Created by')?><a href="#">DeepX</a></p>

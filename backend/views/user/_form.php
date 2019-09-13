@@ -52,13 +52,20 @@ use kartik\date\DatePicker;
                              'autoclose'=>true
                          ]
                      ]);?>
-  
-
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
-                    <?= $form->field($model, 'note')->textarea(['rows' => 3]) ?>
+                <div class="col-md-6">
+                    <?php if (!$model->isNewRecord): ?>
+                        <?= $form->field($model, 'status')->dropDownList($model->getStatus(), ['prompt' => Yii::t('app','Select')])?>
+                    <?php endif ?>
+                </div>
+                <div class="col-md-6">
+                    <?php $checkboxTemplate = '<div class="checkbox i-checks">{beginLabel}{input}{labelTitle}{endLabel}{error}{hint}</div>'; ?>
+                    <?php if (!$model->isNewRecord && $model->type == 3): ?>
+                        <?= $form->field($model, 'permissions')->checkboxList(\backend\models\Tasks::getType()); ?>
+
+                    <?php endif ?>
                 </div>
             </div>                
         </div>

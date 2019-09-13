@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
+use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 
 /**
@@ -38,18 +39,32 @@ class ChatController extends Controller
      */
     public function actionIndex()
     {    
-        $searchModel = new ChatSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $from = Yii::$app->user->identity->id;
+        $to = (isset($_POST['to'])) ? $_POST['to'] : $from;
+        if ($_POST['to'] && Yii::$app->request->isAjax) {
+            $query = Chat::find()->where(['and', ['in', 'to', [$to,$from]], ['in', 'from', [$to,$from]]]);
+            $dataProvider = new ActiveDataProvider([
+               'query' => $query,
+            ]);
+            $users = \common\models\User::find()->all();
+            return $this->renderAjax('chat', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'users'=>$users,
+            ]);            
+        }
+        $query = Chat::find()->where(['and', ['in', 'to', [$to,$from]], ['in', 'from', [$to,$from]]]);
+        $dataProvider = new ActiveDataProvider([
+           'query' => $query,
+        ]);
+        $users = \common\models\User::find()->all();
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'users'=>$users,
         ]);
     }
-    public function actionMain()
-    {
-          return $this->render('main');
-    }
+   
     /**
      * Displays a single Chat model.
      * @param integer $id
@@ -57,22 +72,7 @@ class ChatController extends Controller
      */
     public function actionView($id)
     {   
-        $request = Yii::$app->request;
-        if($request->isAjax){
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return [
-                    'title'=> "Chat #".$id,
-                    'content'=>$this->renderAjax('view', [
-                        'model' => $this->findModel($id),
-                    ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];    
-        }else{
-            return $this->render('view', [
-                'model' => $this->findModel($id),
-            ]);
-        }
+        
     }
 
     /**

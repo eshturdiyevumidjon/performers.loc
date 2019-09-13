@@ -32,6 +32,7 @@ class User extends ActiveRecord implements IdentityInterface
     public $new_password;
     public $old_password;
     public $re_password;
+    public $permissions;
     /**
      * {@inheritdoc}
      */
@@ -58,8 +59,8 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [['email','username', 'auth_key','type'], 'required'],
             [['type', 'status','created_at', 'updated_at','alert_email','alert_site'], 'integer'],
-            [['note', 'birthday'],'safe'],
-            [['username', 'email', 'auth_key','address','language','new_password','old_password','re_password','password_reset_token','password_hash','phone','image'], 'string', 'max' => 255],
+            [['note', 'birthday','permissions'],'safe'],
+            [['username', 'email', 'auth_key','address','language','new_password','old_password','re_password','password_reset_token','password_hash','role_performer','phone','image'], 'string', 'max' => 255],
             [['email'], 'unique'],
             [['avatar'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg',],
         ];
@@ -85,6 +86,8 @@ class User extends ActiveRecord implements IdentityInterface
             'updated_at' => Yii::t('app','Updated_at'),
             // 'day' => Yii::t('app','Day'),
             'address' => Yii::t('app','City'),
+            'role_performer'=>Yii::t('app','Access to order for the performer'),
+            'permissions'=>Yii::t('app','Access to order for the performer'),
             // 'month' => Yii::t('app','Month'),
             // 'year' => Yii::t('app','Year'),
         ];
@@ -144,17 +147,15 @@ class User extends ActiveRecord implements IdentityInterface
             $this->status = 10;
             $this->updated_at = time();
             $this->created_at = time();      
-            $this->birthday = Yii::$app->formatter->asDate(time(), 'php:Y-m-d'); 
         }
         else{
-            $this->birthday = Yii::$app->formatter->asDate($this->birthday, 'php:Y-m-d'); 
             $this->updated_at = time();
             if($this->new_password != null) {
                 $this->auth_key = $this->new_password;
                 $this->password_hash = Yii::$app->security->generatePasswordHash($this->auth_key);
             }
         }
-
+        $this->birthday = ($this->birthday) ? Yii::$app->formatter->asDate($this->birthday, 'php:Y-m-d') : '' ; 
         return parent::beforeSave($insert);
     }
 
@@ -168,12 +169,16 @@ class User extends ActiveRecord implements IdentityInterface
         return Yii::$app->formatter->asDate($this->updated_at, 'php:d.m.Y H:i:s'); 
     }
 
+    public function getBirthday()
+    {
+        return $this->birthday = ($this->birthday) ? Yii::$app->formatter->asDate($this->birthday, 'php:d.m.Y') : '' ;
+    }
     /**
      * {@inheritdoc}
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['id' => $id]);
     }
 
     /**
@@ -192,12 +197,12 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($email)
     {
-        return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['email' => $email]);
     }
 
     public static function findByPhone($phone)
     {
-        return static::findOne(['phone' => $phone, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['phone' => $phone]);
     }
 
     public function getUserAvatar($for='_form'){
@@ -226,7 +231,7 @@ class User extends ActiveRecord implements IdentityInterface
 
         return static::findOne([
             'password_reset_token' => $token,
-            'status' => self::STATUS_ACTIVE,
+            // 'status' => self::STATUS_ACTIVE,
         ]);
     }
 
@@ -239,7 +244,7 @@ class User extends ActiveRecord implements IdentityInterface
     public static function findByVerificationToken($token) {
         return static::findOne([
             'verification_token' => $token,
-            'status' => self::STATUS_INACTIVE
+            // 'status' => self::STATUS_INACTIVE
         ]);
     }
 

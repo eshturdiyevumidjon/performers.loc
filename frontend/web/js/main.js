@@ -33,53 +33,17 @@ $(document).ready(function () {
         }
     });
 
-  var fe = 0;
-
-  $(window).bind('scroll',function(){
+  $(window).bind('scroll', function(){
   	var target = $(window).scrollTop();
 
-  	if(target>0){
-  		if($(window).scrollTop()>120){
-      		$('header.fixed_header').addClass('fixed');
-  		}
+  	if(target>76){
+  		$('header.fixed_header').addClass('fixed');
   	}
-    if(target - fe<0){
-      if($(window).scrollTop()==0){
+    else{
+      $('header.fixed_header+section').trigger('click');
 			$('header.fixed_header').removeClass('fixed')
-		}
-		else{
-	      		$('header').addClass('fixed');}
     }
-    fe = $(window).scrollTop();
 });
-
-
-$(window).on('scroll', function(){
-    var currentScrollPos = window.pageYOffset,
-        nav = $('#navbar'),
-        gmb = $('.menu__btn');
-
-    if (prevScrollPos > currentScrollPos) {
-        nav.css('top', '0px');
-        gmb.css('background-color', 'rgba(32, 60, 144, 0.2)').css('top', '0px').css('margin-top', '30px');
-    } else {
-        nav.css('top', '-80px');
-        gmb.css('background-color', 'rgba(32, 60, 144, 0.15)').css('top', '-80px');
-    }
-
-    if(currentScrollPos == 0) {
-     document.getElementById('navbar').style.backgroundColor = "";
-     document.getElementById('logo').style.backgroundImage = "";
-    
-    } else {
-     // document.getElementById('navbar').style.backgroundColor = "#fff";
-     // document.getElementById('logo').style.backgroundImage = "url(/frontend/img/header-logo.svg)";
-    
-    }
-
-    prevScrollPos = currentScrollPos;
-});
-
 
 
     if ($(window).width() < 767) {
@@ -103,7 +67,49 @@ $(window).on('scroll', function(){
 
 
 })
+$('#reww').trigger('click');
 // $(document).on("click.bs.dropdown.data-api", ".noclose", function (e) { e.stopPropagation() });
- 
+ /************HEADER*****************************************************************/
+// Hide Header on on scroll down
+var didScroll;
+var lastScrollTop = 0;
+var delta = 5;
+var navbarHeight = $('header').outerHeight();
 
+$(window).scroll(function(event){
+    didScroll = true;
+});
 
+setInterval(function() {
+    if (didScroll) {
+        hasScrolled();
+        didScroll = false;
+    }
+}, 250);
+
+function hasScrolled() {
+    var st = $(this).scrollTop();
+    
+    // Make sure they scroll more than delta
+    if(Math.abs(lastScrollTop - st) <= delta)
+        return;
+    
+    // If they scrolled down and are past the navbar, add class .nav-up.
+    // This is necessary so you never see what is "behind" the navbar.
+    if (st > lastScrollTop && st > navbarHeight){
+        // Scroll Down
+        $('header').removeClass('nav-down').addClass('nav-up');
+        $('.hdr_bottom').slideUp(150);
+        $('.hamburger').removeClass('active');
+        $('header+section').trigger('click');
+    } else {
+        // Scroll Up
+        if(st + $(window).height() < $(document).height()) {
+            $('header').removeClass('nav-up').addClass('nav-down');
+        }
+    }
+    
+    lastScrollTop = st;
+}
+
+ /************HEADER*****************************************************************/

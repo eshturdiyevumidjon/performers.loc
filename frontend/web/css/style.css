@@ -1582,6 +1582,27 @@ section.cabinet{
 	font-weight: 600;
 	padding-left: 10px;
 }
+.red_moder{
+	margin-bottom: 15px;
+	background: url(../images/w.jpg) no-repeat center;
+	background-size: cover;
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	-ms-align-items: center;
+	align-items: center;
+	padding: 12px 0;
+	justify-content: center;
+}
+.red_moder span{
+	line-height: 23px;
+	color: #ffffff;
+	font-size: 18px;
+	font-weight: 600;
+	padding-left: 10px;
+}
 .chat_inner{
 	border: 1px solid #f0eff5;
 	background-color: #ffffff;
@@ -2902,11 +2923,101 @@ section.cabinet.news p{
 	margin-bottom: 30px;
 }
 
+/*********************Header fixed**************************************************************/
+body {
+    /*padding-top: 76px;*/
+}
 
+header {
+    background: #fff;
+    height: 76px;
+    position: fixed !important;
+    top: 0;
+    transition: top 0.2s ease-in-out;
+    width: 100%;
+}
 
+.nav-up {
+    top: -76px;
+}
+/*********************Header fixed**************************************************************/
 
-
-
+div#pay_popup_a{
+	padding: 30px;
+	max-width: 820px;
+}
+div#pay_popup_a h2{
+	margin-bottom: 0;
+}
+div#pay_popup_a p{
+	border: 1px solid rgba(0, 0, 0, 0);
+	opacity: 0.6;
+	margin-bottom: 2px;
+	font-size: 14px;
+}
+div#pay_popup_a hr{
+	margin-left: -30px;
+	margin-right: -30px;
+}
+div#pay_popup_a button.btn_red{
+	min-width: 255px;
+	/*float: right;*/
+	clear: both;
+}
+div#pay_popup_a hr{
+	clear: both;
+	margin-top: 15px;
+}
+.in_karm{
+	-ms-align-items: center;
+	align-items: center;
+}
+.in_karm p{
+	color: #222136;
+	font-size: 18px;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+.in_karm p b{
+	color: #ff0a0a;
+	padding-left: 30px;
+}
+.pay_div{
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	-ms-align-items: center;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+.pay_div input{
+	display: none;
+}
+.pay_div label{
+	cursor: pointer;
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	flex: 0 0 23%;
+	-ms-align-items: center;
+	align-items: center;
+	justify-content: center;
+	height: 68px;
+	border: 1px solid #f0eff5;
+	transition: all .3s;
+}
+.pay_div label img{
+	max-width: 100%;
+}
+.pay_div input:checked+label{
+	border: 1px solid #ff0a0a;
+}
 
 
 

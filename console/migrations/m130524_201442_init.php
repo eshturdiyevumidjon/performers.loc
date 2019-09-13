@@ -32,6 +32,7 @@ class m130524_201442_init extends Migration
             'address' => $this->string(255)->comment("Город"),
             'alert_site' => $this->integer()->defaultValue(0)->comment("Получать новости сайта"),
             'note'=>$this->text()->comment(""),
+            'role_performer' => $this->string(255)->comment(""),
         ], $tableOptions);
 
         $this->insert('user',array(
@@ -47,6 +48,7 @@ class m130524_201442_init extends Migration
             'created_at' => time(),
             'updated_at' => time(),
             'note'=>'',
+            'role_performer'=>'',
         ));
     }
 

@@ -5,6 +5,8 @@ use kartik\time\TimePicker;
 use kartik\datetime\DateTimePicker;
 
 use yii\widgets\ActiveForm;
+$lang = Yii::$app->language;
+
 ?>
 <section class="order">
   <div class="container">
@@ -12,7 +14,7 @@ use yii\widgets\ActiveForm;
       <ol class="breadcrumb">   
         <li class="breadcrumb-item"><a href="/site/index"><?=Yii::t('app','Home')?></a></li>
         <li class="breadcrumb-item"><a href="/profile/index"><?=Yii::t('app','Personal Cabinet')?></a></li>
-        <li class="breadcrumb-item active" aria-current="page">Создание заказа ПП</li>
+        <li class="breadcrumb-item active" aria-current="page"><?=Yii::t('app','Create Order')?></li>
       </ol>
     </nav>
     <div class="order_wrapper">
@@ -21,7 +23,7 @@ use yii\widgets\ActiveForm;
       <div class="br_order">
           <div class="btn_red">
             <img src="/images/bus.svg" alt="">
-            <p><?=Yii::t('app','  Passenger Transportation')?></p>
+            <p><?=Yii::t('app','Passenger Transportation')?></p>
           </div>
       </div>
       <hr>
@@ -50,7 +52,7 @@ use yii\widgets\ActiveForm;
                 'options'=>[
                       'placeholder'=>$model->getAttributeLabel('date_begin'),
                       'class'=>'my_input other_date_inp',
-                      'style'=>'cursor:pointer;'
+                      'style'=>'cursor:pointer;',
                     ],
                     'pluginOptions' => [
                           'format' => 'dd.mm.yyyy hh:ii',
@@ -72,7 +74,7 @@ use yii\widgets\ActiveForm;
                       'placeholder'=>$model->getAttributeLabel('date_begin2'),
                       'class'=>'my_input other_date_inp option',
                       'id'=>'option',
-                      'style'=>'cursor:pointer;'
+                      'style'=>'cursor:pointer;',
                     ],
                     'pluginOptions' => [
                           'format' => 'dd.mm.yyyy hh:ii',
@@ -151,17 +153,25 @@ use yii\widgets\ActiveForm;
         <h4><?=Yii::t('app','Select a transport category')?></h4>
         <?= $form->field($model, 'category_id')->dropDownList($model->getCategoryList(), ['class'=>'my_input','prompt' => Yii::t('app','Select')])->label(false)?>
         <hr>
-        <div class="form-group_checkbox">
-            <input type="checkbox" id="bww1" name="flight_number_status" value="1" <?=($model->flight_number_status ==1)? "checked":""?>>
-            <label for="bww1"><?=Yii::t('app','Air or railway flight number')?></label>
+        <div style="margin-bottom: 10px;margin-top: 10px;">
+          <div class="form-group_checkbox" style="margin-bottom: 10px;margin-top: 10px;">
+              <input type="checkbox" id="bww1" name="flight_number_status" value="1" <?=($model->flight_number_status ==1)? "checked":""?>>
+              <label for="bww1"><?=Yii::t('app','Air or railway flight number')?></label>
+          </div>
+          <div class="option" id="flight_number">
+          <?= $form->field($model, 'flight_number')->textInput(['placeholder'=>'Например, ВА 2254','class'=>'my_input'])->label(false) ?>
+          </div>
         </div>
-        <?= $form->field($model, 'flight_number')->textInput(['placeholder'=>'Например, ВА 2254','class'=>'my_input option','id'=>'flight_number'])->label(false) ?>
         <hr>
-        <div class="form-group_checkbox">
-            <input type="checkbox" id="bww2" name="meeting_with_sign_status" value="1" <?=($model->meeting_with_sign_status ==1)? "checked":""?>>
-            <label for="bww2"><?=Yii::t('app','Meeting With Sign')?></label>
+        <div style="margin-bottom: 10px;margin-top: 10px;">
+          <div class="form-group_checkbox" style="margin-bottom: 10px;margin-top: 10px;">
+              <input type="checkbox" id="bww2" name="meeting_with_sign_status" value="1" <?=($model->meeting_with_sign_status ==1)? "checked":""?>>
+              <label for="bww2"><?=Yii::t('app','Meeting With Sign')?></label>
+          </div>
+          <div class="option" id="meeting_with_sign">
+          <?= $form->field($model, 'meeting_with_sign')->textInput(['placeholder'=>'Текст на табличке','class'=>'my_input'])->label(false) ?>
+          </div>
         </div>
-        <?= $form->field($model, 'meeting_with_sign')->textInput(['placeholder'=>'Текст на табличке','class'=>'my_input option','id'=>'meeting_with_sign'])->label(false) ?>
         <hr class="mb15">
         <h4><?=Yii::t('app','Additional terms')?></h4>
         <div class="form-group_checkbox mt10 mb15">
@@ -191,9 +201,10 @@ use yii\widgets\ActiveForm;
     </div>
   </div>
 </section>
-<?=$this->render('../request/map.php')?> 
+<?=$this->render('../request/map.php',['lang'=>$lang])?> 
 <?php
 $this->registerJs(<<<JS
+  $("input").attr('autocomplete','off');
   if($('#bww5').prop("checked") == true)
           $('#option').show();
    if($('#bww1').prop("checked") == true)

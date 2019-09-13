@@ -87,7 +87,7 @@ class ProfileController extends Controller
 
     public function beforeAction($action)
     {
-        if ($action->id == 'edit-profile' || $action->id == 'change-password' || $action->id == 'delete-transport' || $action->id == 'create-auto1' || $action->id == 'create-driver1' || $action->id == 'add-autos' || $action->id == 'change-photo') {
+        if ($action->id == 'edit-profile' || $action->id == 'change-password' || $action->id == 'delete-transport' || $action->id == 'create-auto1' || $action->id == 'create-driver1' || $action->id == 'add-autos') {
             $this->enableCsrfValidation = false;
         }
 
@@ -150,7 +150,9 @@ class ProfileController extends Controller
         $id = Yii::$app->user->identity->id;
         $user = $this->findModel($id);
         $banner = \backend\models\Banners::findOne(1);
-        
+        $user->alert_site = 1;
+        $user->alert_email = 1;
+        $user->save();
         if(isset($_POST['save_changes']))
         {
             $user->language = implode(',',($_POST['language']));
@@ -168,7 +170,7 @@ class ProfileController extends Controller
             else
             {
                 Yii::$app->session->setFlash('danger', Yii::t('app','Check your information.Something wrong.'));
-                return $this->render('edit_profile',['user' => $user]);
+                return $this->render('edit_profile',['user' => $user,'banner'=>$banner]);
             }
         }
         return $this->render('edit_profile',['user' => $user,'banner'=>$banner]);
@@ -190,15 +192,18 @@ class ProfileController extends Controller
         $transport->active = (Yii::$app->session['active']) ? Yii::$app->session['active'] : 1; 
         if(isset($post['submit'])){
 
-            $transport->active = $post['active'];
 
             if($post['submit'] == 'add_transport')
             {
+                $transport->active = 1;
+                Yii::$app->session['active_create'] = 1;
+
                 $transport['attributes'] = $post['Transports'];
                 if($transport->validate())
                 {
                     $transport->save();
                     Yii::$app->session['active'] = 1;
+
                     $images = [];
                     $uploadDir = "uploads/transports/";
                     for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
@@ -229,12 +234,16 @@ class ProfileController extends Controller
             }
              if( $post['submit'] == 'add_driver')
             {
+                $transport->active = 2;
+
                 $driver['attributes'] = $post['Drivers'];
+                Yii::$app->session['active_create'] = 2;
 
                 if($driver->validate())
                 {
                     $driver->save();
                     Yii::$app->session['active'] = 2;
+
                     $images = [];
                     $uploadDir = "uploads/drivers/";
                     for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
@@ -264,7 +273,9 @@ class ProfileController extends Controller
 
             }
         }else
-
+        
+        {
+            Yii::$app->session['active_create'] = 0;
         return $this->render('add_autos',[
             'user'=>$user,
             'drivers'=>$drivers,
@@ -273,6 +284,7 @@ class ProfileController extends Controller
             'transport'=>$transport,
             'driver'=>$driver
         ]);
+        }
     }
 
    
@@ -540,7 +552,8 @@ class ProfileController extends Controller
             }
         }
         else{
-            echo "sarvar";
+            echo "<pre>";
+            print_r($_POST);
         }
     }
 }

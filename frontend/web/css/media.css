@@ -865,6 +865,26 @@
 	section.cabinet.news h1{
 		font-size: 26px;
 	}
+	div#pay_popup_a{
+		max-width: 100%;
+		padding: 15px;
+	}
+	.pay_div label img{
+		max-width: 90%;
+	}
+	div#pay_popup_a button.btn_red{
+		min-width: 160px;
+	}
+	.in_karm p b{
+		padding-left: 0;
+	}
+	div#pay_popup_a hr{
+		margin-left: -15px;
+		margin-right: -15px;
+	}
+	.in_karm{
+		white-space: nowrap;
+	}
 }
 
 @media (max-width: 375px){
@@ -908,6 +928,18 @@
 	}
 	.hdr_bottom ul li a{
 		padding-top: 5px;
+	}
+	.in_karm p{
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		-webkit-flex-direction: column;
+		-moz-flex-direction: column;
+		-ms-flex-direction: column;
+		-o-flex-direction: column;
+		flex-direction: column;
 	}
 }
 

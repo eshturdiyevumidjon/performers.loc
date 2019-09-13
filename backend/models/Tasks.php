@@ -196,7 +196,21 @@ class Tasks extends \yii\db\ActiveRecord
         parent::afterFind();
         $this->date_cr=isset($this->date_cr) ? Yii::$app->formatter->asDate($this->date_cr, 'php:d-m-Y') : ''; 
         $this->date_close=isset($this->date_close) ? Yii::$app->formatter->asDate($this->date_close, 'php:d-m-Y') : ''; 
-        $this->date_begin=isset($this->date_begin) ? Yii::$app->formatter->asDate($this->date_begin, 'php:d-m-Y') : ''; 
+        if ($this->type == 1) {
+          $this->date_begin=isset($this->date_begin) ? Yii::$app->formatter->asDate($this->date_begin, 'php:d-m-Y H:i') : ''; 
+        }
+        else
+        {
+            $this->date_begin=isset($this->date_begin) ? Yii::$app->formatter->asDate($this->date_begin, 'php:d-m-Y') : '';
+        }
+        if ($this->type == 1) {
+          $this->date_begin2=isset($this->date_begin2) ? Yii::$app->formatter->asDate($this->date_begin2, 'php:d-m-Y H:i') : ''; 
+        }
+        else
+        {
+            $this->date_begin2=isset($this->date_begin2) ? Yii::$app->formatter->asDate($this->date_begin2, 'php:d-m-Y') : '';
+        }
+        
     }
     /**
      * @return \yii\db\ActiveQuery
@@ -229,7 +243,7 @@ class Tasks extends \yii\db\ActiveRecord
     {
         return $this->count_avtokreslo + $this->count_avtolulka + $this->count_buster;
     }
-    public function getType()
+    public static function getType()
     {
         return [
             '1' => Yii::t('app','Passenger Transportation'),

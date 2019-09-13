@@ -199,9 +199,11 @@ use yii\widgets\ActiveForm;
 </section>
  
 <?=$this->render('../request/map.php')?>
-<script  async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0nNC2JY5h2LxGdKCTXSXMV5ZNDrpwvvA&callback=initMap"></script>
+
 <?php
 $this->registerJs(<<<JS
+    $("input").attr('autocomplete','off');
+  
     if($(this).prop("checked") == true)
     {
       $('#option').show(300);

@@ -14,52 +14,62 @@ $this->title = 'Chats';
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);
-
+$id = Yii::$app->user->identity->id;
 ?>
-<div class="chat-index">
-    <div id="ajaxCrudDatatable">
-        <?=GridView::widget([
-            'id'=>'crud-datatable',
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'pjax'=>true,
-            'columns' => require(__DIR__.'/_columns.php'),
-            'toolbar'=> [
-                ['content'=>
-                    Html::a('<i class="glyphicon glyphicon-plus"></i>', ['create'],
-                    ['role'=>'modal-remote','title'=> 'Create new Chats','class'=>'btn btn-default']).
-                    Html::a('<i class="glyphicon glyphicon-repeat"></i>', [''],
-                    ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Reset Grid']).
-                    '{toggleData}'.
-                    '{export}'
-                ],
-            ],          
-            'striped' => true,
-            'condensed' => true,
-            'responsive' => true,          
-            'panel' => [
-                'type' => 'primary', 
-                'heading' => '<i class="glyphicon glyphicon-list"></i> Chats listing',
-                'before'=>'<em>* Resize table columns just like a spreadsheet by dragging the column edges.</em>',
-                'after'=>BulkButtonWidget::widget([
-                            'buttons'=>Html::a('<i class="glyphicon glyphicon-trash"></i>&nbsp; Delete All',
-                                ["bulk-delete"] ,
-                                [
-                                    "class"=>"btn btn-danger btn-xs",
-                                    'role'=>'modal-remote-bulk',
-                                    'data-confirm'=>false, 'data-method'=>false,// for overide yii data api
-                                    'data-request-method'=>'post',
-                                    'data-confirm-title'=>'Are you sure?',
-                                    'data-confirm-message'=>'Are you sure want to delete this item'
-                                ]),
-                        ]).                        
-                        '<div class="clearfix"></div>',
-            ]
-        ])?>
+<?php
+$lang = Yii::$app->language;
+$adminka = Yii::$app->params['adminka'];
+?>
+
+<div class="content-frame">                                    
+    <!-- START CONTENT FRAME TOP -->
+    <div class="content-frame-top">                        
+        <div class="page-title">                    
+            <h2><span class="fa fa-comments"></span> Messages</h2>
+        </div>                                                    
+        <div class="pull-right">                            
+            <button class="btn btn-danger"><span class="fa fa-book"></span> Contacts</button>
+            <button class="btn btn-default content-frame-right-toggle"><span class="fa fa-bars"></span></button>
+        </div>                           
     </div>
+    <!-- END CONTENT FRAME TOP -->
+    
+    <!-- START CONTENT FRAME RIGHT -->
+    <div class="content-frame-right" style="display: none;">
+        
+        <div class="list-group list-group-contacts border-bottom push-down-10">
+            <?php foreach ($users as $key => $value): ?>
+                  <button href="#" class="list-group-item choose"  id="<?=$value->id?>">                                 
+                        <!-- <div class="list-group-status status-online"></div> -->
+                    <?=$value->getUserAvatar('_columns')?>
+                    <?php if ($id == $value->id): ?>
+                        <span class="contacts-title"><?=Yii::t('app','Saved messages')?></span>
+                    <?php else: ?>
+                        <span class="contacts-title"><?=$value->username?></span>
+
+                    <?php endif ?>
+                </button>
+            <?php endforeach ?>
+        </div>
+    </div>
+    <!-- END CONTENT FRAME RIGHT -->
+
+    <!-- START CONTENT FRAME BODY -->
+    <div class="content-frame-body content-frame-body-left" style="height: 599px;" id="chat">
+        <?=$this->render('chat',['dataProvider'=>$dataProvider])?>
+        
+    </div>
+    <!-- END CONTENT FRAME BODY -->      
 </div>
-<?php Modal::begin([
-    "id"=>"ajaxCrudModal",
-    "footer"=>"",// always need it for jquery plugin
-])?>
-<?php Modal::end(); ?>
+<?php
+$this->registerJs(<<<JS
+    $(document).ready(function(){
+        $('.choose').on('click',function(){
+           $.post('/admin/$lang/chat/index',{to:$(this).attr('id')},function(success){alert(success);$('#chat').html(success);});
+            alert();
+
+            });
+        });
+JS
+);
+

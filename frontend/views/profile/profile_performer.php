@@ -1,4 +1,5 @@
 <?php
+use common\widgets\Alert;
 use \backend\models\Tasks;
 $lang = Yii::$app->language;
 ?>
@@ -11,6 +12,7 @@ $lang = Yii::$app->language;
      
     </ol>
   </nav>
+ <?=Alert::widget()?>
   <h1><?=Yii::t('app','Personal Cabinet')?></h1>
   <div class="flex_cabinet">
     <div class="cabinet_left">
@@ -169,7 +171,7 @@ $lang = Yii::$app->language;
           <a href="/<?=$lang?>/profile/edit-profile" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Edit Account')?></a>
             <a href="/<?=$lang?>/profile/add-autos" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Adding cars')?></a>
       </div>
-        <?=$this->render('cabinet_right',['company'=>$company,'banner'=>$banner]);?>
+        <?=$this->render('cabinet_right',['company'=>$company,'banner'=>$banner,'user'=>$user]);?>
     </div>
   </div>
  
@@ -177,6 +179,8 @@ $lang = Yii::$app->language;
 </section>
 <?php
 $this->registerJs(<<<JS
+  $("#w0-success-0").removeClass('fade in');
+
    function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();

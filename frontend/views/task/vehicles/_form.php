@@ -141,9 +141,9 @@ use kartik\select2\Select2;
  
 <?=$this->render('../request/map.php')?> 
 
-<script  async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0nNC2JY5h2LxGdKCTXSXMV5ZNDrpwvvA&callback=initMap"></script>
 <?php
 $this->registerJs(<<<JS
+  $("input").attr('autocomplete','off');
  
   $(document).ready(function(){
     function readURL(input,id) {

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\date\DatePicker;
 use backend\models\Lang;
 use common\widgets\Alert;
 
@@ -52,7 +53,20 @@ $lang = Yii::$app->language;
                   <div class="row">
                     <div class="col-lg-12">
                       <div class="form-group">
-                        <input type="date" name="User[birthday]" placeholder="<?=$user->getAttributeLabel('birthday')?>" value="<?=$user->birthday?>">
+                        <?php echo DatePicker::widget([
+                               'name' => 'User[birthday]',
+                               'type' => DatePicker::TYPE_COMPONENT_PREPEND,
+                               'value' => $user->getBirthday(),
+                               'options'=>[
+                                'class'=>'my_input',
+                                'placeholder'=>$user->getAttributeLabel('birthday'),
+                               ],
+                               'pluginOptions' => [
+                                   'autoclose'=>true,
+                                   'format' => 'dd.mm.yyyy'
+                               ]
+                           ]);
+                        ?>
                       </div>
                     </div>
                   </div>
@@ -138,7 +152,7 @@ $lang = Yii::$app->language;
         </div>
       </div>
       <div class="cabinet_right">
-        <?=$this->render('cabinet_right',['company'=>$company,'banners'=>$banner]);?>
+        <?=$this->render('cabinet_right',['company'=>$company,'banner'=>$banner]);?>
       </div>
     </div>
    
@@ -146,6 +160,8 @@ $lang = Yii::$app->language;
 </section>
 <?php
 $this->registerJs(<<<JS
+    $("input").attr('autocomplete','off');
+
     $(document).ready(function(){
       $("#w0-success-0").removeClass('fade in');
       var c = 0;

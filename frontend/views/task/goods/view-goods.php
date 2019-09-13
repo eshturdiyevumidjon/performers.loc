@@ -47,10 +47,12 @@
             </div>
           </div>
         </div>
+        <?php if (isset($model->offer_your_price)): ?>
         <div class="suggestion">
           <p><?=Yii::t('app','Offer')?></p>
-          <span><?=$model->offer_your_price?></span>
+          <span><?=$model->offer_your_price." $"?> </span>
         </div>
+        <?php endif ?>
         <div class="busy_easy">
           <?=$model->getTypeIconSvg(3)?>
           <span><?=$model->getType()[3]?></span>
@@ -114,12 +116,12 @@
             </div>
             <div class="col-sm-6 v_koord">
               <div class="v_trans">
-                <div style="word-break:break-all;">
+                <div style="word-break:break-word;">
                   <img src="/images/otp.svg" alt="" class="nt-1">
                   <strong><?=$model->shipping_address?></strong>
                 </div>
                 <img src="/images/mang.svg" alt="" class="nt-2">
-                <div style="word-break: break-all;">
+                <div style="word-break: break-word;">
                   <img src="/images/otp2.svg" alt="" class="nt-3">
                   <strong><?=$model->delivery_address?></strong>
                 </div>

@@ -163,5 +163,5 @@ AutocompleteDirectionsHandler.prototype.route = function() {
       }
 
 </script>
- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAIUZfJr01SrsKER6zBPwBcmPNy0rfXPc&libraries=places&callback=initMap"
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAIUZfJr01SrsKER6zBPwBcmPNy0rfXPc&libraries=places&language=<?=$lang?>&callback=initMap"
         async defer></script>
