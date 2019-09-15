@@ -2192,7 +2192,6 @@ li.page-item.prev.toogle_pag svg{
 	/*margin-bottom: 15px;*/
 }
 .filter_block .enter_to_site{
-	pointer-events: none;
 	text-align: left;
 }
 .filter_block .enter_to_site svg{

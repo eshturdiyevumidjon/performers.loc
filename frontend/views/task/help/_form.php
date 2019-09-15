@@ -101,29 +101,34 @@ use yii\widgets\ActiveForm;
             <label for="bwwprw"><?=Yii::t('app','Need disassembly')?></label>
         </div>
         <div class="paino">
-          <div class="d-flex align-items-center justify-content-between">
+          <?php foreach ($model->getItemsList() as $key => $value): ?>
+            <?php $item = $model->getItem($value->id);?>
+
+             <div class="d-flex align-items-center justify-content-between">
             <div class="form-group_checkbox">
-                <input type="checkbox" id="bewprw" name="need_relocation" value="1" <?=($model->need_relocation ==1)? "checked":""?>>
-                <label for="bewprw"><?=Yii::t('app','Relocation')?></label>
+                <input type="checkbox" id="bewprw<?=$key?>" name="need_<?=$value->id?>" value="1" <?=($item) ? "checked":""?>>
+                <label for="bewprw<?=$key?>"><?=$value?></label>
             </div>
-            <div class="form_count" id="need_relocation" style="display: none;">
+            <div class="form_count" id="need_<?=$key?>" style="display: none;">
               <button class="minus_count"><img src="/images/minus_a.svg" alt=""></button>
-              <input type="number" name="count_relocation" placeholder="bewprw" min=0 value='<?=isset($model->count_relocation)?$model->count_relocation:1?>'>
+              <input type="number" name="items[<?=$key?>]"  min=0 value='<?=($item)?$item:1?>'>
               <button class="plus_count"><img src="/images/plus_a.svg" alt=""></button>
             </div>
           </div>
-          <div class="d-flex align-items-center justify-content-between">
+          <?php endforeach ?>
+         
+           <div class="d-flex align-items-center justify-content-between">
             <div class="form-group_checkbox">
                 <input type="checkbox" id="bewprwc" name="need_piano" value="1" <?=($model->need_piano ==1)? "checked":""?> >
                 <label for="bewprwc"><?=Yii::t('app','Piano and safes')?></label>
             </div>
             <div class="form_count" id="need_piano" style="display: none;">
               <button class="minus_count"><img src="/images/minus_a.svg" alt=""></button>
-              <input type="number"  min=0 name="count_piano" placeholder="bewprw" min=0 value='<?=isset($model->count_piano)?$model->count_piano:1?>'>
+              <input type="number"  min=0  placeholder="bewprw" min=0 value='<?=isset($model->count_piano)?$model->count_piano:1?>'>
               <button class="plus_count"><img src="/images/plus_a.svg" alt=""></button>
             </div>
           </div>
-          <div class="d-flex align-items-center justify-content-between">
+          <!--<div class="d-flex align-items-center justify-content-between">
             <div class="form-group_checkbox">
                 <input type="checkbox" id="bbewprwc" name="need_furniture" value="1" <?=($model->need_furniture ==1)? "checked":""?> >
                 <label for="bbewprwc"><?=Yii::t('app','Furniture and household appliances')?></label>
@@ -188,7 +193,7 @@ use yii\widgets\ActiveForm;
                 <input type="number"  min=0 name="count_other_items" placeholder="bewprw" min=0 value='<?=isset($model->count_other_items)?$model->count_other_items:1?>'>
                 <button class="plus_count"><img src="/images/plus_a.svg" alt=""></button>
               </div>
-          </div>
+          </div> -->
         </div>
         <div class="d-flex align-items-center d_inp">
           <div class="form-group_checkbox vnu_m" style="margin-top: 20px;margin-bottom: 20px;">
@@ -196,7 +201,7 @@ use yii\widgets\ActiveForm;
               <label for="bww55"><?=Yii::t('app','Need packing?')?></label>
           </div>
           <div id="need_packing" style="display: none;width: 100%;">
-            <?= $form->field($model, 'packing_area')->widget(\yii\widgets\MaskedInput::className(),['mask' => '9','clientOptions' => ['repeat' => 10, 'greedy' => false],'options'=>['class'=>'my_input','placeholder'=>$model->getAttributeLabel('offer_your_price')]])->label(false) ?>
+            <?= $form->field($model, 'packing_area')->widget(\yii\widgets\MaskedInput::className(),['mask' => '9','clientOptions' => ['repeat' => 10, 'greedy' => false],'options'=>['class'=>'my_input','placeholder'=>$model->getAttributeLabel('packing_area')]])->label(false) ?>
           
            </div>
         </div>
@@ -221,19 +226,13 @@ use yii\widgets\ActiveForm;
         </div>
         <hr class="mb-2">
        <h4 class="mrte"><?=Yii::t('app','Upload a photo')?></h4>
-        <div class="lert">
-            <?php
-              for($i = 0; $i < 4; $i++){
-            ?>
-            <div class="download_photos" id="upload_photos<?=($i+1)?>">
-              <button type="button" class="remove_photo" name="<?=($i+1)?>"><img src="/images/minus_a.svg" alt=""></button>
-              <img src="" alt="" id="image_upload_preview<?=($i+1)?>">
-              <label class="add_photo" for="my-file-selector<?=($i+1)?>">
-                <input id="my-file-selector<?=($i+1)?>" type="file" alt="<?=($i+1)?>" class="d-none" name="images[]" accept="image/*">
+        <div class="lert" id="photos">
+            <div class="download_photos">
+              <label class="add_photo" for="my-file-selector1">
+                <input id="my-file-selector1" type="file" class="d-none" name="images[]" accept="image/*"accept="image/*" multiple>
                 <img src="/images/plus_a.svg" alt="">
                </label>
-            </div>  
-            <?php }?> 
+            </div> 
         </div>
         <h4><?=$model->getAttributeLabel('promo_code')?></h4>
         <?= $form->field($model, 'promo_code')->textInput(['maxlength' => true,'class'=>'my_input','placeholder'=>'...'])->label(false) ?>
@@ -262,6 +261,29 @@ use yii\widgets\ActiveForm;
 <?=$this->render('../request/map.php')?>
 <?php
 $this->registerJs(<<<JS
+ remove = function(id){
+    $("#photo"+id).remove();
+  }
+  $("#my-file-selector1").on('change',function(e){
+    var files = e.target.files;
+
+    $.each(files, function(i,file){
+        var reader = new FileReader();
+
+        reader.readAsDataURL(file);
+
+        reader.onload = function(e){
+            var template = '<div class="download_photos added" id="photo'+i+'">' +
+            '<button type="button" class="remove_photo" onclick="remove('+i+')"><img src="/images/minus_a.svg"></button>'+
+                '<img src="'+e.target.result+'" alt="">'+
+              '</div>';
+            $('#photos').prepend(template);
+
+          };
+
+      });
+
+  });
   $("input").attr('autocomplete','off');
  
   $("[name*='need']").each(function(){
@@ -297,30 +319,6 @@ $this->registerJs(<<<JS
       
           }
       });
-
-
-    function readURL(input,id) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#image_upload_preview'+id).attr('src', e.target.result);
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    $(".remove_photo").on('click',function () {
-        id = $(this).attr('name');
-
-        $("#upload_photos"+id).removeClass('added');
-        $('#image_upload_preview'+id).attr('src', '');
-    });
-
-    $(".d-none").change(function () {
-        id = $(this).attr('alt');
-        readURL(this,id);
-        $("#upload_photos"+id).addClass('added');
-    });
   });
 JS
 );

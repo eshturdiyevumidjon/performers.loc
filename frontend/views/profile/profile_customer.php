@@ -129,9 +129,9 @@ $this->params['breadcrumbs'][] = $this->title;
       </div>
       <div class="cabinet_right">
         <div class="user_all">
-          <div class="user_dorian">
+           <div class="user_dorian">
               <img src="<?=($user->image != null ) ? '/admin/uploads/avatars/'.$user->image : '/uploads/nouser3.png'?>" id="image_upload_preview">
-              <form id="form" action="ajaxupload.php" method="post" enctype="multipart/form-data">
+                <form id="form" action="/$lang/profile/change-photo" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="<?=$user->id?>">
                 <input type="file" name="user_image" id="inputFile" accept="image/*">
               </form>
@@ -162,55 +162,39 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
 $this->registerJs(<<<JS
   $("#w0-success-0").removeClass('fade in');
+  $("#inputFile").on('change',function(e){
+      var files = e.target.files;
 
-   function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
+      $.each(files, function(i,file){
+          var reader = new FileReader();
 
-            reader.onload = function (e) {
-                $('#image_upload_preview').attr('src', e.target.result);
-            }
+          reader.readAsDataURL(file);
 
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
+          reader.onload = function(e){
+              $("#image_upload_preview").attr('src',e.target.result);
+            };
 
-    $("#inputFile").on('change',(function(e) {
-      readURL(this);
-      e.preventDefault();
-      $.ajax({
-       url: "/$lang/profile/change-photo",
-       type: "POST",
-       data:  new FormData(this),
-       contentType: false,
-             cache: false,
-       processData: false,
-       beforeSend : function()
-       {
-        //$("#preview").fadeOut();
-        $("#err").fadeOut();
-       },
-       success: function(data)
-          {
-            alert(data);
-        if(data=='invalid')
-        {
-         // invalid file format.
-         $("#err").html("Invalid File !").fadeIn();
-        }
-        else
-        {
-         // view uploaded file.
-         $("#preview").html(data).fadeIn();
-         $("#form")[0].reset(); 
-        }
-          },
-         error: function(e) 
-          {
-        $("#err").html(e).fadeIn();
-          }          
         });
-     }));
+
+    });
+  $('#inputFile').change(function(){ 
+     var data = new FormData() ; 
+     data.append('file', $( '#inputFile' )[0].files[0]) ; 
+     $.ajax({
+     url: '/$lang/profile/change-photo',
+     type: 'POST',
+     data: data,
+     processData: false,
+     contentType: false,
+      beforeSend: function(){
+       $('#preview-image').html('Loading...');
+      },
+      success: function(data){ 
+        location.reload(true);
+      }
+     });
+    return false;
+  });
 JS
 );
 ?>

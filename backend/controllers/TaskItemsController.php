@@ -3,19 +3,18 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Chat;
-use backend\models\ChatSearch;
+use backend\models\TaskItems;
+use backend\models\TaskItemsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
-use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 
 /**
- * ChatController implements the CRUD actions for Chat model.
+ * TaskItemsController implements the CRUD actions for TaskItems model.
  */
-class ChatController extends Controller
+class TaskItemsController extends Controller
 {
     /**
      * @inheritdoc
@@ -34,43 +33,48 @@ class ChatController extends Controller
     }
 
     /**
-     * Lists all Chat models.
+     * Lists all TaskItems models.
      * @return mixed
      */
-    public function actionIndex($to = null)
+    public function actionIndex()
     {    
-        $from = Yii::$app->user->identity->id;
-        $to = ($to) ? $to : $from;
-        if(Yii::$app->request->isAjax){
-            print_r($_FILES);
-            die;
-        }
-        $query = Chat::find()->where(['and', ['to'=>[$to,$from]], ['from'=>[$to,$from]]]);
-        $dataProvider = new ActiveDataProvider([
-           'query' => $query,
-        ]);
-        $users = \common\models\User::find()->all();
+        $searchModel = new TaskItemsSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'users'=>$users,
-            'to'=>$to,
-            'from'=>$from,
         ]);
     }
-   
+
+
     /**
-     * Displays a single Chat model.
+     * Displays a single TaskItems model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {   
-        
+        $request = Yii::$app->request;
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                    'title'=> "TaskItems #".$id,
+                    'content'=>$this->renderAjax('view', [
+                        'model' => $this->findModel($id),
+                    ]),
+                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                ];    
+        }else{
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+            ]);
+        }
     }
 
     /**
-     * Creates a new Chat model.
+     * Creates a new TaskItems model.
      * For ajax request will return json object
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -78,7 +82,7 @@ class ChatController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
-        $model = new Chat();  
+        $model = new TaskItems();  
 
         if($request->isAjax){
             /*
@@ -87,7 +91,7 @@ class ChatController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Create new Chat",
+                    'title'=> "Create new TaskItems",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -98,15 +102,15 @@ class ChatController extends Controller
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Create new Chat",
-                    'content'=>'<span class="text-success">Create Chat success</span>',
+                    'title'=> "Create new TaskItems",
+                    'content'=>'<span class="text-success">Create TaskItems success</span>',
                     'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a('Create More',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
         
                 ];         
             }else{           
                 return [
-                    'title'=> "Create new Chat",
+                    'title'=> "Create new TaskItems",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -131,7 +135,7 @@ class ChatController extends Controller
     }
 
     /**
-     * Updates an existing Chat model.
+     * Updates an existing TaskItems model.
      * For ajax request will return json object
      * and for non-ajax request if update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -149,7 +153,7 @@ class ChatController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Update Chat #".$id,
+                    'title'=> "Update TaskItems #".$id,
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
@@ -159,7 +163,7 @@ class ChatController extends Controller
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Chat #".$id,
+                    'title'=> "TaskItems #".$id,
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                     ]),
@@ -168,7 +172,7 @@ class ChatController extends Controller
                 ];    
             }else{
                  return [
-                    'title'=> "Update Chat #".$id,
+                    'title'=> "Update TaskItems #".$id,
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
                     ]),
@@ -191,7 +195,7 @@ class ChatController extends Controller
     }
 
     /**
-     * Delete an existing Chat model.
+     * Delete an existing TaskItems model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -219,7 +223,7 @@ class ChatController extends Controller
     }
 
      /**
-     * Delete multiple existing Chat model.
+     * Delete multiple existing TaskItems model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -250,15 +254,15 @@ class ChatController extends Controller
     }
 
     /**
-     * Finds the Chat model based on its primary key value.
+     * Finds the TaskItems model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Chat the loaded model
+     * @return TaskItems the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Chat::findOne($id)) !== null) {
+        if (($model = TaskItems::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

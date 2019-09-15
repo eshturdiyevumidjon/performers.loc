@@ -29,7 +29,7 @@ use yii\widgets\Pjax;
         </div>
       </div>
       <div class="price_cop">
-        <h6><?=$value->price?> руб.</h6>
+        <h6><?=$value->price?> $.</h6>
         <p class="cal_tack"><?=Yii::t('app','Offer')?></p>
       </div>
     </div>

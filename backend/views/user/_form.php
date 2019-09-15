@@ -57,7 +57,7 @@ use kartik\date\DatePicker;
             <div class="row">
                 <div class="col-md-6">
                     <?php if (!$model->isNewRecord): ?>
-                        <?= $form->field($model, 'status')->dropDownList($model->getStatus(), ['prompt' => Yii::t('app','Select')])?>
+                        <?= $form->field($model, 'status')->dropDownList($model->getStatus(), [])?>
                     <?php endif ?>
                 </div>
                 <div class="col-md-6">

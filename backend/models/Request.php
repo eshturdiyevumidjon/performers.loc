@@ -106,6 +106,14 @@ class Request extends \yii\db\ActiveRecord
         ]);
     }
 
+    public function getMarkList()
+    {
+        $arr = \backend\models\Transports::find()->asArray()->all();
+        $marks = ArrayHelper::getColumn($arr, 'mark');
+        $result = \backend\models\Marks::find()->where(['id'=>$marks])->all();
+
+        return ArrayHelper::map($result,'id','name_mark');
+    }
   
     public static function findOne($condition)
     {

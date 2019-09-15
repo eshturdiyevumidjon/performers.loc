@@ -95,19 +95,13 @@ use kartik\select2\Select2;
         
         <hr class="mb-2">
        <h4 class="mrte"><?=Yii::t('app','Upload a photo')?></h4>
-        <div class="lert">
-            <?php
-              for($i = 0; $i < 4; $i++){
-            ?>
-            <div class="download_photos" id="upload_photos<?=($i+1)?>">
-              <button type="button" class="remove_photo" name="<?=($i+1)?>"><img src="/images/minus_a.svg" alt=""></button>
-              <img src="" alt="" id="image_upload_preview<?=($i+1)?>">
-              <label class="add_photo" for="my-file-selector<?=($i+1)?>">
-                <input id="my-file-selector<?=($i+1)?>" type="file" alt="<?=($i+1)?>" class="d-none" name="images[]" accept="image/*"accept="image/*">
+        <div class="lert" id="photos">
+            <div class="download_photos">
+              <label class="add_photo" for="my-file-selector1">
+                <input id="my-file-selector1" type="file" class="d-none" name="images[]" accept="image/*"accept="image/*" multiple>
                 <img src="/images/plus_a.svg" alt="">
                </label>
-            </div>  
-            <?php }?> 
+            </div> 
         </div>
         <hr class="mb15">
         <h4><?=Yii::t('app','Additional terms')?></h4>
@@ -137,38 +131,41 @@ use kartik\select2\Select2;
         
     </div>
   </div>
+  <input type="file" multiple id="gallery-photo-add">
+<div class="gallery"></div>
 </section>
  
 <?=$this->render('../request/map.php')?> 
 
 <?php
 $this->registerJs(<<<JS
-  $("input").attr('autocomplete','off');
- 
-  $(document).ready(function(){
-    function readURL(input,id) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#image_upload_preview'+id).attr('src', e.target.result);
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
+  remove = function(id){
+    $("#photo"+id).remove();
+  }
+  $("#my-file-selector1").on('change',function(e){
+    var files = e.target.files;
 
-    $(".remove_photo").on('click',function () {
-        id = $(this).attr('name');
+    $.each(files, function(i,file){
+        var reader = new FileReader();
 
-        $("#upload_photos"+id).removeClass('added');
-        $('#image_upload_preview'+id).attr('src', '');
-    });
+        reader.readAsDataURL(file);
 
-    $(".d-none").change(function () {
-        id = $(this).attr('alt');
-        readURL(this,id);
-        $("#upload_photos"+id).addClass('added');
-    });
+        reader.onload = function(e){
+            var template = '<div class="download_photos added" id="photo'+i+'">' +
+            '<button type="button" class="remove_photo" onclick="remove('+i+')"><img src="/images/minus_a.svg"></button>'+
+                '<img src="'+e.target.result+'" alt="">'+
+              '</div>';
+            $('#photos').prepend(template);
+
+          };
+
+      });
+
   });
+  
+  $("input").attr('autocomplete','off');
+  
+ 
 JS
 );
 ?>

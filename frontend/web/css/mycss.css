@@ -1,3 +1,6 @@
+.pointer{
+  cursor:pointer;
+}
 .my_input:focus{
     box-shadow: unset;
 }

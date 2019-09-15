@@ -300,7 +300,7 @@ use yii\widgets\DetailView;
               if($model->image != ""){ 
               $imgs = explode(',',$model->image);
                foreach ($imgs as $key => $value): ?>
-                <a href="/uploads/task/<?=$value?>" class="netr" data-fancybox="galery"><img src="/uploads/tasks/<?=$value?>" alt=""></a>
+                <a href="/uploads/taks/<?=$value?>" class="netr" data-fancybox="galery"><img src="/uploads/tasks/<?=$value?>" alt=""></a>
               <?php endforeach;} ?>
           </div>
         </div>
@@ -330,12 +330,28 @@ use yii\widgets\DetailView;
         </div>
         <div class="pay_inner">
             <p><?=Yii::t('app','Paid')?>: <b>30%</b><!-- <span>2 347 457 руб.</span> --></p>
-          <a href="/site/cancellation-policy" target="_blank" class="forget_pass"><?=Yii::t('app','Cancellation Policy')?></a>
+          <a href="/site/cancellation-policy" target="_blank" class="forget_pass"><?=Yii::t('app','Cancellation Terms')?></a>
         </div>
         <?php if ($active_user->type == 3): ?>
           <div class="text_right_ent">
-            <?=\yii\helpers\Html::a('<span class="aft_back"></span>'.Yii::t('app','Order service'), ['create-request','id'=>$model->id],
+            <?php if ($active_user->isHaveRequest($model->id)): ?>
+                  
+            <?php else: ?>
+               <?=\yii\helpers\Html::a('<span class="aft_back"></span>'.Yii::t('app','Leave a request'), ['create-request','id'=>$model->id],
               ['role'=>'modal-remote', 'class'=>'enter_to_site'])?>
+            <?php endif ?>
+          </div>
+        <?php endif ?>
+         <?php if ($active_user->type ==4): ?>
+          <div class="text_right_ent">
+
+          <?=\yii\helpers\Html::a('<span class="aft_back"></span>'.Yii::t('app','Order cancellation'), ['delete-task','id'=>$model->id],
+            ['role'=>'modal-remote', 'class'=>'enter_to_site','title'=>Yii::t('app','Delete'), 
+                                    'data-confirm'=>false, 'data-method'=>false, 
+                                    'data-request-method'=>'post',
+                                    'data-toggle'=>'tooltip',
+                                    'data-confirm-title'=>Yii::t('app','Are you sure?'),
+                                    'data-confirm-message'=>Yii::t('app','Are you sure want to delete this item?')])?>
           </div>
         <?php endif ?>
         <div class="zayavka">

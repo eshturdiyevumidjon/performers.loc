@@ -1,10 +1,7 @@
 <?php
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\bootstrap\Modal;
-use kartik\grid\GridView;
-use johnitvn\ajaxcrud\CrudAsset; 
-use johnitvn\ajaxcrud\BulkButtonWidget;
+
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\ChatSearch */
@@ -13,14 +10,12 @@ use johnitvn\ajaxcrud\BulkButtonWidget;
 $this->title = 'Chats';
 $this->params['breadcrumbs'][] = $this->title;
 
-CrudAsset::register($this);
-$id = Yii::$app->user->identity->id;
+$id = $from;
 ?>
 <?php
 $lang = Yii::$app->language;
 $adminka = Yii::$app->params['adminka'];
 ?>
-
 <div class="content-frame">                                    
     <!-- START CONTENT FRAME TOP -->
     <div class="content-frame-top">                        
@@ -39,7 +34,7 @@ $adminka = Yii::$app->params['adminka'];
         
         <div class="list-group list-group-contacts border-bottom push-down-10">
             <?php foreach ($users as $key => $value): ?>
-                  <button href="#" class="list-group-item choose"  id="<?=$value->id?>">                                 
+                  <a href="<?=$adminka?><?=$lang?>/chat/index?to=<?=$value->id?>" class="list-group-item choose">                                 
                         <!-- <div class="list-group-status status-online"></div> -->
                     <?=$value->getUserAvatar('_columns')?>
                     <?php if ($id == $value->id): ?>
@@ -48,28 +43,42 @@ $adminka = Yii::$app->params['adminka'];
                         <span class="contacts-title"><?=$value->username?></span>
 
                     <?php endif ?>
-                </button>
+                </a>
             <?php endforeach ?>
         </div>
     </div>
     <!-- END CONTENT FRAME RIGHT -->
 
     <!-- START CONTENT FRAME BODY -->
-    <div class="content-frame-body content-frame-body-left" style="height: 599px;" id="chat">
-        <?=$this->render('chat',['dataProvider'=>$dataProvider])?>
-        
+    <div class="content-frame-body content-frame-body-left">
+        <div class="panel panel-default" id="chat" style="height: 400px; overflow-y: all;">
+            <?=$this->render('chat',['dataProvider'=>$dataProvider])?>
+        </div>
+        <div class="panel panel-default push-up-10">
+            <div class="panel-body panel-body-search">
+                <form method="post" action="<?=$adminka?>/chat/index" enctype="multipart/form-data"
+                        id="myform"> 
+                    <input type="hidden" name="from" value="<?=$from?>">
+                    <input type="hidden" name="to" value="<?=$to?>">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <input type="file" class="file_input" id="inputFile" style="display: none;">
+                            <label class="btn btn-default" for="inputFile"><img src="/images/file_chat.svg" alt=""></label>
+                        </div>
+                        <input type="text" id="message" class="form-control" placeholder="Your message...">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default" id="but_upload">Send</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    <!-- END CONTENT FRAME BODY -->      
 </div>
-<?php
+<?php 
 $this->registerJs(<<<JS
-    $(document).ready(function(){
-        $('.choose').on('click',function(){
-           $.post('/admin/$lang/chat/index',{to:$(this).attr('id')},function(success){alert(success);$('#chat').html(success);});
             alert();
 
-            });
-        });
 JS
 );
-
+?>

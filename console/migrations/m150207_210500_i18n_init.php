@@ -47,6 +47,7 @@ class m150207_210500_i18n_init extends Migration
                 'Access to order for the performer'=>'Доступ для заказа для исполнителя ',
                 'User'=>'Пользователь',
                 'Close'=>'Закрыть',
+                'Route'=>'Маршрут',
                 'Edit'=>'Изменить',
                 'Users'=>'Пользователи',
                 'Complete successfully'=>'Успешно выполнено',
@@ -402,9 +403,12 @@ class m150207_210500_i18n_init extends Migration
                 'Phone and Email are hidden, will be available to the performer'=>'Телефон и Email скрыты, будут доступны исполнителю',
                 'Distance'=>'Расстояние',
                 'Travel time'=>'Время в пути',
-                'Cancellation Policy'=>'Условия отмены брони',
-                'Paid'=>'Оплачен',
-                'Order service'=>'Заказать услугу',
+                'Cancellation Terms'=>'Условия отказа от заказа',
+                'Paid'=>'Оплачено',
+                'Leave a request'=>'Оставить заявку',
+                'Order cancellation'=>'Отмена заказа',
+                'Minimum payment'=>'Минимальная оплата',
+                ''
                 'Order'=>'Заказать',
             ];
 

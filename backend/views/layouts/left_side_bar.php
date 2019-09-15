@@ -107,12 +107,15 @@ $user = \common\models\User::find()->where(['id'=>Yii::$app->user->identity->id]
                 <li  <?= ($pathInfo == 'settings/index' ? 'class="active"' : '')?>>
                             <a href="<?=$adminka?>settings/index"><span class="fa fa-language"></span><?=Yii::t('app','Settings')?></a>
                 </li>
-                  <li  <?= ($pathInfo == 'chavo/index' ? 'class="active"' : '')?>>
+                <li  <?= ($pathInfo == 'chavo/index' ? 'class="active"' : '')?>>
                             <a href="<?=$adminka?>chavo/index"><span class="fa fa-tasks"></span><?=Yii::t('app','Chavo')?></a>
+                </li>
+                <li  <?= ($pathInfo == 'items-description/index' ? 'class="active"' : '')?>>
+                            <a href="<?=$adminka?>items-description/index"><span class="fa fa-tasks"></span><?=Yii::t('app','Description items')?></a>
                 </li>
             </ul>
         </li>
-
+            
          <li class="xn-openable <?= (($pathInfo == 'feedback/index' || $pathInfo == 'replies/index') ? 'active' : '')?>">
             <a href="#"><span class="fa fa-gear"></span> <span class="xn-text"><?=Yii::t('app','Feedbacks')?></span></a>
             <ul>                            

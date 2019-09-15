@@ -1,7 +1,11 @@
 <?php
+use kartik\date\DatePicker;
 use common\widgets\Alert;
+use yii\widgets\MaskedInput;
 use \backend\models\Tasks;
 $lang = Yii::$app->language;
+$post['type'] = isset($post['type']) ? $post['type'] : [];
+
 ?>
 <section class="cabinet">
 <div class="container">
@@ -22,114 +26,115 @@ $lang = Yii::$app->language;
       </ul>
       <div class="tab-content input_styles cab_st">
         <div id="ff1" class="tab-pane in active"> 
-          <div class="filter_block">
-            <p><?=Yii::t('app','Filter')?></p>
-            <div class="row hdr_svgs">
+          <form id="filter_form" action="/<?=$lang?>/profile/search" method="post">
+            <input type="hidden" name="searching" id="searching" value="0">
+            <div class="filter_block">
+              <p><?=Yii::t('app','Filter')?></p>
+              <div class="row hdr_svgs">
+                <?php
+                $arr = explode(',',$user->role_performer);
+                for ($i=0; $i < 4; $i++) {
+                  $k = $i + 1; 
+                  if(in_array($k, $arr)):
+              ?>
+                 <div class="col-lg-3 col-sm-6">
+                    <a  class="enter_to_site choose <?=in_array($k,$post['type']) ? 'active' : ''?>" id="<?=$k?>">
+                      <span class="aft_back"></span>
+                      <?=Tasks::getTypeIconSvg($i+1)?>
+                      <span><?=Tasks::getInf()[$i][0]?></span>
+                    </a>
+                </div>
+                <input type="checkbox" style="display: none;" name="type[]" value="<?=$k?>"  id="type<?=$k?>"  <?=in_array($k,$post['type'])? 'checked' : ''?>>
               <?php
-              for ($i=0; $i < 4; $i++) { 
-            ?>
-               <div class="col-lg-3 col-sm-6">
-                  <a href="<?=Tasks::getInf()[$i][1]?>" class="enter_to_site">
-                    <span class="aft_back"></span>
-                    <?=Tasks::getTypeIconSvg($i+1)?>
-                    <span><?=Tasks::getInf()[$i][0]?></span>
-                  </a>
-              </div>
-            <?php
-              }
-            ?>
-            </div>
-          </div>
-          <div class="ot_do">
-            <label for=""><?=Yii::t('app','Cost')?>:</label>
-            <div class="ine_ot">
-              <label for=""><?=Yii::t('app','from')?></label>
-              <div class="form-group">
-                <input type="text" placeholder="...">
+                endif;
+                }
+              ?>
               </div>
             </div>
-            <div class="ine_ot">
-              <label for=""><?=Yii::t('app','to')?></label>
-              <div class="form-group">
-                <input type="text" placeholder="...">
-              </div>
-            </div>
-          </div>
-          <div class="ot_do">
-            <label for=""><?=Yii::t('app','Date')?>:</label>
-            <div class="ine_ot">
-              <label for=""><?=Yii::t('app','from')?></label>
-              <div class="form-group">
-                <input type="text" placeholder="...">
-              </div>
-            </div>
-            <div class="ine_ot">
-              <label for=""><?=Yii::t('app','to')?></label>
-              <div class="form-group">
-                <input type="text" placeholder="...">
-              </div>
-            </div>
-          </div>
-          <div class="ot_address">
-            <div class="form-group">
-                <input type="text" placeholder="<?=Yii::t('app','Address')?>">
-            </div>
-          </div>
-          <div class="clear_and_chen">
-            <a href="#" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Reset')?></a>
-            <a href="#" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Apply')?></a>
-          </div>
-          <?php foreach ($all_tasks as $key => $value): ?>
-              <a href="/<?=$lang?>/task/view?id=<?=$value->id?>" class="item_to_city">
-              <div class="item_to_city_top">
-                <div class="sur_">
-                  <img src="<?=$value->getTypeIconBlack()?>" alt="">
-                  <div>
-                    <h5>Доставить груз в Москву</h5>
-                    <p>Грузовые перевозки</p>
-                  </div>
-                </div>
-                <div class="price_cop">
-                  <h6><?=$value->offer_your_price?></h6>
-                  <p class="cal_tack">Предложения</p>
+            <div class="ot_do">
+              <label for=""><?=Yii::t('app','Cost')?>:</label>
+              <div class="ine_ot">
+                <label for=""><?=Yii::t('app','from')?></label>
+                <div class="form-group">
+                  <?php echo MaskedInput::widget([
+                      'name' => 'cost_from',
+                      'value'=>$post['cost_from'],
+                      'mask' => '9','clientOptions' => ['repeat' => 10, 'greedy' => false],'options'=>['class'=>'my_input','placeholder'=>'...']
+                  ]);?>
                 </div>
               </div>
-              <span class="line_toc"></span>
-              <div class="item_to_city_bottom">
-                <div class="row">
-                  <div class="col-4">
-                    <p class="cal_tack">Cоздан</p>
-                    <span><?=$value->date_cr?></span>
-                  </div>
-                  <div class="col-4">
-                    <p class="cal_tack">Дата отправки</p>
-                    <span><?=$value->date_begin?></span>
-                  </div>
-                  <div class="col-4">
-                    <p class="cal_tack">Дата прибытия</p>
-                    <span><?=$value->date_close?></span>
-                  </div>
-                </div>
-                <div class="mangis">
-                  <p class="cal_tack">Маршрут</p>
-                  <div class="d-flex align-items-center">
-                    <img src="/images/otp.svg" alt="" class="nt-1">
-                    <span><?=$value->shipping_address?></span>
-                    <img src="/images/mang.svg" alt="" class="nt-2">
-                    <img src="/images/otp2.svg" alt="" class="nt-3">
-                    <span><?=$value->delivery_address?></span>
-                  </div>
+              <div class="ine_ot">
+                <label for=""><?=Yii::t('app','to')?></label>
+                <div class="form-group">
+                 <?php echo MaskedInput::widget([
+                      'name' => 'cost_to',
+                      'value'=>$post['cost_to'],
+                      'mask' => '9','clientOptions' => ['repeat' => 10, 'greedy' => false],'options'=>['class'=>'my_input','placeholder'=>'...']
+                  ]);?>
                 </div>
               </div>
-              <button><span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><g><g clip-path="url(#clip-67c7ecfe-51a6-4606-85cb-9c7ae5002df6)"><g><g><path fill="" d="M6 0L4.95 1.05l4.2 4.2H0v1.5h9.15l-4.2 4.2L6 12l6-6z"></path></g></g></g></g></svg></span></button>
-            </a>
-            <?php endforeach ?>
-          <ul class="pagination">
-            <li class="page-item"><a class="" href="#">1</a></li>
-            <li class="page-item"><a class="" href="#">2</a></li>
-            <li class="page-item"><a class="" href="#">3</a></li>
-            <li class="page-item"><a class="" href="#">...</a></li>
-            <li class="page-item"><a class="" href="#">346</a></li>
+            </div>
+            <div class="ot_do">
+              <label for=""><?=Yii::t('app','Date')?>:</label>
+              <div class="ine_ot">
+                <label for=""><?=Yii::t('app','from')?></label>
+               <?php echo DatePicker::widget([
+                       'name' => 'data_from',
+                       'id' => 'data_from',
+                       'type' => DatePicker::TYPE_COMPONENT_PREPEND,
+                       'value' => $post['data_from'],
+                       'options'=>[
+                        'class'=>'my_input',
+                        'placeholder'=>'...',
+                       ],
+                       'pluginOptions' => [
+                           'autoclose'=>true,
+                           'allowClear'=>true,        
+                           'clearBtn' => true,
+                           'format' => 'dd.mm.yyyy'
+                       ]
+                   ]);
+                ?>
+              </div>
+              <div class="ine_ot">
+                <label for=""><?=Yii::t('app','to')?></label>
+                <?php echo DatePicker::widget([
+                       'name' => 'data_to',
+                       'id' => 'data_to',
+                       'type' => DatePicker::TYPE_COMPONENT_PREPEND,
+                       'value' => $post['data_to'],
+                       'options'=>[
+                        'class'=>'my_input',
+                        'placeholder'=>'...',
+                       ],
+                       'pluginOptions' => [
+                           'autoclose'=>true,
+                           'allowClear'=>true,
+                           'clearBtn' => true,
+                           'format' => 'dd.mm.yyyy'
+                       ]
+                   ]);
+                ?>
+              </div>
+            </div>
+            <div class="ot_address">
+              <div class="form-group">
+                  <input type="text" name="address" value="<?=$post['address']?>" placeholder="<?=Yii::t('app','Address')?>">
+              </div>
+            </div>
+            <div class="clear_and_chen">
+              <a  class="enter_to_site" id="reset"><span class="aft_back"></span><?=Yii::t('app','Reset')?></a>
+              <!-- <a class="enter_to_site" id="send_data"><span class="aft_back"></span><?=Yii::t('app','Apply')?></a> -->
+              <button type="submit" style="border: none;margin-left: 5px;cursor:pointer;" class="enter_to_site" name="search_submit" value=""><span class="aft_back"></span><?=Yii::t('app','Apply')?></button>
+            </div>
+          </form>
+          <div id="result">
+            <?=$this->render('filter',['all_tasks'=>$all_tasks,'lang'=>$lang])?>
+            <?=\yii\widgets\LinkPager::widget(['pagination'=>$pages])?>
+           </div>
+          <!-- <ul class="pagination">
+
+            
             <li class="page-item prev toogle_pag">
               <a class="btn_red" href="#">
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><g><g clip-path="url(#clip-67c7ecfe-51a6-4606-85cb-9c7ae5002df6)"><g><g><path fill="" d="M6 0L4.95 1.05l4.2 4.2H0v1.5h9.15l-4.2 4.2L6 12l6-6z"/></g></g></g></g></svg>
@@ -140,7 +145,7 @@ $lang = Yii::$app->language;
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><g><g clip-path="url(#clip-67c7ecfe-51a6-4606-85cb-9c7ae5002df6)"><g><g><path fill="" d="M6 0L4.95 1.05l4.2 4.2H0v1.5h9.15l-4.2 4.2L6 12l6-6z"/></g></g></g></g></svg>
               </a>
             </li>
-          </ul>
+          </ul> -->
         </div>
         <div id="ff0" class="tab-pane fade">
         </div>
@@ -150,7 +155,8 @@ $lang = Yii::$app->language;
       <div class="user_all">
        <div class="user_dorian">
             <img src="<?=($user->image != null ) ? '/admin/uploads/avatars/'.$user->image : '/uploads/nouser3.png'?>" id="image_upload_preview">
-            <form id="form" action="<?=$lang?>/profile/change-photo" method="post" enctype="multipart/form-data">
+              <form id="form" action="/$lang/profile/change-photo" method="post" enctype="multipart/form-data">
+              <input type="hidden" name="id" value="<?=$user->id?>">
               <input type="file" name="user_image" id="inputFile" accept="image/*">
             </form>
             <label for="inputFile"><img src="/images/camera_photo.svg" alt=""><p style="color:black;"><?=Yii::t('app','Change photo')?></p></label>
@@ -174,53 +180,76 @@ $lang = Yii::$app->language;
         <?=$this->render('cabinet_right',['company'=>$company,'banner'=>$banner,'user'=>$user]);?>
     </div>
   </div>
- 
 </div>
+
 </section>
 <?php
 $this->registerJs(<<<JS
-  $("#w0-success-0").removeClass('fade in');
-
-   function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $('#image_upload_preview').attr('src', e.target.result);
-            }
-
-            reader.readAsDataURL(input.files[0]);
-        }
+ $(document).ready(function() { 
+  $(".choose").on('click',function(){
+    id = $(this).attr('id');
+    if($(this).hasClass('active')){
+      $(this).removeClass('active');
+      $('#type'+id).prop("checked",false);
+    }else{
+      $(this).addClass('active');
+      $('#type'+id).prop("checked",true);
     }
+  });
+  $("#reset").on('click',function(){
+    $("#filter_form")[0].reset();
+    $(":input").val('');
+    $(':checkbox').prop("checked",false);
+    $('.choose').each(function(){
+      $(this).removeClass('active');
+      });
+  });
+  
+  $("#send_data").on('click',function(){
+   $.post('/$lang/profile/search',$('#filter_form').serialize(),function(data){
+        // $('#result').html(data);
+        alert(data);
+    });
+  });
 
-    $("#inputFile").on('change',(function(e) {
-      readURL(this);
-      e.preventDefault();
-      $.ajax({
-       url: "/$lang/profile/change-photo",
-       type: "POST",
-       data:  new FormData(this),
-       contentType: false,
-             cache: false,
-       processData:false,
-       beforeSend : function()
-       {
-        //$("#preview").fadeOut();
-        $("#err").fadeOut();
-       },
-       success: function(data)
-          {
-            alert(data);
-             // view uploaded file.
-             $("#preview").html(data).fadeIn();
-             $("#form")[0].reset(); 
-          },
-         error: function(e) 
-          {
-        $("#err").html(e).fadeIn();
-          }          
+
+  $("input").attr('autocomplete','off');
+  $("a").addClass('pointer');
+  $("#w0-success-0").removeClass('fade in');
+  $("#inputFile").on('change',function(e){
+      var files = e.target.files;
+
+      $.each(files, function(i,file){
+          var reader = new FileReader();
+
+          reader.readAsDataURL(file);
+
+          reader.onload = function(e){
+              $("#image_upload_preview").attr('src',e.target.result);
+            };
+
         });
-     }));
+
+    });
+  $('#inputFile').change(function(){ 
+     var data = new FormData() ; 
+     data.append('file', $( '#inputFile' )[0].files[0]) ; 
+     $.ajax({
+     url: '/$lang/profile/change-photo',
+     type: 'POST',
+     data: data,
+     processData: false,
+     contentType: false,
+      beforeSend: function(){
+       $('#preview-image').html('Loading...');
+      },
+      success: function(data){ 
+        location.reload(true);
+      }
+     });
+    return false;
+  });
+
+  }); 
 JS
 );
-?>

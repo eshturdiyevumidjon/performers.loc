@@ -305,11 +305,20 @@ class TaskController extends Controller
             }
     
     }
-    public function actionDelete($id)
+    public function actionDeleteTask($id)
     {
         $request = Yii::$app->request;
-        $this->findModel($id)->delete();
-
+       
+        $model=$this->findModel($id);
+        if($model->image != ""){
+            foreach (explode(',',$model->image) as $value) {
+                 if(file_exists('uploads/avatars/'.$value))
+                    {
+                        unlink('uploads/task/'.$value);
+                    }
+            }
+        }
+        $model->delete();  
         if($request->isAjax){
             /*
             *   Process for ajax request
@@ -373,6 +382,22 @@ class TaskController extends Controller
                     'model' => $model,
                 ]);
             }
+        }
+    }
+
+    public function actionGetModelList($mark_id)
+    {
+        $arr = \backend\models\Transports::find()->where(['mark'=>$mark_id])->asArray()->all();
+        $models = \yii\helpers\ArrayHelper::getColumn($arr, 'model');
+        $result = \backend\models\Models::find()->where(['id'=>$models])->all();
+
+        if(count($result) != 0){
+            foreach ($result as $key => $value) {
+                echo '<option value="'.$value->id.'">'.$value->name_model.'</option>';
+            }
+        }
+        else{
+            echo "<option> - </option>";
         }
     }
 

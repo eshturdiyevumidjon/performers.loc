@@ -40,21 +40,14 @@ $cr =  Yii::$app->session['active_create'];
                      </div>
                     </div>
                    <h4 class="mrte"><?=Yii::t('app','Upload a photo')?></h4>
-                    <div class="lert">
-                          <?php
-                            $imgs = explode(',', $transport->images);
-                            for($i = 0; $i < 7; $i++){
-                          ?>
-                          <div class="download_photos <?=($imgs[$i] != '') ? 'added' : '' ?>" id="upload_photos<?=($i+1)?>">
-                            <button type="button" class="remove_photo remove_photo1" name="<?=($i+1)?>"><img src="/images/minus_a.svg" alt=""></button>
-                            <img src="<?=($imgs[$i] != '') ? '/uploads/drivers/'.$imgs[$i] : '' ?>" alt="" id="image_upload_preview<?=($i+1)?>">
-                            <label class="add_photo" for="my-file-selector<?=($i+1)?>">
-                              <input id="my-file-selector<?=($i+1)?>" type="file" alt="<?=($i+1)?>" class="d-none d-none1" name="images[]" value="<?=$imgs[$i]?>" accept="image/*">
-                              <img src="/images/plus_a.svg" alt="">
-                             </label>
-                          </div>  
-                          <?php }?> 
-                      </div>
+                    <div class="lert" id="tr_photos">
+                        <div class="download_photos">
+                          <label class="add_photo" for="my-file-selector1">
+                            <input id="my-file-selector1" type="file" class="d-none" name="tr_images[]" accept="image/*"accept="image/*" multiple>
+                            <img src="/images/plus_a.svg" alt="">
+                           </label>
+                        </div> 
+                    </div>
                       <?= Html::submitButton(Yii::t('app','Add'), ['class' => 'btn_red','value'=>'add_transport','name'=>'submit']) ?>
                   </div>
                   <br>
@@ -106,20 +99,13 @@ $cr =  Yii::$app->session['active_create'];
                            </div>
                         </div>
                         <h4 class="mrte"><?=Yii::t('app','Upload a photo')?></h4>
-                        <div class="lert">
-                                <?php
-                                  $imgs = explode(',', $driver->images);
-                                  for($i = 0; $i < 7; $i++){
-                                ?>
-                                <div class="download_photos <?=($imgs[$i] != '') ? 'added' : '' ?>" id="uploads<?=($i+1)?>">
-                                  <button type="button" class="remove_photo remove_photo2" name="<?=($i+1)?>"><img src="/images/minus_a.svg" alt=""></button>
-                                  <img src="<?=($imgs[$i] != '') ? '/uploads/drivers/'.$imgs[$i] : '' ?>" alt="" id="image_preview<?=($i+1)?>">
-                                  <label class="add_photo" for="my-selector<?=($i+1)?>">
-                                    <input id="my-selector<?=($i+1)?>" type="file" alt="<?=($i+1)?>" class="d-none d-none2" name="images[]" value="<?=$imgs[$i]?>" accept="image/*">
-                                    <img src="/images/plus_a.svg" alt="">
-                                   </label>
-                                </div>  
-                                <?php }?> 
+                       <div class="lert" id="dr_photos">
+                            <div class="download_photos">
+                              <label class="add_photo" for="my-file-selector2">
+                                <input id="my-file-selector2" type="file" class="d-none" name="dr_images[]" accept="image/*"accept="image/*" multiple>
+                                <img src="/images/plus_a.svg" alt="">
+                               </label>
+                            </div> 
                         </div>
                         <?= Html::submitButton(Yii::t('app','Add'), ['class' => 'btn_red','value'=>'add_driver','name'=>'submit']) ?>
 
@@ -166,6 +152,9 @@ $cr =  Yii::$app->session['active_create'];
         </div>
         <?php ActiveForm::end()?>
       </div>
+      <div class="cabinet_right">
+         <?=$this->render('cabinet_right',['company'=>$company,'banner'=>$banner,'user'=>$user]);?>
+       </div>
     </div>
   </div>
 </section>
@@ -189,49 +178,54 @@ $this->registerJs(<<<JS
       $("#create_driver").toggle(300);
     });
 
-    function readURL(input,id) {
-        if (input.files && input.files[0]) {
+    remove = function(id){
+        $("#tr_photo"+id).remove();
+      }
+      $("#my-file-selector1").on('change',function(e){
+        var files = e.target.files;
+
+        $.each(files, function(i,file){
             var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#image_upload_preview'+id).attr('src', e.target.result);
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
 
-    $(".remove_photo1").on('click',function () {
-        id = $(this).attr('name');
-        $("#upload_photos"+id).removeClass('added');
-        $('#image_upload_preview'+id).attr('src', '');
-    });
+            reader.readAsDataURL(file);
 
-    $(".d-none1").change(function () {
-        id = $(this).attr('alt');
-        readURL(this,id);
-        $("#upload_photos"+id).addClass('added');
-    });
+            reader.onload = function(e){
+                var template = '<div class="download_photos added" id="tr_photo'+i+'">' +
+                '<button type="button" class="remove_photo" onclick="remove('+i+')"><img src="/images/minus_a.svg"></button>'+
+                    '<img src="'+e.target.result+'" alt="">'+
+                  '</div>';
+                $('#tr_photos').prepend(template);
 
-    function readURL2(input,id) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#image_preview'+id).attr('src', e.target.result);
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
+              };
 
-    $(".remove_photo2").on('click',function () {
-        id = $(this).attr('name');
-        $("#uploads"+id).removeClass('added');
-        $('#image_preview'+id).attr('src', '');
-    });
+          });
 
-    $(".d-none2").change(function () {
-        id = $(this).attr('alt');
-        readURL2(this,id);
-        $("#uploads"+id).addClass('added');
-    });
+      });
+      remove2 = function(id){
+            $("#dr_photo"+id).remove();
+          }
+          $("#my-file-selector2").on('change',function(e){
+            var files = e.target.files;
+
+            $.each(files, function(i,file){
+                var reader = new FileReader();
+
+                reader.readAsDataURL(file);
+
+                reader.onload = function(e){
+                    var template = '<div class="download_photos added" id="dr_photo'+i+'">' +
+                    '<button type="button" class="remove_photo" onclick="remove2('+i+')"><img src="/images/minus_a.svg"></button>'+
+                        '<img src="'+e.target.result+'" alt="">'+
+                      '</div>';
+                    $('#dr_photos').prepend(template);
+
+                  };
+
+              });
+
+          });
+
+    
   });
 JS
 );

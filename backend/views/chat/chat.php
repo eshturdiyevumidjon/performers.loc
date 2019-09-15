@@ -1,4 +1,6 @@
-<?php $models = $dataProvider->getModels(); ?>
+<?php   
+ $models = $dataProvider->getModels(); 
+?>
 <div class="messages messages-img" style="height: 75%; overflow-y: scroll;">
     <?php if (count($models) == 0): ?>
          <h4 style="text-align: center;"><?=Yii::t('app','You don’t have anything yet')?></h4>
@@ -32,18 +34,31 @@
     <?php endif ?>
 </div>                        
 
-<div class="panel panel-default push-up-10">
-    <div class="panel-body panel-body-search">
-        <div class="input-group">
-            <div class="input-group-btn">
-                <input type="file" class="file_input" id="filesw" style="display: none;">
-                <label class="btn btn-default" for="filesw"><img src="/images/file_chat.svg" alt=""></label>
-            </div>
+<?php 
+$this->registerJs(<<<JS
+    $(document).ready(function()    { 
+            $("#but_upload").click(function() { 
+                var fd = new FormData(); 
+                var files = $('#file')[0].files[0]; 
+                fd.append('file', files); 
             
-            <input type="text" class="form-control" placeholder="Your message...">
-            <div class="input-group-btn">
-                <button class="btn btn-default">Send</button>
-            </div>
-        </div>
-    </div>
-</div>
+                $.ajax({ 
+                    url: 'adres', 
+                    type: 'post', 
+                    data: {fd,$('#myform').serialize}, 
+                    contentType: false, 
+                    processData: false, 
+                    success: function(response){ 
+                        if(response != 0){ 
+                           alert('file uploaded'); 
+                        } 
+                        else{ 
+                            alert('file not uploaded'); 
+                        } 
+                    }, 
+                }); 
+            }); 
+        });
+JS
+);
+?>

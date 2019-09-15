@@ -400,4 +400,9 @@ class User extends ActiveRecord implements IdentityInterface
             } 
      return $output;
     }
+    public function isHaveRequest($id)
+    {
+        $request = \backend\models\Request::find()->where(['task_id'=>$id])->count();
+        return $request == 1;
+    }
 }

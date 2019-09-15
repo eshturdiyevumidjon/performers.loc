@@ -122,6 +122,7 @@ AutocompleteDirectionsHandler.prototype.route = function() {
                     position: results[0].geometry.location,
                     icon: icon
                   }));
+                 
                   if(!asDestination){
                     document.getElementById('shipping_address_coordinate_x').value = results[0].geometry.location.lat();
                     document.getElementById('shipping_address_coordinate_y').value = results[0].geometry.location.lng();

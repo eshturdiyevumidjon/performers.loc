@@ -3,20 +3,20 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\User;
-use backend\models\UserSearch;
+use backend\models\ItemsDescription;
+use backend\models\ItemsDescriptionSearch;
+use backend\models\Lang;
+use backend\models\Translates;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
-use yii\filters\AccessControl;
 use yii\helpers\Html;
-use yii\web\UploadedFile;
 
 /**
- * UserController implements the CRUD actions for User model.
+ * ItemsDescriptionController implements the CRUD actions for ItemsDescription model.
  */
-class UserController extends Controller
+class ItemsDescriptionController extends Controller
 {
     /**
      * @inheritdoc
@@ -24,21 +24,6 @@ class UserController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['login','register'],
-                        'allow' => true,
-                        'roles'=>['?'],
-                    ],
-                    [
-                        'actions' => ['create','update','columns','bulk-delete', 'index','view','delete','error','profile','change'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -50,12 +35,12 @@ class UserController extends Controller
     }
 
     /**
-     * Lists all User models.
+     * Lists all ItemsDescription models.
      * @return mixed
      */
     public function actionIndex()
     {    
-        $searchModel = new UserSearch();
+        $searchModel = new ItemsDescriptionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -66,19 +51,26 @@ class UserController extends Controller
 
 
     /**
-     * Displays a single User model.
+     * Displays a single ItemsDescription model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {   
         $request = Yii::$app->request;
+        $model=$this->findModel($id);
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
+             Yii::$app->response->format = Response::FORMAT_JSON;
+            $translations = Translates::find()->where(['table_name'=>$model->tableName(),'field_id'=>$model->id])->all();
+            foreach ($translations as $key => $value) {
+                $translation_name[$value->language_code] = $value->field_value;
+            }
             return [
-                    'title'=> Yii::t('app','User'),
+                    'title'=> Yii::t('app','Description items'),
                     'content'=>$this->renderAjax('view', [
                         'model' => $this->findModel($id),
+                        'names'=>$translation_name,
                     ]),
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a(Yii::t('app','Edit'),['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
@@ -90,12 +82,8 @@ class UserController extends Controller
         }
     }
 
-    public function actionProfile()
-    {
-        return $this->render('profile');
-    }
     /**
-     * Creates a new User model.
+     * Creates a new ItemsDescription model.
      * For ajax request will return json object
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -103,26 +91,47 @@ class UserController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
-        $model = new User();  
+        $model = new ItemsDescription();  
+        $langs = Lang::getLanguages();
 
         if($request->isAjax){
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            if($model->load($request->post()) && $model->save()){
-               $model->avatar = UploadedFile::getInstance($model,'avatar');
-                if(!empty($model->avatar))
-                {
-                    $name = $model->id . '-' . time();
-                    $model->avatar->saveAs('uploads/avatars/' . $name.'.'.$model->avatar->extension);
-                    Yii::$app->db->createCommand()->update('user', ['image' => $name.'.'.$model->avatar->extension], [ 'id' => $model->id ])->execute();
+            $post = $request->post();
+            if($model->load($post)){
+                $attr = ItemsDescription::NeedTranslation();
+                foreach ($langs as $lang) {
+                        $l = $lang->url;
+                        if($l == 'ru')
+                        {
+                            if(!$model->save())
+                              return [
+                                'title'=> Yii::t('app','Create'),
+                                'content'=>$this->renderAjax('create', [
+                                    'model' => $model,
+                                ]),
+                                'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                                            Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
+                    
+                            ]; 
+                           else continue;
+                        }
+                    foreach ($attr as $key=>$value) {
+                       $t=new Translates();
+                       $t->table_name=$model->tableName();
+                       $t->field_id=$model->id;
+                       $t->field_name=$key;
+                       $t->field_value=$post["ItemsDescription"][$value][$l];
+                       $t->field_description=$value;
+                       $t->language_code=$l;
+                       $t->save();
+                    }
                 }
                 return [
-                    'title'=>Yii::t('app','Create new user'),
                     'forceReload'=>'#crud-datatable-pjax',
-                    'size'=>'large',
-                    'title'=> Yii::t('app','Users'),
+                    'title'=> Yii::t('app','Create'),
                     'content'=>'<span class="text-success">'.Yii::t('app','Complete successfully').'</span>',
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a(Yii::t('app','Create more'),['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
@@ -130,8 +139,7 @@ class UserController extends Controller
                 ];         
             }else{           
                 return [
-                    'title'=> Yii::t('app','Create new user'),
-                    'size'=>'large',
+                    'title'=> Yii::t('app','Create'),
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                     ]),
@@ -155,103 +163,68 @@ class UserController extends Controller
        
     }
 
+
     /**
-     * Updates an existing User model.
+     * Updates an existing ItemsDescription model.
      * For ajax request will return json object
      * and for non-ajax request if update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      */
-    public function actionChange($id)
+    public function actionUpdate($id)
     {
         $request = Yii::$app->request;
         $model = $this->findModel($id);       
-
+        $post=$request->post();
+        
         if($request->isAjax){
+            
+            $translations = Translates::find()->where(['table_name' => $model->tableName(),'field_id' => $model->id])->all();
+            foreach ($translations as $key => $value) {
+                        $translation_name[$value->language_code] = $value->field_value;
+            }
+
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            if($model->load($request->post()) && $model->save()){
-                
-
-                
-                $model->avatar = UploadedFile::getInstance($model,'avatar');
-                if(!empty($model->avatar))
-                {   
-                     if($model->image!=null&&file_exists('uploads/avatars/'.$model->image))
-                    {
-                        unlink(('uploads/avatars/'.$model->image));
-                    }
-                    $name = $model->id . '-' . time();
-
-                    $model->avatar->saveAs('uploads/avatars/' . $name.'.'.$model->avatar->extension);
-                    Yii::$app->db->createCommand()->update('user', ['image' => $name.'.'.$model->avatar->extension], [ 'id' => $model->id ])->execute();
+            if($model->load($request->post())){
+                foreach ($translations as $t) {
+                           $t->field_value = $post["ItemsDescription"][$t->field_description][$t->language_code];
+                           $t->save();
                 }
+                foreach ($translations as $key => $value) {
+                        $translation_name[$value->language_code] = $value->field_value;
+                }
+            if($model->save())
                 return [
-                    'forceReload'=>'#profile-pjax',
-                    'forceClose'=>true,
-                ];    
-            }else{
-                 return [
-                    'title'=> Yii::t('app','Profile'),
-                    'size'=>'large',
-                    'content'=>$this->renderAjax('change', [
+                    'forceReload'=>'#crud-datatable-pjax',
+                    'forceClose'=>false,
+                    'title'=> $post["ItemsDescription"]["translation_name"]["en"],
+                    'content'=>$this->renderAjax('view', [
                         'model' => $model,
+                        'names' => $translation_name,
+                    ]),
+                    'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                            Html::a(Yii::t('app','Edit'),['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                ];   
+                else{
+                 return [
+                    'title'=> Yii::t('app','Update'),
+                    'content'=>$this->renderAjax('update', [
+                        'model' => $model,
+                        'names' => $translation_name,
                     ]),
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                                 Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
                 ];        
             }
         }else{
-            /*
-            *   Process for non-ajax request
-            */
-            if ($model->load($request->post()) && $model->save()) {
-                return $this->redirect('profile');
-            } else {
-                return $this->render('change', [
-                    'model' => $model,
-                ]);
-            }
-        }
-    }
-    public function actionUpdate($id)
-    {
-        $request = Yii::$app->request;
-        $model = $this->findModel($id);  
-        if($request->isAjax){
-            /*
-            *   Process for ajax request
-            */
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            if($model->load($request->post()) && $model->save()){
-                if($_POST['User']['permissions'])$model->role_performer = implode(',', $_POST['User']['permissions']);
-                $model->save();
-                $model->avatar = UploadedFile::getInstance($model,'avatar');
-                if(!empty($model->avatar))
-                {
-                    if($model->image!=null&&file_exists('uploads/avatars/'.$model->image))
-                    {
-                        unlink(('uploads/avatars/'.$model->image));
-                    }
-                    $name = $model->id . '-' . time();
-
-                    $model->avatar->saveAs('uploads/avatars/' . $name.'.'.$model->avatar->extension);
-                    Yii::$app->db->createCommand()->update('user', ['image' => $name.'.'.$model->avatar->extension], [ 'id' => $model->id ])->execute();
-                }
-                return [
-                    'forceReload'=>'#crud-datatable-pjax',
-                    'forceClose'=>true,
-                ];    
-            }else{
-                $model->permissions = explode(',', $model->role_performer);     
-
                  return [
                     'title'=> Yii::t('app','Update'),
-                    'size'=>'large',
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
+                        'names' => $translation_name,
                     ]),
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                                 Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
@@ -264,43 +237,15 @@ class UserController extends Controller
             if ($model->load($request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
-                $model->permissions = explode(',', $model->role_performer);     
                 return $this->render('update', [
                     'model' => $model,
                 ]);
             }
         }
     }
-     public function actionColumns($id)
-    {
-        $request = Yii::$app->request;
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        $session = Yii::$app->session;
 
-        if($request->post()){
-            $post = $request->post();
-            User::SortColumns($post);
-            return [
-               
-                'forceReload'=>'#crud-datatable-pjax',
-                'forceClose'=>true,
-            ];          
-        }
-        else
-        {           
-            return [
-                 'title'=> Yii::t('app','Sort Columns'),
-                'content'=>$this->renderAjax('columns', [
-                    'session' => $session,
-                    'id'=>$id,
-                ]),
-                'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-primary pull-left','data-dismiss'=>"modal"]).
-                            Html::button(Yii::t('app','Save'),['class'=>'btn btn-info','type'=>"submit"])
-            ];         
-        }       
-    } 
     /**
-     * Delete an existing User model.
+     * Delete an existing ItemsDescription model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -309,15 +254,10 @@ class UserController extends Controller
     public function actionDelete($id)
     {
         $request = Yii::$app->request;
-        if($id!=1)
-        {
-            $model=$this->findModel($id);
-            if(file_exists('uploads/avatars/'.$model->image)&&$model->image!=null)
-            {
-                unlink('uploads/avatars/'.$model->image);
-            }
-            $model->delete();            
-        }
+        $model=$this->findModel($id);
+        Translates::deleteAll(['table_name' => $model->tableName(),'field_id' => $id]);
+        $model->delete();  
+
         if($request->isAjax){
             /*
             *   Process for ajax request
@@ -335,7 +275,7 @@ class UserController extends Controller
     }
 
      /**
-     * Delete multiple existing User model.
+     * Delete multiple existing ItemsDescription model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -346,13 +286,8 @@ class UserController extends Controller
         $request = Yii::$app->request;
         $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
         foreach ( $pks as $pk ) {
-            if($pk==1)continue;
-
             $model = $this->findModel($pk);
-            if(file_exists('uploads/avatars/'.$model->image)&&$model->image!=null)
-            {
-                unlink('uploads/avatars/'.$model->image);
-            }
+            Translates::deleteAll(['table_name' => $model->tableName(),'field_id' => $id]);
             $model->delete();
         }
 
@@ -372,15 +307,15 @@ class UserController extends Controller
     }
 
     /**
-     * Finds the User model based on its primary key value.
+     * Finds the ItemsDescription model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return User the loaded model
+     * @return ItemsDescription the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = User::findOne($id)) !== null) {
+        if (($model = ItemsDescription::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

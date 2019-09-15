@@ -90,36 +90,24 @@ $lang = Yii::$app->language;
                    <table class="table" id="item_table">
                     <tr>
                      <td width="80%">
-                        <select name="language[]" id="tech">
+                        <select name="language[]" id="aaaaa" class="vodiapicker">
                               <?php foreach ($langList as $value) {
                                 ?>
-                                <option value="<?=$value->url?>" data-image="<?=$value->image?>" <?=($user_langs[0] == $value->url)?'selected':''?>><?=$value->name?></option>
+                                <option value="<?=$value->url?>" class="test" data-thumbnail="<?=$value->image?>" <?=($user_langs[0] == $value->url)?'selected':''?>><?=$value->name?></option>
                               <?php
                                 } 
                               ?>
                           </select>
+                          <div class="lang-select">
+                            <div class="btn-select" value=""></div>
+                            <div class="b">
+                              <ul id="a"></ul>
+                            </div>
+                          </div>
                      </td>
                      <td>
-                      <button type="button" name="add" class="add forget_pass btn btn-link">+ <?=Yii::t('app','Add')?></button>
-                     </td>
-                     </tr>
-                     <?php for ($i=1; $i < count($user_langs); $i++) { ?>
-                      <tr>
-                         <td width="80%">
-                          <select name="language[]" id="tech<?=$i?>">
-                                <?php foreach ($langList as $value) {
-                                  ?>
-                                  <option value="<?=$value->url?>" data-image="<?=$value->image?>" <?=($user_langs[$i] == $value->url)?'selected':''?>><?=$value->name?></option>
-                                <?php
-                                  } 
-                                ?>
-                            </select>
-                       </td>
-                       <td>
-                       <button type="button" name="remove" class="btn btn-danger btn-sm remove"><?=Yii::t('app','Delete')?></button></button>
-                       </td>
-                      </tr>
-                     <?php }?>
+                      <button type="button" name="add" class="add forget_pass btn btn-link">+ <?=Yii::t('app','Add')?></button></td>
+                    </tr>
                   </table>
                   <hr>
                   <div class="get_noti">
@@ -168,6 +156,20 @@ $lang = Yii::$app->language;
     
     
     </div>
+     
+      <option value="calendar" data-image="../images/msdropdown/icons/icon_calendar.gif">Calendar</option>
+      <option value="shopping_cart" data-image="../images/msdropdown/icons/icon_cart.gif">Shopping Cart</option>
+      <option value="cd" data-image="../images/msdropdown/icons/icon_cd.gif" name="cd">CD</option>
+      <option value="email"  data-image="../images/msdropdown/icons/icon_email.gif">Email</option>
+      <option value="faq" data-image="../images/msdropdown/icons/icon_faq.gif">FAQ</option>
+      <option value="games" data-image="../images/msdropdown/icons/icon_games.gif">Games</option>
+      <option value="music" data-image="../images/msdropdown/icons/icon_music.gif">Music</option>
+      <option value="phone" data-image="../images/msdropdown/icons/icon_phone.gif">Phone</option>
+      <option value="graph" data-image="../images/msdropdown/icons/icon_sales.gif">Graph</option>
+      <option value="secured" data-image="../images/msdropdown/icons/icon_secure.gif">Secured</option>
+      <option value="video" data-image="../images/msdropdown/icons/icon_video.gif">Video</option>
+      <option value="cd" data-image="../images/msdropdown/icons/icon_cd.gif" name="cd">CD</option>
+    </select>
   </div>
 
    
@@ -175,23 +177,22 @@ $lang = Yii::$app->language;
 
 <?php
 $this->registerJs(<<<JS
-    $("[id^='tech']").msDropdown();
+  $("#tech").msDropdown();
   
     $("input").attr('autocomplete','off');
 
     $(document).ready(function(){
       $("#w0-success-0").removeClass('fade in');
-      var c = 2;
+      var c = 0;
        $(document).on('click', '.add', function(){
         c++;
-          var option = $("#tech").html();
+          var option = $("select").html();
           var html = '';
           html += '<tr>';
-          html += '<td><select name="language[]" id="tech'+c+'">'+option+'</select></td>';
-         
+          html += '<td><select name="language[]" class="vodiapicker">'+option+'</select>';
+          html += '<div class="lang-select"><div class="btn-select" value=""></div><div class="b"><ul id="a'+ c + '"></ul></div></div></td>';
           html += '<td><button type="button" name="remove" class="btn btn-danger btn-sm remove">Удалить</button></td></tr>';
           $('#item_table').append(html);
-          $("#tech"+c).msDropdown();
          });
           $(document).on('click', '.remove', function(){
               $(this).closest('tr').remove();

@@ -9,9 +9,11 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use \yii\web\Response;
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use common\models\User;
 use yii\data\Pagination;
+use yii\data\ActiveDataProvider;
 
 /**
  * Site controller
@@ -69,25 +71,35 @@ class ProfileController extends Controller
     {
         $user = \common\models\User::findOne(Yii::$app->user->identity->id);
         $company = \backend\models\AboutCompany::findOne(1);
-        $my_tasks = \backend\models\Tasks::find()->where(['user_id'=>$user->id]);
-        $all_tasks = \backend\models\Tasks::find()->all();
         $banner = \backend\models\Banners::findOne(1);
 
-        $countQuery = clone $my_tasks;
-        $pages = new Pagination(['totalCount' => $countQuery->count()]);
-        $models = $my_tasks->offset($pages->offset)
-            ->limit($pages->limit)
-            ->all();
+        if($user->type == 3){
+            $all_tasks = \backend\models\Tasks::find()->where(['type'=>explode(',',$user->role_performer)]);
+            $countQuery2 = clone $all_tasks;
+            $pages2 = new Pagination(['totalCount' => $countQuery2->count()]);
+            $pages2->setPageSize(5);
+            $all_tasks = $all_tasks->offset($pages2->offset)
+                ->limit($pages2->limit)
+                ->all();
+            return $this->render('profile_performer',['user' => $user,'company'=>$company,'all_tasks'=>$all_tasks,'banner'=>$banner,'pages' => $pages2,'post'=>$post]);
+        }
 
-        if($user->type == 3)
-            return $this->render('profile_performer',['user' => $user,'company'=>$company,'all_tasks'=>$all_tasks,'banner'=>$banner]);
-        if($user->type == 4)
+        if($user->type == 4){
+            $my_tasks = \backend\models\Tasks::find()->where(['user_id'=>$user->id]);
+            $countQuery = clone $my_tasks;
+            $pages = new Pagination(['totalCount' => $countQuery->count()]);
+            $pages->setPageSize(2);
+            $models = $my_tasks->offset($pages->offset)
+                ->limit($pages->limit)
+                ->all();
+
             return $this->render('profile_customer',['user' => $user,'company'=>$company,'my_tasks'=>$models,'banner'=>$banner,'pages' => $pages]);
+        }
     }
 
     public function beforeAction($action)
     {
-        if ($action->id == 'edit-profile' || $action->id == 'change-password' || $action->id == 'delete-transport' || $action->id == 'create-auto1' || $action->id == 'create-driver1' || $action->id == 'add-autos') {
+        if ($action->id == 'edit-profile' || $action->id == 'change-password' || $action->id == 'delete-transport' || $action->id == 'create-auto1' || $action->id == 'create-driver1' || $action->id == 'add-autos'|| $action->id == 'search') {
             $this->enableCsrfValidation = false;
         }
 
@@ -95,11 +107,77 @@ class ProfileController extends Controller
         return false;
     }
 
+    public function actionSearch()
+    {
+        $user = \common\models\User::findOne(Yii::$app->user->identity->id);
+        $company = \backend\models\AboutCompany::findOne(1);
+        $banner = \backend\models\Banners::findOne(1);
+
+        $all_tasks = \backend\models\Tasks::find();
+
+        $dataProvider = new ActiveDataProvider([
+               'query' => $all_tasks,
+        ]);
+
+            $arr = \backend\models\Tasks::find()->asArray()->all();
+            $price = ArrayHelper::getColumn($arr, 'offer_your_price');
+            $date = ArrayHelper::getColumn($arr, 'date_begin');
+            $type = ($_POST['type']) ? $_POST['type'] : explode(',',$user->role_performer);
+            $cost_from = ($_POST['cost_from']) ? $_POST['cost_from'] : min($price);
+            $cost_to = ($_POST['cost_to']) ? $_POST['cost_to'] : max($price);
+            $data_from = ($_POST['data_from']) ? $_POST['data_from'] : min($date);
+            $data_to = ($_POST['data_to']) ? $_POST['data_to'] : max($date);
+            $adress = $_POST['address'];
+                
+            $all_tasks->andWhere(['type'=>$type]);
+            $data_from=Yii::$app->formatter->asDate($data_from, 'php:Y-m-d H:i'); 
+            $data_to=Yii::$app->formatter->asDate($data_to, 'php:Y-m-d H:i'); 
+            $all_tasks->andWhere(['between', 'date_begin', $data_from, $data_to]);
+                       
+            if ($cost_to && $cost_from) {
+                // die("bir");
+                $all_tasks->andWhere(['or','offer_your_price'=>'NULL',['between', 'offer_your_price', $cost_from, $cost_to]]);
+            }
+            elseif($cost_to || $cost_from){
+                if($cost_to)
+                {
+                // die("2");
+
+                    $all_tasks->andWhere(['>', 'offer_your_price', $cost_to]);
+                }
+                else{
+                // die("3");
+
+                    $all_tasks->andWhere(['<', 'offer_your_price', $cost_from]);
+                }
+            }
+
+            if($adress){
+                // die("4");
+
+                    $all_tasks->andWhere(['like', 'shipping_address', $adress]);
+            }
+
+            // print_r($date);
+           
+            // echo "<pre>";
+            // print_r($date);
+            // echo "<br />";
+            // echo $data_from."  -  ".$data_to;
+            // print_r($all_tasks->all());die;
+            $count = $all_tasks->count();      
+            $countQuery2 = clone $all_tasks;
+            $pages2 = new Pagination(['totalCount' => $countQuery2->count(),'pageSize'=>3]);
+            $all_tasks = $all_tasks->offset($pages2->offset)
+                ->limit($pages2->limit)
+                ->all();
+            return $this->render('profile_performer',['user' => $user,'company'=>$company,'all_tasks'=>$all_tasks,'banner'=>$banner,'pages' => $pages2,'post'=>$_POST]);
+    }
+
     public function actionChangePassword()
     {
         $id = Yii::$app->user->identity->id;
         $user = $this->findModel($id);
-       
         $user->old_password = $_POST['User']['old_password'];
         $user->new_password = $_POST['User']['new_password'];
         $user->re_password = $_POST['User']['re_password'];
@@ -206,15 +284,15 @@ class ProfileController extends Controller
 
                     $images = [];
                     $uploadDir = "uploads/transports/";
-                    for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+                    for ($i = 0; $i < count($_FILES['tr_images']['name']); $i++) {
 
                     $ext = "";
-                    $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
+                    $ext = substr(strrchr($_FILES['tr_images']['name'][$i], "."), 1); 
 
                     $fPath =$transport->id .'('.$i.')'. rand() . ".$ext";
                         if($ext != ""){
                            $images []= $fPath;
-                           $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
+                           $result = move_uploaded_file($_FILES['tr_images']['tmp_name'][$i], $uploadDir . $fPath);
                         }
                     }
                     $transport->images = implode(',',$images);
@@ -246,15 +324,15 @@ class ProfileController extends Controller
 
                     $images = [];
                     $uploadDir = "uploads/drivers/";
-                    for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+                    for ($i = 0; $i < count($_FILES['dr_images']['name']); $i++) {
 
                     $ext = "";
-                    $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
+                    $ext = substr(strrchr($_FILES['dr_images']['name'][$i], "."), 1); 
 
                     $fPath =$driver->id .'('.$i.')'. rand() . ".$ext";
                         if($ext != ""){
                            $images []= $fPath;
-                           $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
+                           $result = move_uploaded_file($_FILES['dr_images']['tmp_name'][$i], $uploadDir . $fPath);
                         }
                     }
                     $driver->images = implode(',',$images);
@@ -532,28 +610,22 @@ class ProfileController extends Controller
     }
     public function actionChangePhoto()
     {
-        $user = \common\models\User::findOne($_POST['id']);
-        $path = '/admin/uploads/avatars/'; // upload directory
-
-        if($_FILES['image'])
-        {
-
-        $img = $_FILES['image']['name'];
-        $tmp = $_FILES['image']['tmp_name'];
+        $user = \common\models\User::findOne(Yii::$app->user->identity->id);
+        $path = \Yii::getAlias('@backend').'/web/uploads/avatars/'; // upload directory
+        $img = $_FILES['file']['name'];
+        $tmp = $_FILES['file']['tmp_name'];
 
         $ext = strtolower(pathinfo($img, PATHINFO_EXTENSION));
-
+        if($user->image!=null&&file_exists(\Yii::getAlias('@backend').'/web/uploads/avatars/'.$user->image))
+        {
+            unlink((\Yii::getAlias('@backend').'/web/uploads/avatars/'.$user->image));
+        }
         $user->image = $user->id .'('.$i.')'. rand() . '.'.$ext;
         $path = $path. $user->image; 
         if(move_uploaded_file($tmp,$path)) 
             {
-                echo "<img src='$path' />";
                  $user->save();
+                 echo $path;
             }
-        }
-        else{
-            echo "<pre>";
-            print_r($_POST);
-        }
     }
 }

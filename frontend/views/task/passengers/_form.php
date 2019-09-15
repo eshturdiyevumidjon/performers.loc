@@ -151,7 +151,7 @@ $lang = Yii::$app->language;
         </div>
         <br>
         <h4><?=Yii::t('app','Select a transport category')?></h4>
-        <?= $form->field($model, 'category_id')->dropDownList($model->getCategoryList(), ['class'=>'my_input','prompt' => Yii::t('app','Select')])->label(false)?>
+        <?= $form->field($model, 'category_id')->dropDownList($model->getCategoryList(), ['class'=>'my_input form-control','prompt' => Yii::t('app','Select'),'style' => 'color: #652341; font-size: 18px;cursor:pointer;'])->label(false)?>
         <hr>
         <div style="margin-bottom: 10px;margin-top: 10px;">
           <div class="form-group_checkbox" style="margin-bottom: 10px;margin-top: 10px;">
