@@ -408,7 +408,6 @@ class m150207_210500_i18n_init extends Migration
                 'Leave a request'=>'Оставить заявку',
                 'Order cancellation'=>'Отмена заказа',
                 'Minimum payment'=>'Минимальная оплата',
-                ''
                 'Order'=>'Заказать',
             ];
 

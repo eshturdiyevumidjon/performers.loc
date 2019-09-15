@@ -2,6 +2,8 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use \backend\models\Tasks;
+use yii\widgets\Pjax;
+
 $language=Yii::$app->language;
 $langs=\backend\models\Lang::getLanguages();
 $pathInfo=Yii::$app->request->pathInfo;
@@ -50,6 +52,7 @@ $hot_tasks = \backend\models\Tasks::find()->orderBy([
             <?php endforeach;?>
             </div>
         </div>
+        <?php Pjax::begin(['enablePushState' => false, 'id' => 'personal-pjax']) ?>
         <?php if(Yii::$app->user->isGuest):?>
        <?=Html::a('<span class="aft_back"></span>'.Yii::t('app','Login / Register').' <i class="glyphicon glyphicon-plus"></i>', ['/site/login'],
         ['role'=>'modal-remote'/*'data-pjax'=>0*/, 'class'=>'enter_to_site'])?>
@@ -72,6 +75,7 @@ $hot_tasks = \backend\models\Tasks::find()->orderBy([
           </div>
         </div>
         <?php endif;?>
+        <?php Pjax::end() ?>
       </div>
     </div>
   </div>

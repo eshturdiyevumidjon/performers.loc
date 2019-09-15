@@ -269,7 +269,8 @@ class SiteController extends Controller
                         $modelForm->username=$modelCustomer->email;
                         $modelForm->password=$modelCustomer->password;
                         $modelForm->login();
-                        return $this->redirect(['/profile/index']);
+                        return ['forceClose'=>true,'forceReload'=>'#personal-pjax'];
+                        //return $this->redirect(['/profile/index']);
                     }
                     else
                     {
@@ -295,7 +296,8 @@ class SiteController extends Controller
                                 $modelForm->username=$modelPerformer->email;
                                 $modelForm->password=$modelPerformer->password;
                                 $modelForm->login();
-                                return $this->redirect(['/profile/index']);
+                                return ['forceClose'=>true,'forceReload'=>'#personal-pjax'];
+                                //return $this->redirect(['/profile/index']);
                             }
                             else
                             {
