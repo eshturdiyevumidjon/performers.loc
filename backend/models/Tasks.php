@@ -91,7 +91,7 @@ class Tasks extends \yii\db\ActiveRecord
    public function rules()
     {
         return [
-            [['type', 'status','need_packing','packing_area','need_loader', 'demolition','need_relocation','count_relocation','need_furniture','count_furniture','need_piano','count_purchases','need_personal_items','need_purchases','count_personal_items','count_piano','demolition','need_building_materials','count_building_materials','need_special_equipments','count_special_equipments','need_other_items','count_other_items','count_loader', 'position', 'user_id', 'count_avtokreslo','count_buster','count_avtolulka','count_adult', 'return', 'category_id', 'flight_number_status', 'meeting_with_sign_status', 'car_model', 'car_mark', 'car_on_the_go', 'loading_required_status', 'floor', 'lift', 'shipping_house_type', 'shipping_house_floor', 'shipping_house_lift', 'delivery_house_type', 'delivery_house_floor', 'delivery_house_lift', 'alert_email', 'view_performers'], 'integer'],
+            [['type', 'status','need_packing','packing_area','need_loader', 'demolition','need_relocation','count_relocation','need_furniture','count_furniture','need_piano','count_purchases','need_personal_items','need_purchases','count_personal_items','count_piano','demolition','need_building_materials','count_building_materials','need_special_equipments','count_special_equipments','need_other_items','count_other_items','count_loader', 'position', 'user_id', 'count_avtokreslo','count_buster','count_avtolulka','count_adult', 'return', 'category_id', 'flight_number_status', 'meeting_with_sign_status', 'car_model', 'car_mark', 'car_on_the_go', 'loading_required_status', 'floor', 'lift', 'shipping_house_type', 'shipping_house_floor', 'shipping_house_lift', 'delivery_house_type', 'delivery_house_floor', 'delivery_house_lift', 'alert_email', 'view_performers','performer_id'], 'integer'],
             [['payed_sum', 'offer_your_price', 'weight', 'width', 'length', 'height'], 'number'],
             [['date_cr', 'date_close', 'date_begin','date_begin2'], 'safe'],
             [['shipping_address', 'delivery_address','classification', 'comment', 'item_description'], 'string'],
@@ -112,13 +112,13 @@ class Tasks extends \yii\db\ActiveRecord
 
         $scenarios = parent::scenarios();
 
-        $scenarios[self::SCENARIO_PASSENGERS] = ['type','count_avtolulka','date_begin2','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','date_begin2','offer_your_price','promo_code','comment','count_adult','return','category_id','flight_number_status','flight_number','meeting_with_sign_status','alert_email','meeting_with_sign'];
+        $scenarios[self::SCENARIO_PASSENGERS] = ['type','count_avtolulka','date_begin2','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','date_begin2','offer_your_price','promo_code','comment','count_adult','return','category_id','flight_number_status','flight_number','meeting_with_sign_status','alert_email','meeting_with_sign','performer_id'];
 
-        $scenarios[self::SCENARIO_VEHICLES] = ['type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','comment','car_model','car_mark','image','alert_email','car_on_the_go'];
+        $scenarios[self::SCENARIO_VEHICLES] = ['type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','comment','car_model','car_mark','image','alert_email','car_on_the_go','performer_id'];
 
-        $scenarios[self::SCENARIO_GOODS] = ['type','date_close','shipping_address','delivery_address','date_begin','offer_your_price','promo_code','comment','weight','width','length','height','classification','loading_required_status','floor','alert_email','lift'];
+        $scenarios[self::SCENARIO_GOODS] = ['type','date_close','shipping_address','delivery_address','date_begin','offer_your_price','promo_code','comment','weight','width','length','height','classification','loading_required_status','floor','alert_email','lift','performer_id'];
 
-        $scenarios[self::SCENARIO_HELP] = ['need_packing','packing_area','need_loader', 'demolition','need_relocation','count_relocation','need_furniture','count_furniture','need_piano','count_purchases','need_personal_items','need_purchases','count_personal_items','count_piano','demolition','need_building_materials','count_building_materials','need_special_equipments','count_special_equipments','need_other_items','count_other_items','count_loader','type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','comment','shipping_house_type','shipping_house_floor','shipping_house_lift','delivery_house_type','delivery_house_floor','delivery_house_lift','item_description','alert_email','view_performers'];
+        $scenarios[self::SCENARIO_HELP] = ['need_packing','packing_area','need_loader', 'demolition','need_relocation','count_relocation','need_furniture','count_furniture','need_piano','count_purchases','need_personal_items','need_purchases','count_personal_items','count_piano','demolition','need_building_materials','count_building_materials','need_special_equipments','count_special_equipments','need_other_items','count_other_items','count_loader','type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','comment','shipping_house_type','shipping_house_floor','shipping_house_lift','delivery_house_type','delivery_house_floor','delivery_house_lift','item_description','alert_email','view_performers','performer_id'];
 
         return $scenarios;
     }
@@ -284,8 +284,15 @@ class Tasks extends \yii\db\ActiveRecord
     }
     public function getItemsList()
     {
-        $data = ItemsDescription::find()->all();
-        return ArrayHelper::map($data,'id','name');
+        if(Yii::$app->language == 'ru')
+        {
+            $data = ItemsDescription::find()->all();
+            return ArrayHelper::map($data,'id','name');
+        }else{
+            $data = \backend\models\Translates::find()->where(['table_name'=>'items_description','language_code'=>Yii::$app->language])->all();
+            return ArrayHelper::map($data,'field_id','field_value');
+        }
+
     }
     public static function getTypeIconSvg($type)
     {

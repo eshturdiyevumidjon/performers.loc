@@ -44,6 +44,16 @@ $hot_tasks = \backend\models\Tasks::find()->orderBy([
            <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" >
               <?=ucfirst($language)?>
             </button>
+            <?php
+              $str = "";
+              $i=0;
+              foreach (Yii::$app->request->queryParams as $key => $value) {
+                $i++;
+                $str .= $key."=".$value;
+                if(count(Yii::$app->request->queryParams) != $i)$str .= '&';
+              }
+              $pathInfo = $pathInfo."?".$str;
+            ?>
             <div class="dropdown-menu flex-column" aria-labelledby="dropdownMenuButton">
               <?php foreach($langs as $lang):?>
               <a <?=( $language == $lang->url ) ? 'class="active"':''?> href="<?= Url::to([$pathInfo, 'language' => $lang->url]) ?>">
@@ -112,9 +122,3 @@ $hot_tasks = \backend\models\Tasks::find()->orderBy([
     </div>
   </div>
 </header>
-
-<?php
-$this->registerJs(<<<JS
-      $('#ajaxCrudModal').on('hide', function() { window.location.reload(); })
-JS
-);

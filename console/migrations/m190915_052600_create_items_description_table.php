@@ -17,7 +17,7 @@ class m190915_052600_create_items_description_table extends Migration
             'name' => $this->string(255),
         ]);
         $descriptions = [
-            'Мебель и бытовая техника','Пианино и сейфы','Спецтехника и негабарит'
+            'Мебель и бытовая техника','Пианино и сейфы','Спецтехника и негабарит','Прочие грузы','Мебель и бытовая техника','Личные вещи','Покупки','Стройматериалы'
         ];
         foreach ($descriptions as $value) {
               $this->insert('{{%items_description}}',array(

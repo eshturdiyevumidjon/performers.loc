@@ -16,11 +16,11 @@ class m190727_100218_create_tasks_table extends Migration
             'id' => $this->primaryKey(),
             'type' => $this->integer()->comment("Тип"),
             'payed_sum' => $this->float()->comment("Сколько оплатил клиент"),
-            'status' => $this->integer()->comment("Статус"),
+            'status' => $this->integer()->defaultValue(0)->comment("Статус"),
             'date_cr' => $this->date()->comment("Дата создание заданий"),
             'date_close' => $this->date()->comment("Дата закрытые заданий"),
             'position' => $this->integer()->comment("Состояние"),
-            'user_id' => $this->integer()->comment("Исполнитель"),
+            'user_id' => $this->integer()->comment("Заказчик"),
             'shipping_address' => $this->text()->comment("Адрес отгрузки"),
             'delivery_address' => $this->text()->comment("Адрес доставки"),
             'shipping_coordinate_x' => $this->string()->comment("Shipping Coordinate X"),
@@ -31,6 +31,7 @@ class m190727_100218_create_tasks_table extends Migration
             'offer_your_price' => $this->float()->comment("Предложить свою цену"),
             'promo_code' => $this->string(255)->comment("Промо-код"),
             'comment' => $this->text()->comment("Комментария"),
+            'performer_id' => $this->integer()->comment("Исполнитель"),
 
             //Пассажирские перевозки uchun kerakli polyalar
 
@@ -119,6 +120,7 @@ class m190727_100218_create_tasks_table extends Migration
             'id',
             'CASCADE'
         );
+
          // creates index for column `category_id`
         $this->createIndex(
             '{{%idx-tasks-category_id}}',

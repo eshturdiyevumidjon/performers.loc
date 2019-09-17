@@ -13,6 +13,7 @@ class PreferenceBooks
 
         // Save the current language to user record
         $session = Yii::$app->session;
+        // Yii::$app->language = $event->language;
         $session['language'] = $event->language;
         /*$user = Yii::$app->user;
         if (!$user->isGuest) {

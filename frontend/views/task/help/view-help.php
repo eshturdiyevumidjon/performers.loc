@@ -16,7 +16,7 @@ use yii\widgets\DetailView;
     </nav>
     <div class="d-flex inner_main">
       <div class="inner_left">
-        <h2 id="chat" style="cursor:pointer;">Мои чаты</h2>
+        <!-- <h2 id="chat" style="cursor:pointer;">Мои чаты</h2>
         <div class="chat_inner">
           <div class="form" style="overflow-y: scroll; height: 400px; ">
             <div class="user1 user_chats">
@@ -149,7 +149,7 @@ use yii\widgets\DetailView;
               <button type="submit" class="btn_red"><img src="/images/arrow_chat.svg" alt=""></button>
             </div>
           </div>
-        </div>
+        </div> -->
           <?= $this->render('../request/inner_left',['user'=>$user,'banner'=>$banner]);?>
       </div>
       <div class="inner_right">

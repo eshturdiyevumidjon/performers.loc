@@ -141,19 +141,15 @@ class ProfileController extends Controller
             elseif($cost_to || $cost_from){
                 if($cost_to)
                 {
-                // die("2");
-
-                    $all_tasks->andWhere(['>', 'offer_your_price', $cost_to]);
+                    $all_tasks->andWhere(['or','offer_your_price'=>$cost_to,['>', 'offer_your_price', $cost_to]]);
                 }
                 else{
-                // die("3");
 
-                    $all_tasks->andWhere(['<', 'offer_your_price', $cost_from]);
+                    $all_tasks->andWhere(['<=', 'offer_your_price', $cost_from]);
                 }
             }
 
             if($adress){
-                // die("4");
 
                     $all_tasks->andWhere(['like', 'shipping_address', $adress]);
             }

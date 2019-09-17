@@ -101,8 +101,9 @@ use yii\widgets\ActiveForm;
             <label for="bwwprw"><?=Yii::t('app','Need disassembly')?></label>
         </div>
         <div class="paino">
+         
           <?php foreach ($model->getItemsList() as $key => $value): ?>
-            <?php $item = $model->getItem($value->id);?>
+            <?php $item = $model->getItem($key);?>
              <div class="d-flex align-items-center justify-content-between">
             <div class="form-group_checkbox">
                 <input type="checkbox" id="bewprw<?=$key?>" name="need_<?=$key?>" value="1" <?=($item) ? "checked":""?>>
