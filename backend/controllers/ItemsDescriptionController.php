@@ -176,6 +176,7 @@ class ItemsDescriptionController extends Controller
         $request = Yii::$app->request;
         $model = $this->findModel($id);       
         $post=$request->post();
+        $langs = Lang::getLanguages();
         
         if($request->isAjax){
             
@@ -189,10 +190,35 @@ class ItemsDescriptionController extends Controller
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($model->load($request->post())){
-                foreach ($translations as $t) {
-                           $t->field_value = $post["ItemsDescription"][$t->field_description][$t->language_code];
-                           $t->save();
+                $attr = ItemsDescription::NeedTranslation();
+                
+                foreach ($langs as $lang) {
+                       
+                        $l = $lang->url;
+                        if($l == 'ru')
+                        {
+                           continue;
+                        }
+                      foreach ($attr as $key=>$value) {
+                          $t = Translates::find()->where(['table_name' => $model->tableName(),'field_id' => $model->id,'language_code' => $l,'field_name'=>$key]);
+                          if($t->count() == 1){
+                             $tt = $t->one();
+                             $tt->field_value=$post["ItemsDescription"][$value][$l];
+                             $tt->save();
+                           }
+                           else{
+                               $tt=new Translates();
+                               $tt->table_name=$model->tableName();
+                               $tt->field_id=$model->id;
+                               $tt->field_name=$key;
+                               $tt->field_value=$post["ItemsDescription"][$value][$l];
+                               $tt->field_description=$value;
+                               $tt->language_code=$l;
+                               $tt->save();
+                           }
+                      }
                 }
+                 $translations = Translates::find()->where(['table_name'=>$model->tableName(),'field_id'=>$model->id])->all();
                 foreach ($translations as $key => $value) {
                         $translation_name[$value->language_code] = $value->field_value;
                 }
@@ -200,7 +226,7 @@ class ItemsDescriptionController extends Controller
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'forceClose'=>false,
-                    'title'=> $post["ItemsDescription"]["translation_name"]["en"],
+                    'title'=> Yii::t('app','Update'),
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
                         'names' => $translation_name,

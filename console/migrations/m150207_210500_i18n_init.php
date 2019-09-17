@@ -43,6 +43,11 @@ class m150207_210500_i18n_init extends Migration
         $this->createIndex('idx_message_language', '{{%message}}', 'language');
 
         $translations = [
+                'On account'=>'На счете',
+                'Service charge'=>'Оплата за услугу',
+                'It\'s not hard. There are two steps in total: a questionnaire and a subscription to tasks. It will take about 5 minutes.'=>'Это не сложно. Всего предстоит два шага: анкета и подписка на задания. Всё займёт примерно 5 минут.',
+                'Pay'=>'Оплатить',
+                'Add funds'=>'Пополнить счет',
                 'Doesn\'t passed verification'=>'Не прошел проверку',
                 'Access to order for the performer'=>'Доступ для заказа для исполнителя ',
                 'User'=>'Пользователь',
@@ -63,6 +68,7 @@ class m150207_210500_i18n_init extends Migration
                 'Birthday'=>'День рождения',
                 'Phone number'=>'Номер телефона',
                 'Image'=>'Фото',
+                'Please select contact in the right sidebar'=>'Пожалуйста, выберите контакт в правой боковой панели',
                 'Created_at'=>'Дата создания',
                 'Updated_at'=>'Дата изменения',
                 'Add'=>'Добавить',
@@ -322,6 +328,7 @@ class m150207_210500_i18n_init extends Migration
                 'Thank you for contacting us. We will respond to you as soon as possible.'=>'Благодарим Вас за обращение к нам. Мы ответим вам как можно скорее.',
                 'There was an error sending your message.'=>'При отправке вашего сообщения произошла ошибка.',
                 'Registration'=>'Регистрация',
+                'Are you sure want to order this performer?'=>'Вы уверены, что хотите заказать этого исполнителя?',
                 'Create Task'=>'Создать задание',
                 'Personal Cabinet'=>'Личный кабинет',
                 'My Orders'=>'Мои заказы',

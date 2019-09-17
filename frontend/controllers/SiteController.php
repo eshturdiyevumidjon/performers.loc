@@ -102,7 +102,9 @@ class SiteController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             $model->rememberMe = $_POST['rememberMe'];
             if($model->load($request->post()) && $model->login()){
-               return $this->redirect(['/profile/index']);    
+               // return $this->redirect(['/profile/index']);    
+               return ['forceClose'=>true,'forceReload'=>'#personal-pjax'];
+                
             }else{    
                 // $model->password = '';       
                 return [

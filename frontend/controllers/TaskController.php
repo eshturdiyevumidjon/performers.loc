@@ -32,7 +32,7 @@ class TaskController extends Controller
     }
     public function beforeAction($action)
     {
-        if ($action->id == 'create-goods' || $action->id == 'create-help') {
+        if ($action->id == 'create-goods' || $action->id == 'create-help' || $action->id == 'create-order') {
             $this->enableCsrfValidation = false;
         }
 
@@ -71,8 +71,54 @@ class TaskController extends Controller
      * @return mixed
      */
     
+    public function actionSendMessage()
+    {
+        $from = Yii::$app->user->identity->id;
+        $query = Chat::find()->where(['and', ['to'=>[$to,$from]], ['from'=>[$to,$from]]]);
+        $message = new Chat();
+        $message->from = $from;
+
+        $dataProvider = new ActiveDataProvider([
+           'query' => $query,
+        ]);
+        $models = $dataProvider->getModels();
+        $users = \common\models\User::find()->all();
+
+        if($to == null){
+             Yii::$app->session->setFlash('warning', Yii::t('app','Please select contact in the right sidebar'));
+        }else{
+            $message->to = $to;
+
+            $request = Yii::$app->request;
+            if($message->load($request->post()) && $message->save())
+            {
+                $uploadDir = \Yii::getAlias('@backend').'/web/uploads/chat/';
+                $ext = "";
+                $ext = substr(strrchr($_FILES['file']['name'], "."), 1); 
+
+                $fPath =$_FILES['file']['name']. rand() . ".$ext";
+                if($ext != ""){
+                   $result = move_uploaded_file($_FILES['file']['tmp_name'], $uploadDir . $fPath);
+                    $message->file = $fPath;
+                    $message->save();
+                }
+
+                return $this->redirect(['index','to'=>$message->to]);
+            }
+        }
+
+        if (count($models) == 0) {
+            Yii::$app->session->setFlash('error', Yii::t('app','You don’t have anything yet'));
+        }
+        return $this->render('index', [
+            'models' => $models,
+            'users'=>$users,
+            'message'=>$message
+        ]);
+    }
     public function actionView($id)
     {   
+        
         $model = $this->findModel($id);
         $user = $model->user;
         $active_user = \common\models\User::findOne(Yii::$app->user->identity->id);
@@ -178,6 +224,7 @@ class TaskController extends Controller
         }
        
     }
+    
     public function actionCreateHelp()
     {
         $model = new Tasks();
@@ -188,38 +235,7 @@ class TaskController extends Controller
         $model->shipping_house_lift = isset($_POST['shipping_house_lift']) ? 1 : 0;
         $model->demolition = isset($_POST['demolition']) ? 1 : 0;
         
-        if(isset($_POST['need_relocation'])){
-            $model->need_relocation = 1;
-            $model->count_relocation = $_POST['count_relocation'];
-        }
-        if(isset($_POST['need_piano'])){
-            $model->need_piano = 1;
-            $model->count_piano = $_POST['count_piano'];
-        }
-        if(isset($_POST['need_furniture'])){
-            $model->need_furniture = 1;
-            $model->count_furniture = $_POST['count_furniture'];
-        }
-        if(isset($_POST['need_building_materials'])){
-            $model->need_building_materials = 1;
-            $model->count_building_materials = $_POST['count_building_materials'];
-        }
-        if(isset($_POST['need_personal_items'])){
-            $model->need_personal_items = 1;
-            $model->count_personal_items = $_POST['count_personal_items'];
-        }
-        if(isset($_POST['need_special_equipments'])){
-            $model->need_special_equipments = 1;
-            $model->count_special_equipments = $_POST['count_special_equipments'];
-        }
-        if(isset($_POST['need_purchases'])){
-            $model->need_purchases = 1;
-            $model->count_purchases = $_POST['count_purchases'];
-        }
-        if(isset($_POST['need_other_items'])){
-            $model->need_other_items = 1;
-            $model->count_other_items = $_POST['count_other_items'];
-        }
+      
         if(isset($_POST['need_packing'])){
             $model->need_packing = 1;
         }
@@ -229,7 +245,15 @@ class TaskController extends Controller
 
         if($model->load(Yii::$app->request->post()) && $model->save())
         {
-
+            if($_POST['items']){
+                foreach ($_POST['items'] as $key => $value) {
+                   $mm = new \backend\models\TaskItems();
+                   $mm->task_id = $model->id;
+                   $mm->item_id = $key;
+                   $mm->count = $value;
+                   $mm->save(); 
+                }
+            }
             $images = [];
             $uploadDir = "uploads/tasks/";
             for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
@@ -385,11 +409,71 @@ class TaskController extends Controller
         }
     }
 
+    public function actionCreateOrder($id = null)
+    {
+        $request = Yii::$app->request;
+        $model = new \backend\models\Orders();
+        if($id != null)
+        $model->task_id = $id;
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+        
+            if($request->post()){
+                $model->save();
+                    $id = $model->task_id;
+                  $rr = \backend\models\Request::findOne($id);
+                    $ispolnitel = $rr->user;
+                    $zakazchik = $rr->task->user;
+                     Yii::$app
+                    ->mailer
+                    ->compose()
+                    ->setFrom(['itake1110@gmail.com' => Yii::$app->name . ' robot'])
+                    ->setTo($ispolnitel->email)
+                    ->setSubject('New Order From' . Yii::$app->name)
+                    ->setHtmlBody("<p>Dear ".$ispolnitel->username.". You have new Order From ".$zakazchik->username."</p>")
+                    ->send();
+                 return [
+                    'id'=>$model->task_id,
+                    'forceClose'=>true,
+                    'forceReload'=>'#crud-datatable-pjax'
+                 ];
+               }else{           
+                return [
+                    'title'=> Yii::t('app','Service charge'),
+                    'size'=>'large',
+                    'content'=>$this->renderAjax('request/pay_form', [
+                        'model' => $model,
+                    ]),
+                     'footer'=>'<br>'.Html::submitButton(Yii::t('app','Pay'), ['class' => 'my_modal_submit btn_red', 'name' => 'login-button']).
+                    Html::a(Yii::t('app','Add funds'),['#'], ['class' => 'my_modal_button btn_red','role'=>'modal-remote'])
+        
+                ];         
+            }
+        }       
+    }
+
     public function actionGetModelList($mark_id)
     {
         $arr = \backend\models\Transports::find()->where(['mark'=>$mark_id])->asArray()->all();
         $models = \yii\helpers\ArrayHelper::getColumn($arr, 'model');
         $result = \backend\models\Models::find()->where(['id'=>$models])->all();
+
+        if(count($result) != 0){
+            foreach ($result as $key => $value) {
+                echo '<option value="'.$value->id.'">'.$value->name_model.'</option>';
+            }
+        }
+        else{
+            echo "<option> - </option>";
+        }
+    }
+
+    public function actionGetModelList2($mark_id)
+    {
+        $result = \backend\models\Models::find()->where(['mark_id'=>$mark_id])->all();
 
         if(count($result) != 0){
             foreach ($result as $key => $value) {

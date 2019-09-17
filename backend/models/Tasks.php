@@ -271,7 +271,7 @@ class Tasks extends \yii\db\ActiveRecord
     {
         $item = \backend\models\TaskItems::find()->where(['task_id'=>$this->id,'item_id'=>$item_id]);
         $count = $item->count();
-        return ($count ==1) ? $item->one()['count'] : false;
+        return ($count == 1) ? $item->one() : false;
     }
     public function getTypeIconBlack()
     {

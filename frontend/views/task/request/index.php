@@ -73,7 +73,14 @@ use yii\widgets\Pjax;
         </div>
       <?php if ($active_user->type == 4): ?>
         <div class="col-sm-3">
-          <a href="#" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Order')?></a>
+         <!--  <a href="#" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Order')?></a> -->
+          <?=\yii\helpers\Html::a('<span class="aft_back"></span>'.Yii::t('app','Order'), ['/task/create-order','id'=>$value->id],
+            ['role'=>'modal-remote', 'class'=>'enter_to_site','title'=>Yii::t('app','Order'), 
+                                    /*'data-confirm'=>false, 'data-method'=>false, 
+                                    'data-request-method'=>'post',
+                                    'data-toggle'=>'tooltip',
+                                    'data-confirm-title'=>Yii::t('app','Are you sure?'),
+                                    'data-confirm-message'=>Yii::t('app','Are you sure want to order this performer?')*/])?>
         </div>
       <?php endif;?>
       </div>

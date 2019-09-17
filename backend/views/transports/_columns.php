@@ -28,19 +28,25 @@ return [
         'attribute'=>'model',
         'contentOptions'=>['class'=>'text-center'],
         'headerOptions'=>['class'=>'text-center'],
+        'value'=>function($data){
+            return $data->getModel();
+        }
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'mark',
         'contentOptions'=>['class'=>'text-center'],
         'headerOptions'=>['class'=>'text-center'],
+        'value'=>function($data){
+            return $data->getMark();
+        }
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'driver',
         'contentOptions'=>['class'=>'text-center'],
         'headerOptions'=>['class'=>'text-center'],
-         'value'=>function($data){
+        'value'=>function($data){
             return $data->driver0->fio;
         }
     ],

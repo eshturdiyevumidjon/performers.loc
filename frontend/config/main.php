@@ -13,25 +13,25 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
-        // 'mailer' => [ 
-        //     'class' => 'yii\swiftmailer\Mailer',
-        //     'useFileTransport' => false,
-        //     'transport' => [
-        //         'class' => 'Swift_SmtpTransport',
-        //         'host' => 'smtp.gmail.com',
-        //         'username' => 'itake1110@gmail.com',
-        //         'password' => '123456itake',
-        //         'port' => '465',
-        //         'encryption' => 'ssl',
-        //         'streamOptions' => [ 
-        //             'ssl' => [ 
-        //                 'allow_self_signed' => true,
-        //                 'verify_peer' => false,
-        //                 'verify_peer_name' => false,
-        //             ],
-        //         ]
-        //     ],
-        // ],
+        'mailer' => [ 
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.gmail.com',
+                'username' => 'itake1110@gmail.com',
+                'password' => '123456itake',
+                'port' => '465',
+                'encryption' => 'ssl',
+                'streamOptions' => [ 
+                    'ssl' => [ 
+                        'allow_self_signed' => true,
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                    ],
+                ]
+            ],
+        ],
          'i18n' => [
             'translations' => [
                  'app' => [

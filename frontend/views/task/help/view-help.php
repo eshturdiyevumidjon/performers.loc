@@ -17,7 +17,7 @@ use yii\widgets\DetailView;
     <div class="d-flex inner_main">
       <div class="inner_left">
         <h2 id="chat" style="cursor:pointer;">Мои чаты</h2>
-        <!-- <div class="chat_inner">
+        <div class="chat_inner">
           <div class="form" style="overflow-y: scroll; height: 400px; ">
             <div class="user1 user_chats">
               <div class="avatar">
@@ -149,7 +149,7 @@ use yii\widgets\DetailView;
               <button type="submit" class="btn_red"><img src="/images/arrow_chat.svg" alt=""></button>
             </div>
           </div>
-        </div> -->
+        </div>
           <?= $this->render('../request/inner_left',['user'=>$user,'banner'=>$banner]);?>
       </div>
       <div class="inner_right">
@@ -216,53 +216,14 @@ use yii\widgets\DetailView;
                 </div>
             <?php endif ?>
             
-            <?php if ($model->need_relocation == 1): ?>
-                <div>
-                <span><img src="/images/check.svg" alt=""><?=Yii::t('app','Relocation')?>: <?=$model->count_relocation?></span>
-                </div>
-            <?php endif ?>
-
-            <?php if ($model->need_furniture == 1): ?>
-                <div>
-                <span><img src="/images/check.svg" alt=""><?=Yii::t('app','Furniture and household appliances')?>: <?=$model->count_furniture?></span>
-                </div>
-            <?php endif ?>
-
-            <?php if ($model->need_personal_items == 1): ?>
-                <div>
-                <span><img src="/images/check.svg" alt=""><?=Yii::t('app','Personal items')?>: <?=$model->count_personal_items?></span>
-                </div>
-            <?php endif ?>
-
-            <?php if ($model->need_purchases == 1): ?>
-                <div>
-                <span><img src="/images/check.svg" alt=""><?=Yii::t('app','Purchases')?>: <?=$model->count_purchases?></span>
-                </div>
-            <?php endif ?>
-
-            <?php if ($model->need_piano == 1): ?>
-                <div>
-                <span><img src="/images/check.svg" alt=""><?=Yii::t('app','Piano and safes')?>: <?=$model->count_piano?></span>
-                </div>
-            <?php endif ?>
-
-            <?php if ($model->need_building_materials == 1): ?>
-                <div>
-                <span><img src="/images/check.svg" alt=""><?=Yii::t('app','Building materials')?>: <?=$model->count_building_materials?></span>
-                </div>
-            <?php endif ?>
-
-            <?php if ($model->need_special_equipments == 1): ?>
-                <div>
-                <span><img src="/images/check.svg" alt=""><?=Yii::t('app','Special equipment and oversized')?>: <?=$model->count_special_equipments?></span>
-                </div>
-            <?php endif ?>
-
-            <?php if ($model->need_other_items == 1): ?>
-                <div>
-                <span><img src="/images/check.svg" alt=""><?=Yii::t('app','Other goods')?>: <?=$model->count_other_items?></span>
-                </div>
-            <?php endif ?>
+            <?php foreach ($model->getItemsList() as $key => $value): ?>
+            <?php $item = $model->getItem($key);?>
+                <?php if ($item && $item->count > 0): ?>
+                  <div>
+                  <span><img src="/images/check.svg" alt=""><?=$value?>: <?=$item->count?></span>
+                  </div>
+                <?php endif ?>
+            <?php endforeach;?>
 
           </div>
         </div>

@@ -1,64 +1,59 @@
-<?php   
- $models = $dataProvider->getModels(); 
+<?php
+$adminka = Yii::$app->params['adminka'];
+$i = 1;
 ?>
-<div class="messages messages-img" style="height: 75%; overflow-y: scroll;">
+<div class="messages messages-img">
+    <?=\common\widgets\Alert::widget()?>
     <?php if (count($models) == 0): ?>
-         <h4 style="text-align: center;"><?=Yii::t('app','You don’t have anything yet')?></h4>
+         
     <?php else: ?>
-    <?php foreach ($models() as $key => $value): ?>
-        <div class="item item-visible">
-            <div class="image">
-                <img src="<?=$adminka?>/extra/images/users/user.jpg" alt="Dmitry Ivaniuk">
-            </div>                                
-            <div class="text">
-                <div class="heading">
-                    <a href="#">Dmitry Ivaniuk</a>
-                    <span class="date">08:39</span>
-                </div>                                    
-                Integer et ipsum vitae urna mattis dictum. Sed eu sollicitudin nibh, in luctus velit.
-            </div>
-        </div>
-         <div class="item in item-visible">
-            <div class="image">
-                <img src="<?=$adminka?>/extra/images/users/user2.jpg" alt="John Doe">
-            </div>
-            <div class="text">
-                <div class="heading">
-                    <a href="#">John Doe</a>
-                    <span class="date">08:58</span>
+    <?php foreach ($models as $key => $value): ?>
+       
+        <?php if($i != 1) $k = Yii::$app->formatter->asDate($value->date_cr, 'php:d') - Yii::$app->formatter->asDate($old_value->date_cr, 'php:d');?>
+
+        <?php if ($value->from == $from): ?>
+            <p align="center"><span><?=($i == 1 || $k == 1) ? $value->getDateCreate() : "";?></span></p>
+            <div class="item in item-visible">
+                <div class="image">
+                    <?=$value->from0->getUserAvatar('head')?>
                 </div>
-                Curabitur et euismod urna?
+                <div class="text">
+                    <div class="heading">
+                        <span class="date"><?=$value->getDateTime()?></span>
+                    </div>
+                    <?=$value->text?>
+                    <?php if ($value->file): ?>
+                        <div class="mail-attachments">
+                            <a href="<?=$adminka?>/uploads/chat/<?=$value->file?>" target="_blank "><span class="fa fa-paperclip"></span> <?=$value->getFileExtension()?></a>
+                        </div>
+                    <?php endif ?>
+                </div>
             </div>
-        </div>
+        <?php endif ?>
+
+        <?php if ($value->to == $from): ?>
+            <p align="center"><span><?=($i == 1 || $k == 1) ? $value->getDateCreate() : "";?></span></p>
+            <div class="item item-visible">
+                <div class="image">
+                    <?=$value->from0->getUserAvatar('head')?>
+                </div>
+                <div class="text">
+                    <div class="heading">
+                        <span class="date"><?=$value->getDateTime()?></span>
+                    </div>
+                    <?=$value->text?>
+                    <?php if ($value->file): ?>
+                        <div class="mail-attachments">
+                            <a href="<?=$adminka?>/uploads/chat/<?=$value->file?>" target="_blank "><span class="fa fa-paperclip"></span> <?=$value->getFileExtension()?></a>
+                        </div>
+                    <?php endif ?>
+                    
+                </div>
+
+            </div>
+        <?php endif ?>
+        <?php $i++; ?>
+        <?php $old_value = $value ?>
     <?php endforeach ?>
     <?php endif ?>
 </div>                        
-
-<?php 
-$this->registerJs(<<<JS
-    $(document).ready(function()    { 
-            $("#but_upload").click(function() { 
-                var fd = new FormData(); 
-                var files = $('#file')[0].files[0]; 
-                fd.append('file', files); 
-            
-                $.ajax({ 
-                    url: 'adres', 
-                    type: 'post', 
-                    data: {fd,$('#myform').serialize}, 
-                    contentType: false, 
-                    processData: false, 
-                    success: function(response){ 
-                        if(response != 0){ 
-                           alert('file uploaded'); 
-                        } 
-                        else{ 
-                            alert('file not uploaded'); 
-                        } 
-                    }, 
-                }); 
-            }); 
-        });
-JS
-);
-?>

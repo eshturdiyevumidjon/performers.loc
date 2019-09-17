@@ -29,7 +29,7 @@
   </div>
   <p class="povis"><?=Yii::t('app','Phone and Email are hidden, will be available to the performer')?></p>
 </div>
-<?php if ($banner): ?>
+<?php if ($banner->image): ?>
   <div class="banner_bl">
     <img style="width: 100%;" src="/admin/uploads/banners/<?= $banner->image?>" alt="">
   </div>

@@ -103,31 +103,21 @@ use yii\widgets\ActiveForm;
         <div class="paino">
           <?php foreach ($model->getItemsList() as $key => $value): ?>
             <?php $item = $model->getItem($value->id);?>
-
              <div class="d-flex align-items-center justify-content-between">
             <div class="form-group_checkbox">
-                <input type="checkbox" id="bewprw<?=$key?>" name="need_<?=$value->id?>" value="1" <?=($item) ? "checked":""?>>
+                <input type="checkbox" id="bewprw<?=$key?>" name="need_<?=$key?>" value="1" <?=($item) ? "checked":""?>>
                 <label for="bewprw<?=$key?>"><?=$value?></label>
             </div>
             <div class="form_count" id="need_<?=$key?>" style="display: none;">
               <button class="minus_count"><img src="/images/minus_a.svg" alt=""></button>
-              <input type="number" name="items[<?=$key?>]"  min=0 value='<?=($item)?$item:1?>'>
+              <input type="number" name="items[<?=$key?>]"  min=0 value='<?=($item)?$item['count']:1?>'>
               <button class="plus_count"><img src="/images/plus_a.svg" alt=""></button>
             </div>
           </div>
           <?php endforeach ?>
          
-           <div class="d-flex align-items-center justify-content-between">
-            <div class="form-group_checkbox">
-                <input type="checkbox" id="bewprwc" name="need_piano" value="1" <?=($model->need_piano ==1)? "checked":""?> >
-                <label for="bewprwc"><?=Yii::t('app','Piano and safes')?></label>
-            </div>
-            <div class="form_count" id="need_piano" style="display: none;">
-              <button class="minus_count"><img src="/images/minus_a.svg" alt=""></button>
-              <input type="number"  min=0  placeholder="bewprw" min=0 value='<?=isset($model->count_piano)?$model->count_piano:1?>'>
-              <button class="plus_count"><img src="/images/plus_a.svg" alt=""></button>
-            </div>
-          </div>
+         
+        
           <!--<div class="d-flex align-items-center justify-content-between">
             <div class="form-group_checkbox">
                 <input type="checkbox" id="bbewprwc" name="need_furniture" value="1" <?=($model->need_furniture ==1)? "checked":""?> >

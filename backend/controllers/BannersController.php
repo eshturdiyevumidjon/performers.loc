@@ -200,21 +200,23 @@ class BannersController extends Controller
     public function actionUpdate($id)
     {
         $request = Yii::$app->request;
+        $langs = Lang::getLanguages();
         $post=$request->post();
-        $model = $this->findModel($id);       
+        $model = $this->findModel($id);
+
         if($request->isAjax){
             
-            $translations = Translates::find()->where(['table_name' => $model->tableName(),'field_id' => $model->id])->all();
-            foreach ($translations as $key => $value) {
-               switch ($value->field_name) {
-                    case 'title':
-                        $translation_title[$value->language_code] = $value->field_value;
-                        break;
-                    default:
-                        $translation_text[$value->language_code] = $value->field_value;
-                        break;
-                }                
-            }
+          $translations = Translates::find()->where(['table_name'=>$model->tableName(),'field_id'=>$model->id])->all();
+                foreach ($translations as $key => $value) {
+                    switch ($value->field_name) {
+                        case 'title':
+                            $translation_title[$value->language_code] = $value->field_value;
+                            break;
+                        default:
+                            $translation_text[$value->language_code] = $value->field_value;
+                            break;
+                    }
+                }
 
             /*
             *   Process for ajax request
@@ -234,22 +236,45 @@ class BannersController extends Controller
                   $model->fone->saveAs('uploads/banners/' . $name.'.'.$model->fone->extension);
                     Yii::$app->db->createCommand()->update('banners', ['image' => $name.'.'.$model->fone->extension], [ 'id' => $model->id ])->execute();
                 }
-                foreach ($translations as $t) {
-                           $t->field_value = $post["Banners"][$t->field_description][$t->language_code];
-                           $t->save();
+                $attr = Banners::NeedTranslation();
+                
+                foreach ($langs as $lang) {
+                       
+                        $l = $lang->url;
+                        if($l == 'ru')
+                        {
+                           continue;
+                        }
+                      foreach ($attr as $key=>$value) {
+                          $t = Translates::find()->where(['table_name' => $model->tableName(),'field_id' => $model->id,'language_code' => $l,'field_name'=>$key]);
+                          if($t->count() == 1){
+                             $tt = $t->one();
+                             $tt->field_value=$post["Banners"][$value][$l];
+                             $tt->save();
+                           }
+                           else{
+                               $tt=new Translates();
+                               $tt->table_name=$model->tableName();
+                               $tt->field_id=$model->id;
+                               $tt->field_name=$key;
+                               $tt->field_value=$post["Banners"][$value][$l];
+                               $tt->field_description=$value;
+                               $tt->language_code=$l;
+                               $tt->save();
+                           }
+                      }
                 }
-               $translations=Translates::find()->where(['table_name' => $model->tableName(),'field_id' => $model->id])->all();
+                $translations = Translates::find()->where(['table_name'=>$model->tableName(),'field_id'=>$model->id])->all();
                 foreach ($translations as $key => $value) {
- 
-                switch ($value->field_name) {
-                    case 'title':
-                        $translation_title[$value->language_code] = $value->field_value;
-                        break;
-                    default:
-                        $translation_text[$value->language_code] = $value->field_value;
-                        break;
+                    switch ($value->field_name) {
+                        case 'title':
+                            $translation_title[$value->language_code] = $value->field_value;
+                            break;
+                        default:
+                            $translation_text[$value->language_code] = $value->field_value;
+                            break;
+                    }
                 }
-            }   
             if($model->save())
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
@@ -257,8 +282,8 @@ class BannersController extends Controller
                     'size'=>'normal',
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
-                        'titles'=>$titles,
-                        'texts'=>$texts,
+                        'titles'=>$translation_title,
+                        'texts'=>$translation_text,
                     ]),
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                             Html::a(Yii::t('app','Edit'),['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
@@ -270,8 +295,8 @@ class BannersController extends Controller
                     'size'=>'large',
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
-                        'titles'=>$titles,
-                        'texts'=>$texts,
+                        'titles'=>$translation_title,
+                        'texts'=>$translation_text,
                     ]),
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                                 Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])
@@ -284,8 +309,8 @@ class BannersController extends Controller
                     'size'=>'large',
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
-                        'titles'=>$titles,
-                        'texts'=>$texts,
+                        'titles'=>$translation_title,
+                        'texts'=>$translation_text,
                     ]),
                     'footer'=> Html::button(Yii::t('app','Close'),['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
                                 Html::button(Yii::t('app','Save'),['class'=>'btn btn-primary','type'=>"submit"])

@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
+$lang = Yii::$app->language;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Tasks */
@@ -12,10 +13,10 @@ use yii\widgets\ActiveForm;
         <?php $form = ActiveForm::begin(['id'=>"transport_form",'options'=>['enctype'=>'multipart/form-data', 'class'=>'input_styles cab_st']]); ?>
         <div class="row">
           <div class="col-md-12">
-           <?= $form->field($model, 'mark')->dropDownList(ArrayHelper::map(\backend\models\Marks::find()->all(),'id','name_mark'), ['class'=>'my_input','prompt' => Yii::t('app','Car mark'),'style'=>'cursor:pointer;'])->label(false)?>
+            <?= $form->field($model, 'mark')->dropDownList(ArrayHelper::map(\backend\models\Marks::find()->all(),'id','name_mark'), ['class'=>'my_input','prompt' => Yii::t('app','Car mark'),'style'=>'cursor:pointer;','onchange'=>'$.post("/'.$lang.'/task/get-model-list2?mark_id="+$(this).val(),function(succes){$("#model").html(succes)})',])->label(false)?>
           </div>
           <div class="col-md-12">
-            <?= $form->field($model, 'model')->dropDownList(ArrayHelper::map(\backend\models\Models::find()->all(),'id','name_model'), ['class'=>'my_input','prompt' => Yii::t('app','Car model'),'style'=>'cursor:pointer;'])->label(false)?>
+            <?= $form->field($model, 'model')->dropDownList(ArrayHelper::map(\backend\models\Models::find()->all(),'id','name_model'), ['class'=>'my_input','prompt' =>  Yii::t('app','Car model'),'id'=>'model','style'=>'cursor:pointer;'])->label(false)?>
           </div>
           <div class="col-md-12">
 

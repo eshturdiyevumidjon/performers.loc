@@ -83,7 +83,7 @@ $user = \common\models\User::find()->where(['id'=>Yii::$app->user->identity->id]
                             <a href="<?=$adminka?>transports/index"><span class="fa fa-truck"></span><?=Yii::t('app','Transports')?></a>
                 </li>
                 <li  <?= ($pathInfo == 'drivers/index' ? 'class="active"' : '')?>>
-                            <a href="<?=$adminka?>drivers/index"><span class="fa fa-users"></span><?=Yii::t('app','Drivers')?></a>
+                            <a href="<?=$adminka?>drivers/index"><span class="fa fa-users"></span><?=Yii::t('app','Drivers listing')?></a>
                 </li>
                 <li <?= ($pathInfo == 'transport-category/index' ? 'class="active"' : '')?>>
                     <a href="<?=$adminka?>transport-category/index"><span class="fa fa-list"></span> <span class="xn-text"><?=Yii::t('app','Category of transports')?></span></a>

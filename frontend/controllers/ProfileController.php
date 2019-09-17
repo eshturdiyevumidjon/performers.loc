@@ -589,9 +589,9 @@ class ProfileController extends Controller
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'forceClose'=>true,
-                    'forceReload'=>'#crud-datatable-pjax-2'
-                 ];
+                     'forceClose'=>true,
+                     'forceReload'=>'#crud-datatable-pjax-2'
+                  ];
         }else{
             /*
             *   Process for non-ajax request

@@ -41,11 +41,32 @@ class Chat extends \yii\db\ActiveRecord
         return [
             [['type', 'from', 'to', 'reply', 'deleted'], 'integer'],
             [['date_cr'], 'safe'],
+            
             [['text'], 'string'],
             [['chat_id', 'title', 'file'], 'string', 'max' => 255],
             [['from'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['from' => 'id']],
             [['to'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['to' => 'id']],
         ];
+    }
+    public function beforeSave($insert)
+    {
+        if($this->isNewRecord){
+            $this->date_cr=time();
+        }
+        return parent::beforeSave($insert);
+    }
+    public function getDateCreate()
+    {
+        return Yii::$app->formatter->asDate($this->date_cr, 'php:d.m.Y');
+    }
+
+    public function getFileExtension()
+    {
+        return substr(strrchr($this->file, "."), 1);
+    }
+    public function getDateTime()
+    {
+        return Yii::$app->formatter->asDate($this->date_cr, 'php:H:i');
     }
 
     /**

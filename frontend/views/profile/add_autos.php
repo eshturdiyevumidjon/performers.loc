@@ -30,10 +30,10 @@ $cr =  Yii::$app->session['active_create'];
                  <div id="create_autos" <?=($cr != 1)?'style="display: none;"':''?>>
                    <div class="row">
                     <div class="col-sm-6">
-                       <?= $form->field($transport, 'mark')->dropDownList(ArrayHelper::map(\backend\models\Marks::find()->all(),'id','name_mark'), ['class'=>'my_input','prompt' => Yii::t('app','Car mark'),'style'=>'cursor:pointer;'])->label(false)?>
+                       <?= $form->field($transport, 'mark')->dropDownList(ArrayHelper::map(\backend\models\Marks::find()->all(),'id','name_mark'), ['class'=>'my_input','prompt' => Yii::t('app','Car mark'),'style'=>'cursor:pointer;','onchange'=>'$.post("/'.$lang.'/task/get-model-list2?mark_id="+$(this).val(),function(succes){$("#model").html(succes)})',])->label(false)?>
                      </div>
                      <div class="col-sm-6">
-                       <?= $form->field($transport, 'model')->dropDownList(ArrayHelper::map(\backend\models\Models::find()->all(),'id','name_model'), ['class'=>'my_input','prompt' => Yii::t('app','Car model'),'style'=>'cursor:pointer;'])->label(false)?>
+                       <?= $form->field($transport, 'model')->dropDownList([], ['class'=>'my_input','prompt' => Yii::t('app','Car model'),'id'=>'model','style'=>'cursor:pointer;'])->label(false)?>
                      </div>
                      <div class="col-sm-6">
                         <?= $form->field($transport, 'registration_number')->textInput(['placeholder'=>Yii::t('app','Registration Number'),'class'=>'my_input'])->label(false) ?>

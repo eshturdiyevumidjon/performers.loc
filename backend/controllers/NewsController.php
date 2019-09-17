@@ -197,7 +197,9 @@ class NewsController extends Controller
     {
         $request = Yii::$app->request;
         $post=$request->post();
-        $model = $this->findModel($id);       
+        $langs = Lang::getLanguages();
+        $model = $this->findModel($id);  
+             
         if($request->isAjax){
             
             $translations = Translates::find()->where(['table_name' => $model->tableName(),'field_id' => $model->id])->all();
@@ -231,10 +233,40 @@ class NewsController extends Controller
                     Yii::$app->db->createCommand()->update('news', ['fone' => $name.'.'.$model->imageFiles->extension], [ 'id' => $model->id ])->execute();
                 }
                 
-                foreach ($translations as $t) {
-                           $t->field_value = $post["News"][$t->field_description][$t->language_code];
-                           $t->save();
+
+                $attr = News::NeedTranslation();
+                
+                foreach ($langs as $lang) {
+                       
+                        $l = $lang->url;
+                        if($l == 'ru')
+                        {
+                           continue;
+                        }
+                      foreach ($attr as $key=>$value) {
+                          $t = Translates::find()->where(['table_name' => $model->tableName(),'field_id' => $model->id,'language_code' => $l,'field_name'=>$key]);
+                          if($t->count() == 1){
+                             $tt = $t->one();
+                             $tt->field_value=$post["News"][$value][$l];
+                             $tt->save();
+                           }
+                           else{
+                               $tt=new Translates();
+                               $tt->table_name=$model->tableName();
+                               $tt->field_id=$model->id;
+                               $tt->field_name=$key;
+                               $tt->field_value=$post["News"][$value][$l];
+                               $tt->field_description=$value;
+                               $tt->language_code=$l;
+                               $tt->save();
+                           }
+                      }
                 }
+
+            //     foreach ($translations as $t) {
+            //                $t->field_value = $post["News"][$t->field_description][$t->language_code];
+            //                $t->save();
+            //     }
                $translations=Translates::find()->where(['table_name' => $model->tableName(),'field_id' => $model->id])->all();
                 foreach ($translations as $key => $value) {
  
