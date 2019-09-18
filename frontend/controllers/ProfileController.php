@@ -77,7 +77,7 @@ class ProfileController extends Controller
             $all_tasks = \backend\models\Tasks::find()->where(['type'=>explode(',',$user->role_performer)]);
             $countQuery2 = clone $all_tasks;
             $pages2 = new Pagination(['totalCount' => $countQuery2->count()]);
-            $pages2->setPageSize(5);
+            $pages->setPageSize(10);
             $all_tasks = $all_tasks->offset($pages2->offset)
                 ->limit($pages2->limit)
                 ->all();
@@ -88,7 +88,7 @@ class ProfileController extends Controller
             $my_tasks = \backend\models\Tasks::find()->where(['user_id'=>$user->id]);
             $countQuery = clone $my_tasks;
             $pages = new Pagination(['totalCount' => $countQuery->count()]);
-            $pages->setPageSize(2);
+            $pages->setPageSize(10);
             $models = $my_tasks->offset($pages->offset)
                 ->limit($pages->limit)
                 ->all();

@@ -57,51 +57,9 @@ $this->params['breadcrumbs'][] = $this->title;
           </div>
           <div id="ff1" class="tab-pane in"> 
             <?php if (count($my_tasks) > 0): ?>
-              <?php foreach ($my_tasks as $key => $value): ?>
-              <a href="/<?=$lang?>/task/view?id=<?=$value->id?>" class="item_to_city">
-              <div class="item_to_city_top">
-                <div class="sur_">
-                  <img src="<?=$value->getTypeIconBlack()?>" alt="">
-                  <div>
-                    <h5>Доставить груз в Москву</h5>
-                    <p>Грузовые перевозки</p>
-                  </div>
-                </div>
-                <div class="price_cop">
-                  <h6><?=$value->offer_your_price?></h6>
-                  <p class="cal_tack">Предложения</p>
-                </div>
-              </div>
-              <span class="line_toc"></span>
-              <div class="item_to_city_bottom">
-                <div class="row">
-                  <div class="col-4">
-                    <p class="cal_tack">Cоздан</p>
-                    <span><?=$value->date_cr?></span>
-                  </div>
-                  <div class="col-4">
-                    <p class="cal_tack">Дата отправки</p>
-                    <span><?=$value->date_begin?></span>
-                  </div>
-                  <div class="col-4">
-                    <p class="cal_tack">Дата прибытия</p>
-                    <span><?=$value->date_close?></span>
-                  </div>
-                </div>
-                <div class="mangis">
-                  <p class="cal_tack">Маршрут</p>
-                  <div class="d-flex align-items-center">
-                    <img src="/images/otp.svg" alt="" class="nt-1">
-                    <span><?=$value->shipping_address?></span>
-                    <img src="/images/mang.svg" alt="" class="nt-2">
-                    <img src="/images/otp2.svg" alt="" class="nt-3">
-                    <span><?=$value->delivery_address?></span>
-                  </div>
-                </div>
-              </div>
-              <button><span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><g><g clip-path="url(#clip-67c7ecfe-51a6-4606-85cb-9c7ae5002df6)"><g><g><path fill="" d="M6 0L4.95 1.05l4.2 4.2H0v1.5h9.15l-4.2 4.2L6 12l6-6z"></path></g></g></g></g></svg></span></button>
-            </a>
-            <?php endforeach ?>
+              <?=$this->render('filter',['all_tasks'=>$my_tasks,'lang'=>$lang])?>
+              <?=\yii\widgets\LinkPager::widget(['pagination'=>$pages])?>
+              
               <!-- <ul class="pagination">
               <li class="page-item"><a class="" href="#">1</a></li>
               <li class="page-item"><a class="" href="#">2</a></li>

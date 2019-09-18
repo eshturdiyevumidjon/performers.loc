@@ -59,7 +59,23 @@ class Chat extends \yii\db\ActiveRecord
     {
         return Yii::$app->formatter->asDate($this->date_cr, 'php:d.m.Y');
     }
-
+    public function getSizeInKb($size)
+    {
+        if ($size < 1024) {
+            return "{$this->size} bytes";
+        } elseif ($size < 1048576) {
+            $size_kb = round($size/1024);
+            return "{$size_kb} KB";
+        } else {
+            $size_mb = round($size/1048576, 1);
+            return "{$size_mb} MB";
+        }
+    }
+    public function getFileSize()
+    {
+        $adminka = Yii::$app->params['adminka'];
+        return $this->getSizeInKb(filesize(\Yii::getAlias('@backend').'/web/uploads/chat/'.$this->file));
+    }
     public function getFileExtension()
     {
         return substr(strrchr($this->file, "."), 1);

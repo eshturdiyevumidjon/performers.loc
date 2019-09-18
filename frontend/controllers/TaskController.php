@@ -8,6 +8,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
+use yii\data\Pagination;
+use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 
 /**
@@ -32,7 +34,7 @@ class TaskController extends Controller
     }
     public function beforeAction($action)
     {
-        if ($action->id == 'create-goods' || $action->id == 'create-help' || $action->id == 'create-order') {
+        if ($action->id == 'create-goods' || $action->id == 'view' || $action->id == 'create-help' || $action->id == 'create-order') {
             $this->enableCsrfValidation = false;
         }
 
@@ -73,48 +75,61 @@ class TaskController extends Controller
     
     public function actionSendMessage()
     {
-        $from = Yii::$app->user->identity->id;
-        $query = Chat::find()->where(['and', ['to'=>[$to,$from]], ['from'=>[$to,$from]]]);
-        $message = new Chat();
-        $message->from = $from;
+        $from = $_POST['from'];
+        $to = $_POST['to'];
+        $message = new \backend\models\Chat();
 
+        $message->from = $from;
+        $message->to = $to;
+        $message->text = $_POST['text'];
+
+        $message->save();
+        $uploadDir = \Yii::getAlias('@backend').'/web/uploads/chat/';
+        $ext = "";
+        $ext = substr(strrchr($_FILES['file']['name'], "."), 1); 
+
+        $fPath =$_FILES['file']['name'];
+        if($ext != ""){
+           $result = move_uploaded_file($_FILES['file']['tmp_name'], $uploadDir . $fPath);
+            $message->file = $fPath;
+            $message->save();
+        }
+
+        $query = \backend\models\Chat::find()->where(['and', ['to'=>[$to,$from]], ['from'=>[$to,$from]]]);
+
+        $messages = [];
         $dataProvider = new ActiveDataProvider([
            'query' => $query,
         ]);
-        $models = $dataProvider->getModels();
-        $users = \common\models\User::find()->all();
+        $messages = $dataProvider->getModels();
 
-        if($to == null){
-             Yii::$app->session->setFlash('warning', Yii::t('app','Please select contact in the right sidebar'));
-        }else{
-            $message->to = $to;
+        return $this->renderAjax('request/messages',['messages'=>$messages]);
+ // echo "<pre>";
+ //        print_r($_FILES);
+ //        print_r($_POST);
+        // if($to == null){
+        //      Yii::$app->session->setFlash('warning', Yii::t('app','Please select contact in the right sidebar'));
+        // }else{
+        //     $message->to = $to;
 
-            $request = Yii::$app->request;
-            if($message->load($request->post()) && $message->save())
-            {
-                $uploadDir = \Yii::getAlias('@backend').'/web/uploads/chat/';
-                $ext = "";
-                $ext = substr(strrchr($_FILES['file']['name'], "."), 1); 
+        //     $request = Yii::$app->request;
+        //     if($message->load($request->post()) && $message->save())
+        //     {
+        //         
 
-                $fPath =$_FILES['file']['name']. rand() . ".$ext";
-                if($ext != ""){
-                   $result = move_uploaded_file($_FILES['file']['tmp_name'], $uploadDir . $fPath);
-                    $message->file = $fPath;
-                    $message->save();
-                }
+        //         return $this->redirect(['index','to'=>$message->to]);
+        //     }
+        // }
 
-                return $this->redirect(['index','to'=>$message->to]);
-            }
-        }
-
-        if (count($models) == 0) {
-            Yii::$app->session->setFlash('error', Yii::t('app','You don’t have anything yet'));
-        }
-        return $this->render('index', [
-            'models' => $models,
-            'users'=>$users,
-            'message'=>$message
-        ]);
+        // if (count($models) == 0) {
+        //     Yii::$app->session->setFlash('error', Yii::t('app','You don’t have anything yet'));
+        // }
+       
+        // return $this->render('index', [
+        //     'models' => $models,
+        //     'users'=>$users,
+        //     'message'=>$message
+        // ]);
     }
     public function actionView($id)
     {   
@@ -125,6 +140,18 @@ class TaskController extends Controller
         $banner = \backend\models\Banners::findOne(1);
         $requests = \backend\models\Request::find()->joinWith('user')->select('user.*,request.*')->where(['request.task_id'=>$id])->all();
        
+        $messages = [];
+        if($model->performer_id){
+            $from = $model->user_id;
+            $to = $model->performer_id;
+            $query = \backend\models\Chat::find()->where(['and', ['to'=>[$to,$from]], ['from'=>[$to,$from]]]);
+            
+            $dataProvider = new ActiveDataProvider([
+               'query' => $query,
+            ]);
+            $messages = $dataProvider->getModels();
+        }
+
 
         switch ($model->type) {
             case '1': return $this->render('passengers/view-passengers', [
@@ -133,6 +160,7 @@ class TaskController extends Controller
                             'banner'=>$banner,
                             'requests'=>$requests,
                             'active_user'=>$active_user,
+                            'messages'=>$messages
                         ]);
             case '2': return $this->render('vehicles/view-vehicles', [
                             'model' => $model,
@@ -140,6 +168,7 @@ class TaskController extends Controller
                             'banner'=>$banner,
                             'requests'=>$requests,
                             'active_user'=>$active_user,
+                            'messages'=>$messages
                         ]);
             case '3': return $this->render('goods/view-goods', [
                             'model' => $model,
@@ -147,6 +176,7 @@ class TaskController extends Controller
                             'banner'=>$banner,
                             'requests'=>$requests,
                             'active_user'=>$active_user,
+                            'messages'=>$messages
                         ]);
             default:  return $this->render('help/view-help', [
                             'model' => $model,
@@ -154,6 +184,7 @@ class TaskController extends Controller
                             'banner'=>$banner,
                             'requests'=>$requests,
                             'active_user'=>$active_user,
+                            'messages'=>$messages
                         ]);;
         }
     
@@ -409,12 +440,13 @@ class TaskController extends Controller
         }
     }
 
-    public function actionCreateOrder($id = null)
+    public function actionCreateOrder($id)
     {
+        $rr = \backend\models\Request::findOne($id);
         $request = Yii::$app->request;
-        $model = new \backend\models\Orders();
-        if($id != null)
-        $model->task_id = $id;
+        
+        $task = $this->findModel($rr->task_id);
+
         if($request->isAjax){
             /*
             *   Process for ajax request
@@ -422,11 +454,12 @@ class TaskController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
         
             if($request->post()){
-                $model->save();
-                    $id = $model->task_id;
-                  $rr = \backend\models\Request::findOne($id);
+                    
                     $ispolnitel = $rr->user;
                     $zakazchik = $rr->task->user;
+                    $task->performer_id = $ispolnitel->id;
+                    $task->save();
+
                      Yii::$app
                     ->mailer
                     ->compose()
@@ -435,19 +468,19 @@ class TaskController extends Controller
                     ->setSubject('New Order From' . Yii::$app->name)
                     ->setHtmlBody("<p>Dear ".$ispolnitel->username.". You have new Order From ".$zakazchik->username."</p>")
                     ->send();
+
                  return [
-                    'id'=>$model->task_id,
                     'forceClose'=>true,
                     'forceReload'=>'#crud-datatable-pjax'
                  ];
+
                }else{           
                 return [
                     'title'=> Yii::t('app','Service charge'),
                     'size'=>'large',
                     'content'=>$this->renderAjax('request/pay_form', [
-                        'model' => $model,
                     ]),
-                     'footer'=>'<br>'.Html::submitButton(Yii::t('app','Pay'), ['class' => 'my_modal_submit btn_red', 'name' => 'login-button']).
+                     'footer'=>'<br>'.Html::submitButton(Yii::t('app','Pay'), ['class' => 'my_modal_submit btn_red', 'name' => 'order-button']).
                     Html::a(Yii::t('app','Add funds'),['#'], ['class' => 'my_modal_button btn_red','role'=>'modal-remote'])
         
                 ];         

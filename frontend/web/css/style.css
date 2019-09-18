@@ -1626,6 +1626,7 @@ section.cabinet{
 	border: 1px solid rgba(34, 33, 54, 0.1);
 }
 .sms{
+	width: 90%;
 	background-color: #f0eff5;
 	padding: 7px 23px 4px;
 	margin-bottom: 5px;

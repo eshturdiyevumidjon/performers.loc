@@ -6,6 +6,7 @@ use yii\widgets\Pjax;
 <h2>Заявка</h2>
 <?php endif;?>
 <?php foreach ($requests as $key => $value): ?>
+
   <div class="item_to_city" style="margin-bottom: 3px;">
     <div class="item_to_city_top">
       <div class="user_inner">
@@ -57,7 +58,7 @@ use yii\widgets\Pjax;
         </div>
         <div class="col-sm-3">
           <p class="cal_tack"><?=Yii::t('app','Phone')?></p>
-          <?php if ($user->type == 4): ?>
+          <?php if ($active_user->type == 4): ?>
           <span><?=$value['user']->phone?></span>
           <?php else: ?>
           <span>*** ** *** ** **</span>
