@@ -204,7 +204,7 @@ class TaskController extends Controller
         $model->count_avtokreslo = $_POST['count_avtokreslo'];
         $model->count_buster = $_POST['count_buster'];
 
-        if($model->load(Yii::$app->request->post()) && $model->save())
+        if($model->load(Yii::$app->request->post()))
         {
             return $this->redirect(['view','id'=>$model->id]);
         } else {
@@ -216,6 +216,28 @@ class TaskController extends Controller
         }
        
     }
+
+    public function actionSaveSessionPassenger()
+    {
+        $task = new Tasks();
+        $task->scenario = Tasks::SCENARIO_PASSENGERS;
+        $task->attributes = $_POST['Tasks'];
+
+        $task->type=1;
+        $task->alert_email = isset($_POST['alert_email']) ? 1 : 0;
+        $task->meeting_with_sign_status = isset($_POST['meeting_with_sign_status']) ? 1 : 0;
+        $task->flight_number_status = isset($_POST['flight_number_status']) ? 1 : 0;
+        $task->return = isset($_POST['return']) ? 1 : 0;
+
+        $task->count_adult = $_POST['count_adult'];
+        $task->count_avtolulka = $_POST['count_avtolulka'];
+        $task->count_avtokreslo = $_POST['count_avtokreslo'];
+        $task->count_buster = $_POST['count_buster'];
+
+        Yii::$app->session['passenger[]'] = $task->attributes;
+        // print_r(Yii::$app->session['passenger[]']);
+    }
+
     public function actionCreateGoods()
     {
         $model = new Tasks();
@@ -254,6 +276,21 @@ class TaskController extends Controller
             ]);
         }
        
+    }
+    public function actionSaveSessionGoods()
+    {
+        $task = new Tasks();
+        $task->scenario = Tasks::SCENARIO_GOODS;
+        $task->attributes = $_POST['Tasks'];
+
+        $task->type=3;
+        $task->loading_required_status = isset($_POST['loading_required_status']) ? 1 : 0;
+        $task->alert_email = isset($_POST['alert_email']) ? 1 : 0;
+        $task->lift = isset($_POST['lift']) ? 1 : 0;
+        if(isset($_POST['tip_gruz']))
+            $task->classification = implode(',',$_POST['tip_gruz']);
+        Yii::$app->session['goods[]'] = $task->attributes;
+        print_r(Yii::$app->session['goods[]']);
     }
     
     public function actionCreateHelp()
@@ -311,6 +348,31 @@ class TaskController extends Controller
         }
        
     }
+
+    public function actionSaveSessionHelp()
+    {
+        $task = new Tasks();
+        $task->scenario = Tasks::SCENARIO_HELP;
+        $task->attributes = $_POST['Tasks'];
+
+        $task->type=4;
+        $task->alert_email = isset($_POST['alert_email']) ? 1 : 0;
+        $task->delivery_house_lift = isset($_POST['delivery_house_lift']) ? 1 : 0;
+        $task->shipping_house_lift = isset($_POST['shipping_house_lift']) ? 1 : 0;
+        $task->demolition = isset($_POST['demolition']) ? 1 : 0;
+        
+      
+        if(isset($_POST['need_packing'])){
+            $task->need_packing = 1;
+        }
+        if(isset($_POST['need_loaders'])){
+            $task->need_loader = 1;
+        }
+
+        Yii::$app->session['help[]'] = $task->attributes;
+        print_r(Yii::$app->session['help[]']);
+    }
+
     public function actionCreateVehicles()
     {
         $model = new Tasks();
@@ -347,6 +409,28 @@ class TaskController extends Controller
         }
        
     }
+
+     public function actionSaveSessionVehicles()
+    {
+        $task = new Tasks();
+        $task->scenario = Tasks::SCENARIO_VEHICLES;
+        $task->attributes = $_POST['Tasks'];
+
+        $task->type=2;
+        $task->alert_email = isset($_POST['alert_email']) ? 1 : 0;
+        $task->car_on_the_go = isset($_POST['car_on_the_go']) ? 1 : 0;
+      
+        if(isset($_POST['need_packing'])){
+            $task->need_packing = 1;
+        }
+        if(isset($_POST['need_loaders'])){
+            $task->need_loader = 1;
+        }
+
+        Yii::$app->session['vehicles[]'] = $task->attributes;
+        print_r($_POST);
+    }
+
     public function actionUpdateVehicles($id)
     {
         $request = Yii::$app->request;

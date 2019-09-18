@@ -190,7 +190,7 @@ $lang = Yii::$app->language;
 
             <?php if (Yii::$app->user->isGuest): ?>
             <div style="width: 30%; text-align: center;float: right; margin-right: 5%;">
-              <?=Html::a(Yii::t('app','Publish'), ['/site/signup'],['role'=>'modal-remote','class'=>'btn_red'])?>
+              <?=Html::a(Yii::t('app','Publish'), ['/site/login'],['role'=>'modal-remote','class'=>'btn_red','id'=>'if_user_guest'])?>
             </div>
           <?php else: ?>
             <?= Html::submitButton(Yii::t('app','Publish'), ['class' => 'btn_red']) ?>
@@ -213,6 +213,9 @@ $this->registerJs(<<<JS
           $('#meeting_with_sign').show();
 
   $(document).ready(function(){
+    $("#if_user_guest").on('click',function(){
+      $.post('/$lang/task/save-session-passenger',$("#passengers_form").serialize(),function(succes){alert(succes)});
+    });
     $('#passengers').click(function(){
         $('#count_passengers').toggle(300);
       })

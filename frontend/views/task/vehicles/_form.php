@@ -4,6 +4,8 @@ use yii\helpers\ArrayHelper;
 use kartik\date\DatePicker;
 use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
+$lang = Yii::$app->language;
+
 ?>
 <section class="order">
   <div class="container">
@@ -120,8 +122,8 @@ use kartik\select2\Select2;
           <?= $form->field($model, 'comment')->textarea(['rows' => 6,'id'=>'textfield','class'=>'my_input'])->label(false) ?>
 
             <?php if (Yii::$app->user->isGuest): ?>
-            <div style="width: 30%; text-align: center;float: right; margin-right: 5%;">
-              <?=Html::a(Yii::t('app','Publish'), ['/site/signup'],['role'=>'modal-remote','class'=>'btn_red'])?>
+             <div style="width: 30%; text-align: center;float: right; margin-right: 5%;">
+              <?=Html::a(Yii::t('app','Publish'), ['/site/login'],['role'=>'modal-remote','class'=>'btn_red','id'=>'if_user_guest'])?>
             </div>
           <?php else: ?>
             <?= Html::submitButton(Yii::t('app','Publish'), ['class' => 'btn_red']) ?>
@@ -131,14 +133,18 @@ use kartik\select2\Select2;
         
     </div>
   </div>
-  <input type="file" multiple id="gallery-photo-add">
-<div class="gallery"></div>
 </section>
  
 <?=$this->render('../request/map.php')?> 
 
 <?php
 $this->registerJs(<<<JS
+  $(document).ready(function(){
+      $("#if_user_guest").on('click',function(){
+      $.post('/$lang/task/save-session-vehicles',$("vehicles_form").serialize(),function(succes){alert(succes)});
+    });
+    });
+ 
   remove = function(id){
     $("#photo"+id).remove();
   }

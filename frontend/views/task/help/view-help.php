@@ -119,29 +119,39 @@ $lang = Yii::$app->language;
           </div>
           <div class="terra">
             <p><img src="/images/otp.svg" alt=""><?=Yii::t('app','Point of departure')?></p>
-            <div class="row">
-              <div class="col-md-3">
-                  <span><?=$model->getTypeOfTheHouse($model->shipping_house_type)?></span>
-              </div>
-              <div class="col-md-3">
-                  <span><?=Yii::t('app','Floor')?>: <?=$model->shipping_house_floor?></span>
-              </div>
-              <div class="col-md-3">
+             <div class="row">
+              <?php if ($model->shipping_house_type): ?>
+                <div class="col-md-3">
+                    <span><?=$model->shipping_house_type?></span>
+                </div>
+              <?php endif ?>
+              <?php if ($model->shipping_house_floor): ?>
+                <div class="col-md-3">
+                    <span><?=Yii::t('app','Floor')?>: <?=$model->shipping_house_floor?></span>
+                </div>
+              <?php endif ?>
+                <div class="col-md-3">
                   <span><?=Yii::t('app','Lift')?>: <?=$model->getYesNo($model->shipping_house_lift)?></span>
-              </div>
+                </div>
+           
             </div>
             <hr>
             <p><img src="/images/otp2.svg" alt=""><?=Yii::t('app','Destination')?></p>
             <div class="row">
-               <div class="col-md-3">
-                  <span><?=$model->getTypeOfTheHouse($model->delivery_house_type)?></span>
-              </div>
-              <div class="col-md-3">
-                  <span><?=Yii::t('app','Floor')?>: <?=$model->delivery_house_floor?></span>
-              </div>
-              <div class="col-md-3">
+              <?php if ($model->delivery_house_type): ?>
+                <div class="col-md-3">
+                    <span><?=$model->delivery_house_type?></span>
+                </div>
+              <?php endif ?>
+              <?php if ($model->delivery_house_floor): ?>
+                <div class="col-md-3">
+                    <span><?=Yii::t('app','Floor')?>: <?=$model->delivery_house_floor?></span>
+                </div>
+              <?php endif ?>
+                <div class="col-md-3">
                   <span><?=Yii::t('app','Lift')?>: <?=$model->getYesNo($model->delivery_house_lift)?></span>
-              </div>
+                </div>
+           
             </div>
           </div>
           <div class="photos_inn">

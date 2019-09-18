@@ -27,12 +27,18 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
-    
+
+    const SCENARIO_INF = 'change_information';
+    const SCENARIO_PSW = 'change_password';
+
+
     public $avatar=null;
     public $new_password;
     public $old_password;
     public $re_password;
     public $permissions;
+
+
     /**
      * {@inheritdoc}
      */
@@ -63,9 +69,42 @@ class User extends ActiveRecord implements IdentityInterface
             [['username', 'email', 'auth_key','address','language','new_password','old_password','re_password','password_reset_token','password_hash','role_performer','phone','image'], 'string', 'max' => 255],
             [['email'], 'unique'],
             [['avatar'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg',],
+            [['email','username','phone'],'required', 'on' => self::SCENARIO_INF],
+            [['new_password','old_password','re_password'],'validatePasswords', 'on' => self::SCENARIO_PSW],
         ];
     }
-     public function attributeLabels()
+    
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+
+        $scenarios[self::SCENARIO_INF] = ['email','address','username','type','birthday','language','phone','alert_email','alert_site'];
+
+        $scenarios[self::SCENARIO_PSW] = ['new_password','old_password','re_password'];
+
+        return $scenarios;
+    }
+
+    public function validatePasswords($attribute)
+    { 
+        if($this->old_password != $this->auth_key) 
+            {
+                $this->addError($attribute, Yii::t('app','Wrong old password.'));    
+            }
+        elseif($this->new_password == "" || $this->re_password == "")
+            {
+                $this->addError($attribute, Yii::t('app','"Password" and "Confirm password" cannot be blank'));
+            }
+        elseif($this->new_password != $this->re_password) 
+            {
+                $this->addError($attribute, Yii::t('app','"Password" and "Confirm password" do not match'));
+            }
+        elseif(preg_match_all('$S*(?=S{8,})(?=S*[a-z])(?=S*[A-Z])(?=S*[d])(?=S*[W])S*$', $new_password))
+            {
+                $this->addError($attribute, Yii::t('app','From 6 to 24 characters. Only latin letters, numbers and these characters: !@#$%^&amp;*()_+-=;,./?[]{}'));
+            }        
+    }
+    public function attributeLabels()
     {
         return [
             'id' => 'ID',
@@ -84,12 +123,9 @@ class User extends ActiveRecord implements IdentityInterface
             'status' => Yii::t('app','Status'),
             'created_at' => Yii::t('app','Created_at'),
             'updated_at' => Yii::t('app','Updated_at'),
-            // 'day' => Yii::t('app','Day'),
             'address' => Yii::t('app','City'),
             'role_performer'=>Yii::t('app','Access to order for the performer'),
             'permissions'=>Yii::t('app','Access to order for the performer'),
-            // 'month' => Yii::t('app','Month'),
-            // 'year' => Yii::t('app','Year'),
         ];
     }
     //Получить описание типов пользователя.
@@ -146,7 +182,9 @@ class User extends ActiveRecord implements IdentityInterface
             $this->password_hash = Yii::$app->security->generatePasswordHash($this->auth_key);
             $this->status = 10;
             $this->updated_at = time();
-            $this->created_at = time();      
+            $this->created_at = time();
+            $this->alert_site = 1;
+            $this->alert_email = 1;
         }
         else{
             $this->updated_at = time();

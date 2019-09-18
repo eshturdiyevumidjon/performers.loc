@@ -174,7 +174,7 @@ $post['type'] = isset($post['type']) ? $post['type'] : [];
      <span>4,5</span>-->
              </div> 
         <div class="btn_dor">
-          <a href="/<?=$lang?>/profile/edit-profile" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Edit Account')?></a>
+          <a href="/<?=$lang?>/profile/change-profile" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Edit Account')?></a>
             <a href="/<?=$lang?>/profile/add-autos" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Adding cars')?></a>
       </div>
         <?=$this->render('cabinet_right',['company'=>$company,'banner'=>$banner,'user'=>$user]);?>

@@ -2,6 +2,8 @@
 use yii\helpers\Html;
 use kartik\date\DatePicker;
 use yii\widgets\ActiveForm;
+$lang = Yii::$app->language;
+
 ?>
 <section class="order">
   <div class="container">
@@ -235,8 +237,8 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'comment')->textarea(['rows' => 6,'id'=>'textfield','class'=>'my_input'])->label(false) ?>
 
         <?php if (Yii::$app->user->isGuest): ?>
-            <div style="width: 30%; text-align: center;float: right; margin-right: 5%;">
-              <?=Html::a(Yii::t('app','Publish'), ['/site/signup'],['role'=>'modal-remote','class'=>'btn_red'])?>
+          <div style="width: 30%; text-align: center;float: right; margin-right: 5%;">
+              <?=Html::a(Yii::t('app','Publish'), ['/site/login'],['role'=>'modal-remote','class'=>'btn_red','id'=>'if_user_guest'])?>
             </div>
         <?php else: ?>
           <?= Html::submitButton(Yii::t('app','Publish'), ['class' => 'btn_red']) ?>
@@ -294,6 +296,9 @@ $this->registerJs(<<<JS
         }
     });
   $(document).ready(function(){
+     $("#if_user_guest").on('click',function(){
+      $.post('/$lang/task/save-session-help',$("#help_form").serialize(),function(succes){alert(succes)});
+    });
     $("[name*='need']").change(function(){
           var id = $(this).attr('name');
           if($(this).prop("checked") == true)

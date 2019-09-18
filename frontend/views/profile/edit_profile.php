@@ -15,7 +15,7 @@ $langList = Lang::getLaguagesList();
 $this->title = Yii::t('app','Edit Profile');
 $user_langs = explode(',', $user->language);
 $session = Yii::$app->session;
-
+$active = $session['active_tab'];
 $this->params['breadcrumbs'][] = $this->title;
 $company = \backend\models\AboutCompany::findOne(1);
 $lang = Yii::$app->language;
@@ -41,7 +41,9 @@ $lang = Yii::$app->language;
         <div class="tab-content">
               <div id="ff0" class="tab-pane <?=($active != 2 ) ? 'in active show' : 'fade'?>">
                 <form class="input_styles cab_st" method="post" id="form1" action="/<?=$lang?>/profile/edit-profile">
-                <?=Alert::widget()?>
+                <?php if ($active == 1): ?>
+                  <?=Alert::widget()?>
+                <?php endif ?>
                 <input type="hidden" name="id_user" value="<?=$user->id?>">
                 <label for=""><?=$user->getAttributeLabel('username')?></label>
                 <div class="form-group">
@@ -76,7 +78,11 @@ $lang = Yii::$app->language;
                 </div>
                 <label for=""><?=$user->getAttributeLabel('phone')?></label>
                 <div class="form-group">
-                  <input type="tel" value="<?=$user->phone?>" name="User[phone]">
+                  <?php echo \yii\widgets\MaskedInput::widget([
+                      'name' => 'User[phone]',
+                      'value'=>$user->phone,
+                      'mask' => '+\9\9899-999-99-99','options'=>['class'=>'my_input','placeholder'=>$user->getAttributeLabel('phone')]
+                  ]);?>
                   <p class="opac"><?=Yii::t('app','The phone is hidden from other users')?></p>
                 </div>
                 <label for="">E-mail</label>
@@ -145,6 +151,9 @@ $lang = Yii::$app->language;
                 if(isset($session['status']))
                   echo "<p class='alert alert-".$session['status']."'>".$session['message']."</p>";
                 ?>
+                <?php if ($active == 2): ?>
+                  <?=Alert::widget()?>
+                <?php endif ?>
                   <input type="hidden" name="id_user" value="<?=$user->id?>">
                 <div class="form-group">
                   <input type="text" name="User[old_password]" placeholder="<?=Yii::t('app','Old Password')?>"  value="<?=$user->old_password?>">
@@ -175,12 +184,14 @@ $lang = Yii::$app->language;
 
 <?php
 $this->registerJs(<<<JS
+  $(document).ready(function(){
     $("[id^='tech']").msDropdown();
+  });
   
     $("input").attr('autocomplete','off');
 
     $(document).ready(function(){
-      $("#w0-success-0").removeClass('fade in');
+      $("[id^='w0']").removeClass('fade in');
       var c = 2;
        $(document).on('click', '.add', function(){
         c++;

@@ -102,6 +102,42 @@ class SiteController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             $model->rememberMe = $_POST['rememberMe'];
             if($model->load($request->post()) && $model->login()){
+                if(Yii::$app->session['passenger[]'])
+                {
+                    $task = new \backend\models\Tasks();
+                    $task->scenario = \backend\models\Tasks::SCENARIO_PASSENGERS;
+                    $task->attributes = Yii::$app->session['passenger[]'];
+                    $task->user_id = Yii::$app->user->identity->id;
+                    $task->save(); 
+                    Yii::$app->session['passenger[]'] = [];
+                }
+                if(Yii::$app->session['goods[]'])
+                {
+                    $model = new \backend\models\Tasks();
+                    $model->scenario = \backend\models\Tasks::SCENARIO_GOODS;
+                    $model->attributes = Yii::$app->session['goods[]'];
+                    $model->user_id = Yii::$app->user->identity->id;
+                    $model->save(); 
+                    Yii::$app->session['goods[]'] = [];
+                }
+                if(Yii::$app->session['help[]'])
+                {
+                    $model = new \backend\models\Tasks();
+                    $model->scenario = \backend\models\Tasks::SCENARIO_HELP;
+                    $model->attributes = Yii::$app->session['help[]'];
+                    $model->user_id = Yii::$app->user->identity->id;
+                    $model->save(); 
+                    Yii::$app->session['help[]'] = [];
+                }
+                if(Yii::$app->session['vehicles[]'])
+                {
+                    $model = new \backend\models\Tasks();
+                    $model->scenario = \backend\models\Tasks::SCENARIO_VEHICLES;
+                    $model->attributes = Yii::$app->session['vehicles[]'];
+                    $model->user_id = Yii::$app->user->identity->id;
+                    $model->save(); 
+                    Yii::$app->session['vehicles[]'] = [];
+                }
                // return $this->redirect(['/profile/index']);    
                return ['forceClose'=>true,'forceReload'=>'#personal-pjax'];
                 
@@ -156,6 +192,7 @@ class SiteController extends Controller
 
     public function actionLogout()
     {
+        $this->refresh();
         Yii::$app->user->logout();
         return $this->goHome();
     }
