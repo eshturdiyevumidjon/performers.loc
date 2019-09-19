@@ -91,10 +91,6 @@ class User extends ActiveRecord implements IdentityInterface
             {
                 $this->addError($attribute, Yii::t('app','Wrong old password.'));    
             }
-        elseif($this->new_password == "" || $this->re_password == "")
-            {
-                $this->addError($attribute, Yii::t('app','"Password" and "Confirm password" cannot be blank'));
-            }
         elseif($this->new_password != $this->re_password) 
             {
                 $this->addError($attribute, Yii::t('app','"Password" and "Confirm password" do not match'));

@@ -297,7 +297,7 @@ $this->registerJs(<<<JS
     });
   $(document).ready(function(){
      $("#if_user_guest").on('click',function(){
-      $.post('/$lang/task/save-session-help',$("#help_form").serialize(),function(succes){alert(succes)});
+      $.post('/$lang/task/save-session-help',$("#help_form").serialize(),function(succes){});
     });
     $("[name*='need']").change(function(){
           var id = $(this).attr('name');

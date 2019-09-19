@@ -135,9 +135,9 @@ $lang = Yii::$app->language;
                   <?=Alert::widget()?>
                 <?php endif ?>
 
-                <?= $form->field($user, 'old_password')->textInput(['placeholder'=>Yii::t('app','Old Password'),'class'=>'my_input'])->label(false) ?>
-                <?= $form->field($user, 'new_password')->textInput(['placeholder'=>Yii::t('app','New Password'),'class'=>'my_input'])->label(false) ?>
-                <?= $form->field($user, 're_password')->textInput(['placeholder'=>Yii::t('app','Confirm password'),'class'=>'my_input'])->label(false) ?>
+                <?= $form->field($user, 'old_password')->passwordInput(['placeholder'=>Yii::t('app','Old Password'),'class'=>'my_input'])->label(false) ?>
+                <?= $form->field($user, 'new_password')->passwordInput(['placeholder'=>Yii::t('app','New Password'),'class'=>'my_input'])->label(false) ?>
+                <?= $form->field($user, 're_password')->passwordInput(['placeholder'=>Yii::t('app','Confirm password'),'class'=>'my_input'])->label(false) ?>
                 <p class="opac"><?=Yii::t('app','From 6 to 24 characters. Only latin letters, numbers and these characters: !@#$%^&amp;*()_+-=;,./?[]{}')?></p>
                 <hr>
                 <?= Html::submitButton(Yii::t('app','Save'), ['class' => 'btn_red','value'=>'change_password','name'=>'save_changes']) ?>

@@ -33,7 +33,7 @@ $lang = Yii::$app->language;
              <?= $form->field($model, 'shipping_coordinate_y')->hiddenInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input hidden otp_punkt','id'=>'shipping_address_coordinate_y'])->label(false) ?>
             <hr>
              <?= $form->field($model, 'delivery_address')->textInput(['placeholder'=>Yii::t('app','Destination'),'class'=>'my_input otp_punkt2','id'=>'delivery_address'])->label(false) ?>
-              <?= $form->field($model, 'delivery_coordinate_x')->hiddenInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input hidden otp_punkt','id'=>'delivery_address_coordinate_x'])->label(false) ?>
+             <?= $form->field($model, 'delivery_coordinate_x')->hiddenInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input hidden otp_punkt','id'=>'delivery_address_coordinate_x'])->label(false) ?>
              <?= $form->field($model, 'delivery_coordinate_y')->hiddenInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input hidden otp_punkt','id'=>'delivery_address_coordinate_y'])->label(false) ?>
             <div class="d-flex align-items-center justify-content-between tire d_mob_none" id="inform">
               <h4><?=Yii::t('app','Travel time')?>: <span id="time"></span></h4>
@@ -234,7 +234,7 @@ $this->registerJs(<<<JS
     }
     $(document).ready(function(){
     $("#if_user_guest").on('click',function(){
-      $.post('/$lang/task/save-session-goods',$("#goods_form").serialize(),function(succes){alert(succes)});
+      $.post('/$lang/task/save-session-goods',$("#goods_form").serialize(),function(succes){});
     });
     $('#bww5').change(function(){
       if($(this).prop("checked") == true)

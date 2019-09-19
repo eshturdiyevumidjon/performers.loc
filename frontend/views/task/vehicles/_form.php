@@ -3,7 +3,6 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use kartik\date\DatePicker;
 use yii\widgets\ActiveForm;
-use kartik\select2\Select2;
 $lang = Yii::$app->language;
 
 ?>
@@ -60,7 +59,7 @@ $lang = Yii::$app->language;
                              'autoclose'=>true
                          ]
                      ])->hint('<p class="opac d_mob_none">'.Yii::t('app',"Start date and time when the shipment is ready to ship").'</p>')->label(false);?>
-             <?= $form->field($model, 'date_close')->widget(DatePicker::classname(), [
+              <?= $form->field($model, 'date_close')->widget(DatePicker::classname(), [
                         'options'=>[
                           'style'=>'cursor:pointer;',
                           'class'=>'my_input other_date_inp',
@@ -141,7 +140,7 @@ $lang = Yii::$app->language;
 $this->registerJs(<<<JS
   $(document).ready(function(){
       $("#if_user_guest").on('click',function(){
-      $.post('/$lang/task/save-session-vehicles',$("vehicles_form").serialize(),function(succes){alert(succes)});
+      $.post('/$lang/task/save-session-vehicles',$("#vehicles_form").serialize(),function(succes){});
     });
     });
  
