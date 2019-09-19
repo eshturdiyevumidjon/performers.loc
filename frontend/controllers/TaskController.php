@@ -204,7 +204,7 @@ class TaskController extends Controller
         $model->count_avtokreslo = $_POST['count_avtokreslo'];
         $model->count_buster = $_POST['count_buster'];
 
-        if($model->load(Yii::$app->request->post()))
+        if($model->load(Yii::$app->request->post()) && $model->save())
         {
             return $this->redirect(['view','id'=>$model->id]);
         } else {

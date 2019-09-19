@@ -7,8 +7,8 @@
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
     mapTypeControl: false,
-    center: {lat: 41.311081, lng: 69.240562},
-    zoom: 13
+    center: {lat: 55.52, lng: 13.9},
+    zoom: 3
   });
 
   new AutocompleteDirectionsHandler(map);

@@ -77,7 +77,7 @@ class ProfileController extends Controller
             $all_tasks = \backend\models\Tasks::find()->where(['type'=>explode(',',$user->role_performer)]);
             $countQuery2 = clone $all_tasks;
             $pages2 = new Pagination(['totalCount' => $countQuery2->count()]);
-            $pages->setPageSize(10);
+            $pages2->setPageSize(10);
             $all_tasks = $all_tasks->offset($pages2->offset)
                 ->limit($pages2->limit)
                 ->all();
