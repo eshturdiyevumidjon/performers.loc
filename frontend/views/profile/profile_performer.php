@@ -148,6 +148,9 @@ $post['type'] = isset($post['type']) ? $post['type'] : [];
           </ul> -->
         </div>
         <div id="ff0" class="tab-pane fade">
+         
+           <?=$this->render('filter',['all_tasks'=>$all_active_tasks,'lang'=>$lang])?>
+           <?=\yii\widgets\LinkPager::widget(['pagination'=>$pages2])?>
         </div>
       </div>
     </div>

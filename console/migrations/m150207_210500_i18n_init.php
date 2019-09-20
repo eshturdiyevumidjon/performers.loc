@@ -43,6 +43,7 @@ class m150207_210500_i18n_init extends Migration
         $this->createIndex('idx_message_language', '{{%message}}', 'language');
 
         $translations = [
+                'The requested page does not exist.'=>'Запрашиваемая страница не существует.',
                 'On account'=>'На счете',
                 'Service charge'=>'Оплата за услугу',
                 'It\'s not hard. There are two steps in total: a questionnaire and a subscription to tasks. It will take about 5 minutes.'=>'Это не сложно. Всего предстоит два шага: анкета и подписка на задания. Всё займёт примерно 5 минут.',

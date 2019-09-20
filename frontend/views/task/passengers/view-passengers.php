@@ -3,9 +3,11 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Tasks */
 $lang = Yii::$app->language;
-
+use yii\widgets\Pjax;
 ?>
+
 <section class="inner">   
+<?php Pjax::begin(['enablePushState' => false,'id' => 'crud-datatable-pjax'])?>
   <div class="container">
     <nav aria-label="breadcrumb" class="breadcrumb_nav">
       <ol class="breadcrumb">   
@@ -16,7 +18,26 @@ $lang = Yii::$app->language;
     </nav>
     <div class="d-flex inner_main">
       <div class="inner_left">
-        <!-- <h2>Мои чаты</h2>             -->
+         <h2 id="chat" style="cursor:pointer;">Мои чаты</h2>
+          <?php if ($model->performer_id != null): ?>
+            <div class="chat_inner">
+              <div class="form">
+                <div style="overflow-y: auto;overflow-x: hidden; height: 400px; " id="messages">
+                 <?=$this->render('../request/messages',['messages'=>$messages])?>
+                </div>
+                <form action="/<?=$lang?>/task/send-message" enctype="multipart/form-data" method="post" class="btm_chat" id="myForm">
+                  <div class="input_styles">
+                    <input type="text" id="message" placeholder="Написать">
+                    <input type="hidden" id="from" value="<?=$model->user_id?>">
+                    <input type="hidden" id="to" value="<?=$model->performer_id?>">
+                    <input type="file" class="file_input" id="inputFile">
+                    <label for="inputFile"><img src="/images/file_chat.svg" alt=""></label>
+                  </div>
+                  <button type="button" name="submit_send_message" id="submit_send_message" class="btn_red"><img src="/images/arrow_chat.svg" alt=""></button>
+                </form>
+              </div>
+            </div>
+          <?php endif ?>           
           <?= $this->render('../request/inner_left',['user'=>$user,'banner'=>$banner]);?>
       </div>
       <div class="inner_right">
@@ -148,7 +169,12 @@ $lang = Yii::$app->language;
           </div>
         </div>
         <div class="pay_inner">
-          <p><?=Yii::t('app','Paid')?>: <b>30%</b><!-- <span>2 347 457 руб.</span> --></p>
+          <?php if ($active_user->type == 4): ?>
+               <p><?=Yii::t('app','Minimum payment')?>: <b>30%</b></p>
+          <?php else: ?>
+               <p><?=Yii::t('app','Paid')?>: <b>30%</b></p>
+          <?php endif ?>
+         
           <a href="/site/cancellation-policy" target="_blank" class="forget_pass"><?=Yii::t('app','Cancellation Terms')?></a>
         </div>
         <?php if ($active_user->type == 3): ?>
@@ -165,7 +191,6 @@ $lang = Yii::$app->language;
         <?php endif ?>
          <?php if ($active_user->type ==4): ?>
           <div class="text_right_ent">
-
           <?=\yii\helpers\Html::a('<span class="aft_back"></span>'.Yii::t('app','Order cancellation'), ['delete-task','id'=>$model->id],
             ['role'=>'modal-remote', 'class'=>'enter_to_site','title'=>Yii::t('app','Delete'), 
                                     'data-confirm'=>false, 'data-method'=>false, 
@@ -182,7 +207,9 @@ $lang = Yii::$app->language;
     </div>
   </div>
 </section>
+
 <?= $this->render('../request/map2',['model'=>$model])?>
+
 <?php
 $this->registerJs(<<<JS
   $(document).ready(function(){
@@ -190,7 +217,40 @@ $this->registerJs(<<<JS
         $('#count_passengers').toggle(300);
       })
   });
+  
 JS
 );
 ?>
-
+<?php $this->registerJs(<<<JS
+  $(document).ready(function(){
+    $('#chat').on('click',function(){
+        $('.chat_inner').toggle(500);
+      });
+  $('#submit_send_message').on('click',function(){ 
+     var data = new FormData() ; 
+     data.append('file', $( '#inputFile' )[0].files[0]) ; 
+     data.append('text', $( '#message' ).val()) ; 
+     data.append('from', $( '#from' ).val()) ; 
+     data.append('to', $( '#to' ).val()) ; 
+     $.ajax({
+     url: '/$lang/task/send-message',
+     type: 'POST',
+     data: data,
+     processData: false,
+     contentType: false,
+      beforeSend: function(){
+       
+      },
+      success: function(data){ 
+        $("#messages").html(data);
+        $("#myForm")[0].reset();
+        // location.reload(true);
+      }
+     });
+    return false;
+  });
+    });
+JS
+);
+?>
+<?php Pjax::end()?>

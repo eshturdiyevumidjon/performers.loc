@@ -7,8 +7,9 @@ $lang = Yii::$app->language;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Tasks */
 ?>
-<?php Pjax::begin(['enablePushState' => false,'id' => 'crud-datatable-pjax'])?>
   <section class="inner">   
+<?php Pjax::begin(['enablePushState' => false,'id' => 'crud-datatable-pjax'])?>
+    
     <div class="container">
       <nav aria-label="breadcrumb" class="breadcrumb_nav">
         <ol class="breadcrumb">   
@@ -122,7 +123,7 @@ $lang = Yii::$app->language;
              <div class="row">
               <?php if ($model->shipping_house_type): ?>
                 <div class="col-md-3">
-                    <span><?=$model->shipping_house_type?></span>
+                    <span><?=Yii::t('app','Apartment')?>: <?=$model->shipping_house_type?></span>
                 </div>
               <?php endif ?>
               <?php if ($model->shipping_house_floor): ?>
@@ -140,7 +141,7 @@ $lang = Yii::$app->language;
             <div class="row">
               <?php if ($model->delivery_house_type): ?>
                 <div class="col-md-3">
-                    <span><?=$model->delivery_house_type?></span>
+                    <span><?=Yii::t('app','Apartment')?>: <?=$model->delivery_house_type?></span>
                 </div>
               <?php endif ?>
               <?php if ($model->delivery_house_floor): ?>
@@ -190,7 +191,11 @@ $lang = Yii::$app->language;
             </div>
           </div>
           <div class="pay_inner">
-              <p><?=Yii::t('app','Paid')?>: <b>30%</b><!-- <span>2 347 457 руб.</span> --></p>
+             <?php if ($active_user->type == 4): ?>
+                   <p><?=Yii::t('app','Minimum payment')?>: <b>30%</b></p>
+              <?php else: ?>
+                   <p><?=Yii::t('app','Paid')?>: <b>30%</b></p>
+              <?php endif ?>
             <a href="/site/cancellation-policy" target="_blank" class="forget_pass"><?=Yii::t('app','Cancellation Terms')?></a>
           </div>
           <?php if ($active_user->type == 3): ?>

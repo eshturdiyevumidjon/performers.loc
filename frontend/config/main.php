@@ -11,6 +11,8 @@ return [
     'basePath' => dirname(__DIR__),
     'name' => 'iTake',
     'bootstrap' => ['log'],
+    'timeZone' => 'Asia/Tashkent',
+    
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'mailer' => [ 

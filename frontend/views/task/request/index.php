@@ -1,12 +1,7 @@
-<?php 
-use yii\widgets\Pjax;
-?>
-<?php Pjax::begin(['enablePushState' => false,'id' => 'crud-datatable-pjax'])?>
 <?php if(count($requests)>0): ?>
 <h2>Заявка</h2>
 <?php endif;?>
 <?php foreach ($requests as $key => $value): ?>
-
   <div class="item_to_city" style="margin-bottom: 3px;">
     <div class="item_to_city_top">
       <div class="user_inner">
@@ -88,4 +83,3 @@ use yii\widgets\Pjax;
     </div>
 </div>
 <?php endforeach ?>
-<?php Pjax::end()?>

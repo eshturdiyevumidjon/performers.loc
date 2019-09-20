@@ -214,7 +214,6 @@ class TaskController extends Controller
                 'post'=>$_POST
             ]);
         }
-       
     }
 
     public function actionSaveSessionPassenger()
@@ -246,7 +245,7 @@ class TaskController extends Controller
         $model->loading_required_status = isset($_POST['loading_required_status']) ? 1 : 0;
         $model->alert_email = isset($_POST['alert_email']) ? 1 : 0;
         $model->lift = isset($_POST['lift']) ? 1 : 0;
-        if(isset($_POST['tip_gruz']))
+        if(isset($_POST['tip_gruz']) && $_POST['tip_gruz'] != [])
             $model->classification = implode(',',$_POST['tip_gruz']);
 
         if($model->load(Yii::$app->request->post()) && $model->save())
@@ -269,7 +268,6 @@ class TaskController extends Controller
 
             return $this->redirect(['view','id'=>$model->id]);
         } else {
-            $model->alert_email = 1;
             return $this->render('goods/create-goods', [
                 'model' => $model,
                 'post'=>$_POST
@@ -463,7 +461,11 @@ class TaskController extends Controller
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true];
+            Yii::$app->session->setFlash('warning', Yii::t('app','Complete successfully'));
+            return [
+                    'forceClose'=>true,
+                    'forceReload'=>'#crud-datatable-pjax'
+                ];
         }else{
             /*
             *   Process for non-ajax request
@@ -477,10 +479,16 @@ class TaskController extends Controller
         if (($model = Tasks::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            return $this->redirect(['/profile/index']);
         }
     
     }
+    public function actionDownloadFile($id)
+    {
+        $model = \backend\models\Chat::findOne($id);
+        return \Yii::$app->response->sendFile(\Yii::getAlias('@backend').'/web/uploads/chat/'.$model->file);
+    }
+
     public function actionCreateRequest($id)
     {
         $request = Yii::$app->request;
@@ -549,7 +557,7 @@ class TaskController extends Controller
                     ->compose()
                     ->setFrom(['itake1110@gmail.com' => Yii::$app->name . ' robot'])
                     ->setTo($ispolnitel->email)
-                    ->setSubject('New Order From' . Yii::$app->name)
+                    ->setSubject('New Order From ' . Yii::$app->name)
                     ->setHtmlBody("<p>Dear ".$ispolnitel->username.". You have new Order From ".$zakazchik->username."</p>")
                     ->send();
 

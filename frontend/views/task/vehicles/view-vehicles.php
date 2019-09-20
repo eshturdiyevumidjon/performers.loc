@@ -1,11 +1,14 @@
 <?php
 
 use yii\widgets\DetailView;
-
+use yii\widgets\Pjax;
+$lang = Yii::$app->language;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Tasks */
 ?>
-<section class="inner">   
+
+<section class="inner">  
+<?php Pjax::begin(['enablePushState' => false,'id' => 'crud-datatable-pjax'])?>
       <div class="container">
         <nav aria-label="breadcrumb" class="breadcrumb_nav">
           <ol class="breadcrumb">   
@@ -16,7 +19,26 @@ use yii\widgets\DetailView;
         </nav>
         <div class="d-flex inner_main">
           <div class="inner_left">
-            <!-- <h2>Мои чаты</h2>             -->
+          <h2 id="chat" style="cursor:pointer;">Мои чаты</h2>
+          <?php if ($model->performer_id != null): ?>
+            <div class="chat_inner">
+              <div class="form">
+                <div style="overflow-y: auto;overflow-x: hidden; height: 400px; " id="messages">
+                 <?=$this->render('../request/messages',['messages'=>$messages])?>
+                </div>
+                <form action="/<?=$lang?>/task/send-message" enctype="multipart/form-data" method="post" class="btm_chat" id="myForm">
+                  <div class="input_styles">
+                    <input type="text" id="message" placeholder="Написать">
+                    <input type="hidden" id="from" value="<?=Yii::$app->user->identity->id?>">
+                    <input type="hidden" id="to" value="<?=($active_user->type == 4) ? $model->performer_id : $model->user_id?>">
+                    <input type="file" class="file_input" id="inputFile">
+                    <label for="inputFile"><img src="/images/file_chat.svg" alt=""></label>
+                  </div>
+                  <button type="button" name="submit_send_message" id="submit_send_message" class="btn_red"><img src="/images/arrow_chat.svg" alt=""></button>
+                </form>
+              </div>
+            </div>
+          <?php endif ?>             
           <?= $this->render('../request/inner_left',['user'=>$user,'banner'=>$banner]);?>
           </div>
          <div class="inner_right">
@@ -62,20 +84,25 @@ use yii\widgets\DetailView;
             <?=$model->getTypeIconSvg(2)?>
             <span><?=$model->getType()[2]?></span>
         </div>
-            
-            <div class="terra fourt">
-              <p class="retect"><?=Yii::t('app','Additional options')?></p>
-              <div class="row_retact">
-                <div>
-                    <span><img src="/images/check.svg" alt=""><?=Yii::t('app','Model and brand of car')?>: <?=$model->getModel()." ".$model->getMark()?></span>
-                </div>
-                <?php if ($model->car_on_the_go == 1): ?>
-                <div>
-                    <span><img src="/images/check.svg" alt=""><?=Yii::t('app','Car On The Go')?></span>
-                </div>
-                <?php endif ?>
-              </div>
-            </div>
+            <?php if ($model->car_on_the_go == 1 ||($model->car_model && $model->car_mark)): ?>
+                 <div class="terra fourt">
+                    <p class="retect"><?=Yii::t('app','Additional options')?></p>
+                    <div class="row_retact">
+                      <?php if ($model->car_model && $model->car_mark): ?>
+                         <div>
+                              <span><img src="/images/check.svg" alt=""><?=Yii::t('app','Model and brand of car')?>: <?=$model->getModel()." ".$model->getMark()?></span>
+                          </div>
+                      <?php endif ?>
+                     
+                      <?php if ($model->car_on_the_go == 1): ?>
+                      <div>
+                          <span><img src="/images/check.svg" alt=""><?=Yii::t('app','Car On The Go')?></span>
+                      </div>
+                      <?php endif ?>
+                    </div>
+                  </div>
+            <?php endif ?>
+         
             <div class="photos_inn">
               <p><?=Yii::t('app','Image')?></p>
               <div class="d-flex flex-wrap">
@@ -112,7 +139,11 @@ use yii\widgets\DetailView;
               </div>
             </div>
             <div class="pay_inner">
-              <p><?=Yii::t('app','Paid')?>: <b>30%</b><!-- <span>2 347 457 руб.</span> --></p>
+              <?php if ($active_user->type == 4): ?>
+                   <p><?=Yii::t('app','Minimum payment')?>: <b>30%</b></p>
+              <?php else: ?>
+                   <p><?=Yii::t('app','Paid')?>: <b>30%</b></p>
+              <?php endif ?>
           <a href="/site/cancellation-policy" target="_blank" class="forget_pass"><?=Yii::t('app','Cancellation Terms')?></a>
             </div>
             <?php if ($active_user->type == 3): ?>
@@ -144,4 +175,38 @@ use yii\widgets\DetailView;
       </div>
     </section>
 <?= $this->render('../request/map2',['model'=>$model])?>
-  
+<?php Pjax::end()?>
+<?php $this->registerJs(<<<JS
+  $(document).ready(function(){
+    $('#chat').on('click',function(){
+        $('.chat_inner').toggle(500);
+      });
+
+
+  $('#submit_send_message').on('click',function(){ 
+     var data = new FormData() ; 
+     data.append('file', $( '#inputFile' )[0].files[0]) ; 
+     data.append('text', $( '#message' ).val()) ; 
+     data.append('from', $( '#from' ).val()) ; 
+     data.append('to', $( '#to' ).val()) ; 
+     $.ajax({
+     url: '/$lang/task/send-message',
+     type: 'POST',
+     data: data,
+     processData: false,
+     contentType: false,
+      beforeSend: function(){
+       
+      },
+      success: function(data){ 
+        $("#messages").html(data);
+        $("#myForm")[0].reset();
+        // location.reload(true);
+      }
+     });
+    return false;
+  });
+    });
+JS
+);
+?>

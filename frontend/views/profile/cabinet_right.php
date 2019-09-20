@@ -43,8 +43,6 @@
   <p class="povis"><?=Yii::t('app','Increase user confidence in yourself - link your social network accounts to your iTake profile. We will not disclose your contact information.')?></p>
 </div>
 <?php if ($banner): ?>
-  <div class="banner_bl">
     <img style="width: 100%;" src="/admin/uploads/banners/<?= $banner->image?>" alt="">
-  </div>
 <?php endif ?>
 

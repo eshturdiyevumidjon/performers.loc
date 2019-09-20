@@ -1,29 +1,21 @@
 <?php
-
-
 use yii\helpers\Html;
-
 $this->title = $name;
 ?>
-<section class="contact">
-  <div class="container">
-
-
+<section class="contact" style="height: 500px; padding-top: 150px; justify-content: center;">
+  <div class="container" >
     <?php 
     if(Yii::$app->session->hasFlash('success'))
         echo "string";
     ?>
     <h1><?= Html::encode($this->title) ?></h1>
 
-
     <div class="alert alert-danger">
         <?= nl2br(Html::encode($message)) ?>
         <?=Yii::t('app',
-            'The above error occurred while the Web server was processing your request.
-            Please contact us if you think this is a server error. Thank you.'
+            'The above error occurred while the Web server was processing your request. Please contact us if you think this is a server error. Thank you.'
         )?>
     </div>
-
     <div class="error-actions">                                
         <div class="row">
             <div class="col-md-6">
@@ -34,12 +26,7 @@ $this->title = $name;
             </div>
         </div>                                                             
     </div>
-
-    <p>
-        The above error occurred while the Web server was processing your request.
-    </p>
-    <p>
-        Please contact us if you think this is a server error. Thank you.
-    </p>
+    <br>
+    <br>
 </div>
 </section>

@@ -1,7 +1,11 @@
 <?php
-
+use yii\widgets\Pjax;
+$lang = Yii::$app->language;
 ?>
+
  <section class="inner">   
+<?php Pjax::begin(['enablePushState' => false,'id' => 'crud-datatable-pjax'])?>
+
   <div class="container">
     <nav aria-label="breadcrumb" class="breadcrumb_nav">
       <ol class="breadcrumb">   
@@ -12,7 +16,26 @@
     </nav>
     <div class="d-flex inner_main">
       <div class="inner_left">
-        <!-- <h2>Мои чаты</h2>             -->
+         <h2 id="chat" style="cursor:pointer;">Мои чаты</h2>
+          <?php if ($model->performer_id != null): ?>
+            <div class="chat_inner">
+              <div class="form">
+                <div style="overflow-y: auto;overflow-x: hidden; height: 400px; " id="messages">
+                 <?=$this->render('../request/messages',['messages'=>$messages])?>
+                </div>
+                <form action="/<?=$lang?>/task/send-message" enctype="multipart/form-data" method="post" class="btm_chat" id="myForm">
+                  <div class="input_styles">
+                    <input type="text" id="message" placeholder="Написать">
+                    <input type="hidden" id="from" value="<?=$model->user_id?>">
+                    <input type="hidden" id="to" value="<?=$model->performer_id?>">
+                    <input type="file" class="file_input" id="inputFile">
+                    <label for="inputFile"><img src="/images/file_chat.svg" alt=""></label>
+                  </div>
+                  <button type="button" name="submit_send_message" id="submit_send_message" class="btn_red"><img src="/images/arrow_chat.svg" alt=""></button>
+                </form>
+              </div>
+            </div>
+          <?php endif ?>     
           <?= $this->render('../request/inner_left',['user'=>$user,'banner'=>$banner]);?>
       </div>
       <div class="inner_right">
@@ -71,33 +94,45 @@
                   <span><img src="/images/check.svg" alt=""><?=Yii::t('app','Lift')?>: <?=($model->lift == 1) ? Yii::t('app','Yes') : Yii::t('app','No')?></span>
               </div>
             <?php endif ?>
-            
             <?php 
               $variable = explode(',', $model->classification);
               foreach ($variable as $value): ?>
-              <div>
-                <span><img src="/images/check.svg" alt=""><?=$model->getTypeOfTheGoods($value)?></span>
-              </div>
+              <?php if ($value): ?>
+                  <div>
+                    <span><img src="/images/check.svg" alt=""><?=$model->getTypeOfTheGoods($value)?></span>
+                  </div>
+              <?php endif ?>
             <?php endforeach ?>
           </div>
         </div>
-        <div class="terra">
-          <p class="retect"><?=Yii::t('app','Cargo Parameters')?></p>
-          <div class="row_retact">
-            <div>
-                <span><?=$model->getAttributeLabel('weight')." : ".$model->weight?></span>
-            </div>
-            <div>
-                <span><?=$model->getAttributeLabel('length')." : ".$model->width?></span>
-            </div>
-            <div>
-                <span><?=$model->getAttributeLabel('length')." : ".$model->length?></span>
-            </div>
-            <div>
-                <span><?=$model->getAttributeLabel('height')." : ".$model->height?></span>
-            </div>
+        <?php if ($model->weight || $model->width || $model->length || $model->height): ?>
+             <div class="terra">
+                <p class="retect"><?=Yii::t('app','Cargo Parameters')?></p>
+                <div class="row_retact">
+                  <?php if ($model->weight): ?>
+                    <div>
+                        <span><?=$model->getAttributeLabel('weight')." : ".$model->weight?></span>
+                    </div>
+                  <?php endif ?>
+                  <?php if ($model->width): ?>
+                      <div>
+                        <span><?=$model->getAttributeLabel('length')." : ".$model->width?></span>
+                    </div>
+                  <?php endif ?>
+                  <?php if ($model->length): ?>
+                     <div>
+                        <span><?=$model->getAttributeLabel('length')." : ".$model->length?></span>
+                    </div>
+                  <?php endif ?>
+                  <?php if ($model->height): ?>
+                     <div>
+                        <span><?=$model->getAttributeLabel('height')." : ".$model->height?></span>
+                    </div>
+                  <?php endif ?>
           </div>
         </div>
+        <?php endif ?>
+     
         <div class="photos_inn">
           <p><?=Yii::t('app','Image')?></p>
           <div class="d-flex flex-wrap">
@@ -145,7 +180,7 @@
           <div class="text_right_ent">
            <?php if ($active_user->isHaveRequest($model->id)): ?>
                   
-          <?php else: ?>
+           <?php else: ?>
              <?=\yii\helpers\Html::a('<span class="aft_back"></span>'.Yii::t('app','Leave a request'), ['create-request','id'=>$model->id],
             ['role'=>'modal-remote', 'class'=>'enter_to_site'])?>
           <?php endif ?>
@@ -172,3 +207,39 @@
 </section>
     
 <?= $this->render('../request/map2',['model'=>$model])?>
+<?php Pjax::end()?>
+
+<?php $this->registerJs(<<<JS
+  $(document).ready(function(){
+    $('#chat').on('click',function(){
+        $('.chat_inner').toggle(500);
+      });
+
+
+  $('#submit_send_message').on('click',function(){ 
+     var data = new FormData() ; 
+     data.append('file', $( '#inputFile' )[0].files[0]) ; 
+     data.append('text', $( '#message' ).val()) ; 
+     data.append('from', $( '#from' ).val()) ; 
+     data.append('to', $( '#to' ).val()) ; 
+     $.ajax({
+     url: '/$lang/task/send-message',
+     type: 'POST',
+     data: data,
+     processData: false,
+     contentType: false,
+      beforeSend: function(){
+       
+      },
+      success: function(data){ 
+        $("#messages").html(data);
+        $("#myForm")[0].reset();
+        // location.reload(true);
+      }
+     });
+    return false;
+  });
+    });
+JS
+);
+?>

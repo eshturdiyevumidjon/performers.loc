@@ -74,14 +74,24 @@ class ProfileController extends Controller
         $banner = \backend\models\Banners::findOne(1);
 
         if($user->type == 3){
-            $all_tasks = \backend\models\Tasks::find()->where(['type'=>explode(',',$user->role_performer)]);
+            $all_tasks = \backend\models\Tasks::find()->where(['type'=>explode(',',$user->role_performer),'performer_id'=>null]);
+
+            $my_active_tasks = \backend\models\Tasks::find()->where(['performer_id'=>$user->id]);
+            $countQuery3 = clone $my_active_tasks;
+            $pages3 = new Pagination(['totalCount' => $countQuery3->count()]);
+            $pages3->setPageSize(10);
+            $all_active_tasks = $my_active_tasks->offset($pages3->offset)
+                ->limit($pages3->limit)
+                ->all();
+
             $countQuery2 = clone $all_tasks;
             $pages2 = new Pagination(['totalCount' => $countQuery2->count()]);
             $pages2->setPageSize(10);
             $all_tasks = $all_tasks->offset($pages2->offset)
                 ->limit($pages2->limit)
                 ->all();
-            return $this->render('profile_performer',['user' => $user,'company'=>$company,'all_tasks'=>$all_tasks,'banner'=>$banner,'pages' => $pages2,'post'=>$post]);
+
+            return $this->render('profile_performer',['user' => $user,'company'=>$company,'all_tasks'=>$all_tasks,'banner'=>$banner,'pages' => $pages2,'post'=>$post,'all_active_tasks'=>$all_active_tasks,'pages2' => $pages3]);
         }
 
         if($user->type == 4){
@@ -113,39 +123,59 @@ class ProfileController extends Controller
         $company = \backend\models\AboutCompany::findOne(1);
         $banner = \backend\models\Banners::findOne(1);
 
-        $all_tasks = \backend\models\Tasks::find();
+        $all_tasks = \backend\models\Tasks::find()->where(['performer_id'=>null]);
+
+
+        $my_active_tasks = \backend\models\Tasks::find()->where(['performer_id'=>$user->id]);
+        $countQuery3 = clone $my_active_tasks;
+        $pages3 = new Pagination(['totalCount' => $countQuery3->count()]);
+        $pages3->setPageSize(10);
+        $all_active_tasks = $my_active_tasks->offset($pages3->offset)
+            ->limit($pages3->limit)
+            ->all();
 
         $dataProvider = new ActiveDataProvider([
                'query' => $all_tasks,
         ]);
 
-            $arr = \backend\models\Tasks::find()->asArray()->all();
-            $price = ArrayHelper::getColumn($arr, 'offer_your_price');
-            $date = ArrayHelper::getColumn($arr, 'date_begin');
             $type = ($_POST['type']) ? $_POST['type'] : explode(',',$user->role_performer);
-            $cost_from = ($_POST['cost_from']) ? $_POST['cost_from'] : min($price);
-            $cost_to = ($_POST['cost_to']) ? $_POST['cost_to'] : max($price);
-            $data_from = ($_POST['data_from']) ? $_POST['data_from'] : min($date);
-            $data_to = ($_POST['data_to']) ? $_POST['data_to'] : max($date);
+            $cost_from = ($_POST['cost_from']) ? $_POST['cost_from'] : "";
+            $cost_to = ($_POST['cost_to']) ? $_POST['cost_to'] : "";
+            $data_from = ($_POST['data_from']) ? $_POST['data_from'] : "";
+            $data_to = ($_POST['data_to']) ? $_POST['data_to'] : "";
             $adress = $_POST['address'];
                 
             $all_tasks->andWhere(['type'=>$type]);
-            $data_from=Yii::$app->formatter->asDate($data_from, 'php:Y-m-d H:i'); 
-            $data_to=Yii::$app->formatter->asDate($data_to, 'php:Y-m-d H:i'); 
-            $all_tasks->andWhere(['between', 'date_begin', $data_from, $data_to]);
                        
-            if ($cost_to && $cost_from) {
+            if ($cost_to != "" && $cost_from != "") {
                 // die("bir");
-                $all_tasks->andWhere(['or','offer_your_price'=>'NULL',['between', 'offer_your_price', $cost_from, $cost_to]]);
+                $all_tasks->andWhere(['between', 'offer_your_price', $cost_from, $cost_to]);
             }
-            elseif($cost_to || $cost_from){
+            elseif($cost_to != "" || $cost_from != ""){
                 if($cost_to)
                 {
-                    $all_tasks->andWhere(['or','offer_your_price'=>$cost_to,['>', 'offer_your_price', $cost_to]]);
+                    $all_tasks->andWhere(['<=', 'offer_your_price', $cost_to]);
                 }
                 else{
+                    $all_tasks->andWhere(['>=', 'offer_your_price', $cost_from]);
+                }
+            }
 
-                    $all_tasks->andWhere(['<=', 'offer_your_price', $cost_from]);
+            if ($data_to != "" && $data_from != "") {
+                $data_from=Yii::$app->formatter->asDate($data_from, 'php:Y-m-d H:i'); 
+                $data_to=Yii::$app->formatter->asDate($data_to, 'php:Y-m-d H:i'); 
+                // die("bir");
+                $all_tasks->andWhere(['between', 'date_begin', $data_from, $data_to]);
+            }
+            elseif($data_to != "" || $data_from != ""){
+                if($data_to)
+                {
+                    $data_to=Yii::$app->formatter->asDate($data_to, 'php:Y-m-d H:i'); 
+                    $all_tasks->andWhere(['<=', 'date_begin', $data_to]);
+                }
+                else{
+                    $data_from=Yii::$app->formatter->asDate($data_from, 'php:Y-m-d H:i'); 
+                    $all_tasks->andWhere(['>=', 'date_begin', $data_from]);
                 }
             }
 
@@ -154,20 +184,13 @@ class ProfileController extends Controller
                     $all_tasks->andWhere(['like', 'shipping_address', $adress]);
             }
 
-            // print_r($date);
-           
-            // echo "<pre>";
-            // print_r($date);
-            // echo "<br />";
-            // echo $data_from."  -  ".$data_to;
-            // print_r($all_tasks->all());die;
             $count = $all_tasks->count();      
             $countQuery2 = clone $all_tasks;
-            $pages2 = new Pagination(['totalCount' => $countQuery2->count(),'pageSize'=>3]);
+            $pages2 = new Pagination(['totalCount' => $countQuery2->count(),'pageSize'=>10]);
             $all_tasks = $all_tasks->offset($pages2->offset)
                 ->limit($pages2->limit)
                 ->all();
-            return $this->render('profile_performer',['user' => $user,'company'=>$company,'all_tasks'=>$all_tasks,'banner'=>$banner,'pages' => $pages2,'post'=>$_POST]);
+            return $this->render('profile_performer',['user' => $user,'company'=>$company,'all_tasks'=>$all_tasks,'banner'=>$banner,'pages' => $pages2,'post'=>$_POST,'all_active_tasks'=>$all_active_tasks,'pages2' => $pages3]);
     }
 
     public function actionChangeProfile()
