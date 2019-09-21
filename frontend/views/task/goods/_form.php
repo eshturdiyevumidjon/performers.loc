@@ -51,7 +51,7 @@ $lang = Yii::$app->language;
                              'autoclose'=>true
                          ]
                      ])->hint('<p class="opac d_mob_none">'.Yii::t('app',"Start date and time when the shipment is ready to ship").'</p>')->label(false);?>
-             <?= $form->field($model, 'date_close')->widget(DatePicker::classname(), [
+              <?= $form->field($model, 'date_close')->widget(DatePicker::classname(), [
                         'options'=>[
                           'class'=>'my_input other_date_inp',
                           'style'=>'cursor:pointer;',
@@ -180,7 +180,7 @@ $lang = Yii::$app->language;
         </div>
           <?= $form->field($model, 'comment')->textarea(['rows' => 6,'id'=>'textfield','class'=>'my_input'])->label(false) ?>
           <?php if (Yii::$app->user->isGuest): ?>
-           <div style="width: 30%; text-align: center;float: right; margin-right: 5%;">
+           <div>
               <?=Html::a(Yii::t('app','Publish'), ['/site/login'],['role'=>'modal-remote','class'=>'btn_red','id'=>'if_user_guest'])?>
             </div>
           <?php else: ?>

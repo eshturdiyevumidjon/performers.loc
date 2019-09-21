@@ -89,23 +89,6 @@ class Request extends \yii\db\ActiveRecord
         }
     }
 
-    public static function find()
-    {
-        if(Yii::$app->user->isGuest == false)
-        {
-            if(Yii::$app->user->identity->type === 3)
-            {
-                $userId = Yii::$app->user->identity->id;
-            }
-            else $userId = null;
-        } 
-        else $userId = null;
-
-        return new AppActiveQuery(get_called_class(), [
-           'companyId' => $userId,
-        ]);
-    }
-
     public function getMarkList()
     {
         $arr = \backend\models\Transports::find()->asArray()->all();

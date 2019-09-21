@@ -19,17 +19,17 @@ use yii\widgets\Pjax;
     <div class="d-flex inner_main">
       <div class="inner_left">
          <h2 id="chat" style="cursor:pointer;">Мои чаты</h2>
-          <?php if ($model->performer_id != null): ?>
+          <?php if ($model->performer_id != null && (($active_user->type == 3 && $active_user->id == $model->performer_id) ||($active_user->type == 4 && $active_user->id == $model->user_id))): ?>
             <div class="chat_inner">
               <div class="form">
                 <div style="overflow-y: auto;overflow-x: hidden; height: 400px; " id="messages">
                  <?=$this->render('../request/messages',['messages'=>$messages])?>
                 </div>
                 <form action="/<?=$lang?>/task/send-message" enctype="multipart/form-data" method="post" class="btm_chat" id="myForm">
-                  <div class="input_styles">
+                 <div class="input_styles">
                     <input type="text" id="message" placeholder="Написать">
-                    <input type="hidden" id="from" value="<?=$model->user_id?>">
-                    <input type="hidden" id="to" value="<?=$model->performer_id?>">
+                    <input type="hidden" id="from" value="<?=Yii::$app->user->identity->id?>">
+                    <input type="hidden" id="to" value="<?=($active_user->type == 4) ? $model->performer_id : $model->user_id?>">
                     <input type="file" class="file_input" id="inputFile">
                     <label for="inputFile"><img src="/images/file_chat.svg" alt=""></label>
                   </div>
@@ -212,6 +212,34 @@ use yii\widgets\Pjax;
 
 <?php
 $this->registerJs(<<<JS
+    $(document).keypress(function(event){
+  
+  var keycode = (event.keyCode ? event.keyCode : event.which);
+  if(keycode == '13'){
+     var data = new FormData() ; 
+     data.append('file', $( '#inputFile' )[0].files[0]) ; 
+     data.append('text', $( '#message' ).val()) ; 
+     data.append('from', $( '#from' ).val()) ; 
+     data.append('to', $( '#to' ).val()) ; 
+     $.ajax({
+     url: '/$lang/task/send-message',
+     type: 'POST',
+     data: data,
+     processData: false,
+     contentType: false,
+      beforeSend: function(){
+       
+      },
+      success: function(data){ 
+        $("#messages").html(data);
+        $("#myForm")[0].reset();
+        // location.reload(true);
+      }
+     });
+    return false;
+  }
+  
+});
   $(document).ready(function(){
     $('#passengers').click(function(){
         $('#count_passengers').toggle(300);

@@ -34,7 +34,7 @@ class TaskController extends Controller
     }
     public function beforeAction($action)
     {
-        if ($action->id == 'create-goods' || $action->id == 'view' || $action->id == 'create-help' || $action->id == 'create-order') {
+        if ($action->id == 'create-goods' || $action->id == 'view' || $action->id == 'create-help' || $action->id == 'create-order'|| $action->id == 'send-message') {
             $this->enableCsrfValidation = false;
         }
 
@@ -83,16 +83,22 @@ class TaskController extends Controller
         $message->to = $to;
         $message->text = $_POST['text'];
 
-        $message->save();
-        $uploadDir = \Yii::getAlias('@backend').'/web/uploads/chat/';
-        $ext = "";
-        $ext = substr(strrchr($_FILES['file']['name'], "."), 1); 
-
-        $fPath =$_FILES['file']['name'];
-        if($ext != ""){
-           $result = move_uploaded_file($_FILES['file']['tmp_name'], $uploadDir . $fPath);
-            $message->file = $fPath;
+        if($_POST['text'] || $_FILES['file'])
+        {
             $message->save();
+            $uploadDir = \Yii::getAlias('@backend').'/web/uploads/chat/';
+            $ext = "";
+            $ext = substr(strrchr($_FILES['file']['name'], "."), 1); 
+
+            $fPath =$_FILES['file']['name'];
+            if($ext != ""){
+               $result = move_uploaded_file($_FILES['file']['tmp_name'], $uploadDir . $fPath);
+                $message->file = $fPath;
+                $message->save();
+            }
+        }
+        else{
+          
         }
 
         $query = \backend\models\Chat::find()->where(['and', ['to'=>[$to,$from]], ['from'=>[$to,$from]]]);

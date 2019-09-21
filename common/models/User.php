@@ -251,6 +251,11 @@ class User extends ActiveRecord implements IdentityInterface
          return $this->image != null ? '<img style="width:34px;" src="'.$adminka.'uploads/avatars/' . $this->image .' ">' : '<img style="width:34px;" src="'.$adminka.'uploads/nouser3.png">';
     }
     
+    public function getImageAddress()
+    {
+        $adminka = Yii::$app->params['adminka'];
+        return $this->image != null ? $adminka.'uploads/avatars/' . $this->image : $adminka.'uploads/nouser3.png">';
+    }
     /**
      * Finds user by password reset token
      *
@@ -436,7 +441,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
     public function isHaveRequest($id)
     {
-        $request = \backend\models\Request::find()->where(['task_id'=>$id])->count();
+        $request = \backend\models\Request::find()->where(['task_id'=>$id,'user_id'=>Yii::$app->user->identity->id])->count();
         return $request == 1;
     }
 }

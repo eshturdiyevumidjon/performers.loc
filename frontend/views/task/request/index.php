@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="price_cop">
-        <h6><?=$value->price?> $.</h6>
+        <h6><?=$value->price?> $</h6>
         <p class="cal_tack"><?=Yii::t('app','Offer')?></p>
       </div>
     </div>
@@ -53,7 +53,7 @@
         </div>
         <div class="col-sm-3">
           <p class="cal_tack"><?=Yii::t('app','Phone')?></p>
-          <?php if ($active_user->type == 4): ?>
+          <?php if ($active_user->type == 4 && $value->task->performer_id == $value['user']->id): ?>
           <span><?=$value['user']->phone?></span>
           <?php else: ?>
           <span>*** ** *** ** **</span>

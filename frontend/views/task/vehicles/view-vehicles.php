@@ -20,7 +20,7 @@ $lang = Yii::$app->language;
         <div class="d-flex inner_main">
           <div class="inner_left">
           <h2 id="chat" style="cursor:pointer;">Мои чаты</h2>
-          <?php if ($model->performer_id != null): ?>
+          <?php if ($model->performer_id != null && (($active_user->type == 3 && $active_user->id == $model->performer_id) ||($active_user->type == 4 && $active_user->id == $model->user_id))): ?>
             <div class="chat_inner">
               <div class="form">
                 <div style="overflow-y: auto;overflow-x: hidden; height: 400px; " id="messages">
@@ -177,6 +177,34 @@ $lang = Yii::$app->language;
 <?= $this->render('../request/map2',['model'=>$model])?>
 <?php Pjax::end()?>
 <?php $this->registerJs(<<<JS
+    $(document).keypress(function(event){
+  
+  var keycode = (event.keyCode ? event.keyCode : event.which);
+  if(keycode == '13'){
+     var data = new FormData() ; 
+     data.append('file', $( '#inputFile' )[0].files[0]) ; 
+     data.append('text', $( '#message' ).val()) ; 
+     data.append('from', $( '#from' ).val()) ; 
+     data.append('to', $( '#to' ).val()) ; 
+     $.ajax({
+     url: '/$lang/task/send-message',
+     type: 'POST',
+     data: data,
+     processData: false,
+     contentType: false,
+      beforeSend: function(){
+       
+      },
+      success: function(data){ 
+        $("#messages").html(data);
+        $("#myForm")[0].reset();
+        // location.reload(true);
+      }
+     });
+    return false;
+  }
+  
+});
   $(document).ready(function(){
     $('#chat').on('click',function(){
         $('.chat_inner').toggle(500);

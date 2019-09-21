@@ -189,7 +189,7 @@ $lang = Yii::$app->language;
           <?= $form->field($model, 'comment')->textarea(['rows' => 6,'id'=>'textfield','class'=>'my_input'])->label(false) ?>
 
             <?php if (Yii::$app->user->isGuest): ?>
-            <div style="width: 30%; text-align: center;float: right; margin-right: 5%;">
+            <div>
               <?=Html::a(Yii::t('app','Publish'), ['/site/login'],['role'=>'modal-remote','class'=>'btn_red','id'=>'if_user_guest'])?>
             </div>
           <?php else: ?>
