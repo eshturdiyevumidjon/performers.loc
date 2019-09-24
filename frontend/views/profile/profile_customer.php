@@ -121,20 +121,20 @@ $this->params['breadcrumbs'][] = $this->title;
 $this->registerJs(<<<JS
   $("#w0-success-0").removeClass('fade in');
   $("#inputFile").on('change',function(e){
-      var files = e.target.files;
+    var files = e.target.files;
 
-      $.each(files, function(i,file){
-          var reader = new FileReader();
+    $.each(files, function(i,file){
+        var reader = new FileReader();
 
-          reader.readAsDataURL(file);
+        reader.readAsDataURL(file);
 
-          reader.onload = function(e){
-              $("#image_upload_preview").attr('src',e.target.result);
-            };
+        reader.onload = function(e){
+            $("#image_upload_preview").attr('src',e.target.result);
+          };
 
-        });
+      });
 
-    });
+  });
   $('#inputFile').change(function(){ 
      var data = new FormData() ; 
      data.append('file', $( '#inputFile' )[0].files[0]) ; 

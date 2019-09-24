@@ -43,6 +43,8 @@ class m150207_210500_i18n_init extends Migration
         $this->createIndex('idx_message_language', '{{%message}}', 'language');
 
         $translations = [
+                'Return date and time'=>'Дата и врэмя обратного маршрута',
+                'Under your conditions there is no one sub-order. Try to be easier :)'=>'Под ваши условия нет  одного подхашьящево заказа. Попробуйте быть проще :)',
                 'The requested page does not exist.'=>'Запрашиваемая страница не существует.',
                 'On account'=>'На счете',
                 'Service charge'=>'Оплата за услугу',

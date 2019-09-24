@@ -129,8 +129,13 @@ $post['type'] = isset($post['type']) ? $post['type'] : [];
             </div>
           </form>
           <div id="result">
-            <?=$this->render('filter',['all_tasks'=>$all_tasks,'lang'=>$lang])?>
-            <?=\yii\widgets\LinkPager::widget(['pagination'=>$pages])?>
+            <?php if (count($all_tasks) > 0): ?>
+               <?=$this->render('filter',['all_tasks'=>$all_tasks,'lang'=>$lang])?>
+               <?=\yii\widgets\LinkPager::widget(['pagination'=>$pages])?>
+            <?php else: ?>
+              <p class="alert alert-danger"><?=Yii::t('app','Under your conditions there is no one sub-order. Try to be easier :)')?></p>
+            <?php endif ?>
+           
            </div>
           <!-- <ul class="pagination">
 

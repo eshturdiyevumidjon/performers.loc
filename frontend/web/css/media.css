@@ -885,6 +885,12 @@
 	.in_karm{
 		white-space: nowrap;
 	}
+	body .modal-content {
+    	width: 100% !important;
+	}
+	body .modal-content {
+	    padding: 0 !important;
+	}
 }
 
 @media (max-width: 375px){
@@ -940,6 +946,12 @@
 		-ms-flex-direction: column;
 		-o-flex-direction: column;
 		flex-direction: column;
+	}
+	.forget_pass{
+		font-size: 14px;
+	}
+	.form-group_checkbox label{
+		font-size: 14px; 
 	}
 }
 

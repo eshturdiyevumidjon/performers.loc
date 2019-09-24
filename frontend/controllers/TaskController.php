@@ -140,7 +140,13 @@ class TaskController extends Controller
     public function actionView($id)
     {   
         
+        if(! $this->findModel($id) )
+        {
+            $this->redirect(['/profile/index']);
+        }
+        
         $model = $this->findModel($id);
+
         $user = $model->user;
         $active_user = \common\models\User::findOne(Yii::$app->user->identity->id);
         $banner = \backend\models\Banners::findOne(1);
@@ -485,7 +491,8 @@ class TaskController extends Controller
         if (($model = Tasks::findOne($id)) !== null) {
             return $model;
         } else {
-            return $this->redirect(['/profile/index']);
+            return false;
+            $lang = Yii::$app->language;
         }
     
     }

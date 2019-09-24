@@ -30,7 +30,7 @@ use yii\widgets\Pjax;
                     <input type="text" id="message" placeholder="Написать">
                     <input type="hidden" id="from" value="<?=Yii::$app->user->identity->id?>">
                     <input type="hidden" id="to" value="<?=($active_user->type == 4) ? $model->performer_id : $model->user_id?>">
-                    <input type="file" class="file_input" id="inputFile">
+                    <input type="file" class="file_input" id="inputFile" accept="image/*">
                     <label for="inputFile"><img src="/images/file_chat.svg" alt=""></label>
                   </div>
                   <button type="button" name="submit_send_message" id="submit_send_message" class="btn_red"><img src="/images/arrow_chat.svg" alt=""></button>
@@ -140,8 +140,10 @@ use yii\widgets\Pjax;
              <?php if ($model->meeting_with_sign_status == 1): ?>
                 <div class="col-xl-4 col-md-6"><span><img src="/images/air_black.svg" alt=""><?=Yii::t('app','Meeting With Sign')?>: <?=$model->meeting_with_sign?></span></div>
             <?php endif ?>
-            
-            <div class="col-12 mt-md-2"><span><img src="/images/front-car.svg" alt=""><?=Yii::t('app','Category of transport')?>: <?=$model->category->name?></span></div>
+            <?php if ($model->category): ?>
+                <div class="col-12 mt-md-2"><span><img src="/images/front-car.svg" alt=""><?=Yii::t('app','Category of transport')?>: <?=$model->category->name?></span></div>
+            <?php endif ?>
+       
           </div>
         </div>
         <div class="inner_map">
@@ -241,6 +243,7 @@ $this->registerJs(<<<JS
   
 });
   $(document).ready(function(){
+
     $('#passengers').click(function(){
         $('#count_passengers').toggle(300);
       })
@@ -250,10 +253,35 @@ JS
 );
 ?>
 <?php $this->registerJs(<<<JS
+
+
   $(document).ready(function(){
-    $('#chat').on('click',function(){
-        $('.chat_inner').toggle(500);
-      });
+
+  $('#inputFile').change(function(){ 
+     var data = new FormData() ; 
+     data.append('file', $( '#inputFile' )[0].files[0]) ; 
+     data.append('from', $( '#from' ).val()) ; 
+     data.append('to', $( '#to' ).val()) ; 
+     $.ajax({
+     url: '/$lang/task/send-message',
+     type: 'POST',
+     data: data,
+     processData: false,
+     contentType: false,
+      beforeSend: function(){
+       
+      },
+      success: function(data){ 
+        $("#messages").html(data);
+        $("#myForm")[0].reset();
+      }
+     });
+    return false;
+  });
+
+  $('#chat').on('click',function(){
+      $('.chat_inner').toggle(500);
+    });
   $('#submit_send_message').on('click',function(){ 
      var data = new FormData() ; 
      data.append('file', $( '#inputFile' )[0].files[0]) ; 

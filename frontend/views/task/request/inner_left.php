@@ -23,7 +23,7 @@
     <span><?=Yii::t('app','Languages')?></span>
     <div>
       <?php foreach (explode(',', $user->language) as $value): ?>
-        <img src="/uploads/flags/<?=$value?>.png" alt="" style="width:30%;">
+        <img src="/uploads/flags/<?=$value?>.png" alt="" style="width:22px ;">
       <?php endforeach ?>
     </div>
   </div>

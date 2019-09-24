@@ -254,7 +254,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function getImageAddress()
     {
         $adminka = Yii::$app->params['adminka'];
-        return $this->image != null ? $adminka.'uploads/avatars/' . $this->image : $adminka.'uploads/nouser3.png">';
+        return $this->image != null ? $adminka.'uploads/avatars/' . $this->image : $adminka.'uploads/nouser3.png';
     }
     /**
      * Finds user by password reset token

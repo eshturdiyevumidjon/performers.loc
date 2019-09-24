@@ -34,10 +34,18 @@
          
         </div>
         <div class="col-4">
-          <?php if ($value->date_close): ?>
-              <p class="cal_tack"><?=Yii::t('app',' Arrival date')?></p>
-              <span><?=$value->date_close?></span>
-          <?php endif ?>
+	    	
+	    		 <?php if ($value->date_begin2): ?>
+		              <p class="cal_tack"><?=Yii::t('app','Return date and time')?></p>
+		              <span><?=$value->date_begin2?></span>
+		          <?php endif ?>
+		  
+		    	  <?php if ($value->date_close): ?>
+		              <p class="cal_tack"><?=Yii::t('app','Arrival date')?></p>
+		              <span><?=$value->date_close?></span>
+		          <?php endif ?>
+	    	
+          
         </div>
       </div>
       <div class="mangis">

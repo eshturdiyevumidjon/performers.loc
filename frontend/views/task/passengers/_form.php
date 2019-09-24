@@ -53,6 +53,7 @@ $lang = Yii::$app->language;
                       'placeholder'=>$model->getAttributeLabel('date_begin'),
                       'class'=>'my_input other_date_inp',
                       'style'=>'cursor:pointer;',
+                      'required'=>''
                     ],
                     'pluginOptions' => [
                           'format' => 'dd.mm.yyyy hh:ii',

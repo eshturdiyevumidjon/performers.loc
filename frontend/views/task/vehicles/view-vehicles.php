@@ -31,7 +31,7 @@ $lang = Yii::$app->language;
                     <input type="text" id="message" placeholder="Написать">
                     <input type="hidden" id="from" value="<?=Yii::$app->user->identity->id?>">
                     <input type="hidden" id="to" value="<?=($active_user->type == 4) ? $model->performer_id : $model->user_id?>">
-                    <input type="file" class="file_input" id="inputFile">
+                    <input type="file" class="file_input" id="inputFile" accept="image/*">
                     <label for="inputFile"><img src="/images/file_chat.svg" alt=""></label>
                   </div>
                   <button type="button" name="submit_send_message" id="submit_send_message" class="btn_red"><img src="/images/arrow_chat.svg" alt=""></button>
@@ -210,6 +210,28 @@ $lang = Yii::$app->language;
         $('.chat_inner').toggle(500);
       });
 
+  
+  $('#inputFile').change(function(){ 
+     var data = new FormData() ; 
+     data.append('file', $( '#inputFile' )[0].files[0]) ; 
+     data.append('from', $( '#from' ).val()) ; 
+     data.append('to', $( '#to' ).val()) ; 
+     $.ajax({
+     url: '/$lang/task/send-message',
+     type: 'POST',
+     data: data,
+     processData: false,
+     contentType: false,
+      beforeSend: function(){
+       
+      },
+      success: function(data){ 
+        $("#messages").html(data);
+        $("#myForm")[0].reset();
+      }
+     });
+    return false;
+  });
 
   $('#submit_send_message').on('click',function(){ 
      var data = new FormData() ; 

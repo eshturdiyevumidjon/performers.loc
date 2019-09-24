@@ -166,7 +166,7 @@ $this->registerJs(<<<JS
 
     $(document).ready(function(){
       $("[id^='w']").removeClass('fade in');
-      var c = 2;
+      var c = 100;
        $(document).on('click', '.add', function(){
         c++;
           var option = $("#tech").html();

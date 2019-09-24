@@ -566,7 +566,7 @@ section.registratsion{
 	width: 100%;
 	height: 34px;
 	border: 1px solid #f0eff5;
-	background-color: #fff;
+	background-color: #fff !important;
 	outline: none;
 	padding: 0 20px;
 }
@@ -3019,10 +3019,16 @@ div#pay_popup_a hr{
 	border: 1px solid #ff0a0a;
 }
 
+input:-internal-autofill-selected {
+    background-color: transparent !important;
+} 
 
-
-
-
+option{
+	color: #9B9AA4;
+}
+option[selected] {
+    color: #000 !important;
+}
 
 
 

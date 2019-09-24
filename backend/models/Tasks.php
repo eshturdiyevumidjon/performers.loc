@@ -192,31 +192,26 @@ class Tasks extends \yii\db\ActiveRecord
             $this->user_id = Yii::$app->user->identity->id;
         }
         $this->date_cr=Yii::$app->formatter->asDate($this->date_cr, 'php:Y-m-d'); 
-        $this->date_close=isset($this->date_close)?Yii::$app->formatter->asDate($this->date_close, 'php:Y-m-d'):''; 
+        $this->date_close=($this->date_close)?Yii::$app->formatter->asDate($this->date_close, 'php:Y-m-d'):''; 
         $this->date_begin=Yii::$app->formatter->asDate($this->date_begin, 'php:Y-m-d H:i'); 
-        $this->date_begin2=isset($this->date_begin2)?Yii::$app->formatter->asDate($this->date_begin2, 'php:Y-m-d H:i'):''; 
+        $this->date_begin2=($this->date_begin2)?Yii::$app->formatter->asDate($this->date_begin2, 'php:Y-m-d H:i'):''; 
         return parent::beforeSave($insert);
     }
     public function afterFind()
     {
         parent::afterFind();
-        $this->date_cr=isset($this->date_cr) ? Yii::$app->formatter->asDate($this->date_cr, 'php:d-m-Y') : ''; 
-        $this->date_close=isset($this->date_close) ? Yii::$app->formatter->asDate($this->date_close, 'php:d-m-Y') : ''; 
+        $this->date_cr=($this->date_cr) ? Yii::$app->formatter->asDate($this->date_cr, 'php:d-m-Y') : ''; 
+        $this->date_close=($this->date_close) ? Yii::$app->formatter->asDate($this->date_close, 'php:d-m-Y') : ''; 
         if ($this->type == 1) {
-          $this->date_begin=isset($this->date_begin) ? Yii::$app->formatter->asDate($this->date_begin, 'php:d-m-Y H:i') : ''; 
+          $this->date_begin=($this->date_begin) ? Yii::$app->formatter->asDate($this->date_begin, 'php:d-m-Y H:i') : ''; 
         }
         else
         {
-            $this->date_begin=isset($this->date_begin) ? Yii::$app->formatter->asDate($this->date_begin, 'php:d-m-Y') : '';
+            $this->date_begin=($this->date_begin) ? Yii::$app->formatter->asDate($this->date_begin, 'php:d-m-Y') : '';
         }
         if ($this->type == 1) {
-          $this->date_begin2=isset($this->date_begin2) ? Yii::$app->formatter->asDate($this->date_begin2, 'php:d-m-Y H:i') : ''; 
+          $this->date_begin2=($this->date_begin2) ? Yii::$app->formatter->asDate($this->date_begin2, 'php:d-m-Y H:i') : ''; 
         }
-        else
-        {
-            $this->date_begin2=isset($this->date_begin2) ? Yii::$app->formatter->asDate($this->date_begin2, 'php:d-m-Y') : '';
-        }
-        
     }
     /**
      * @return \yii\db\ActiveQuery
