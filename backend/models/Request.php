@@ -140,8 +140,8 @@ class Request extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
-    public function getAuto()
+    public function getAuto($user_id)
     {
-        return Transports::find()->where(['mark'=>$this->mark_id,'model'=>$this->model_id])->one();
+        return Transports::find()->where(['mark'=>$this->mark_id,'model'=>$this->model_id,'user_id'=>$user_id])->one();
     }
 }

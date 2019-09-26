@@ -34,6 +34,8 @@ $lang = Yii::$app->language;
        <div class="row">
           <div class="col-md-6 order_left"> 
             <h4><?=Yii::t('app','Address')?></h4>
+               
+
                <?= $form->field($model, 'shipping_address')->textInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input otp_punkt','id'=>'shipping_address'])->label(false) ?>
              <?= $form->field($model, 'shipping_coordinate_x')->hiddenInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input hidden otp_punkt','id'=>'shipping_address_coordinate_x'])->label(false) ?>
              <?= $form->field($model, 'shipping_coordinate_y')->hiddenInput(['placeholder'=>Yii::t('app','Point of departure'),'class'=>'my_input hidden otp_punkt','id'=>'shipping_address_coordinate_y'])->label(false) ?>
@@ -227,7 +229,7 @@ $lang = Yii::$app->language;
                </label>
             </div> 
         </div>
-        <h4><?=$model->getAttributeLabel('promo_code')?></h4>
+        <h4><?= $model->getAttributeLabel('promo_code')?></h4>
         <?= $form->field($model, 'promo_code')->textInput(['maxlength' => true,'class'=>'my_input','placeholder'=>'...'])->label(false) ?>
         <hr class="mb-0">
         <div class="d-flex align-items-center justify-content-between tit_textarea">
@@ -257,17 +259,21 @@ $this->registerJs(<<<JS
  remove = function(id){
     $("#photo"+id).remove();
   }
+ $("img .delete_image").on('click',function(){
+      alert();
+  });
   $("#my-file-selector1").on('change',function(e){
     var files = e.target.files;
-
+    var data = new FormData() ; 
     $.each(files, function(i,file){
         var reader = new FileReader();
-
+        
         reader.readAsDataURL(file);
-
+        data.append('file[]', $( '#my-file-selector1' )[0].files[i]) ; 
+        
         reader.onload = function(e){
             var template = '<div class="download_photos added" id="photo'+i+'">' +
-            '<button type="button" class="remove_photo" onclick="remove('+i+')"><img src="/images/minus_a.svg"></button>'+
+            '<button type="button" class="remove_photo" onclick="remove('+i+')" name="'+e.target.result+'"><img src="/images/minus_a.svg" class="delete_image"></button>'+
                 '<img src="'+e.target.result+'" alt="">'+
               '</div>';
             $('#photos').prepend(template);
@@ -275,6 +281,20 @@ $this->registerJs(<<<JS
           };
 
       });
+     $.ajax({
+           url: '/$lang/task/upload-photos-help',
+           type: 'POST',
+           data: data,
+           processData: false,
+           contentType: false,
+           beforeSend: function(){
+             // $('#preview-image').html('Loading...');
+            },
+            success: function(data){ 
+              alert(data);
+              // location.reload(true);
+            }
+           });
 
   });
   $("input").attr('autocomplete','off');
@@ -296,6 +316,7 @@ $this->registerJs(<<<JS
         }
     });
   $(document).ready(function(){
+   
      $("#if_user_guest").on('click',function(){
       $.post('/$lang/task/save-session-help',$("#help_form").serialize(),function(succes){});
     });

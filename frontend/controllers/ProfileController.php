@@ -109,7 +109,7 @@ class ProfileController extends Controller
 
     public function beforeAction($action)
     {
-        if ($action->id == 'edit-profile' || $action->id == 'change-password' || $action->id == 'delete-transport' || $action->id == 'create-auto1' || $action->id == 'create-driver1' || $action->id == 'add-autos'|| $action->id == 'search') {
+        if ($action->id == 'edit-profile' || $action->id == 'change-password' || $action->id == 'delete-transport' || $action->id == 'create-auto1' || $action->id == 'create-driver1' || $action->id == 'add-autos'|| $action->id == 'search' || $action->id == 'upload-photos') {
             $this->enableCsrfValidation = false;
         }
 
@@ -636,4 +636,5 @@ class ProfileController extends Controller
                  echo $path;
             }
     }
+    
 }

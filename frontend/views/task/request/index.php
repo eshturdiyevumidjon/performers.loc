@@ -32,7 +32,7 @@
     <span class="line_toc"></span>
     <p class="mode"><img src="/images/car.svg" alt=""><?=Yii::t('app','Model and brand of car')?>: <?=$value->mark->name_mark." ".$value->model->name_model?></p>
     <div class="photos_inn">
-      <?php $model = $value->getAuto();
+      <?php $model = $value->getAuto($value['user']->id);
        if($model->images != ""):?>
       <p>Фото</p>
       <div class="d-flex flex-wrap">

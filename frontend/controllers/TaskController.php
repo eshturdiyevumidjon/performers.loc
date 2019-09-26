@@ -110,39 +110,15 @@ class TaskController extends Controller
         $messages = $dataProvider->getModels();
 
         return $this->renderAjax('request/messages',['messages'=>$messages]);
- // echo "<pre>";
- //        print_r($_FILES);
- //        print_r($_POST);
-        // if($to == null){
-        //      Yii::$app->session->setFlash('warning', Yii::t('app','Please select contact in the right sidebar'));
-        // }else{
-        //     $message->to = $to;
 
-        //     $request = Yii::$app->request;
-        //     if($message->load($request->post()) && $message->save())
-        //     {
-        //         
-
-        //         return $this->redirect(['index','to'=>$message->to]);
-        //     }
-        // }
-
-        // if (count($models) == 0) {
-        //     Yii::$app->session->setFlash('error', Yii::t('app','You don’t have anything yet'));
-        // }
-       
-        // return $this->render('index', [
-        //     'models' => $models,
-        //     'users'=>$users,
-        //     'message'=>$message
-        // ]);
     }
+
     public function actionView($id)
     {   
         
         if(! $this->findModel($id) )
         {
-            $this->redirect(['/profile/index']);
+            return $this->redirect(['/profile/index']);
         }
         
         $model = $this->findModel($id);
@@ -199,8 +175,8 @@ class TaskController extends Controller
                             'messages'=>$messages
                         ]);;
         }
-    
     }
+
     public function actionCreatePassengers()
     {
         $model = new Tasks();
@@ -305,6 +281,11 @@ class TaskController extends Controller
     
     public function actionCreateHelp()
     {
+        if( ! Yii::$app->session['photo_helps'] )
+        {
+           Yii::$app->session['photo_helps'] = "";
+        }   
+
         $model = new Tasks();
         $model->scenario = Tasks::SCENARIO_HELP;
         $model->type=4;
@@ -332,21 +313,16 @@ class TaskController extends Controller
                    $mm->save(); 
                 }
             }
-            $images = [];
-            $uploadDir = "uploads/tasks/";
-            for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
-
-            $ext = "";
-            $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
-
-            $fPath =$model->id .'('.$i.')'. rand() . ".$ext";
-                if($ext != ""){
-                   $images []= $fPath;
-                   $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
-                }
-            }
-            $model->image = implode(',',$images);
+            
+            $model->image = Yii::$app->session['photo_helps'];
+            // echo "<pre>";
+            // print_r($_FILES['images']);
+            // echo "<br>";
+            // print_r($arr);
+            // echo "</pre>";
+            // die;
             $model->save();
+            Yii::$app->session['photo_helps'] = null;
 
             return $this->redirect(['view','id'=>$model->id]);
         } else {
@@ -357,6 +333,33 @@ class TaskController extends Controller
             ]);
         }
        
+    }
+    public function actionUploadPhotosHelp()
+    {
+        $images = [];
+        $uploadDir = "uploads/tasks/";
+        for ($i = 0; $i < count($_FILES['file']['name']); $i++) {
+
+        $ext = "";
+        $ext = substr(strrchr($_FILES['file']['name'][$i], "."), 1); 
+
+        $fPath =time() .'('.$i.')'. rand() . ".$ext";
+            if($ext != ""){
+               $images []= $fPath;
+               $result = move_uploaded_file($_FILES['file']['tmp_name'][$i], $uploadDir . $fPath);
+            }
+        }
+
+        $img = implode(',',$images);
+
+        if(Yii::$app->session['photo_helps'] == ""){
+            $m = $img;
+        }else{
+            $m = Yii::$app->session['photo_helps'] . "," . $img;
+        }
+        
+        Yii::$app->session['photo_helps'] = $m;
+        echo Yii::$app->session['photo_helps'];
     }
 
     public function actionSaveSessionHelp()
@@ -417,10 +420,9 @@ class TaskController extends Controller
                 'post'=>$_POST
             ]);
         }
-       
     }
 
-     public function actionSaveSessionVehicles()
+    public function actionSaveSessionVehicles()
     {
         $task = new Tasks();
         $task->scenario = Tasks::SCENARIO_VEHICLES;
@@ -454,6 +456,15 @@ class TaskController extends Controller
             }
     
     }
+
+    public function actionDeleteImage($value)
+    {
+        if(file_exists('uploads/avatars/'.$value))
+        {
+            unlink('uploads/task/'.$value);
+        }
+    }
+
     public function actionDeleteTask($id)
     {
         $request = Yii::$app->request;
@@ -484,18 +495,18 @@ class TaskController extends Controller
             */
             return $this->redirect(['index']);
         }
-    
     }
+
     protected function findModel($id)
     {
         if (($model = Tasks::findOne($id)) !== null) {
             return $model;
         } else {
             return false;
-            $lang = Yii::$app->language;
         }
     
     }
+
     public function actionDownloadFile($id)
     {
         $model = \backend\models\Chat::findOne($id);
@@ -622,5 +633,6 @@ class TaskController extends Controller
             echo "<option> - </option>";
         }
     }
+   
 
 }

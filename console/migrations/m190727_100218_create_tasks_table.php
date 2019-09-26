@@ -51,7 +51,7 @@ class m190727_100218_create_tasks_table extends Migration
 
             'car_model' => $this->string(255)->comment("Модель автомобиля"),
             'car_mark' => $this->string(255)->comment("Марка автомобиля"),
-            'image' => $this->string(255)->comment("Фото"),
+            'image' => $this->text()->comment("Фото"),
             'car_on_the_go' => $this->integer()->comment("Автомобиль на ходу"),
 
             //Грузовые перевозки uchun kerakli polyalar
@@ -83,25 +83,6 @@ class m190727_100218_create_tasks_table extends Migration
             'need_loader' => $this->integer()->defaultValue(0)->comment('Грузчики'),
             'count_loader' => $this->integer()->comment('Количество грузчиков'),
             'demolition' => $this->integer()->defaultValue(0)->comment('Нужна разборка'),
-            
-            'need_relocation' => $this->integer()->defaultValue(0)->comment('переезды'),
-            'count_relocation' => $this->integer()->comment('Количество переезды'), 
-            'need_furniture' => $this->integer()->defaultValue(0)->comment('Мебель и бытовая техника'),
-            'count_furniture' => $this->integer()->comment('Количество Мебель и бытовая техника'), 
-            'need_personal_items' => $this->integer()->defaultValue(0)->comment('Личные вещи'),
-            'count_personal_items' => $this->integer()->comment('Количество Личные вещи'), 
-            'need_purchases' => $this->integer()->defaultValue(0)->comment('Покупки'),
-            'count_purchases' => $this->integer()->comment('Количество Покупки'), 
-            'need_piano' => $this->integer()->defaultValue(0)->comment('Пианино и сейфы'),
-            'count_piano' => $this->integer()->comment('Количество Пианино и сейфы'),
-            'need_building_materials' => $this->integer()->defaultValue(0)->comment('Стройматериалы'),
-            'count_building_materials' => $this->integer()->comment('Количество Стройматериалы'), 
-            'need_special_equipments' => $this->integer()->defaultValue(0)->comment('Спецтехника и негабарит'),
-            'count_special_equipments' => $this->integer()->comment('Количество Спецтехника и негабарит'),
-            'need_other_items' => $this->integer()->defaultValue(0)->comment('Прочие грузы'),
-            'count_other_items' => $this->integer()->comment('Количество Прочие грузы'),
-
-
         ]);
 
         // creates index for column `user_id`
