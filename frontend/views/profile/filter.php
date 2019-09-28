@@ -35,7 +35,7 @@
         </div>
         <div class="col-4">
 	    	
-	    		 <?php if ($value->date_begin2): ?>
+	    		  <?php if ($value->date_begin2): ?>
 		              <p class="cal_tack"><?=Yii::t('app','Return date and time')?></p>
 		              <span><?=$value->date_begin2?></span>
 		          <?php endif ?>

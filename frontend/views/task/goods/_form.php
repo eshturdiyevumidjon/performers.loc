@@ -198,29 +198,54 @@ $lang = Yii::$app->language;
 
 <?php
 $this->registerJs(<<<JS
-    remove = function(id){
-      $("#photo"+id).remove();
-    }
-    $("#my-file-selector1").on('change',function(e){
-      var files = e.target.files;
+     var c = 100;
+ remove = function(id){
+    $.post('/$lang/task/delete-image?value='+$("#uploading_image_name"+id).val(),function(success){});
+    $("#photo"+id).remove();
+    
+ 
+  }
+ 
+  $("#my-file-selector1").on('change',function(e){
+    var files = e.target.files;
+    var data = new FormData() ; 
+    $.each(files, function(i,file){
+        var reader = new FileReader();
+        var d = new Date();
+        var new_name_photo = d.getTime() + '(' + i + ')' + Math.floor(Math.random() * 101000);  
+        var ext = $( '#my-file-selector1' )[0].files[i].type.slice(6);
+        new_name_photo = new_name_photo + "." + ext;
 
-      $.each(files, function(i,file){
-          var reader = new FileReader();
+        reader.readAsDataURL(file);
 
-          reader.readAsDataURL(file);
+        data.append('file[]', $( '#my-file-selector1' )[0].files[i]) ; 
+        data.append('names[]', new_name_photo) ; 
 
-          reader.onload = function(e){
-              var template = '<div class="download_photos added" id="photo'+i+'">' +
-              '<button type="button" class="remove_photo" onclick="remove('+i+')"><img src="/images/minus_a.svg"></button>'+
-                  '<img src="'+e.target.result+'" alt="">'+
-                '</div>';
-              $('#photos').prepend(template);
+        reader.onload = function(e){
+            c++;
+            var template = '<div class="download_photos added" id="photo'+c+'">' +
+            '<input type="hidden" name="uploading_images[]" value="' + new_name_photo + '" id="uploading_image_name'+c+'">'+
+            '<button type="button" class="remove_photo" onclick="remove('+c+');" name="delete" id="'+c+'" ><img src="/images/minus_a.svg" class="delete_image"></button>'+
+                '<img src="'+e.target.result+'" alt="">'+
+              '</div>';
+            $('#photos').prepend(template);
 
-            };
+          };
 
-        });
+      });
+     $.ajax({
+           url: '/$lang/task/upload-photos-help',
+           type: 'POST',
+           data: data,
+           processData: false,
+           contentType: false,
+           beforeSend: function(){
+            },
+            success: function(data){ 
+            }
+           });
 
-    });
+  });
     $("input").attr('autocomplete','off');
   
     if($(this).prop("checked") == true)

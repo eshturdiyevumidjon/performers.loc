@@ -71,7 +71,8 @@ $lang = Yii::$app->language;
                 <?= $form->field($user, 'address')->textInput(['placeholder'=>Yii::t('app','Address'),'class'=>'my_input','id'=>'address'])->label(false) ?>
 
                 <label for="phone"><?=$user->getAttributeLabel('phone')?></label>
-                <?= $form->field($user, 'phone')->widget(\yii\widgets\MaskedInput::className(), ['mask' => '+\9\9899-999-99-99','options'=>['id'=>'phone','class'=>'my_input']])->hint('<p class="opac">'.Yii::t('app','The phone is hidden from other users').'</p>')->label(false) ?>
+                <?= $form->field($user, 'phone')->textInput(['placeholder'=>Yii::t('app','Phone number'),'class'=>'my_input','id'=>'phone'])->hint('<p class="opac">'.Yii::t('app','The phone is hidden from other users').'</p>')->label(false) ?>
+              
 
                 <label for="email">E-mail</label>
                  <?= $form->field($user, 'email')->textInput(['placeholder'=>Yii::t('app','Email address'),'class'=>'my_input','id'=>'email'])->label(false)->hint('<p class="opac">'.Yii::t('app','Email address is hidden from other users').'</p>') ?>

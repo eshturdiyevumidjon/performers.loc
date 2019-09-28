@@ -36,7 +36,7 @@ use kartik\date\DatePicker;
             </div>
             <div class="row">
                 <div class="col-md-6">
-    				<?= $form->field($model, 'phone')->widget(\yii\widgets\MaskedInput::className(), ['mask' => '+\9\9899-999-99-99']) ?>
+                      <?= $form->field($model, 'phone')->textInput([])?>
                 </div>
                 <div class="col-md-6">
                     <?= $model->isNewRecord ? $form->field($model, 'auth_key')->textInput(['maxlength' => true]) : $form->field($model, 'new_password')->textInput(['maxlength' => true]) ?>

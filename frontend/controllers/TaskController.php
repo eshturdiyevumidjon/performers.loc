@@ -98,14 +98,17 @@ class TaskController extends Controller
             }
         }
         else{
-          
         }
 
-        $query = \backend\models\Chat::find()->where(['and', ['to'=>[$to,$from]], ['from'=>[$to,$from]]]);
+        $query = \backend\models\Chat::find()->where(['and', ['to'=>[$to,$from]], ['from'=>[$to,$from]]])->orderBy(['date_cr' => SORT_ASC //specify sort order ASC for ascending DESC for descending      
+            ]);;
 
         $messages = [];
         $dataProvider = new ActiveDataProvider([
            'query' => $query,
+           'pagination'=>[
+                'pageSize'=>1000
+           ]
         ]);
         $messages = $dataProvider->getModels();
 
@@ -115,6 +118,7 @@ class TaskController extends Controller
 
     public function actionView($id)
     {   
+        Yii::$app->session['photo_helps'] = "";
         
         if(! $this->findModel($id) )
         {
@@ -132,10 +136,14 @@ class TaskController extends Controller
         if($model->performer_id){
             $from = $model->user_id;
             $to = $model->performer_id;
-            $query = \backend\models\Chat::find()->where(['and', ['to'=>[$to,$from]], ['from'=>[$to,$from]]]);
+            $query = \backend\models\Chat::find()->where(['and', ['to'=>[$to,$from]], ['from'=>[$to,$from]]])->orderBy(['date_cr' => SORT_ASC //specify sort order ASC for ascending DESC for descending      
+            ]);
             
             $dataProvider = new ActiveDataProvider([
                'query' => $query,
+               'pagination'=>[
+                    'pageSize'=>1000
+               ]
             ]);
             $messages = $dataProvider->getModels();
         }
@@ -215,6 +223,7 @@ class TaskController extends Controller
         $task->meeting_with_sign_status = isset($_POST['meeting_with_sign_status']) ? 1 : 0;
         $task->flight_number_status = isset($_POST['flight_number_status']) ? 1 : 0;
         $task->return = isset($_POST['return']) ? 1 : 0;
+        $task->image = ($_POST['uploading_images']) ? implode(',',$_POST['uploading_images']) : '';
 
         $task->count_adult = $_POST['count_adult'];
         $task->count_avtolulka = $_POST['count_avtolulka'];
@@ -222,7 +231,6 @@ class TaskController extends Controller
         $task->count_buster = $_POST['count_buster'];
 
         Yii::$app->session['passenger[]'] = $task->attributes;
-        // print_r(Yii::$app->session['passenger[]']);
     }
 
     public function actionCreateGoods()
@@ -238,20 +246,7 @@ class TaskController extends Controller
 
         if($model->load(Yii::$app->request->post()) && $model->save())
         {
-            $images = [];
-            $uploadDir = "uploads/tasks/";
-            for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
-
-            $ext = "";
-            $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
-
-            $fPath =$model->id .'('.$i.')'. rand() . ".$ext";
-                if($ext != ""){
-                   $images []= $fPath;
-                   $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
-                }
-            }
-            $model->image = implode(',',$images);
+            $model->image = ($_POST['uploading_images']) ? implode(',',$_POST['uploading_images']) : '';
             $model->save();
 
             return $this->redirect(['view','id'=>$model->id]);
@@ -273,19 +268,15 @@ class TaskController extends Controller
         $task->loading_required_status = isset($_POST['loading_required_status']) ? 1 : 0;
         $task->alert_email = isset($_POST['alert_email']) ? 1 : 0;
         $task->lift = isset($_POST['lift']) ? 1 : 0;
+        $task->image = ($_POST['uploading_images']) ? implode(',',$_POST['uploading_images']) : '';
+
         if(isset($_POST['tip_gruz']))
             $task->classification = implode(',',$_POST['tip_gruz']);
         Yii::$app->session['goods[]'] = $task->attributes;
-        print_r(Yii::$app->session['goods[]']);
     }
     
     public function actionCreateHelp()
     {
-        if( ! Yii::$app->session['photo_helps'] )
-        {
-           Yii::$app->session['photo_helps'] = "";
-        }   
-
         $model = new Tasks();
         $model->scenario = Tasks::SCENARIO_HELP;
         $model->type=4;
@@ -293,7 +284,6 @@ class TaskController extends Controller
         $model->delivery_house_lift = isset($_POST['delivery_house_lift']) ? 1 : 0;
         $model->shipping_house_lift = isset($_POST['shipping_house_lift']) ? 1 : 0;
         $model->demolition = isset($_POST['demolition']) ? 1 : 0;
-        
       
         if(isset($_POST['need_packing'])){
             $model->need_packing = 1;
@@ -313,16 +303,9 @@ class TaskController extends Controller
                    $mm->save(); 
                 }
             }
-            
-            $model->image = Yii::$app->session['photo_helps'];
-            // echo "<pre>";
-            // print_r($_FILES['images']);
-            // echo "<br>";
-            // print_r($arr);
-            // echo "</pre>";
-            // die;
+
+            $model->image = ($_POST['uploading_images']) ? implode(',',$_POST['uploading_images']) : '';
             $model->save();
-            Yii::$app->session['photo_helps'] = null;
 
             return $this->redirect(['view','id'=>$model->id]);
         } else {
@@ -334,33 +317,7 @@ class TaskController extends Controller
         }
        
     }
-    public function actionUploadPhotosHelp()
-    {
-        $images = [];
-        $uploadDir = "uploads/tasks/";
-        for ($i = 0; $i < count($_FILES['file']['name']); $i++) {
-
-        $ext = "";
-        $ext = substr(strrchr($_FILES['file']['name'][$i], "."), 1); 
-
-        $fPath =time() .'('.$i.')'. rand() . ".$ext";
-            if($ext != ""){
-               $images []= $fPath;
-               $result = move_uploaded_file($_FILES['file']['tmp_name'][$i], $uploadDir . $fPath);
-            }
-        }
-
-        $img = implode(',',$images);
-
-        if(Yii::$app->session['photo_helps'] == ""){
-            $m = $img;
-        }else{
-            $m = Yii::$app->session['photo_helps'] . "," . $img;
-        }
-        
-        Yii::$app->session['photo_helps'] = $m;
-        echo Yii::$app->session['photo_helps'];
-    }
+   
 
     public function actionSaveSessionHelp()
     {
@@ -373,6 +330,7 @@ class TaskController extends Controller
         $task->delivery_house_lift = isset($_POST['delivery_house_lift']) ? 1 : 0;
         $task->shipping_house_lift = isset($_POST['shipping_house_lift']) ? 1 : 0;
         $task->demolition = isset($_POST['demolition']) ? 1 : 0;
+        $task->image = ($_POST['uploading_images']) ? implode(',',$_POST['uploading_images']) : '';
         
       
         if(isset($_POST['need_packing'])){
@@ -381,9 +339,7 @@ class TaskController extends Controller
         if(isset($_POST['need_loaders'])){
             $task->need_loader = 1;
         }
-
         Yii::$app->session['help[]'] = $task->attributes;
-        print_r(Yii::$app->session['help[]']);
     }
 
     public function actionCreateVehicles()
@@ -396,20 +352,7 @@ class TaskController extends Controller
 
         if($model->load(Yii::$app->request->post()) && $model->save())
         {
-            $images = [];
-            $uploadDir = "uploads/tasks/";
-            for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
-
-            $ext = "";
-            $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
-
-            $fPath =$model->id .'('.$i.')'. rand() . ".$ext";
-                if($ext != ""){
-                   $images []= $fPath;
-                   $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
-                }
-            }
-            $model->image = implode(',',$images);
+            $model->image = ($_POST['uploading_images']) ? implode(',',$_POST['uploading_images']) : '';
             $model->save();
 
             return $this->redirect(['view','id'=>$model->id]);
@@ -431,7 +374,8 @@ class TaskController extends Controller
         $task->type=2;
         $task->alert_email = isset($_POST['alert_email']) ? 1 : 0;
         $task->car_on_the_go = isset($_POST['car_on_the_go']) ? 1 : 0;
-      
+        $task->image = ($_POST['uploading_images']) ? implode(',',$_POST['uploading_images']) : '';
+        
         if(isset($_POST['need_packing'])){
             $task->need_packing = 1;
         }
@@ -440,7 +384,6 @@ class TaskController extends Controller
         }
 
         Yii::$app->session['vehicles[]'] = $task->attributes;
-        print_r($_POST);
     }
 
     public function actionUpdateVehicles($id)
@@ -455,14 +398,6 @@ class TaskController extends Controller
                 ]);
             }
     
-    }
-
-    public function actionDeleteImage($value)
-    {
-        if(file_exists('uploads/avatars/'.$value))
-        {
-            unlink('uploads/task/'.$value);
-        }
     }
 
     public function actionDeleteTask($id)
@@ -633,6 +568,39 @@ class TaskController extends Controller
             echo "<option> - </option>";
         }
     }
-   
+    public function actionUploadPhotosHelp()
+    {
+        $images = [];
+        $uploadDir = "uploads/tasks/";
+        for ($i = 0; $i < count($_FILES['file']['name']); $i++) {
+
+        $ext = "";
+        $ext = substr(strrchr($_FILES['file']['name'][$i], "."), 1); 
+
+        $fPath = $_POST['names'][$i];
+            if($ext != ""){
+               $images []= $fPath;
+               $result = move_uploaded_file($_FILES['file']['tmp_name'][$i], $uploadDir . $fPath);
+            }
+        }
+
+        // echo "<pre>";
+        // print_r($_FILES['file']['type']);
+        echo "<pre>";
+        print_r($images);
+        echo "</pre>";
+
+    }
+
+    public function actionDeleteImage($value)
+    {
+          echo "<pre>";
+          print_r($value);
+          if(file_exists('uploads/tasks/'.$value))
+             {
+                 unlink('uploads/tasks/'.$value);
+                 echo "deleted";
+             }
+    }
 
 }

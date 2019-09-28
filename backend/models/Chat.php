@@ -41,7 +41,6 @@ class Chat extends \yii\db\ActiveRecord
         return [
             [['type', 'from', 'to', 'reply', 'deleted'], 'integer'],
             [['date_cr'], 'safe'],
-            
             [['text'], 'string'],
             [['chat_id', 'title', 'file'], 'string', 'max' => 255],
             [['from'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['from' => 'id']],

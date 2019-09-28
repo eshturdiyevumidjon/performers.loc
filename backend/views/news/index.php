@@ -52,7 +52,8 @@ CrudAsset::register($this);
                                     'data-confirm-title'=>Yii::t('app','Are you sure?'),
                                     'data-confirm-message'=>Yii::t('app','Are you sure want to delete this item')
                                 ]),
-                        ]).                        
+                        ]).Html::a(Yii::t('app','Add').' <i class="glyphicon glyphicon-plus"></i>', ['create'],
+                        ['role'=>'modal-remote','title'=> Yii::t('app','Add'), 'class'=>'btn btn-info pull-right']).                       
                         '<div class="clearfix"></div>',
             ]
         ])?>

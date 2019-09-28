@@ -18,7 +18,7 @@ use yii\widgets\Pjax;
     </nav>
     <div class="d-flex inner_main">
       <div class="inner_left">
-         <h2 id="chat" style="cursor:pointer;">Мои чаты</h2>
+         <h2 id="chat" style="cursor:pointer;"><?=Yii::t('app','My chats')?></h2>
           <?php if ($model->performer_id != null && (($active_user->type == 3 && $active_user->id == $model->performer_id) ||($active_user->type == 4 && $active_user->id == $model->user_id))): ?>
             <div class="chat_inner">
               <div class="form">
@@ -27,7 +27,7 @@ use yii\widgets\Pjax;
                 </div>
                 <form action="/<?=$lang?>/task/send-message" enctype="multipart/form-data" method="post" class="btm_chat" id="myForm">
                  <div class="input_styles">
-                    <input type="text" id="message" placeholder="Написать">
+                    <input type="text" id="message" placeholder="<?=Yii::t('app','Write')?>">
                     <input type="hidden" id="from" value="<?=Yii::$app->user->identity->id?>">
                     <input type="hidden" id="to" value="<?=($active_user->type == 4) ? $model->performer_id : $model->user_id?>">
                     <input type="file" class="file_input" id="inputFile" accept="image/*">
@@ -278,7 +278,26 @@ JS
      });
     return false;
   });
-
+  setInterval(function()
+  { 
+     var data = new FormData() ; 
+     data.append('to', $( '#to' ).val()) ; 
+     data.append('from', $( '#from' ).val()) ;  
+      $.ajax({
+        url: '/$lang/task/send-message',
+         type: 'POST',
+         data: data,
+         processData: false,
+         contentType: false,
+          beforeSend: function(){
+           
+          },
+          success: function(data){ 
+            $("#messages").html(data);
+            // location.reload(true);
+          }
+      });
+  }, 10000);//time in milliseconds 
   $('#chat').on('click',function(){
       $('.chat_inner').toggle(500);
     });

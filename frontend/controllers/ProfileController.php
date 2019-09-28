@@ -285,25 +285,12 @@ class ProfileController extends Controller
                 Yii::$app->session['active_create'] = 1;
 
                 $transport['attributes'] = $post['Transports'];
+                $transport->images = ($_POST['uploading_images1']) ? implode(',',$_POST['uploading_images1']) : '';
                 if($transport->validate())
                 {
                     $transport->save();
                     Yii::$app->session['active'] = 1;
 
-                    $images = [];
-                    $uploadDir = "uploads/transports/";
-                    for ($i = 0; $i < count($_FILES['tr_images']['name']); $i++) {
-
-                    $ext = "";
-                    $ext = substr(strrchr($_FILES['tr_images']['name'][$i], "."), 1); 
-
-                    $fPath =$transport->id .'('.$i.')'. rand() . ".$ext";
-                        if($ext != ""){
-                           $images []= $fPath;
-                           $result = move_uploaded_file($_FILES['tr_images']['tmp_name'][$i], $uploadDir . $fPath);
-                        }
-                    }
-                    $transport->images = implode(',',$images);
                     $transport->save();
                     $this->redirect(['add-autos']);
                 }
@@ -324,26 +311,11 @@ class ProfileController extends Controller
 
                 $driver['attributes'] = $post['Drivers'];
                 Yii::$app->session['active_create'] = 2;
-
+                $driver->images = ($_POST['uploading_images2']) ? implode(',',$_POST['uploading_images2']) : '';
                 if($driver->validate())
                 {
-                    $driver->save();
                     Yii::$app->session['active'] = 2;
-
-                    $images = [];
-                    $uploadDir = "uploads/drivers/";
-                    for ($i = 0; $i < count($_FILES['dr_images']['name']); $i++) {
-
-                    $ext = "";
-                    $ext = substr(strrchr($_FILES['dr_images']['name'][$i], "."), 1); 
-
-                    $fPath =$driver->id .'('.$i.')'. rand() . ".$ext";
-                        if($ext != ""){
-                           $images []= $fPath;
-                           $result = move_uploaded_file($_FILES['dr_images']['tmp_name'][$i], $uploadDir . $fPath);
-                        }
-                    }
-                    $driver->images = implode(',',$images);
+                    
                     $driver->save();
                     $this->redirect(['add-autos']);
                 }
@@ -378,9 +350,11 @@ class ProfileController extends Controller
     {
         $request = Yii::$app->request;
         $model = \backend\models\Transports::find()->where(['id'=>$id])->one();
-        $old_images = explode(',', $model->images);
+        // $old_images = explode(',', $model->images);
         Yii::$app->session['active'] = 1;
-        $st = '';
+       
+
+        // $st = '';
         if($request->isAjax){
             /*
             *   Process for ajax request
@@ -388,49 +362,49 @@ class ProfileController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             
             if($model->load($request->post()) && $model->validate()){
+                $model->images = ($_POST['uploading_images_cr'])  ? implode(',',$_POST['uploading_images_cr']) : '';
                 $model->save();
-                $uploadDir = "uploads/transports/";
-                for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
-                $ext = "";
-                $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
+                // $uploadDir = "uploads/transports/";
+                // for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
+                // $ext = "";
+                // $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
                 
-                $fPath =$model->id .'('.$i.')'. rand() . ".$ext";
+                // $fPath =$model->id .'('.$i.')'. rand() . ".$ext";
 
-                if(isset($old_images[$i]))
-                {
-                    preg_match("/\(([^\)]*)\)/", $old_images[$i], $aMatches);
-                    $value = $aMatches[1];
-                    $st .= $value . ' ';
-                    if($ext != ""){
-                        if($value == $i){
-                            if(file_exists('uploads/transports/'.$old_images[$i]) && $old_images[$i] != "")
-                            {   
-                                unlink('uploads/transports/'.$old_images[$i]);
-                            }
-                            $images []= $fPath;
-                            $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath); 
-                        }
-                        else
-                        {
-                            $images []= $old_images[$i];
-                        }
-                    }
-                    else{
-                        $images []= $old_images[$i];
-                    }
-                }
-                else{
-                    if($ext != ""){
-                      $images []= $fPath;
-                      $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
-                  }   
-                }
+                // if(isset($old_images[$i]))
+                // {
+                //     preg_match("/\(([^\)]*)\)/", $old_images[$i], $aMatches);
+                //     $ = $aMatches[1];
+                //     $st .= $value . ' ';
+                //     if($ext != ""){
+                //         if($value == $i){
+                //             if(file_exists('uploads/transports/'.$old_images[$i]) && $old_images[$i] != "")
+                //             {   
+                //                 unlink('uploads/transports/'.$old_images[$i]);
+                //             value}
+                //             $images []= $fPath;
+                //             $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath); 
+                //         }
+                //         else
+                //         {
+                //             $images []= $old_images[$i];
+                //         }
+                //     }
+                //     else{
+                //         $images []= $old_images[$i];
+                //     }
+                // }
+                // else{
+                //     if($ext != ""){
+                //       $images []= $fPath;
+                //       $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
+                //   }   
+                // }
                    
-                }
-                $model->images = implode(',',$images);
-                $model->save();
+                // }
+                // $model->images = implode(',',$images);
+                // $model->save();
                  return [
-                    'title' => count($old_images).'/'.$st,
                     'forceClose'=>true,
                     'forceReload'=>'#crud-datatable-pjax'
                  ];
@@ -481,35 +455,9 @@ class ProfileController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             
             if($model->load($request->post()) && $model->validate()){
-                $model->save();
-                $uploadDir = "uploads/drivers/";
-                
-                for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
-                    $ext = "";
-                    $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
-                    
-                    $fPath =$model->id .'('.$i.')'. rand() . ".$ext";
-
-                    if($ext != "" ){
-                        if(in_array($i, $st)){
-                             if(file_exists('uploads/drivers/'.$old_images[$i]) && $old_images[$i] != "")
-                                {   
-                                    unlink('uploads/drivers/'.$old_images[$i]);
-                                }
-                        }
-                        $images []= $fPath;
-                        $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath); 
-                    }
-                    else{
-                        if(in_array($i, $st)){
-                            $images []= $old_images[$i];
-                        }
-                    }
-                }
-                $model->images = implode(',',$images);
+                 $model->images = ($_POST['uploading_images_cr2'])  ? implode(',',$_POST['uploading_images_cr2']) : '';
                 $model->save();
                  return [
-                    'title' => count($old_images).'/'.$st,
                     'forceClose'=>true,
                     'forceReload'=>'#crud-datatable-pjax-2'
                  ];
@@ -556,29 +504,6 @@ class ProfileController extends Controller
         }
     }
 
-    public function actionDeleteImage()     
-    {
-        $model = \backend\models\Drivers::find()->where(['id'=>$_POST['id']])->one();
-        $old_images = explode(',', $model->images);
-        $search = $_POST['id'].'('.$_POST['image'].')';
-        $images = [];
-        for ($i=0; $i < count($old_images); $i++) { 
-            if( $_POST['image'] == $i )
-                {
-                   if(file_exists('uploads/drivers/'.$old_images[$i]))
-                    {   
-                        unlink('uploads/drivers/'.$old_images[$i]);
-                    }  
-                }
-            $images[] = $old_images[$i];
-        }
-
-        $model->images=implode(',', $images);
-        $model->save();
-       
-        echo "<pre>";
-        print_r($_POST);
-    }
 
     public function actionDeleteDriver($id)
     {
@@ -635,6 +560,76 @@ class ProfileController extends Controller
                  $user->save();
                  echo $path;
             }
+    }
+    public function actionUploadPhotos1()
+    {
+        $images = [];
+        $uploadDir = "uploads/transports/";
+
+        for ($i = 0; $i < count($_FILES['file']['name']); $i++) {
+
+        $ext = "";
+        $ext = substr(strrchr($_FILES['file']['name'][$i], "."), 1); 
+
+        $fPath = $_POST['names'][$i];
+            if($ext != ""){
+               $images []= $fPath;
+               $result = move_uploaded_file($_FILES['file']['tmp_name'][$i], $uploadDir . $fPath);
+            }
+        }
+
+        // echo "<pre>";
+        // print_r($_FILES['file']['type']);
+        echo "<pre>Photos<br>";
+        print_r($images);
+        echo "</pre>";
+
+    }
+    public function actionUploadPhotos2()
+    {
+        $images = [];
+        $uploadDir = "uploads/drivers/";
+
+        for ($i = 0; $i < count($_FILES['file']['name']); $i++) {
+
+        $ext = "";
+        $ext = substr(strrchr($_FILES['file']['name'][$i], "."), 1); 
+
+        $fPath = $_POST['names'][$i];
+            if($ext != ""){
+               $images []= $fPath;
+               $result = move_uploaded_file($_FILES['file']['tmp_name'][$i], $uploadDir . $fPath);
+            }
+        }
+
+        // echo "<pre>";
+        // print_r($_FILES['file']['type']);
+        echo "<pre>";
+        print_r($images);
+        echo "</pre>";
+
+    }
+
+    public function actionDeleteImage1($value)
+    {
+          echo "<pre>";
+          print_r($value);
+          if(file_exists('uploads/transports/'.$value))
+             {
+                 unlink('uploads/transports/'.$value);
+                 echo "deleted";
+             }
+    }
+
+    public function actionDeleteImage2($value)
+    {
+          echo "<pre>";
+          print_r($value);
+        if(file_exists('uploads/drivers/'.$value))
+         {
+             unlink('uploads/drivers/'.$value);
+             echo "deleted";
+         }
     }
     
 }

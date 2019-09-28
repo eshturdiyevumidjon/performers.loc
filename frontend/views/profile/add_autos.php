@@ -40,7 +40,18 @@ $cr =  Yii::$app->session['active_create'];
                      </div>
                     </div>
                    <h4 class="mrte"><?=Yii::t('app','Upload a photo')?></h4>
+                   
                     <div class="lert" id="tr_photos">
+                      <?php if($transport->images): ?>
+                      <?php $images_tr = explode(',',$transport->images);?>
+                      <?php $c=0; foreach ($images_tr as $img_tr): ?>
+                        <div class="download_photos added" id="tr_photo<?=$c?>">
+                          <input type="hidden" name="uploading_images1[]" value="<?=$img_tr?>" id="uploading_image_name<?=$c?>">
+                          <button type="button" class="remove_photo" onclick="remove(<?=$c?>);" name="delete" id="<?=$c?>" ><img src="/images/minus_a.svg" class="delete_image"></button>
+                          <img src="/uploads/transports/<?=$img_tr?>" alt="">
+                        </div>
+                      <?php $c++; endforeach ?>
+                      <?php endif; ?>
                         <div class="download_photos">
                           <label class="add_photo" for="my-file-selector1">
                             <input id="my-file-selector1" type="file" class="d-none" name="tr_images[]" accept="image/*"accept="image/*" multiple>
@@ -99,10 +110,20 @@ $cr =  Yii::$app->session['active_create'];
                            </div>
                         </div>
                         <h4 class="mrte"><?=Yii::t('app','Upload a photo')?></h4>
-                       <div class="lert" id="dr_photos">
+                         <div class="lert" id="dr_photos">
+                         <?php if($driver->images): ?>
+                          <?php $images_dr = explode(',',$driver->images);?>
+                          <?php $c=0; foreach ($images_dr as $img_tr): ?>
+                            <div class="download_photos added" id="dr_photo<?=$c?>">
+                              <input type="hidden" name="uploading_images2[]" value="<?=$img_tr?>" id="uploading_image_name_dr<?=$c?>">
+                              <button type="button" class="remove_photo" onclick="remove2(<?=$c?>);" name="<?=$c?>" ><img src="/images/minus_a.svg" class="delete_image"></button>
+                              <img src="/uploads/drivers/<?=$img_tr?>" alt="">
+                            </div>
+                          <?php $c++; endforeach ?>
+                          <?php endif; ?>
                             <div class="download_photos">
                               <label class="add_photo" for="my-file-selector2">
-                                <input id="my-file-selector2" type="file" class="d-none" name="dr_images[]" accept="image/*"accept="image/*" multiple>
+                                <input id="my-file-selector2" type="file" class="d-none" accept="image/*"accept="image/*" multiple>
                                 <img src="/images/plus_a.svg" alt="">
                                </label>
                             </div> 
@@ -161,6 +182,103 @@ $cr =  Yii::$app->session['active_create'];
 <?php
 $id = $model->id;
 $this->registerJs(<<<JS
+    var c = 100;
+ remove = function(id){
+    $.post('/$lang/profile/delete-image1?value='+$("#uploading_image_name"+id).val(),function(success){alert(success)});
+    $("#tr_photo"+id).remove();
+    
+ 
+  }
+ 
+  $("#my-file-selector1").on('change',function(e){
+    var files = e.target.files;
+    var data = new FormData() ; 
+    $.each(files, function(i,file){
+        var reader = new FileReader();
+        var d = new Date();
+        var new_name_photo = d.getTime() + '(' + i + ')' + Math.floor(Math.random() * 101000);  
+        var ext = $( '#my-file-selector1' )[0].files[i].type.slice(6);
+        new_name_photo = new_name_photo + "." + ext;
+
+        reader.readAsDataURL(file);
+
+        data.append('file[]', $( '#my-file-selector1' )[0].files[i]) ; 
+        data.append('names[]', new_name_photo) ; 
+
+        reader.onload = function(e){
+            c++;
+            var template = '<div class="download_photos added" id="tr_photo'+c+'">' +
+            '<input type="hidden" name="uploading_images1[]" value="' + new_name_photo + '" id="uploading_image_name'+c+'">'+
+            '<button type="button" class="remove_photo" onclick="remove('+c+');" name="delete" id="'+c+'" ><img src="/images/minus_a.svg" class="delete_image"></button>'+
+                '<img src="'+e.target.result+'" alt="">'+
+              '</div>';
+            $('#tr_photos').prepend(template);
+          };
+
+      });
+     $.ajax({
+           url: '/$lang/profile/upload-photos1',
+           type: 'POST',
+           data: data,
+           processData: false,
+           contentType: false,
+           beforeSend: function(){
+            },
+            success: function(data){alert(data) 
+            }
+           });
+
+  });
+
+
+  var b = 100;
+ remove2 = function(id){
+    $.post('/$lang/profile/delete-image2?value='+$("#uploading_image_name_dr"+id).val(),function(success){alert(success)});
+    $("#dr_photo"+id).remove();
+    
+ 
+  }
+ 
+  $("#my-file-selector2").on('change',function(e){
+    var files = e.target.files;
+    var data = new FormData() ; 
+    $.each(files, function(i,file){
+        var reader = new FileReader();
+        var d = new Date();
+        var new_name_photo = d.getTime() + '(' + i + ')' + Math.floor(Math.random() * 101000);  
+        var ext = $( '#my-file-selector2' )[0].files[i].type.slice(6);
+        new_name_photo = new_name_photo + "." + ext;
+
+        reader.readAsDataURL(file);
+
+        data.append('file[]', $( '#my-file-selector2' )[0].files[i]) ; 
+        data.append('names[]', new_name_photo) ; 
+
+        reader.onload = function(e){
+           b++;
+            var template = '<div class="download_photos added" id="dr_photo'+b+'">' +
+            '<input type="hidden" name="uploading_images2[]" value="' + new_name_photo + '" id="uploading_image_name_dr'+b+'">'+
+            '<button type="button" class="remove_photo" onclick="remove2('+b+');" name="'+b+'" ><img src="/images/minus_a.svg" class="delete_image"></button>'+
+                '<img src="'+e.target.result+'" alt="">'+
+              '</div>';
+            $('#dr_photos').prepend(template);
+          };
+
+      });
+     $.ajax({
+           url: '/$lang/profile/upload-photos2',
+           type: 'POST',
+           data: data,
+           processData: false,
+           contentType: false,
+           beforeSend: function(){
+            },
+            success: function(data){alert(data) 
+            }
+           });
+
+  });
+
   $(document).ready(function(){
     $("#ccc").on('click',function(){
       $('#active').val('1');
@@ -177,54 +295,6 @@ $this->registerJs(<<<JS
     $("#add_driver").on('click',function(){
       $("#create_driver").toggle(300);
     });
-
-    remove = function(id){
-        $("#tr_photo"+id).remove();
-      }
-      $("#my-file-selector1").on('change',function(e){
-        var files = e.target.files;
-
-        $.each(files, function(i,file){
-            var reader = new FileReader();
-
-            reader.readAsDataURL(file);
-
-            reader.onload = function(e){
-                var template = '<div class="download_photos added" id="tr_photo'+i+'">' +
-                '<button type="button" class="remove_photo" onclick="remove('+i+')"><img src="/images/minus_a.svg"></button>'+
-                    '<img src="'+e.target.result+'" alt="">'+
-                  '</div>';
-                $('#tr_photos').prepend(template);
-
-              };
-
-          });
-
-      });
-      remove2 = function(id){
-            $("#dr_photo"+id).remove();
-          }
-          $("#my-file-selector2").on('change',function(e){
-            var files = e.target.files;
-
-            $.each(files, function(i,file){
-                var reader = new FileReader();
-
-                reader.readAsDataURL(file);
-
-                reader.onload = function(e){
-                    var template = '<div class="download_photos added" id="dr_photo'+i+'">' +
-                    '<button type="button" class="remove_photo" onclick="remove2('+i+')"><img src="/images/minus_a.svg"></button>'+
-                        '<img src="'+e.target.result+'" alt="">'+
-                      '</div>';
-                    $('#dr_photos').prepend(template);
-
-                  };
-
-              });
-
-          });
-
     
   });
 JS

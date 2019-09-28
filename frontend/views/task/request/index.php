@@ -1,5 +1,5 @@
 <?php if(count($requests)>0): ?>
-<h2>Заявка</h2>
+<h2><?=Yii::t('app','Request')?></h2>
 <?php endif;?>
 <?php foreach ($requests as $key => $value): ?>
   <div class="item_to_city" style="margin-bottom: 3px;">
@@ -12,16 +12,6 @@
         <?php endif ?>
         <div>
           <p><?=$value['user']->username?></p>
-          <!-- <div class="rating">
-            <a href="#" class="rating_img">
-              <img src="/images/star.svg" alt="">
-              <img src="/images/star.svg" alt="">
-              <img src="/images/star.svg" alt="">
-              <img src="/images/star.svg" alt="">
-              <img src="/images/star.svg" alt="">
-            </a>
-            <span>3</span>
-          </div> -->
         </div>
       </div>
       <div class="price_cop">
