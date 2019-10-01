@@ -57,16 +57,29 @@
             <?php endforeach ?>
           </div>
         </div>
-      <?php if ($active_user->type == 4): ?>
+      <?php if ($active_user->type == 4 ): ?>
         <div class="col-sm-3">
          <!--  <a href="#" class="enter_to_site"><span class="aft_back"></span><?=Yii::t('app','Order')?></a> -->
-          <?=\yii\helpers\Html::a('<span class="aft_back"></span>'.Yii::t('app','Order'), ['/task/create-order','id'=>$value->id],
-            ['role'=>'modal-remote', 'class'=>'enter_to_site','title'=>Yii::t('app','Order'), 
-                                    /*'data-confirm'=>false, 'data-method'=>false, 
-                                    'data-request-method'=>'post',
-                                    'data-toggle'=>'tooltip',
-                                    'data-confirm-title'=>Yii::t('app','Are you sure?'),
-                                    'data-confirm-message'=>Yii::t('app','Are you sure want to order this performer?')*/])?>
+
+         <?php if ($task->performer_id): ?>
+          <?php if (  $task->haveOrder($value->id) ): ?>
+               <?=\yii\helpers\Html::a('<span class="aft_back"></span>'.Yii::t('app','Close'), ['/task/delete-order','id'=>$value->id,'task_id'=>$task->id],['role'=>'modal-remote', 'class'=>'enter_to_site','title'=>Yii::t('app','Order'), 
+                                /*'data-confirm'=>false, 'data-method'=>false, 
+                                'data-request-method'=>'post',
+                                'data-toggle'=>'tooltip',
+                                'data-confirm-title'=>Yii::t('app','Are you sure?'),
+                                'data-confirm-message'=>Yii::t('app','Are you sure want to order this performer?')*/])?>    
+          <?php endif ?>
+            
+         <?php else: ?>
+              <?=\yii\helpers\Html::a('<span class="aft_back"></span>'.Yii::t('app','Order'), ['/task/create-order','id'=>$value->id],['role'=>'modal-remote', 'class'=>'enter_to_site','title'=>Yii::t('app','Order'), 
+                                  /*'data-confirm'=>false, 'data-method'=>false, 
+                                  'data-request-method'=>'post',
+                                  'data-toggle'=>'tooltip',
+                                  'data-confirm-title'=>Yii::t('app','Are you sure?'),
+                                  'data-confirm-message'=>Yii::t('app','Are you sure want to order this performer?')*/])?>
+         <?php endif ?>
+        
         </div>
       <?php endif;?>
       </div>

@@ -184,7 +184,7 @@ $id = $model->id;
 $this->registerJs(<<<JS
     var c = 100;
  remove = function(id){
-    $.post('/$lang/profile/delete-image1?value='+$("#uploading_image_name"+id).val(),function(success){alert(success)});
+    $.post('/$lang/profile/delete-image1?value='+$("#uploading_image_name"+id).val(),function(success){});
     $("#tr_photo"+id).remove();
     
  
@@ -224,7 +224,7 @@ $this->registerJs(<<<JS
            contentType: false,
            beforeSend: function(){
             },
-            success: function(data){alert(data) 
+            success: function(data){ 
             }
            });
 
@@ -233,7 +233,7 @@ $this->registerJs(<<<JS
 
   var b = 100;
  remove2 = function(id){
-    $.post('/$lang/profile/delete-image2?value='+$("#uploading_image_name_dr"+id).val(),function(success){alert(success)});
+    $.post('/$lang/profile/delete-image2?value='+$("#uploading_image_name_dr"+id).val(),function(success){});
     $("#dr_photo"+id).remove();
     
  
@@ -273,7 +273,7 @@ $this->registerJs(<<<JS
            contentType: false,
            beforeSend: function(){
             },
-            success: function(data){alert(data) 
+            success: function(data){ 
             }
            });
 

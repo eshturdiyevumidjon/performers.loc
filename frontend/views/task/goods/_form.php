@@ -142,18 +142,6 @@ $lang = Yii::$app->language;
                 <label for="bww5"><?=$model->getAttributeLabel('loading_required_status')?></label>
             </div>
           </div>
-          <div class="row mband" id="option">
-
-            <div class="col-sm-6">
-               <div class="form-group_checkbox mt10 mb15 vnu_m">
-                  <input type="checkbox" id="bww556" name="lift" value="1" <?=($model->lift == '1') ? 'checked' :'' ?>>
-                  <label for="bww556"><?=$model->getAttributeLabel('lift')?></label>
-              </div>
-            </div>
-            <div class="col-sm-6">
-            <?= $form->field($model, 'floor')->textInput(['class'=>'my_input','placeholder'=>$model->getAttributeLabel('floor')])->label(false) ?>
-            </div>
-          </div>
         </div>
         <hr class="mb15">
         <h4><?=Yii::t('app','Additional terms')?></h4>

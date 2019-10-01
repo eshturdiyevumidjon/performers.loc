@@ -3,6 +3,7 @@ namespace frontend\controllers;
 
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
+use common\models\User;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
@@ -169,18 +170,20 @@ class SiteController extends Controller
 
     public function actionRetry($email)
     {
-        $user = \common\models\User::findOne([
-            'email' => $email,
-        ]);
-
+        $user = new User();
         $user->generateCode();
+
+        Yii::$app->session['confirmation_code'] = $user->confirmation_code;
+        $confirmation_code =  Yii::$app->session['confirmation_code'];
+        $user->delete();
+
          Yii::$app
         ->mailer
         ->compose()
         ->setFrom(['itake1110@gmail.com' => Yii::$app->name . ' robot'])
         ->setTo($email)
         ->setSubject('Verify account for ' . Yii::$app->name)
-        ->setHtmlBody('<b>'.$user->confirmation_code.'</b>')
+        ->setHtmlBody('<b>'.$confirmation_code.'</b>')
         ->send();
     }
 
@@ -196,6 +199,7 @@ class SiteController extends Controller
         Yii::$app->user->logout();
         return $this->goHome();
     }
+
     public function actionSinglePage($id)
     {
         $new = \backend\models\News::find()->where(['id'=>$id])->one();
@@ -327,16 +331,15 @@ class SiteController extends Controller
                 }
                 if($modelCustomer->active == 2)
                 {
-                     if($modelPerformer->signuped())
+                     if($modelPerformer->validate() && Yii::$app->session['confirmation_code'] != "")
                         {
-                            if($modelPerformer->valid())
+                            if($modelPerformer->valid() && $modelPerformer->signup1())
                             {
                                 $modelForm=new LoginForm();
                                 $modelForm->username=$modelPerformer->email;
                                 $modelForm->password=$modelPerformer->password;
                                 $modelForm->login();
                                 return ['forceClose'=>true,'forceReload'=>'#personal-pjax'];
-                                //return $this->redirect(['/profile/index']);
                             }
                             else
                             {
@@ -345,26 +348,40 @@ class SiteController extends Controller
                                     'content'=>$this->renderAjax('signup', [
                                         'modelCustomer' => $modelCustomer,
                                         'modelPerformer' => $modelPerformer,
-                                        'error' => 'Code is not valid',
+                                        'error' => Yii::t('app','Code is not valid'),
                                         'active' => 3
                                     ])."<br>",
-                                    'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
-                        
+                                    'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])                        
                                 ];  
                             }
                         }
-                    if($modelPerformer->validate() && $modelPerformer->signup1())
+                    if($modelPerformer->validate())
                     {
-                         return [
-                                    'title'=> Yii::t('app','Signup'),
-                                    'content'=>$this->renderAjax('signup', [
-                                        'modelCustomer' => $modelCustomer,
-                                        'modelPerformer' => $modelPerformer,
-                                        'active' => 3
-                                    ])."<br>",
-                                    'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
+                        $user = new User();
+                        $user->generateCode();
+                        Yii::$app->session['confirmation_code'] = $user->confirmation_code;
+                        $confirmation_code = $user->confirmation_code;
+                        $user->delete();
+
+                        Yii::$app
+                          ->mailer
+                          ->compose()
+                          ->setFrom(['itake1110@gmail.com' => Yii::$app->name . ' robot'])
+                          ->setTo($email)
+                          ->setSubject('Verify account for ' . Yii::$app->name)
+                          ->setHtmlBody('<b>'.$confirmation_code.'</b>')
+                          ->send();
                         
-                                ];  
+                        return [
+                                'title'=> Yii::t('app','Signup'),
+                                'content'=>$this->renderAjax('signup', [
+                                    'modelCustomer' => $modelCustomer,
+                                    'modelPerformer' => $modelPerformer,
+                                    'active' => 3
+                                ])."<br>",
+                                'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
+                    
+                            ];  
                     }
                     else{
                         return [
@@ -377,9 +394,7 @@ class SiteController extends Controller
                         'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
                     ];   
                     }
-                   
                 }
-
             }
             else
             {

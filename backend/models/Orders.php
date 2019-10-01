@@ -32,10 +32,11 @@ class Orders extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'task_id', 'status'], 'integer'],
+            [['type', 'task_id', 'status','request_id'], 'integer'],
             [['date_pay'], 'safe'],
             [['amount'], 'number'],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tasks::className(), 'targetAttribute' => ['task_id' => 'id']],
+            [['request_id'], 'exist', 'skipOnError' => true, 'targetClass' => Request::className(), 'targetAttribute' => ['request_id' => 'id']],
         ];
     }
 
@@ -60,5 +61,9 @@ class Orders extends \yii\db\ActiveRecord
     public function getTask()
     {
         return $this->hasOne(Tasks::className(), ['id' => 'task_id']);
+    }
+     public function getOrder()
+    {
+        return $this->hasOne(Request::className(), ['id' => 'request_id']);
     }
 }

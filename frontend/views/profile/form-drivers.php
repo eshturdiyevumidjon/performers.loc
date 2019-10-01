@@ -45,7 +45,7 @@ $id = $model->id;
 $this->registerJs(<<<JS
    var c = 100;
    remove5 = function(id){
-      $.post('/$lang/profile/delete-image2?value='+$("#uploading_image_name_cr_dr"+id).val(),function(success){alert(success)});
+      $.post('/$lang/profile/delete-image2?value='+$("#uploading_image_name_cr_dr"+id).val(),function(success){});
       $("#dr_photo_cr"+id).remove();
     }
   $("#my-file-selector_cr_dr").on('change',function(e){
@@ -82,7 +82,7 @@ $this->registerJs(<<<JS
            contentType: false,
            beforeSend: function(){
             },
-            success: function(data){alert(data) 
+            success: function(data){ 
             }
            });
 

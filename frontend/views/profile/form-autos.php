@@ -30,7 +30,7 @@ $lang = Yii::$app->language;
               <?php $c=0; foreach ($images_tr as $img_tr): ?>
                 <div class="download_photos added" id="tr_photo_cr<?=$c?>">
                   <input type="hidden" name="uploading_images_cr[]" value="<?=$img_tr?>" id="uploading_image_name_cr<?=$c?>">
-                  <button type="button" class="remove_photo" onclick="remove(<?=$c?>);" name="<?=$c?>" ><img src="/images/minus_a.svg" class="delete_image"></button>
+                  <button type="button" class="remove_photo" onclick="remove222(<?=$c?>);" name="<?=$c?>" ><img src="/images/minus_a.svg" class="delete_image"></button>
                   <img src="/uploads/transports/<?=$img_tr?>" alt="">
                 </div>
               <?php $c++; endforeach ?>
@@ -46,9 +46,9 @@ $lang = Yii::$app->language;
 </div>
 <?php
 $this->registerJs(<<<JS
-   var c = 100;
-   remove = function(id){
-      $.post('/$lang/profile/delete-image1?value='+$("#uploading_image_name_cr"+id).val(),function(success){alert(success)});
+   var c = 10000;
+   remove222 = function(id){
+      $.post('/$lang/profile/delete-image1?value='+$("#uploading_image_name_cr"+id).val(),function(success){});
       $("#tr_photo_cr"+id).remove();
     }
   $("#my-file-selector_cr1").on('change',function(e){
@@ -68,9 +68,9 @@ $this->registerJs(<<<JS
 
         reader.onload = function(e){
             c++;
-            var template = '<div class="download_photos added" id="tr_photo'+c+'">' +
+            var template = '<div class="download_photos added" id="tr_photo_cr'+c+'">' +
             '<input type="hidden" name="uploading_images_cr[]" value="' + new_name_photo + '" id="uploading_image_name_cr'+c+'">'+
-            '<button type="button" class="remove_photo" onclick="remove('+c+');" name="'+c+'" ><img src="/images/minus_a.svg" class="delete_image"></button>'+
+            '<button type="button" class="remove_photo" onclick="remove222('+c+');" name="'+c+'" ><img src="/images/minus_a.svg" class="delete_image"></button>'+
                 '<img src="'+e.target.result+'" alt="">'+
               '</div>';
             $('#tr_photos_cr').prepend(template);
@@ -85,7 +85,7 @@ $this->registerJs(<<<JS
            contentType: false,
            beforeSend: function(){
             },
-            success: function(data){alert(data) 
+            success: function(data){ 
             }
            });
 

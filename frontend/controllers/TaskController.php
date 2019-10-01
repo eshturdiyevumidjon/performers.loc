@@ -130,8 +130,12 @@ class TaskController extends Controller
         $user = $model->user;
         $active_user = \common\models\User::findOne(Yii::$app->user->identity->id);
         $banner = \backend\models\Banners::findOne(1);
-        $requests = \backend\models\Request::find()->joinWith('user')->select('user.*,request.*')->where(['request.task_id'=>$id])->all();
-       
+        $requests = \backend\models\Request::find()->joinWith('user')->select('user.*,request.*')->where(['request.task_id'=>$id]);
+    
+        if($active_user->type == 3){
+            $requests->andWhere(['request.user_id'=>$active_user->id]);
+        }      
+
         $messages = [];
         if($model->performer_id){
             $from = $model->user_id;
@@ -154,7 +158,7 @@ class TaskController extends Controller
                             'model' => $model,
                             'user'=>$user,
                             'banner'=>$banner,
-                            'requests'=>$requests,
+                            'requests'=>$requests->all(),
                             'active_user'=>$active_user,
                             'messages'=>$messages
                         ]);
@@ -162,7 +166,7 @@ class TaskController extends Controller
                             'model' => $model,
                             'user'=>$user,
                             'banner'=>$banner,
-                            'requests'=>$requests,
+                            'requests'=>$requests->all(),
                             'active_user'=>$active_user,
                             'messages'=>$messages
                         ]);
@@ -170,7 +174,7 @@ class TaskController extends Controller
                             'model' => $model,
                             'user'=>$user,
                             'banner'=>$banner,
-                            'requests'=>$requests,
+                            'requests'=>$requests->all(),
                             'active_user'=>$active_user,
                             'messages'=>$messages
                         ]);
@@ -178,7 +182,7 @@ class TaskController extends Controller
                             'model' => $model,
                             'user'=>$user,
                             'banner'=>$banner,
-                            'requests'=>$requests,
+                            'requests'=>$requests->all(),
                             'active_user'=>$active_user,
                             'messages'=>$messages
                         ]);;
@@ -496,6 +500,10 @@ class TaskController extends Controller
         $rr = \backend\models\Request::findOne($id);
         $request = Yii::$app->request;
         
+        $order = new \backend\models\Orders();
+        $order->task_id = $rr->task_id;
+        $order->request_id = $rr->id;
+
         $task = $this->findModel($rr->task_id);
 
         if($request->isAjax){
@@ -505,7 +513,7 @@ class TaskController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
         
             if($request->post()){
-                    
+                    $order->save();
                     $ispolnitel = $rr->user;
                     $zakazchik = $rr->task->user;
                     $task->performer_id = $ispolnitel->id;
@@ -538,7 +546,33 @@ class TaskController extends Controller
             }
         }       
     }
+    public function actionDeleteOrder($id,$task_id)
+    {
+        $request = Yii::$app->request;
+       
+        $model=\backend\models\Orders::find()->where(['task_id'=>$task_id,'request_id'=>$id])->one();
+        $task = $this->findModel($task_id);
+        $task->performer_id = null;
+        $task->save();
 
+        $model->delete();  
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            Yii::$app->session->setFlash('warning', Yii::t('app','Complete successfully'));
+            return [
+                    'forceClose'=>true,
+                    'forceReload'=>'#crud-datatable-pjax'
+                ];
+        }else{
+            /*
+            *   Process for non-ajax request
+            */
+            return $this->redirect(['index']);
+        }
+    }
     public function actionGetModelList($mark_id)
     {
         $arr = \backend\models\Transports::find()->where(['mark'=>$mark_id])->asArray()->all();

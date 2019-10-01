@@ -203,7 +203,7 @@ use yii\widgets\Pjax;
           </div>
         <?php endif ?>
         <div class="zayavka">
-          <?= $this->render('../request/index',['user'=>$user,'active_user'=>$active_user,'requests'=>$requests])?>
+          <?= $this->render('../request/index',['user'=>$user,'active_user'=>$active_user,'requests'=>$requests,'task'=>$model])?>
         </div>
       </div>
     </div>
@@ -269,7 +269,6 @@ JS
      processData: false,
      contentType: false,
       beforeSend: function(){
-       
       },
       success: function(data){ 
         $("#messages").html(data);

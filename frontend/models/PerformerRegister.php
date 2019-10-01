@@ -56,13 +56,7 @@ class PerformerRegister extends Model
             'repassword' => Yii::t('app','Confirm password')/*'Повторный ввод пароля'*/,
         ];
     }
-    public function signuped()
-    {
-	 	$count = User::find()->where(['email' => $this->email,'username' => $this->username, 'type' => 3, 'phone' => $this->phone])->count();
-	 	if($count > 0) return true;
-
-	 	return false;
-    }
+ 
     public function signup1()
     {
         if (!$this->validate()) {
@@ -73,25 +67,18 @@ class PerformerRegister extends Model
         $user->email = $this->email;
         $user->phone = $this->phone;
         $user->type=3;
-        $user->generateCode();
         $user->auth_key=($this->password);
-
-        Yii::$app
-        ->mailer
-        ->compose()
-        ->setFrom(['itake1110@gmail.com' => Yii::$app->name . ' robot'])
-        ->setTo($user->email)
-        ->setSubject('Verify account for ' . Yii::$app->name)
-        ->setHtmlBody('<b>'.$user->confirmation_code.'</b>')
-        ->send();
 
         return $user->save() ? $user : null;
     }
+
     public function valid()
 	{
-	 	$user = User::find()->where(['email' => $this->email,'username' => $this->username, 'type' => 3, 'phone' => $this->phone])->one();
-
-		return    $user->confirmation_code == $this->verify_code;
+        if(Yii::$app->session['confirmation_code']){
+            $confirmation_code = Yii::$app->session['confirmation_code'];
+            Yii::$app->session['confirmation_code'] = "";
+        }
+		return    $confirmation_code == $this->verify_code;
 	}
 
 }

@@ -91,7 +91,7 @@ class Tasks extends \yii\db\ActiveRecord
    public function rules()
     {
         return [
-            [['type', 'status','need_packing','packing_area','need_loader', 'demolition','need_relocation','count_relocation','need_furniture','count_furniture','need_piano','count_purchases','need_personal_items','need_purchases','count_personal_items','count_piano','demolition','need_building_materials','count_building_materials','need_special_equipments','count_special_equipments','need_other_items','count_other_items','count_loader', 'position', 'user_id', 'count_avtokreslo','count_buster','count_avtolulka','count_adult', 'return', 'category_id', 'flight_number_status', 'meeting_with_sign_status', 'car_model', 'car_mark', 'car_on_the_go', 'loading_required_status', 'floor', 'lift', 'shipping_house_type', 'shipping_house_floor', 'shipping_house_lift', 'delivery_house_type', 'delivery_house_floor', 'delivery_house_lift', 'alert_email', 'view_performers','performer_id'], 'integer'],
+            [['type', 'status','need_packing','packing_area','need_loader', 'count_loader', 'demolition','position', 'user_id', 'count_avtokreslo','count_buster','count_avtolulka','count_adult', 'return', 'category_id', 'flight_number_status', 'meeting_with_sign_status', 'car_model', 'car_mark', 'car_on_the_go', 'loading_required_status', 'floor', 'lift', 'shipping_house_type', 'shipping_house_floor', 'shipping_house_lift', 'delivery_house_type', 'delivery_house_floor', 'delivery_house_lift', 'alert_email', 'view_performers','performer_id'], 'integer'],
             [['payed_sum', 'offer_your_price', 'weight', 'width', 'length', 'height'], 'number'],
             [['date_cr', 'date_close', 'date_begin','date_begin2','image'], 'safe'],
             [['shipping_address', 'delivery_address','classification', 'comment', 'item_description'], 'string'],
@@ -118,7 +118,7 @@ class Tasks extends \yii\db\ActiveRecord
 
         $scenarios[self::SCENARIO_GOODS] = ['type','date_close','shipping_address','delivery_address','date_begin','offer_your_price','promo_code','comment','weight','width','length','height','classification','loading_required_status','floor','alert_email','lift','performer_id','image'];
 
-        $scenarios[self::SCENARIO_HELP] = ['need_packing','packing_area','need_loader', 'demolition','need_relocation','count_relocation','need_furniture','count_furniture','need_piano','count_purchases','need_personal_items','need_purchases','count_personal_items','count_piano','demolition','need_building_materials','count_building_materials','need_special_equipments','count_special_equipments','need_other_items','count_other_items','count_loader','type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','comment','shipping_house_type','shipping_house_floor','shipping_house_lift','delivery_house_type','delivery_house_floor','delivery_house_lift','item_description','alert_email','view_performers','performer_id','image'];
+        $scenarios[self::SCENARIO_HELP] = ['need_packing','packing_area','need_loader','count_loader', 'demolition','type','payed_sum','status','date_cr','date_close','position','user_id','shipping_address','delivery_address','shipping_coordinate_x','shipping_coordinate_y','delivery_coordinate_x','delivery_coordinate_y','date_begin','offer_your_price','promo_code','comment','shipping_house_type','shipping_house_floor','shipping_house_lift','delivery_house_type','delivery_house_floor','delivery_house_lift','item_description','alert_email','view_performers','performer_id','image'];
 
         return $scenarios;
     }
@@ -347,5 +347,9 @@ class Tasks extends \yii\db\ActiveRecord
     public function getMark()
     {
          return \backend\models\Marks::find()->where(['id'=>$this->car_mark])->one()->name_mark;
+    }
+    public function haveOrder($request_id)
+    {
+    	return \backend\models\Orders::find()->where(['task_id'=>$this->id,'request_id'=>$request_id])->count() == 1;
     }
 }
