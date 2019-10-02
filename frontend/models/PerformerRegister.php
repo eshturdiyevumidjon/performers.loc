@@ -19,6 +19,7 @@ class PerformerRegister extends Model
     public $code;
 	public $verify_code;
  	public $verify_phone;
+    public $rrr;
 
 	public function rules()
     {
@@ -27,7 +28,7 @@ class PerformerRegister extends Model
             ['username', 'string', 'min' => 2, 'max' => 255],
             ['email', 'trim'],
             ['email', 'email'],
-            ['verify_code','safe'],
+            [['verify_code','rrr'],'safe'],
  			['verify_phone','safe'],
             ['email', 'string', 'max' => 255],
             ['email','validateMail'],
@@ -74,10 +75,7 @@ class PerformerRegister extends Model
 
     public function valid()
 	{
-        if(Yii::$app->session['confirmation_code']){
-            $confirmation_code = Yii::$app->session['confirmation_code'];
-            Yii::$app->session['confirmation_code'] = "";
-        }
+        $confirmation_code = Yii::$app->session['confirmation_code'];
 		return    $confirmation_code == $this->verify_code;
 	}
 

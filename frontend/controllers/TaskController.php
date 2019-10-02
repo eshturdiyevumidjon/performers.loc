@@ -417,6 +417,9 @@ class TaskController extends Controller
                     }
             }
         }
+
+        
+
         $model->delete();  
         if($request->isAjax){
             /*

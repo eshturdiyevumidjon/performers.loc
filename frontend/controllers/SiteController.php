@@ -288,8 +288,8 @@ class SiteController extends Controller
         ->setSubject('Password reset for ' . Yii::$app->name)
         ->setHtmlBody('<b>'.$user->confirmation_code.'</b>')
         ->send();
-
     }
+
     public function actionSignup()
     {
         $request = Yii::$app->request;
@@ -313,7 +313,6 @@ class SiteController extends Controller
                         $modelForm->password=$modelCustomer->password;
                         $modelForm->login();
                         return ['forceClose'=>true,'forceReload'=>'#personal-pjax'];
-                        //return $this->redirect(['/profile/index']);
                     }
                     else
                     {
@@ -331,7 +330,7 @@ class SiteController extends Controller
                 }
                 if($modelCustomer->active == 2)
                 {
-                     if($modelPerformer->validate() && Yii::$app->session['confirmation_code'] != "")
+                     if($modelPerformer->rrr == 1)
                         {
                             if($modelPerformer->valid() && $modelPerformer->signup1())
                             {
@@ -355,37 +354,40 @@ class SiteController extends Controller
                                 ];  
                             }
                         }
-                    if($modelPerformer->validate())
+                        else{
+
+                    if( $modelPerformer->validate() )
                     {
+
                         $user = new User();
                         $user->generateCode();
                         Yii::$app->session['confirmation_code'] = $user->confirmation_code;
                         $confirmation_code = $user->confirmation_code;
                         $user->delete();
-
+                        $modelPerformer->rrr = 1;
                         Yii::$app
                           ->mailer
                           ->compose()
                           ->setFrom(['itake1110@gmail.com' => Yii::$app->name . ' robot'])
-                          ->setTo($email)
+                          ->setTo($modelPerformer->email)
                           ->setSubject('Verify account for ' . Yii::$app->name)
                           ->setHtmlBody('<b>'.$confirmation_code.'</b>')
                           ->send();
                         
                         return [
-                                'title'=> Yii::t('app','Signup'),
+                                'title'=> $modelPerformer->rrr,
                                 'content'=>$this->renderAjax('signup', [
                                     'modelCustomer' => $modelCustomer,
                                     'modelPerformer' => $modelPerformer,
                                     'active' => 3
                                 ])."<br>",
-                                'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
+                                'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red','name'=>'verify'])
                     
                             ];  
                     }
                     else{
                         return [
-                        'title'=> Yii::t('app','Signup'),
+                        'title'=> $modelPerformer->rrr,
                         'content'=>$this->renderAjax('signup', [
                             'modelCustomer' => $modelCustomer,
                             'modelPerformer' => $modelPerformer,
@@ -394,6 +396,7 @@ class SiteController extends Controller
                         'footer'=>  Html::submitButton(Yii::t('app','Create my account'),['class'=>'my_modal_submit2 btn_red'])
                     ];   
                     }
+                }
                 }
             }
             else

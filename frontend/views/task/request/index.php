@@ -63,7 +63,7 @@
 
          <?php if ($task->performer_id): ?>
           <?php if (  $task->haveOrder($value->id) ): ?>
-               <?=\yii\helpers\Html::a('<span class="aft_back"></span>'.Yii::t('app','Close'), ['/task/delete-order','id'=>$value->id,'task_id'=>$task->id],['role'=>'modal-remote', 'class'=>'enter_to_site','title'=>Yii::t('app','Order'), 
+               <?=\yii\helpers\Html::a('<span class="aft_back"></span>'.Yii::t('app','Close'), ['/task/delete-order','id'=>$value->id,'task_id'=>$task->id],['role'=>'modal-remote', 'class'=>'enter_to_site','title'=>Yii::t('app','Close'), 
                                 /*'data-confirm'=>false, 'data-method'=>false, 
                                 'data-request-method'=>'post',
                                 'data-toggle'=>'tooltip',

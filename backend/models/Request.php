@@ -144,4 +144,6 @@ class Request extends \yii\db\ActiveRecord
     {
         return Transports::find()->where(['mark'=>$this->mark_id,'model'=>$this->model_id,'user_id'=>$user_id])->one();
     }
+
+    
 }

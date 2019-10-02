@@ -16,6 +16,7 @@ $lang = Yii::$app->language;
 </ul>
 <?php $form = ActiveForm::begin(['enableClientScript' => false,'options'=>['class'=>'input_styles','id'=>'customerss']]); ?>
 		 <input type="hidden" name="CustomerRegister[active]" id="active" class="hidden" value="<?=$modelCustomer->active?>">
+     <input type="hidden" name="PerformerRegister[rrr]"  class="hidden" value="<?=$modelPerformer->rrr?>">
   <div class="tab-content">
     <div id="home" <?=($active == 1)?'class="tab-pane in active"':'class="tab-pane fade"'?>>
           <?=$form->field($modelCustomer,'username')->textInput(['placeholder'=>$modelCustomer->getAttributeLabel('username'),'class'=>'my_input'])->label(false)?>
