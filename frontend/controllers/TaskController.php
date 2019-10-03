@@ -502,6 +502,8 @@ class TaskController extends Controller
     {
         $rr = \backend\models\Request::findOne($id);
         $request = Yii::$app->request;
+
+        $requests = \backend\models\Request::find()->where(['task_id'=>$rr->task_id])->all();
         
         $order = new \backend\models\Orders();
         $order->task_id = $rr->task_id;
@@ -517,6 +519,21 @@ class TaskController extends Controller
         
             if($request->post()){
                     $order->save();
+                    foreach ($requests as $key => $value) {
+                        if($value->id != $id){
+                            $ispolnitel = $value->user;
+                            $zakazchik = $value->task->user;
+                             Yii::$app
+                            ->mailer
+                            ->compose()
+                            ->setFrom(['itake1110@gmail.com' => Yii::$app->name . ' robot'])
+                            ->setTo($ispolnitel->email)
+                            ->setSubject('New Order From ' . Yii::$app->name)
+                            ->setHtmlBody("<p>Dear ".$ispolnitel->username.". ----- ".$zakazchik->username."</p>")
+                            ->send();
+                        }
+                    }
+
                     $ispolnitel = $rr->user;
                     $zakazchik = $rr->task->user;
                     $task->performer_id = $ispolnitel->id;
@@ -549,6 +566,55 @@ class TaskController extends Controller
             }
         }       
     }
+
+    public function actionCloseOrder($id)
+    {
+        $rr = \backend\models\Request::findOne($id);
+        $request = Yii::$app->request;
+
+        $task = $this->findModel($rr->task_id);
+
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+        
+            if($request->post()){
+                    
+                    $ispolnitel = $rr->user;
+                    $zakazchik = $rr->task->user;
+                    $task->performer_id = $ispolnitel->id;
+                    $task->save();
+
+                     Yii::$app
+                    ->mailer
+                    ->compose()
+                    ->setFrom(['itake1110@gmail.com' => Yii::$app->name . ' robot'])
+                    ->setTo($ispolnitel->email)
+                    ->setSubject('New Order From ' . Yii::$app->name)
+                    ->setHtmlBody("<p>Dear ".$ispolnitel->username.". ????? ".$zakazchik->username."</p>")
+                    ->send();
+
+                 return [
+                    'forceClose'=>true,
+                    'forceReload'=>'#crud-datatable-pjax'
+                 ];
+
+               }else{           
+                return [
+                    'title'=> Yii::t('app','Service charge'),
+                    'size'=>'large',
+                    'content'=>$this->renderAjax('request/pay_form', [
+                    ]),
+                     'footer'=>'<br>'.Html::submitButton(Yii::t('app','Pay'), ['class' => 'my_modal_submit btn_red', 'name' => 'order-button']).
+                    Html::a(Yii::t('app','Add funds'),['#'], ['class' => 'my_modal_button btn_red','role'=>'modal-remote'])
+        
+                ];         
+            }
+        }       
+    }
+
     public function actionDeleteOrder($id,$task_id)
     {
         $request = Yii::$app->request;
@@ -576,6 +642,7 @@ class TaskController extends Controller
             return $this->redirect(['index']);
         }
     }
+
     public function actionGetModelList($mark_id)
     {
         $arr = \backend\models\Transports::find()->where(['mark'=>$mark_id])->asArray()->all();
@@ -622,10 +689,8 @@ class TaskController extends Controller
         }
 
         // echo "<pre>";
-        // print_r($_FILES['file']['type']);
-        echo "<pre>";
-        print_r($images);
-        echo "</pre>";
+        // print_r($images);
+        // echo "</pre>";
 
     }
 

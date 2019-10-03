@@ -43,6 +43,7 @@ class m150207_210500_i18n_init extends Migration
         $this->createIndex('idx_message_language', '{{%message}}', 'language');
 
         $translations = [
+                'Close Order'=>'Закончить заказ',
                 'Code is not valid'=>'Код не действует',
                 'My chats'=>'Мои чаты',
                 'Request'=>'Заявка',

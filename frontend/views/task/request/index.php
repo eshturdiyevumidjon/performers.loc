@@ -63,12 +63,14 @@
 
          <?php if ($task->performer_id): ?>
           <?php if (  $task->haveOrder($value->id) ): ?>
+               <?=\yii\helpers\Html::a('<span class="aft_back"></span>'.Yii::t('app','Close Order'), ['/task/close-order','id'=>$value->id],['role'=>'modal-remote', 'class'=>'enter_to_site','title'=>Yii::t('app','Close Order')])?>
+               <br>
                <?=\yii\helpers\Html::a('<span class="aft_back"></span>'.Yii::t('app','Close'), ['/task/delete-order','id'=>$value->id,'task_id'=>$task->id],['role'=>'modal-remote', 'class'=>'enter_to_site','title'=>Yii::t('app','Close'), 
-                                /*'data-confirm'=>false, 'data-method'=>false, 
+                                'data-confirm'=>false, 'data-method'=>false, 
                                 'data-request-method'=>'post',
                                 'data-toggle'=>'tooltip',
                                 'data-confirm-title'=>Yii::t('app','Are you sure?'),
-                                'data-confirm-message'=>Yii::t('app','Are you sure want to order this performer?')*/])?>    
+                                'data-confirm-message'=>Yii::t('app','Are you sure want to delete this order?')])?>    
           <?php endif ?>
             
          <?php else: ?>
