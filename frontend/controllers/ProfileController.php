@@ -78,7 +78,7 @@ class ProfileController extends Controller
         $user->save();
         return $this->redirect(['index']);
     }
-    public function actionIndex()
+    public function actionIndex($tab = null)
     {
         $user = \common\models\User::findOne(Yii::$app->user->identity->id);
         $company = \backend\models\AboutCompany::findOne(1);
@@ -102,7 +102,7 @@ class ProfileController extends Controller
                 ->limit($pages2->limit)
                 ->all();
 
-            return $this->render('profile_performer',['user' => $user,'company'=>$company,'all_tasks'=>$all_tasks,'banner'=>$banner,'pages' => $pages2,'post'=>$post,'all_active_tasks'=>$all_active_tasks,'pages2' => $pages3]);
+            return $this->render('profile_performer',['user' => $user,'company'=>$company,'all_tasks'=>$all_tasks,'banner'=>$banner,'pages' => $pages2,'post'=>$post,'all_active_tasks'=>$all_active_tasks,'pages2' => $pages3,'tab'=>$tab]);
         }
 
         if($user->type == 4){
@@ -114,7 +114,7 @@ class ProfileController extends Controller
                 ->limit($pages->limit)
                 ->all();
 
-            return $this->render('profile_customer',['user' => $user,'company'=>$company,'my_tasks'=>$models,'banner'=>$banner,'pages' => $pages]);
+            return $this->render('profile_customer',['user' => $user,'company'=>$company,'my_tasks'=>$models,'banner'=>$banner,'pages' => $pages,'tab'=>$tab]);
         }
     }
 

@@ -60,7 +60,7 @@ use kartik\date\DatePicker;
                         <?= $form->field($model, 'status')->dropDownList($model->getStatus(), [])?>
                     
                     <?php endif ?>
-                    <?php if (!$model->isNewRecord && $model->type == 3): ?>
+                    <?php if (!$model->isNewRecord && $model->type_of_user == 3): ?>
                         <label><?=Yii::t('app','Access')?></label>
                         <br>
                         <label class="switch switch-small">
@@ -72,7 +72,7 @@ use kartik\date\DatePicker;
 
                 </div>
                 <div class="col-md-6">
-                    <?php if (!$model->isNewRecord && $model->type == 4): ?>
+                    <?php if (!$model->isNewRecord && $model->type_of_user == 4): ?>
                         <label><?=Yii::t('app','Access')?></label>
                         <br>
                         <label class="switch switch-small">
@@ -82,7 +82,7 @@ use kartik\date\DatePicker;
                         </label>
                     <?php endif ?>
                     <?php $checkboxTemplate = '<div class="checkbox i-checks">{beginLabel}{input}{labelTitle}{endLabel}{error}{hint}</div>'; ?>
-                    <?php if (!$model->isNewRecord && $model->type == 3): ?>
+                    <?php if (!$model->isNewRecord && $model->type_of_user == 3): ?>
                         <?= $form->field($model, 'permissions')->checkboxList(\backend\models\Tasks::getType()); ?>
 
                     <?php endif ?>

@@ -5,6 +5,7 @@ use yii\widgets\MaskedInput;
 use \backend\models\Tasks;
 $lang = Yii::$app->language;
 $post['type'] = isset($post['type']) ? $post['type'] : [];
+if(! isset($tab)) $tab = 1;
 
 ?>
 <section class="cabinet">
@@ -21,11 +22,11 @@ $post['type'] = isset($post['type']) ? $post['type'] : [];
   <div class="flex_cabinet">
     <div class="cabinet_left">
       <ul class="nav tab_styles_nav">
-        <li><a data-toggle="tab" class="active show" href="#ff1"><?=Yii::t('app','View Available Jobs')?></a></li>
-        <li><a data-toggle="tab" href="#ff0"><?=Yii::t('app','My active tasks')?></a></li>
+        <li><a data-toggle="tab" class="<?=($tab ==1)? 'active show' : ''?>" href="#ff1"><?=Yii::t('app','View Available Jobs')?></a></li>
+        <li><a data-toggle="tab" class="<?=($tab ==2)? 'active show' : ''?>" href="#ff0"><?=Yii::t('app','My active tasks')?></a></li>
       </ul>
       <div class="tab-content input_styles cab_st">
-        <div id="ff1" class="tab-pane in active"> 
+        <div id="ff1" class="tab-pane <?=($tab == 1)? 'in active' : 'fade'?>"> 
           <form id="filter_form" action="/<?=$lang?>/profile/search" method="post">
             <input type="hidden" name="searching" id="searching" value="0">
             <div class="filter_block">
@@ -152,7 +153,7 @@ $post['type'] = isset($post['type']) ? $post['type'] : [];
             </li>
           </ul> -->
         </div>
-        <div id="ff0" class="tab-pane fade">
+        <div id="ff0" class="tab-pane <?=($tab == 2)? 'in active' : 'fade'?>">
          
            <?=$this->render('filter',['all_tasks'=>$all_active_tasks,'lang'=>$lang])?>
            <?=\yii\widgets\LinkPager::widget(['pagination'=>$pages2])?>

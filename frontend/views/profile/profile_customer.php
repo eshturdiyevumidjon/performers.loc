@@ -15,6 +15,7 @@ $lang = Yii::$app->language;
 
 $this->title = Yii::t('app','Personal Cabinet');
 $this->params['breadcrumbs'][] = $this->title;
+if(! isset($tab)) $tab = 1;
 ?>
 <section class="cabinet">
   <div class="container">
@@ -29,12 +30,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="flex_cabinet">
       <div class="cabinet_left">
         <ul class="nav tab_styles_nav">
-          <li><a data-toggle="tab" href="#ff0" class="active show"><?=Yii::t('app','Create Task')?></a></li>
-          <li><a data-toggle="tab" class="" href="#ff1"><?=Yii::t('app','My Orders')?></a></li>
+          <li><a data-toggle="tab" href="#ff0" class="<?=($tab ==1)? 'active show' : ''?>"><?=Yii::t('app','Create Task')?></a></li>
+          <li><a data-toggle="tab" class="<?=($tab ==2)? 'active show' : ''?>" href="#ff1"><?=Yii::t('app','My Orders')?></a></li>
           <li><a data-toggle="tab" href="#ff2" class=""><?=Yii::t('app','Past Orders')?></a></li>
         </ul>
         <div class="tab-content input_styles cab_st">
-          <div id="ff0" class="tab-pane fade active show">
+          <div id="ff0" class="tab-pane <?=($tab == 1)? 'in active' : 'fade'?>">
             <p class="create_equ"><?=Yii::t('app','Create Task')?></p>
           <div class="row hdr_svgs">
             <div class="col-md-3">
@@ -55,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
           </div>
           </div>
-          <div id="ff1" class="tab-pane in"> 
+          <div id="ff1" class="tab-pane <?=($tab == 2)? 'in active' : 'fade'?>"> 
             <?php if (count($my_tasks) > 0): ?>
               <?=$this->render('filter',['all_tasks'=>$my_tasks,'lang'=>$lang])?>
               <?=\yii\widgets\LinkPager::widget(['pagination'=>$pages])?>
