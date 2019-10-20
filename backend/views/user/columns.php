@@ -50,7 +50,7 @@ $model=new User();
 	    <div class="col-md-4">
 	        <label>
 	            <input type="checkbox" name="User[type]" value="1" <?=$session['User[type]'] == 1 ? 'checked=""' : '' ?> > 
-	            <?=$model->getAttributeLabel('type')?>
+	            <?=$model->getAttributeLabel('type_of_user')?>
 	        </label>
 	    </div>
 	</div>

@@ -43,6 +43,12 @@ class m150207_210500_i18n_init extends Migration
         $this->createIndex('idx_message_language', '{{%message}}', 'language');
 
         $translations = [
+                'This user blocked'=>'Данный пользователь заблокирован',
+                'Access'=>'Доступ',
+                'Pending order'=>'Невыполненный заказ',
+                'Successful order'=>'Успешный заказ',
+                'Canceled Order'=>'Отмененный заказ',
+                'Amount'=>'Сумма',
                 'Close Order'=>'Закончить заказ',
                 'Code is not valid'=>'Код не действует',
                 'My chats'=>'Мои чаты',

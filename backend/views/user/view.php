@@ -22,9 +22,9 @@ use yii\widgets\DetailView;
             'email',
             'auth_key',
             [
-                'attribute'=>'type',
+                'attribute'=>'type_of_user',
                 'value'=>function($data){
-                    return $data->getTypeDescription($data->type);
+                    return $data->getTypeDescription($data->type_of_user);
                 },
             ],
             'birthday',

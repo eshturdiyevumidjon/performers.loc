@@ -42,8 +42,14 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
+           
             if (!$user || !$user->validatePassword($this->password)) {
                 $this->addError($attribute, Yii::t('app','Incorrect username or password.'));
+            }
+            else{
+                 if($user->access == 1){
+                    $this->addError($attribute, Yii::t('app','This user blocked'));
+                }
             }
         }
     }

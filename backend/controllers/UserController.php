@@ -33,7 +33,7 @@ class UserController extends Controller
                         'roles'=>['?'],
                     ],
                     [
-                        'actions' => ['create','update','columns','bulk-delete', 'index','view','delete','error','profile','change'],
+                        'actions' => ['create','update','columns','bulk-delete', 'index','view','delete','error','profile','change','change-access'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -90,6 +90,14 @@ class UserController extends Controller
         }
     }
 
+    public function actionChangeAccess($id)
+    {
+        $user = $this->findModel($id);
+        $user->access = ($user->access == 0) ? 1 : 0;
+
+        $user->save();
+
+    }
     public function actionProfile()
     {
         return $this->render('profile');

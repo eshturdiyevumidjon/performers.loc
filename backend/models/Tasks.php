@@ -218,7 +218,7 @@ class Tasks extends \yii\db\ActiveRecord
      */
     public function getOrders()
     {
-        return $this->hasMany(Orders::className(), ['task_id' => 'id']);
+        return $this->hasOne(Orders::className(), ['task_id' => 'id']);
     }
 
     /**
@@ -332,6 +332,15 @@ class Tasks extends \yii\db\ActiveRecord
             default: return Yii::t('app','Dangerous');
         };
     }
+    public function getStatus($type)
+    {
+        switch ($type) {
+            case '1': return Yii::t('app','Canceled Order');
+            case '3': return Yii::t('app','Successful order');
+            case '3': return Yii::t('app','Pending order');
+            default: return Yii::t('app','New task');
+        };
+    }
     public function getTypeOfTheHouse($type)
     {
       return ($type == 1) ? Yii::t('app','House') : Yii::t('app','Apartment');
@@ -352,5 +361,8 @@ class Tasks extends \yii\db\ActiveRecord
     {
     	return \backend\models\Orders::find()->where(['task_id'=>$this->id,'request_id'=>$request_id])->count() == 1;
     }
+
+
+   
     
 }

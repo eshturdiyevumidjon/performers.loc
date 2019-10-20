@@ -13,13 +13,14 @@
   <?php endif ?>
   
 <div class="confirm_cont">
-  <h3><?=Yii::t('app','Verified Contacts')?></h3>
+  <?php if ($user->status == 0): ?>
+     <h3><?=Yii::t('app','Verified Contacts')?></h3>
   <div class="tel_conf">
     <div>
       <img src="/images/c1.jpg" alt="">
       <div>
         <p><?=Yii::t('app','Phone')?></p>
-        <a href="#">+998 90 937 86 04</a>
+        <a href="#"><?=$user->phone?></a>
       </div>
     </div>
   </div>
@@ -28,10 +29,13 @@
       <img src="/images/c2.jpg" alt="">
       <div>
         <p>E-mail</p>
-        <a href="#">hey@deepx.uz</a>
+        <a href="#"><?=$user->email?></a>
       </div>
     </div>
   </div>
+
+  <?php endif ?>
+  
   <div class="lang_conf">
     <span><?=Yii::t('app','Languages')?></span>
     <div>
@@ -40,7 +44,9 @@
       <?php endforeach ?>
     </div>
   </div>
-  <p class="povis"><?=Yii::t('app','Increase user confidence in yourself - link your social network accounts to your iTake profile. We will not disclose your contact information.')?></p>
+   <?php if ($user->status != 0): ?>
+      <p class="povis"><?=Yii::t('app','Increase user confidence in yourself - link your social network accounts to your iTake profile. We will not disclose your contact information.')?></p>
+  <?php endif ?>
 </div>
 <?php if ($banner): ?>
     <img style="width: 100%;" src="/admin/uploads/banners/<?= $banner->image?>" alt="">

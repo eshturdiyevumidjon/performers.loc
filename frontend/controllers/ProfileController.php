@@ -67,6 +67,17 @@ class ProfileController extends Controller
         ];
     }
 
+    public function actionChangeType()
+    {
+        $user = \common\models\User::findOne(Yii::$app->user->identity->id);
+        if($user->note == 'isp')
+            $user->note = 'zkz';
+        else{
+            $user->note = 'isp';
+        }
+        $user->save();
+        return $this->redirect(['index']);
+    }
     public function actionIndex()
     {
         $user = \common\models\User::findOne(Yii::$app->user->identity->id);
@@ -74,9 +85,9 @@ class ProfileController extends Controller
         $banner = \backend\models\Banners::findOne(1);
 
         if($user->type == 3){
-            $all_tasks = \backend\models\Tasks::find()->where(['type'=>explode(',',$user->role_performer),'performer_id'=>null]);
+            $all_tasks = \backend\models\Tasks::find()->where(['type'=>explode(',',$user->role_performer),'performer_id'=>null,'status'=>0]);
 
-            $my_active_tasks = \backend\models\Tasks::find()->where(['performer_id'=>$user->id]);
+            $my_active_tasks = \backend\models\Tasks::find()->where(['performer_id'=>$user->id,'status'=>0]);
             $countQuery3 = clone $my_active_tasks;
             $pages3 = new Pagination(['totalCount' => $countQuery3->count()]);
             $pages3->setPageSize(10);
@@ -95,7 +106,7 @@ class ProfileController extends Controller
         }
 
         if($user->type == 4){
-            $my_tasks = \backend\models\Tasks::find()->where(['user_id'=>$user->id]);
+            $my_tasks = \backend\models\Tasks::find()->where(['user_id'=>$user->id,'status'=>0]);
             $countQuery = clone $my_tasks;
             $pages = new Pagination(['totalCount' => $countQuery->count()]);
             $pages->setPageSize(10);
@@ -123,10 +134,10 @@ class ProfileController extends Controller
         $company = \backend\models\AboutCompany::findOne(1);
         $banner = \backend\models\Banners::findOne(1);
 
-        $all_tasks = \backend\models\Tasks::find()->where(['performer_id'=>null]);
+        $all_tasks = \backend\models\Tasks::find()->where(['performer_id'=>null,'status'=>0]);
 
 
-        $my_active_tasks = \backend\models\Tasks::find()->where(['performer_id'=>$user->id]);
+        $my_active_tasks = \backend\models\Tasks::find()->where(['performer_id'=>$user->id,'status'=>0]);
         $countQuery3 = clone $my_active_tasks;
         $pages3 = new Pagination(['totalCount' => $countQuery3->count()]);
         $pages3->setPageSize(10);
@@ -278,7 +289,6 @@ class ProfileController extends Controller
         $transport->active = (Yii::$app->session['active']) ? Yii::$app->session['active'] : 1; 
         if(isset($post['submit'])){
 
-
             if($post['submit'] == 'add_transport')
             {
                 $transport->active = 1;
@@ -305,7 +315,7 @@ class ProfileController extends Controller
                         ]);
 
             }
-             if( $post['submit'] == 'add_driver')
+            if( $post['submit'] == 'add_driver')
             {
                 $transport->active = 2;
 
@@ -328,7 +338,6 @@ class ProfileController extends Controller
                             'transport'=>$transport,
                             'driver'=>$driver
                         ]);
-
             }
         }else
         
@@ -364,46 +373,6 @@ class ProfileController extends Controller
             if($model->load($request->post()) && $model->validate()){
                 $model->images = ($_POST['uploading_images_cr'])  ? implode(',',$_POST['uploading_images_cr']) : '';
                 $model->save();
-                // $uploadDir = "uploads/transports/";
-                // for ($i = 0; $i < count($_FILES['images']['name']); $i++) {
-                // $ext = "";
-                // $ext = substr(strrchr($_FILES['images']['name'][$i], "."), 1); 
-                
-                // $fPath =$model->id .'('.$i.')'. rand() . ".$ext";
-
-                // if(isset($old_images[$i]))
-                // {
-                //     preg_match("/\(([^\)]*)\)/", $old_images[$i], $aMatches);
-                //     $ = $aMatches[1];
-                //     $st .= $value . ' ';
-                //     if($ext != ""){
-                //         if($value == $i){
-                //             if(file_exists('uploads/transports/'.$old_images[$i]) && $old_images[$i] != "")
-                //             {   
-                //                 unlink('uploads/transports/'.$old_images[$i]);
-                //             value}
-                //             $images []= $fPath;
-                //             $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath); 
-                //         }
-                //         else
-                //         {
-                //             $images []= $old_images[$i];
-                //         }
-                //     }
-                //     else{
-                //         $images []= $old_images[$i];
-                //     }
-                // }
-                // else{
-                //     if($ext != ""){
-                //       $images []= $fPath;
-                //       $result = move_uploaded_file($_FILES['images']['tmp_name'][$i], $uploadDir . $fPath);
-                //   }   
-                // }
-                   
-                // }
-                // $model->images = implode(',',$images);
-                // $model->save();
                  return [
                     'forceClose'=>true,
                     'forceReload'=>'#crud-datatable-pjax'

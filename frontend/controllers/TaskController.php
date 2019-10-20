@@ -77,8 +77,11 @@ class TaskController extends Controller
     {
         $from = $_POST['from'];
         $to = $_POST['to'];
+        $task_id = $_POST['task_id'];
+
         $message = new \backend\models\Chat();
 
+        $message->chat_id = $task_id;
         $message->from = $from;
         $message->to = $to;
         $message->text = $_POST['text'];
@@ -100,7 +103,7 @@ class TaskController extends Controller
         else{
         }
 
-        $query = \backend\models\Chat::find()->where(['and', ['to'=>[$to,$from]], ['from'=>[$to,$from]]])->orderBy(['date_cr' => SORT_ASC //specify sort order ASC for ascending DESC for descending      
+        $query = \backend\models\Chat::find()->where(['and', ['to'=>[$to,$from]], ['from'=>[$to,$from]]])->andWhere(['chat_id'=>$task_id])->orderBy(['date_cr' => SORT_ASC //specify sort order ASC for ascending DESC for descending      
             ]);;
 
         $messages = [];
@@ -140,7 +143,7 @@ class TaskController extends Controller
         if($model->performer_id){
             $from = $model->user_id;
             $to = $model->performer_id;
-            $query = \backend\models\Chat::find()->where(['and', ['to'=>[$to,$from]], ['from'=>[$to,$from]]])->orderBy(['date_cr' => SORT_ASC //specify sort order ASC for ascending DESC for descending      
+            $query = \backend\models\Chat::find()->where(['and', ['to'=>[$to,$from]], ['from'=>[$to,$from]]])->andWhere(['chat_id'=>$id])->orderBy(['date_cr' => SORT_ASC //specify sort order ASC for ascending DESC for descending      
             ]);
             
             $dataProvider = new ActiveDataProvider([
@@ -409,18 +412,18 @@ class TaskController extends Controller
         $request = Yii::$app->request;
        
         $model=$this->findModel($id);
-        if($model->image != ""){
-            foreach (explode(',',$model->image) as $value) {
-                 if(file_exists('uploads/avatars/'.$value))
-                    {
-                        unlink('uploads/task/'.$value);
-                    }
-            }
+     
+        $model->order->delete();
+
+        foreach ($model->requests as $key => $value) {
+            $value->delete();
         }
-
         
-
-        $model->delete();  
+        \backend\models\Chat::deleteAll('chat_id = '.$model->id);
+        
+        $model->status = 1;
+        $model->save();
+        // $model->delete();  
         if($request->isAjax){
             /*
             *   Process for ajax request
@@ -460,6 +463,19 @@ class TaskController extends Controller
         $request = Yii::$app->request;
         $model = new \backend\models\Request();
         $model->task_id = $id;
+        $task = $this->findModel($id);
+        $ispolnitel = \common\models\User::findOne(Yii::$app->user->identity->id);
+        $user = $task->user;
+        if($user->alert_email == 1){
+              Yii::$app
+                ->mailer
+                ->compose()
+                ->setFrom(['itake1110@gmail.com' => Yii::$app->name . ' robot'])
+                ->setTo($user->email)
+                ->setSubject('New Request From ' . Yii::$app->name)
+                ->setHtmlBody("<p>Dear ".$user->username.". You have new request from ".$ispolnitel->username."</p>")
+                ->send();
+        }
         if($request->isAjax){
             /*
             *   Process for ajax request
@@ -517,7 +533,7 @@ class TaskController extends Controller
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
         
-            if($request->post()){
+            if($order->load($request->post()) &&  $order->validate()){
                     $order->save();
                     foreach ($requests as $key => $value) {
                         if($value->id != $id){
@@ -558,6 +574,7 @@ class TaskController extends Controller
                     'title'=> Yii::t('app','Service charge'),
                     'size'=>'large',
                     'content'=>$this->renderAjax('request/pay_form', [
+                        'model' => $order
                     ]),
                      'footer'=>'<br>'.Html::submitButton(Yii::t('app','Pay'), ['class' => 'my_modal_submit btn_red', 'name' => 'order-button']).
                     Html::a(Yii::t('app','Add funds'),['#'], ['class' => 'my_modal_button btn_red','role'=>'modal-remote'])
@@ -572,40 +589,46 @@ class TaskController extends Controller
         $rr = \backend\models\Request::findOne($id);
         $request = Yii::$app->request;
 
-        $task = $this->findModel($rr->task_id);
 
+        $task = $this->findModel($rr->task_id);
+        $order = $task->orders;
+        
         if($request->isAjax){
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
         
-            if($request->post()){
+            if($request->post() && $order->amount == $rr->price){
                     
                     $ispolnitel = $rr->user;
                     $zakazchik = $rr->task->user;
                     $task->performer_id = $ispolnitel->id;
                     $task->save();
 
+                    
+
                      Yii::$app
                     ->mailer
                     ->compose()
                     ->setFrom(['itake1110@gmail.com' => Yii::$app->name . ' robot'])
                     ->setTo($ispolnitel->email)
-                    ->setSubject('New Order From ' . Yii::$app->name)
-                    ->setHtmlBody("<p>Dear ".$ispolnitel->username.". ????? ".$zakazchik->username."</p>")
+                    ->setSubject('Order Cancellation from' . Yii::$app->name)
+                    ->setHtmlBody("<p>Dear ".$ispolnitel->username.".".$zakazchik->username." cancelled order from you</p>")
                     ->send();
+                   
+                         return [
+                            'forceClose'=>true,
+                            'forceReload'=>'#crud-datatable-pjax'
+                         ];
 
-                 return [
-                    'forceClose'=>true,
-                    'forceReload'=>'#crud-datatable-pjax'
-                 ];
 
                }else{           
                 return [
                     'title'=> Yii::t('app','Service charge'),
                     'size'=>'large',
                     'content'=>$this->renderAjax('request/pay_form', [
+                        'model'=>$order
                     ]),
                      'footer'=>'<br>'.Html::submitButton(Yii::t('app','Pay'), ['class' => 'my_modal_submit btn_red', 'name' => 'order-button']).
                     Html::a(Yii::t('app','Add funds'),['#'], ['class' => 'my_modal_button btn_red','role'=>'modal-remote'])
@@ -687,11 +710,6 @@ class TaskController extends Controller
                $result = move_uploaded_file($_FILES['file']['tmp_name'][$i], $uploadDir . $fPath);
             }
         }
-
-        // echo "<pre>";
-        // print_r($images);
-        // echo "</pre>";
-
     }
 
     public function actionDeleteImage($value)

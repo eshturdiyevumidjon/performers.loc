@@ -66,14 +66,13 @@ return [
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'type',
+        'attribute'=>'type_of_user',
         'value'=>function($data){
             return $data->getTypeDescription($data->type);
         },
-        'visible' => ($session['User[type]'] === null || $session['User[type]'] == 1) ? true : false,
         'contentOptions'=>['class'=>'text-center'],
         'headerOptions'=>['class'=>'text-center'],
-        'filter' => User::getType(),
+        'filter' => User::getTypes(),
     ],
     [
         'class'=>'\kartik\grid\DataColumn',

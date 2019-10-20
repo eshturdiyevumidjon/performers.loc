@@ -1,8 +1,8 @@
 function changeChecked(val2)
 {
    $.post("/language/change?id="+val2,function( data ){});
-
 }
+
 var site_settings = '<div class="ts-button">'
         +'<span class="fa fa-cogs fa-spin"></span>'
     +'</div>'

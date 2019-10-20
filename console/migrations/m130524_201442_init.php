@@ -19,7 +19,7 @@ class m130524_201442_init extends Migration
             'auth_key' => $this->string(255)->notNull()->comment("Пароль"),
             'password_hash' => $this->string(255)->comment("Хэш пароля"),
             'password_reset_token' => $this->string()->unique()->comment("Токен сброса пароля"),
-            'type' => $this->integer()->comment("Тип"),
+            'type_of_user' => $this->integer()->comment("Тип"),
             'birthday'=>$this->date()->comment("день рождения"),
             'phone'=>$this->string(255)->comment('Телефон'),
             'language' => $this->string(255)->defaultValue('ru')->comment("Язык"),
@@ -33,6 +33,7 @@ class m130524_201442_init extends Migration
             'alert_site' => $this->integer()->defaultValue(0)->comment("Получать новости сайта"),
             'note'=>$this->text()->comment(""),
             'role_performer' => $this->string(255)->comment(""),
+            'access'=> $this->integer()->defaultValue(0)->comment("Доступ")
         ], $tableOptions);
 
         $this->insert('user',array(
@@ -40,7 +41,7 @@ class m130524_201442_init extends Migration
             'email' => 'admin@mail.ru',
             'auth_key' => md5('admin'),
             'password_hash' => Yii::$app->security->generatePasswordHash('admin'),
-            'type' => 0,
+            'type_of_user' => 0,
             'image'=>'',
             'status' => 10,
             'phone'=>'',

@@ -70,6 +70,15 @@ class Chat extends \yii\db\ActiveRecord
             return "{$size_mb} MB";
         }
     }
+    
+    public function beforeDelete()
+    {
+     if (file_exists(\Yii::getAlias('@backend').'/web/uploads/chat/'.$this->file)) {
+                  unlink(\Yii::getAlias('@backend').'/web/uploads/chat/'.$this->file);
+              }
+         return parent::beforeDelete();
+    }
+    
     public function getFileSize()
     {
         $adminka = Yii::$app->params['adminka'];

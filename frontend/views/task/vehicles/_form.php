@@ -125,7 +125,7 @@ $lang = Yii::$app->language;
               <?=Html::a(Yii::t('app','Publish'), ['/site/login'],['role'=>'modal-remote','class'=>'btn_red','id'=>'if_user_guest'])?>
             </div>
           <?php else: ?>
-            <?= Html::submitButton(Yii::t('app','Publish'), ['class' => 'btn_red']) ?>
+              <?= Html::submitButton(Yii::t('app','Publish'), ['class' => 'btn_red']) ?>
           <?php endif ?>
         <?php ActiveForm::end(); ?>
        

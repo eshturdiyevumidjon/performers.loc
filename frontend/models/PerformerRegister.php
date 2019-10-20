@@ -67,7 +67,8 @@ class PerformerRegister extends Model
         $user->username = $this->username;
         $user->email = $this->email;
         $user->phone = $this->phone;
-        $user->type=3;
+        $user->type_of_user=3;
+        $user->note='isp';
         $user->auth_key=($this->password);
 
         return $user->save() ? $user : null;

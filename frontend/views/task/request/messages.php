@@ -10,7 +10,7 @@
         	   <div class="user2 user_chats">
         	   	<?php if ($value->text != "" && $value->file): ?>
     	   		<div>
-	                <div class="sms">
+	                <div class="sms" style="word-break:break-word;">
 		                <p><?=$value->text?></p>
 	                   <span class="time_sms"><?=$value->getDateTime()?></span>
 	                </div>
@@ -23,7 +23,7 @@
                 </div>
         	   	<?php endif ?>
         	   	<?php if ($value->text != "" && !($value->file)): ?>
-        	   		<div class="sms">
+        	   		<div class="sms" style="word-break:break-word;">
 			            <p><?=$value->text?></p>
 			            <span class="time_sms"><?=$value->getDateTime()?></span>
 					</div>
@@ -48,7 +48,7 @@
 		            </div>
 	              	<?php if ($value->text != "" && $value->file): ?>
 		    	   		<div>
-			                <div class="sms">
+			                <div class="sms" style="word-break:break-word;">
 				                <p><?=$value->text?></p>
 			                   <span class="time_sms"><?=$value->getDateTime()?></span>
 			                </div>
@@ -60,7 +60,7 @@
 		                </div>
 	        	   	<?php endif ?>
 	        	   	<?php if ($value->text != "" && !($value->file)): ?>
-	        	   		<div class="sms">
+	        	   		<div class="sms" style="word-break:break-word;">
 				            <p><?=$value->text?></p>
 				            <span class="time_sms"><?=$value->getDateTime()?></span>
 						</div>

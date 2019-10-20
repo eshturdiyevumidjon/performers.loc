@@ -44,7 +44,7 @@ use kartik\date\DatePicker;
             </div>
             <div class="row">
                 <div class="col-md-6">
-    				<?= $form->field($model, 'type')->dropDownList($model->getType(), ['prompt' => Yii::t('app','Select')])?>
+    				<?= $form->field($model, 'type_of_user')->dropDownList($model->getTypes(), ['prompt' => Yii::t('app','Select')])?>
                 </div>
                 <div class="col-md-6">
     				<?= $form->field($model, 'birthday')->widget(DatePicker::classname(), [
@@ -58,9 +58,29 @@ use kartik\date\DatePicker;
                 <div class="col-md-6">
                     <?php if (!$model->isNewRecord): ?>
                         <?= $form->field($model, 'status')->dropDownList($model->getStatus(), [])?>
+                    
                     <?php endif ?>
+                    <?php if (!$model->isNewRecord && $model->type == 3): ?>
+                        <label><?=Yii::t('app','Access')?></label>
+                        <br>
+                        <label class="switch switch-small">
+                            <input type="checkbox" <?=($model->access==0)? 'checked=""':''?> value="<?=$model->access?>" onchange="$.post('/admin/ru/user/change-access?id='+<?=$model->id?>,function( data ){});">
+                            <span></span>
+                            </a>
+                        </label>
+                    <?php endif ?>
+
                 </div>
                 <div class="col-md-6">
+                    <?php if (!$model->isNewRecord && $model->type == 4): ?>
+                        <label><?=Yii::t('app','Access')?></label>
+                        <br>
+                        <label class="switch switch-small">
+                            <input type="checkbox" <?=($model->access==0)? 'checked=""':''?> value="<?=$model->access?>" onchange="$.post('/admin/ru/user/change-access?id='+<?=$model->id?>,function( data ){});">
+                            <span></span>
+                            </a>
+                        </label>
+                    <?php endif ?>
                     <?php $checkboxTemplate = '<div class="checkbox i-checks">{beginLabel}{input}{labelTitle}{endLabel}{error}{hint}</div>'; ?>
                     <?php if (!$model->isNewRecord && $model->type == 3): ?>
                         <?= $form->field($model, 'permissions')->checkboxList(\backend\models\Tasks::getType()); ?>

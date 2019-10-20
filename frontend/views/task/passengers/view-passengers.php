@@ -17,7 +17,7 @@ use yii\widgets\Pjax;
       </ol>
     </nav>
     <div class="d-flex inner_main">
-      <div class="inner_left">
+      <div class="inner_left" style="max-width: 35%">
          <h2 id="chat" style="cursor:pointer;"><?=Yii::t('app','My chats')?></h2>
           <?php if ($model->performer_id != null && (($active_user->type == 3 && $active_user->id == $model->performer_id) ||($active_user->type == 4 && $active_user->id == $model->user_id))): ?>
             <div class="chat_inner">
@@ -28,6 +28,7 @@ use yii\widgets\Pjax;
                 <form action="/<?=$lang?>/task/send-message" enctype="multipart/form-data" method="post" class="btm_chat" id="myForm">
                  <div class="input_styles">
                     <input type="text" id="message" placeholder="<?=Yii::t('app','Write')?>">
+                    <input type="hidden" id="task_id" value="<?=$model->id?>">
                     <input type="hidden" id="from" value="<?=Yii::$app->user->identity->id?>">
                     <input type="hidden" id="to" value="<?=($active_user->type == 4) ? $model->performer_id : $model->user_id?>">
                     <input type="file" class="file_input" id="inputFile" accept="image/*">
@@ -38,7 +39,7 @@ use yii\widgets\Pjax;
               </div>
             </div>
           <?php endif ?>           
-          <?= $this->render('../request/inner_left',['user'=>$user,'banner'=>$banner]);?>
+              <?= $this->render('../request/inner_left',['user'=>$user,'banner'=>$banner,'active_user'=>$active_user,'model'=>$model]);?>
       </div>
       <div class="inner_right">
         <div class="wet">
@@ -174,7 +175,7 @@ use yii\widgets\Pjax;
           <?php if ($active_user->type == 4): ?>
                <p><?=Yii::t('app','Minimum payment')?>: <b>30%</b></p>
           <?php else: ?>
-               <p><?=Yii::t('app','Paid')?>: <b>30%</b></p>
+               <p><?=Yii::t('app','Paid')?>: <b><?php if($model->orders->request->price) printf("%.2f", 100*$model->orders->amount/$model->orders->request->price); else echo "0"?> %</b></p>
           <?php endif ?>
          
           <a href="/site/cancellation-policy" target="_blank" class="forget_pass"><?=Yii::t('app','Cancellation Terms')?></a>
@@ -184,14 +185,13 @@ use yii\widgets\Pjax;
              <?php if ($active_user->isHaveRequest($model->id)): ?>
                   
               <?php else: ?>
-                 <?=\yii\helpers\Html::a('<span class="aft_back"></span>'.Yii::t('app','Leave a request'), ['create-request','id'=>$model->id],
-                ['role'=>'modal-remote', 'class'=>'enter_to_site'])?>
+                  <?php if($active_user->status == 0) echo \yii\helpers\Html::a('<span class="aft_back"></span>'.Yii::t('app','Leave a request'), ['create-request','id'=>$model->id],['role'=>'modal-remote', 'class'=>'enter_to_site'])?>
               <?php endif ?>
            <!--  <?=\yii\helpers\Html::a('<span class="aft_back"></span>'.Yii::t('app','Get Invoice'), ['create-pay','id'=>$model->id],
              ['role'=>'modal-remote', 'class'=>'enter_to_site'])?> -->
           </div>
         <?php endif ?>
-         <?php if ($active_user->type ==4): ?>
+         <?php if ($active_user->type == 4): ?>
           <div class="text_right_ent">
           <?=\yii\helpers\Html::a('<span class="aft_back"></span>'.Yii::t('app','Order cancellation'), ['delete-task','id'=>$model->id],
             ['role'=>'modal-remote', 'class'=>'enter_to_site','title'=>Yii::t('app','Delete'), 
@@ -220,6 +220,7 @@ $this->registerJs(<<<JS
   if(keycode == '13'){
      var data = new FormData() ; 
      data.append('file', $( '#inputFile' )[0].files[0]) ; 
+     data.append('task_id', $( '#task_id' ).val()) ; 
      data.append('text', $( '#message' ).val()) ; 
      data.append('from', $( '#from' ).val()) ; 
      data.append('to', $( '#to' ).val()) ; 
@@ -260,6 +261,7 @@ JS
   $('#inputFile').change(function(){ 
      var data = new FormData() ; 
      data.append('file', $( '#inputFile' )[0].files[0]) ; 
+     data.append('task_id', $( '#task_id' ).val()) ; 
      data.append('from', $( '#from' ).val()) ; 
      data.append('to', $( '#to' ).val()) ; 
      $.ajax({
@@ -280,6 +282,7 @@ JS
   setInterval(function()
   { 
      var data = new FormData() ; 
+     data.append('task_id', $( '#task_id' ).val()) ; 
      data.append('to', $( '#to' ).val()) ; 
      data.append('from', $( '#from' ).val()) ;  
       $.ajax({
@@ -303,6 +306,7 @@ JS
   $('#submit_send_message').on('click',function(){ 
      var data = new FormData() ; 
      data.append('file', $( '#inputFile' )[0].files[0]) ; 
+     data.append('task_id', $( '#task_id' ).val()) ; 
      data.append('text', $( '#message' ).val()) ; 
      data.append('from', $( '#from' ).val()) ; 
      data.append('to', $( '#to' ).val()) ; 

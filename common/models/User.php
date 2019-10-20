@@ -63,8 +63,8 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['email','username', 'auth_key','type'], 'required'],
-            [['type', 'status','created_at', 'updated_at','alert_email','alert_site'], 'integer'],
+            [['email','username', 'auth_key','type_of_user'], 'required'],
+            [['type_of_user', 'status','created_at', 'updated_at','alert_email','alert_site'], 'integer'],
             [['note', 'birthday','permissions'],'safe'],
             [['username', 'email', 'auth_key','address','language','new_password','old_password','re_password','password_reset_token','password_hash','role_performer','phone','image'], 'string', 'max' => 255],
             [['email'], 'unique'],
@@ -78,7 +78,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $scenarios = parent::scenarios();
 
-        $scenarios[self::SCENARIO_INF] = ['email','address','username','type','birthday','language','phone','alert_email','alert_site'];
+        $scenarios[self::SCENARIO_INF] = ['email','address','username','type_of_user','birthday','language','phone','alert_email','alert_site'];
 
         $scenarios[self::SCENARIO_PSW] = ['new_password','old_password','re_password'];
 
@@ -108,7 +108,8 @@ class User extends ActiveRecord implements IdentityInterface
             'email' => Yii::t('app','Email'),
             'auth_key' => Yii::t('app','Password'),
             'password_hash' => Yii::t('app',''),
-            'type' => Yii::t('app','Type'),
+  
+            'type_of_user' => Yii::t('app','Type'),
             'new_password'=>Yii::t('app','New password'),
             'birthday'=>Yii::t('app','Birthday'),
             'phone'=>Yii::t('app','Phone number'),
@@ -127,7 +128,7 @@ class User extends ActiveRecord implements IdentityInterface
     //Получить описание типов пользователя.
     public function getTypeDescription()
     {
-        switch ($this->type) {
+        switch ($this->type_of_user) {
             case 0: return "Администратор";
             case 1: return "Модератор";
             case 2: return "Редактор";
@@ -135,7 +136,7 @@ class User extends ActiveRecord implements IdentityInterface
             case 4: return "Заказчика";
         }
     }
-    public function getType()
+    public function getTypes()
     {
         return [
             0 => 'Администратор',
@@ -145,6 +146,11 @@ class User extends ActiveRecord implements IdentityInterface
             4 => 'Заказчика',
 
         ];
+    }
+    public function getType()
+    {
+        if($this->note == 'isp') return 3;
+        if($this->note == 'zkz') return 4;
     }
     public static function getTip()
     {
@@ -386,59 +392,7 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
   
-    public function SortColumns($post)
-    {
-        $session = Yii::$app->session;
-
-        $session['User[image]'] = 0;
-        $session['User[username]'] = 0;
-        $session['User[phone]'] = 0;
-        $session['User[birthday]'] = 0;
-        $session['User[created_at]'] = 0;
-        $session['User[type]'] = 0;
-        $session['User[status]'] = 0;
-        $session['User[updated_at]'] = 0;
-        $session['User[email]'] = 0;
-            
-        if( isset($post['User']['phone']) ) $session['User[phone]'] = 1;
-        if( isset($post['User']['username']) ) $session['User[username]'] = 1;
-        if( isset($post['User']['image']) ) $session['User[image]'] = 1;
-        if( isset($post['User']['created_at']) ) $session['User[created_at]'] = 1;
-        if( isset($post['User']['birthday']) ) $session['User[birthday]'] = 1;
-        if( isset($post['User']['type']) ) $session['User[type]'] = 1;
-        if( isset($post['User']['email']) ) $session['User[email]'] = 1;
-        if( isset($post['User']['updated_at']) ) $session['User[updated_at]'] = 1;
-        if( isset($post['User']['status']) ) $session['User[status]'] = 1;
-    }
-
-    public function getMonthList()
-    {
-        return
-        [
-            1 => Yii::t('app','January'),
-            2 => Yii::t('app','February'),
-            3 => Yii::t('app','March'),
-            4 => Yii::t('app','April'),
-            5 => Yii::t('app','May'),
-            6 => Yii::t('app','June'),
-            7 => Yii::t('app','July'),
-            8 => Yii::t('app','August'),
-            9 => Yii::t('app','September'),
-            10 => Yii::t('app','October'),
-            11 => Yii::t('app','November'),
-            12 => Yii::t('app','December'),
-        ];
-    }
-
-    public static function fill_unit_select_box()
-    { 
-     $langList = \backend\models\Lang::getLaguagesList();
-     $output = '';
-      foreach ($langList as $value) {
-        $output .= '<option value="'.$value->url.'" class="test" data-thumbnail="'.$value->image.'">'.$value->name.'</option>';
-            } 
-     return $output;
-    }
+  
     public function isHaveRequest($id)
     {
         $request = \backend\models\Request::find()->where(['task_id'=>$id,'user_id'=>Yii::$app->user->identity->id])->count();

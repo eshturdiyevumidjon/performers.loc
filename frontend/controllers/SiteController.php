@@ -375,7 +375,7 @@ class SiteController extends Controller
                           ->send();
                         
                         return [
-                                'title'=> $modelPerformer->rrr,
+                                'title'=> Yii::t('app','Signup'),
                                 'content'=>$this->renderAjax('signup', [
                                     'modelCustomer' => $modelCustomer,
                                     'modelPerformer' => $modelPerformer,
@@ -387,7 +387,7 @@ class SiteController extends Controller
                     }
                     else{
                         return [
-                        'title'=> $modelPerformer->rrr,
+                        'title'=>Yii::t('app','Signup'),
                         'content'=>$this->renderAjax('signup', [
                             'modelCustomer' => $modelCustomer,
                             'modelPerformer' => $modelPerformer,

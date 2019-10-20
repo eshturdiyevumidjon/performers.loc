@@ -32,6 +32,8 @@ class Orders extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['amount'], 'required'],
+            [['amount'], 'validateAmount'],
             [['type', 'task_id', 'status','request_id'], 'integer'],
             [['date_pay'], 'safe'],
             [['amount'], 'number'],
@@ -50,7 +52,7 @@ class Orders extends \yii\db\ActiveRecord
             'type' => 'Type',
             'task_id' => 'Task ID',
             'date_pay' => 'Date Pay',
-            'amount' => 'Amount',
+            'amount' => Yii::t('app','Amount'),
             'status' => 'Status',
         ];
     }
@@ -62,8 +64,13 @@ class Orders extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Tasks::className(), ['id' => 'task_id']);
     }
-     public function getOrder()
+    public function getRequest()
     {
         return $this->hasOne(Request::className(), ['id' => 'request_id']);
+    }
+    public function validateAmount($attribute)
+    { 
+        if($this->amount / $this->request->price <= 0.3 )
+        $this->addError($attribute, Yii::t('app','Minimum payment')."  30%");        
     }
 }

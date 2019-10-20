@@ -23,6 +23,7 @@ class ItakeAsset extends AssetBundle
       'css/media.css',
       'css/mycss.css',
       'css/dd.css',
+      'css/chat.css',
     ];
     public $js = [
       // 'js/jquery.min.js',
@@ -34,6 +35,7 @@ class ItakeAsset extends AssetBundle
       'js/all.min.js',
       // 'js/select.js',
       '/js/dd.js',
+      '/js/chat.js',
       'js/main.js',
     ];
     public $depends = [

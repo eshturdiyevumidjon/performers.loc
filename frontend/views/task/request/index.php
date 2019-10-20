@@ -43,7 +43,7 @@
         </div>
         <div class="col-sm-3">
           <p class="cal_tack"><?=Yii::t('app','Phone')?></p>
-          <?php if ($active_user->type == 4 && $value->task->performer_id == $value['user']->id): ?>
+          <?php if (($active_user->type == 4 && $value->task->performer_id == $value['user']->id) || $active_user->type == 3): ?>
           <span><?=$value['user']->phone?></span>
           <?php else: ?>
           <span>*** ** *** ** **</span>

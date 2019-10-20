@@ -73,7 +73,8 @@ class RegisterForm extends Model
         $user->username = $this->username;
         $user->email = $this->email;
         $user->phone = $this->phone;
-        $user->type=4;
+        $user->type_of_user=4;
+        $user->note='zkz';
         $user->auth_key=$this->password;
 
         return $user->save() ? $user : null;
